@@ -41,6 +41,9 @@ public class MagDdtDTO implements Serializable{
 	
 	private String commessa;
 	
+	private String ldv;
+	private String n_prenotazione;
+	
 	
 	public String getDestinatario() {
 		return destinatario;
@@ -224,6 +227,18 @@ public class MagDdtDTO implements Serializable{
 	}
 	public void setCommessa(String commessa) {
 		this.commessa = commessa;
+	}
+	public String getLdv() {
+		return ldv;
+	}
+	public void setLdv(String ldv) {
+		this.ldv = ldv;
+	}
+	public String getN_prenotazione() {
+		return n_prenotazione;
+	}
+	public void setN_prenotazione(String n_prenotazione) {
+		this.n_prenotazione = n_prenotazione;
 	}
 
 

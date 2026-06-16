@@ -80,5 +80,11 @@
         <property name="account" type="java.lang.String">
             <column name="account" />
         </property>
+        <property name="ldv" type="java.lang.String">
+            <column name="ldv" />
+        </property>
+        <property name="n_prenotazione" type="java.lang.String">
+            <column name="n_prenotazione" />
+        </property>
 	</class>
 </hibernate-mapping>

@@ -333,6 +333,8 @@ public class GestioneDDT extends HttpServlet {
 			String magazzino ="";
 			String configurazione_ddt ="";
 			String account="";
+			String ldv ="";
+			String n_prenotazione = "";
 			FileItem pdf =null;
 			MagDdtDTO ddt = new MagDdtDTO();
 			
@@ -445,6 +447,12 @@ public class GestioneDDT extends HttpServlet {
 						if(item.getFieldName().equals("operatore_trasporto")) {
 							operatore_trasporto = item.getString().replaceAll("\t", " ");
 						}
+						if(item.getFieldName().equals("ldv")) {
+							ldv =	item.getString();
+						}
+						if(item.getFieldName().equals("n_prenotazione")) {
+							n_prenotazione=	item.getString();
+						}
 
 						
 					}else {
@@ -538,6 +546,8 @@ public class GestioneDDT extends HttpServlet {
 				ddt.setSpedizioniere(spedizioniere);
 				ddt.setAccount(account);
 				ddt.setColli(Integer.parseInt(colli));
+				ddt.setLdv(ldv);
+				ddt.setN_prenotazione(n_prenotazione);
 				
 				if(!id_ddt.equals("")) {
 					ddt.setId(Integer.parseInt(id_ddt));

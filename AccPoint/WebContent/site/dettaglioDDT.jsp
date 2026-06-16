@@ -131,6 +131,12 @@
                 <li class="list-group-item">
                   <b>Numero DDT</b> <a class="pull-right">${ddt.numero_ddt} </a>
                 </li>
+                 <li class="list-group-item">
+                  <b>LDV</b> <a class="pull-right">${ddt.ldv} </a>
+                </li>
+                 <li class="list-group-item">
+                  <b>N. Prenotazione</b> <a class="pull-right">${ddt.n_prenotazione} </a>
+                </li>
                 <li class="list-group-item">
                   <b>Causale</b> <a class="pull-right">${ddt.causale.descrizione} </a>
                 </li>
@@ -483,15 +489,21 @@
 
 </div>  
  <label>Annotazioni</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.annotazioni }" id="annotazioni" name="annotazioni"> </a>
+ 
  <div class="row">
 <div class="col-md-12" >
 <label>Magazzino</label>
 	<select id="magazzino" name="magazzino" class="form-control">
 	<option value="Principale">Principale</option>
 	</select>
+	 <label>LDV</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.ldv }" id="ldv" name="ldv"> </a>
+</div>
+ 
+ 
+
 </div>
 </div>
-</div>
+
 <div class="col-md-4">
 
 <label>Spedizioniere</label> 
@@ -501,6 +513,7 @@
 <div class="col-md-12" >
 <label>Peso (Kg)</label>
 	<input type="text" id="peso" name="peso" class="form-control" value="${ddt.peso }">
+	 <label>N. Prenotazione</label> <a class="pull-center"><input type="text" class="form-control" value="${ddt.n_prenotazione }" id="n_prenotazione" name="n_prenotazione"> </a>
 </div>
 
 </div> 

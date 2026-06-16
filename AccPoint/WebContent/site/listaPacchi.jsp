@@ -132,6 +132,7 @@
 
 <th style="min-width:190px">Azioni</th>
    <th >Origine</th>
+    <th >ID</th> 
  <th >Cliente</th>
  <th style="min-width:100px">Sede</th>
  <th >Commessa</th> 
@@ -154,12 +155,10 @@
 
  <th >Data Creazione</th>
 
- <th>Annotazioni</th> 
- <th >Codice pacco</th>
- <th >Company</th>
+
  <th >Responsabile</th>
 
- <th >ID</th> 
+
  </tr></thead>
  
  <tbody>
@@ -229,7 +228,11 @@
 </c:if>
 
 </td>
-
+<td>
+<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
+${pacco.id}
+</a>
+</td> 
 
 <td>${pacco.nome_cliente}</td>
 <td>${pacco.nome_sede }</td>
@@ -294,16 +297,9 @@ ${pacco.ddt.numero_ddt}
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_lavorazione}" /></td>
 
 
-<td>${pacco.ddt.annotazioni}</td>
-<td>${pacco.codice_pacco}</td>
 
-<td>${pacco.company.denominazione}</td>
 <td>${pacco.utente.nominativo}</td>
-<td>
-<a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(pacco.id)}')">
-${pacco.id}
-</a>
-</td> 
+
 	</tr>
 	
 
@@ -736,6 +732,7 @@ ${pacco.id}
 	<select id="magazzino" name="magazzino" class="form-control">
 	<option value="Principale">Principale</option>
 	</select>
+	 <label>LDV</label> <a class="pull-center"><input type="text" class="form-control" id="ldv" name="ldv"> </a>
 </div>
 </div>
 </div>
@@ -748,6 +745,7 @@ ${pacco.id}
 <div class="col-md-12" >
 <label>Peso (Kg)</label>
 	<input type="text" id="peso" name="peso" class="form-control" >
+	 <label>N. Prenotazione</label> <a class="pull-center"><input type="text" class="form-control"  id="n_prenotazione" name="n_prenotazione"> </a>
 </div>
 
 </div> 
@@ -1557,7 +1555,7 @@ table = $('#tabPM').DataTable({
        }
    },
    pageLength: 100,
-   "order": [[ 25, "desc" ]],
+   "order": [[ 2, "desc" ]],
      paging: true, 
      ordering: true,
      info: true, 

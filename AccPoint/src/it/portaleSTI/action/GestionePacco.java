@@ -186,6 +186,8 @@ public class GestionePacco extends HttpServlet {
 		String data_json_rilievi ="";
 		String modifica_pezzi_rilievo_id = "";
 		String data_lavorazione = "";
+		String ldv ="";
+		String n_prenotazione="";
 		
 		FileItem pdf = null;
 		
@@ -460,6 +462,12 @@ public class GestionePacco extends HttpServlet {
 					}
 					if(item.getFieldName().equals("modifica_pezzi_rilievo_id")) {
 						modifica_pezzi_rilievo_id = item.getString();
+					}
+					if(item.getFieldName().equals("ldv")) {
+						ldv = item.getString();
+					}
+					if(item.getFieldName().equals("n_prenotazione")) {
+						n_prenotazione = item.getString();
 					}
 				}else {
 					
@@ -740,6 +748,9 @@ public class GestionePacco extends HttpServlet {
 			ddt.setAccount(account);
 			ddt.setOperatore_trasporto(operatore_trasporto);
 			ddt.setMagazzino(magazzino);
+			ddt.setLdv(ldv);
+			ddt.setN_prenotazione(n_prenotazione);
+			
 			if(colli!=null && !colli.equals("")) {
 				ddt.setColli(Integer.parseInt(colli));
 			}else {

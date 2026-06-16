@@ -96,10 +96,13 @@
 <th>ID</th>
 <th>Numero</th>
 <th>Data DDT</th>
+<th>LDV</th>
+<th>N. Prenotazione</th>
 <th>Mittente/Destinatario</th>
 <th>Sede Mittente/Destinatario</th>
 <th>Destinazione</th>
 <th>Sede Destinazione</th>
+<th>Annotazioni</th>
 <th>Spedizioniere</th>
 <th>Commessa</th>
 <th>Tipo DDT</th>
@@ -117,10 +120,13 @@
 			</a></td>
 		<td>${ddt.numero_ddt }</td>
 		<td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${ddt.data_ddt }" /></td>
+		<td>${ddt.ldv}</td>
+		<td>${ddt.n_prenotazione}</td>
 		<td>${ddt.destinatario }</td>
 		<td>${ddt.sede_destinatario }</td>
 		<td>${ddt.destinazione }</td>
 		<td>${ddt.sede_destinazione }</td>
+		<td>${ddt.annotazioni} </td>
 		<td>${ddt.spedizioniere }</td>
 		<td>${ddt.commessa }</td>
 		<td><c:choose>

@@ -620,7 +620,7 @@ ${pacco.ddt.numero_ddt}
                   <option value="${cliente.__id}">${cliente.nome}</option>
                   </c:forEach> 
                   </select> --%>
-                  <input id="destinatario" name="destinatario" class="form-control" style="width:100%">
+                  <input id="destinatario" name="destinatario" class="form-control " style="width:100%">
                   </a>
 
 </div>
@@ -1385,13 +1385,16 @@ ${pacco.ddt.numero_ddt}
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-	
+
+
+
 	<script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 		 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 		 <script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 		<script type="text/javascript" src="plugins/datetimepicker/bootstrap-datetimepicker.js"></script> 
 		<script type="text/javascript" src="plugins/datejs/date.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script type="text/javascript">
 
@@ -1416,6 +1419,7 @@ initSelect2('#select1');
 initSelect2('#cliente_utilizzatore');
 initSelect2('#destinatario', 'Seleziona Mittente...');
 initSelect2('#destinazione', 'Seleziona Destinazione...');
+
 
 var columsDatatables2 = [];
 
@@ -3621,39 +3625,25 @@ if($('#tipo_ddt').val() != 1){
 
 
   function initSelect2(id_input, placeholder) {
-	  if(placeholder==null){
-		  placeholder = "Seleziona Cliente...";
-	  }
+	    if (placeholder == null) {
+	        placeholder = "Seleziona Cliente...";
+	    }
+	    
+	    // Distruggi eventuale istanza precedente
+	    if ($(id_input).data('select2')) {
+	        $(id_input).select2('destroy');
+	    }
+	    
+	    $(id_input).select2({
+	        data: mockData(),
+	        dropdownParent: $('#myModalCreaNuovoPacco .modal-body'),
+	        placeholder: placeholder,
+	        multiple: false,
+	        width: '100%'
+	    });
+	}
+  
 
-  	$(id_input).select2({
-  	    data: mockData(),
-  	  dropdownParent: $('#myModalCreaNuovoPacco'),
-  	    placeholder: placeholder,
-  	    multiple: false,
-  	    // query with pagination
-  	    query: function(q) {
-  	      var pageSize,
-  	        results,
-  	        that = this;
-  	      pageSize = 20; // or whatever pagesize
-  	      results = [];
-  	      if (q.term && q.term !== '') {
-  	        // HEADS UP; for the _.filter function i use underscore (actually lo-dash) here
-  	        results = _.filter(x, function(e) {
-  	        	
-  	          return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
-  	        });
-  	      } else if (q.term === '') {
-  	        results = that.data;
-  	      }
-  	      q.callback({
-  	        results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
-  	        more: results.length >= q.page * pageSize,
-  	      });
-  	    },
-  	  });
-  	  	
-  }
 		
 </script>
 

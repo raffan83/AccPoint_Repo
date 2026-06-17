@@ -102,7 +102,9 @@
 <th>Codice fiscale</th>
 <th>Stato</th>
 <th>Email</th>
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1')  }"> 
 <th>Inserito da</th>
+</c:if>
 <th style="min-width:150px">Azioni</th>
  </tr></thead>
  
@@ -123,6 +125,7 @@
 	<c:if test="${partecipante.stato == 1}">NON ATTIVO</c:if>
 	</td>
 	<td>${partecipante.email }</td>	
+	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }"> 
 	<c:choose>
     <c:when test="${partecipante.utente != null}">
         <td>
@@ -133,6 +136,7 @@
         <td>-</td>
     </c:otherwise>
 </c:choose>
+</c:if>
 	<td>
 	
 	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
@@ -1140,8 +1144,11 @@ $(document).ready(function() {
 	$('#firma_centro_formazione').select2({
 	    dropdownParent: $('#myModalAssociaUtenti')
 	});
+	
+	
 
    var  tablePartecipante = $('#tabForPartecipante').DataTable({
+
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -1177,10 +1184,11 @@ $(document).ready(function() {
 		      stateSave: true,	
 		           
 		      columnDefs: [
-		    	  { responsivePriority: 1, targets:0 },
-		    	  { responsivePriority: 2, targets: 11 }, 
-		    	  { responsivePriority: 5, targets: 9 }, 
-		               ], 	        
+		    	    { responsivePriority: 1, targets: 0 },
+		    	    { responsivePriority: 2, targets: -1 },   // Azioni: sempre ultima
+		    	    { responsivePriority: 5, targets: 9 },   // Email: sempre penultima (prima di Azioni)
+		    	
+		    	],	        
 	  	      buttons: [   
 	  	          {
 	  	            extend: 'colvis',

@@ -2466,10 +2466,26 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 
 	  // Create the email message
 	  HtmlEmail email = new HtmlEmail();
-	  email.setHostName("smtps.aruba.it");
+	  email.setHostName("mail.vianova.it");
 		 //email.setDebug(true);
-	  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+	//  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+	  email.setSmtpPort(587);
+	  email.setAuthentication("delivery@stisrl.com", Costanti.PASS_EMAIL_DOC);
+	  
+	  
 
+Properties props = email.getMailSession().getProperties();
+
+props.put("mail.smtp.auth", "true");
+props.put("mail.smtp.starttls.enable", "true");
+
+// IMPORTANTI: NON usare SSL implicito
+props.put("mail.smtp.ssl.enable", "false");
+
+// opzionale ma utile
+props.put("mail.smtp.ssl.trust", "mail.vianova.it");
+
+/*
        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
        email.getMailSession().getProperties().put("mail.debug", "true");
        email.getMailSession().getProperties().put("mail.smtp.port", "465");
@@ -2477,7 +2493,7 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
-
+*/
 
       String[] destinatari = mailTo.split(";"); 
   /*
@@ -2505,7 +2521,7 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
      }
 	  
      email.setCharset("UTF-8");
-	    email.setFrom("calver@accpoint.it", "Calver");
+	    email.setFrom("delivery@stisrl.com", "DocumentalWEB");
 	  email.setSubject("Report taratura strumenti disponibile per il download");
 	  
 	  // embed the image and get the content id

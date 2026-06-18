@@ -292,6 +292,18 @@ import net.sf.jasperreports.engine.JREmptyDataSource;
 				report.addParameter("partita_iva", "");
 			}
 			
+			if(ddt.getLdv()!=null) {
+				report.addParameter("ldv", ddt.getLdv());
+			} else {
+				report.addParameter("ldv", "");
+			}
+			
+			if(ddt.getN_prenotazione()!=null) {
+				report.addParameter("n_prenotazione", ddt.getN_prenotazione());
+			} else {
+				report.addParameter("n_prenotazione", "");
+			}
+			
 			report.addParameter("nota", "MATERIALE FRAGILE - MANEGGIARE CON CURA. Eventuali segnalazioni in merito "
 					+ "alla merce/bene consegnato dovranno essere comunicate entro 8 gg dal ricevimento; "
 					+ "S.T.I. Srl non si ritiene comunque responsabile di eventuali danneggiamenti che la merce/bene "

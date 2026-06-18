@@ -2461,8 +2461,8 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 
 public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mailTo,ServletContext ctx,SessioneDTO sessione) throws EmailException {
-	
-	
+	 boolean rispEmail = false;
+	try {
 
 	  // Create the email message
 	  HtmlEmail email = new HtmlEmail();
@@ -2472,8 +2472,6 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 	  email.setSmtpPort(587);
 	  email.setAuthentication("delivery@stisrl.com", Costanti.PASS_EMAIL_DOC);
 	  
-	  
-
 Properties props = email.getMailSession().getProperties();
 
 props.put("mail.smtp.auth", "true");
@@ -2482,9 +2480,14 @@ props.put("mail.smtp.starttls.enable", "true");
 // IMPORTANTI: NON usare SSL implicito
 props.put("mail.smtp.ssl.enable", "false");
 
-// opzionale ma utile
-props.put("mail.smtp.ssl.trust", "mail.vianova.it");
+props.put("mail.smtp.ssl.trust", "*");
+props.put("mail.smtp.ssl.checkserveridentity", "false");
 
+//timeout in millesecondi
+
+props.put("mail.smtp.connectiontimeout", "5000");  //per connetersi
+props.put("mail.smtp.timeout", "5000");  //per inviare
+props.put("mail.smtp.writetimeout", "5000");
 /*
        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
        email.getMailSession().getProperties().put("mail.debug", "true");
@@ -2521,7 +2524,7 @@ props.put("mail.smtp.ssl.trust", "mail.vianova.it");
      }
 	  
      email.setCharset("UTF-8");
-	    email.setFrom("delivery@stisrl.com", "DocumentalWEB");
+	    email.setFrom("delivery@stisrl.com", "Delivery STI srl");
 	  email.setSubject("Report taratura strumenti disponibile per il download");
 	  
 	  // embed the image and get the content id
@@ -2531,7 +2534,7 @@ props.put("mail.smtp.ssl.trust", "mail.vianova.it");
 	  String cid = email.embed(image, "Calver logo");
 	  
 	  String lista_doc ="";
-	  
+	 
 	  
 	  String tipo_consegna = "CONSEGNA TOTALE";
 	 
@@ -2593,6 +2596,14 @@ props.put("mail.smtp.ssl.trust", "mail.vianova.it");
 		  
 		  
 	  email.send();
+
+	
+	  
+	} catch (Exception e) {
+		e.printStackTrace();
+		  throw e;
+		 
+	}
 	
 }
 

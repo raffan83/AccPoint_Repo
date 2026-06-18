@@ -699,7 +699,7 @@
 <a class="btn btn-primary" onClick="invertiNomeCognome()">Inverti Nome e Cognome</a>
 
 <div style="display:none" id="label_duplicati" >
-<br><br><label style="color:#ff8080" >In rosso i possibili nominativi duplicati</label>
+<br><br><label style="color:#ff8080" >  <i class="fa fa-warning" data-icon="fa-warning" style="color:#ff8080;margin-right:5px;"></i>  Possibili nominativi duplicati</label>
 </div>
  <table id="tabImportPartecipante" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -829,8 +829,8 @@
   height: 30px;
   background-color: green;
 }
-.riga-gialla {
-    background-color: #fff3cd !important;
+.riga-rossa {
+    background-color: #F9D290 !important;
 }
 
 .select2-container--default .select2-selection--single {
@@ -1816,7 +1816,7 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			  }
 			  if(lista_partecipanti_import[i].nome_azienda_old != null && lista_partecipanti_import[i].nome_azienda_old.trim() !== ''){
 
-			      dati.DT_RowClass = 'riga-gialla';
+			    //  dati.DT_RowClass = 'riga-rossa';
 			      
 			      dati.azioni += ' <a class="btn btn-warning" onClick="associaVecchiaAzienda(\''+
 			      lista_partecipanti_import[i].cf+'\', \''+
@@ -1835,18 +1835,16 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			  
 			  if(lista_partecipanti_import[i].duplicato == 1){
 				  duplicati.push(lista_partecipanti_import[i].cf);
+				  console.log("duplicati " + i + " : " +lista_partecipanti_import[i].nome + "  " + duplicati[i]);
+				  
 			  }
 			  
 			   col_cf.push(lista_partecipanti_import[i].cf);
+			   console.log("col_cf " + i + " : " + col_cf[i]);
 			  table_data.push(dati);
 			  }
 		  currentTipoImport = tipo;
-		  
-		  var table = $('#tabImportPartecipante').DataTable();
-		  
-		   table.clear().draw();
-		   
-			table.rows.add(table_data).draw();
+
 			
 			if (tipo !== "pdf" && lista_partecipante_ruolo_corso != null) {
 			    for (var j = 0; j < lista_partecipante_ruolo_corso.length; j++) {
@@ -1871,18 +1869,23 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			
 			$('#label_duplicati').hide();
 			
-			for(var i = 0;i<duplicati.length;i++){
+			for(var d = 0; d < duplicati.length; d++){
 				$('#label_duplicati').show();
 				
-				for(var j = 0; j<col_cf.length;j++){
-					if(col_cf[j] == duplicati[i]){
-						var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
-						$(x).css("background-color","#ff8080")
-					}
+				  for(var j = 0; j < col_cf.length; j++){
+					  if(col_cf[j] == duplicati[d]){
+						  table_data[j].nome = '<i class="fa fa-warning" data-icon="fa-warning" style="color:#ff8080;margin-right:2px;"></i> ' + table_data[j].nome;
+				        }
 				}
 			}
+			  
+			  var table = $('#tabImportPartecipante').DataTable();
+			  
+			   table.clear().draw();
+			   
+				table.rows.add(table_data).draw();
 			
-	 		table.columns.adjust().draw();
+	 		//table.columns.adjust().draw();
 	 		for(var i = 0; i<lista_partecipanti_import.length;i++){
 				//initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
 				$('#sede_table_'+lista_partecipanti_import[i].cf).select2();
@@ -1910,6 +1913,7 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			
 		  $('#modalConfermaImportazione').modal();
 			
+	//	  dati.nome = lista_partecipanti_import[i].nome;
 	 
 	 
 	 $('#modalConfermaImportazione').on('shown.bs.modal', function () {

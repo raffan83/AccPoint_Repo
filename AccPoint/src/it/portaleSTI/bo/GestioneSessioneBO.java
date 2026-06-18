@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -81,6 +82,8 @@ public class GestioneSessioneBO {
 
 	
 	public static void sendEmailClienteDocumentalWeb(File d, String mailTo,ServletContext ctx, SessioneDTO sessione  ) throws Exception {
+	
+
 		
 		try {
 	
@@ -90,14 +93,12 @@ public class GestioneSessioneBO {
 	
 		String messaggio = "Si comunica che ....";
 	//	String messaggio = "Si comunica che dalla pianificazione corsi emerge che per la commessa "+p.getId_commessa()+" &egrave; presente un item nello stato \"FATTURATO SENZA ATTESTATI\" in data "+df.format(p.getData())+".";
-		SendEmailBO.sendEmailClienteDocumentalWeb(d,  mailTo, ctx, sessione);
+	SendEmailBO.sendEmailClienteDocumentalWeb(d,  mailTo, ctx, sessione);
 					
-					
-			
-	
 		
 	}catch(Exception e) {
 		e.printStackTrace();
+		throw new RuntimeException("Errore invio email: " + e.getMessage(), e);
 	}
 		
 	}

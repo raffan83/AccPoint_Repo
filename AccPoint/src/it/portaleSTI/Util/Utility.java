@@ -2352,4 +2352,32 @@ public class Utility extends HttpServlet {
 				
 				
 			}
+			
+			public static boolean comprimiPdf(String inputPdf, String outputPdf) {
+				try {
+					String ghostscriptPath = "C:\\Program Files\\gs\\gs10.03.1\\bin\\gswin64c.exe";
+
+					ProcessBuilder pb = new ProcessBuilder(
+							ghostscriptPath,
+							"-sDEVICE=pdfwrite",
+							"-dCompatibilityLevel=1.4",
+							"-dPDFSETTINGS=/ebook",
+							"-dNOPAUSE",
+							"-dQUIET",
+							"-dBATCH",
+							"-sOutputFile=" + outputPdf,
+							inputPdf
+							);
+
+					Process process = pb.start();
+					int exitCode = process.waitFor();
+
+					return exitCode == 0;
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+
 }

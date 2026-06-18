@@ -1732,6 +1732,7 @@ public class GestioneFormazioneBO {
 					ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
 					
 			
+				//	nominativo = "Carlo Alberto Potere";
 					
 					String[] nomeCognome = nominativo.split(" ");
 					
@@ -1782,11 +1783,17 @@ public class GestioneFormazioneBO {
 						}
 					}
 					
-					if(controllaDuplicato(partecipante.getNome(), partecipante.getCognome(), cf, session)) {
+			//		partecipante.setNome("Carlo");
+				//	partecipante.setCognome("Potere");
+					
+				
+					
+					if(controllaDuplicato(partecipante.getNome(), partecipante.getCognome(),cf, session)) {
 						partecipante.setDuplicato(1);
 					}else {
 						partecipante.setDuplicato(0);
 					}
+					System.out.println(nominativo + " "+ data_nascita+" "+luogo_nascita+" "+cf + " " + partecipante.getDuplicato());
 					
 					partecipante.setCf(cf);
 					partecipante.setData_nascita(df.parse(data_nascita));
@@ -1907,6 +1914,7 @@ public class GestioneFormazioneBO {
 		PdfReader reader = new PdfReader(fileItem.getInputStream());
 		
 		PDDocument document = PDDocument.load(fileItem.getInputStream()); 
+
 	
 		
 		int pageNumber = reader.getNumberOfPages();		
@@ -1951,8 +1959,23 @@ public class GestioneFormazioneBO {
 			 if(!folder.exists()) {
 				 folder.mkdirs();
 			 }
+			 String savedPath = Costanti.PATH_FOLDER + "\\Formazione\\Attestati\\" 
+					    + partecipante.getCorso().getId() 
+					    + "\\" + partecipante.getPartecipante().getId() 
+					    + "\\" + filename + ".pdf";
+			 
 			splittedList.get(0).save(Costanti.PATH_FOLDER+"\\Formazione\\Attestati\\"+partecipante.getCorso().getId() +"\\"+partecipante.getPartecipante().getId()+ "\\"+filename+ ".pdf");
 			splittedList.get(0).close();
+			String compressedPath = Costanti.PATH_FOLDER + "\\Formazione\\Attestati\\" 
+				    + partecipante.getCorso().getId() 
+				    + "\\" + partecipante.getPartecipante().getId() 
+				    + "\\" + filename + "_compressed.pdf";
+			String tempPath = savedPath.replace(".pdf", "_temp.pdf");
+			boolean success = Utility.comprimiPdf(savedPath, tempPath);
+			if (success) {
+			    new File(savedPath).delete();
+			    new File(tempPath).renameTo(new File(savedPath));
+			}
 			
 			partecipante.setAttestato(filename+".pdf");
 			session.update(partecipante);

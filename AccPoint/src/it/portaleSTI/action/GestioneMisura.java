@@ -505,7 +505,9 @@ public class GestioneMisura extends HttpServlet {
 			            out.write("data: {\"progress\":95, \"fase\":6, \"testo\":\"Invio email al cliente...\"}\n\n");
 			            out.flush();
 
-			            GestioneSessioneBO.sendEmailClienteDocumentalWeb(schedaConsegna, email, getServletContext(), sessione);
+			          GestioneSessioneBO.sendEmailClienteDocumentalWeb(schedaConsegna, email, getServletContext(), sessione);
+			            
+			          
 			            System.out.println("Email inviata");
 
 			            session.getTransaction().commit();
@@ -513,6 +515,7 @@ public class GestioneMisura extends HttpServlet {
 			            //  Unica risposta finale di successo
 			            out.write("data: {\"progress\":100, \"fase\":\"Finita\", \"testo\":\"Completato!\", \"success\":true}\n\n");
 			            out.flush();
+	
 
 			        } else {
 			            session.getTransaction().rollback();
@@ -541,7 +544,7 @@ public class GestioneMisura extends HttpServlet {
 			        //  Risposta SSE di errore formattata correttamente
 			        JSONObject obj = new JSONObject();
 			        obj.put("progress", 100);
-			        obj.put("testo", "Errore durante l'invio: " + e.getMessage() + "\nEliminazione file binari in DocumentalWEb: " + rispElimina);
+			        obj.put("testo", "Errore durante l'invio\n " + e.getMessage() + "\nEliminazione file binari in DocumentalWEb: " + rispElimina);
 			        obj.put("success", false);
 			      
 			        out.write("data: " + obj.toString() + "\n\n");

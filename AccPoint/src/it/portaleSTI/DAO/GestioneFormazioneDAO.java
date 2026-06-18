@@ -1246,52 +1246,66 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		Connection con=null;
 		PreparedStatement pst = null;
 		ResultSet rs=null;
+		HashMap<Integer, Integer>  duplicati = new HashMap<>();
+		
 		
 		try {
 			con=getConnection();
 
-			
+		ArrayList<Integer> listaModuliAttestato= getListaModuliAttestato(con, id_corso);	
 
-		String query = "";
+		String ids="";
 		
-		if(id_gruppo!=0) {
-			//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
-			query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45 AND deletioninprogress = 0)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
-		}else {
-			//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16))";
-			query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45 AND deletioninprogress = 0))";
-		}
-		
-
-		
-		pst=con.prepareStatement(query);
-		
-		pst.setInt(1, id_corso);
-		pst.setInt(2, id_corso);
-		if(id_gruppo!=0) {
-			pst.setInt(3, id_gruppo);
-		}
-		
-		
-		rs=pst.executeQuery();
-		
-	
-		
-		while(rs.next())
+		for (Integer id_modulo_attestato : listaModuliAttestato) 
 		{
-			ForMembriGruppoDTO membro = new ForMembriGruppoDTO();
+			ids=ids+id_modulo_attestato+",";
+		}
+		
+		ids=ids.substring(0,ids.length()-1);
+		
+			String query = "";
 			
-			membro.setId(rs.getInt(1));
-			membro.setNome(rs.getString(2));
-			membro.setCognome(rs.getString(3));
-			membro.setEmail(rs.getString(4));
-			membro.setUsername(rs.getString(5));
+			if(id_gruppo!=0) {
+				//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
+				//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45 AND deletioninprogress = 0 AND id=?)) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?)";
+				  query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM  mdl_course_modules_completion  WHERE coursemoduleid IN (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45 AND deletioninprogress = 0 AND id IN ("+ids+"))) AND a.id IN (SELECT userid FROM mdl_groups_members WHERE groupid = ?);";
+			
+			}else {
+				//query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid = (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 16))";
+				query = "SELECT a.id, a.firstname, a.lastname, a.email, a.username, b.enrolid FROM mdl_user AS a JOIN mdl_user_enrolments AS b ON a.id = b.userid JOIN mdl_enrol AS c ON c.id = b.enrolid WHERE c.courseid = ? AND a.id NOT IN (SELECT userid FROM `mdl_course_modules_completion` WHERE coursemoduleid  IN (SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45 AND deletioninprogress = 0  AND id IN ("+ids+"))";
+			}
 			
 	
 			
-			lista.add(membro);
-
+			pst=con.prepareStatement(query);
 			
+			pst.setInt(1, id_corso);
+			pst.setInt(2, id_corso);
+			if(id_gruppo!=0) {
+				pst.setInt(3, id_gruppo);
+			}
+			
+			
+			rs=pst.executeQuery();
+			
+		
+			
+			while(rs.next())
+			{
+				ForMembriGruppoDTO membro = new ForMembriGruppoDTO();
+				
+				membro.setId(rs.getInt(1));
+				membro.setNome(rs.getString(2));
+				membro.setCognome(rs.getString(3));
+				membro.setEmail(rs.getString(4));
+				membro.setUsername(rs.getString(5));
+				
+				
+				
+				lista.add(membro);
+				
+			
+		
 		}
 		
 		} catch (Exception e) {
@@ -1309,6 +1323,26 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 		
 	}
+
+	private static ArrayList<Integer> getListaModuliAttestato(Connection con, int id_corso) throws SQLException {
+		
+		ArrayList<Integer> lista =new ArrayList<>();
+		
+		PreparedStatement pst = con.prepareStatement("SELECT id FROM mdl_course_modules WHERE course = ? AND module = 45 AND deletioninprogress = 0");
+		
+		pst.setInt(1, id_corso);
+		
+		ResultSet rs = pst.executeQuery();
+		
+		while(rs.next()) 
+		{
+			lista.add(rs.getInt("id"));
+		}
+		
+		
+		return lista;
+	}
+
 
 	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailScadenza(Date date, Session session) {
 		

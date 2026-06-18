@@ -1732,7 +1732,7 @@ public class GestioneFormazioneBO {
 					ForPartecipanteDTO partecipante = new ForPartecipanteDTO();
 					
 			
-				//	nominativo = "Carlo Alberto Potere";
+				//	nominativo = "Carlo Alberto Potereee";
 					
 					String[] nomeCognome = nominativo.split(" ");
 					
@@ -1785,7 +1785,7 @@ public class GestioneFormazioneBO {
 					
 			//		partecipante.setNome("Carlo");
 				//	partecipante.setCognome("Potere");
-					
+					//cf="cf";
 				
 					
 					if(controllaDuplicato(partecipante.getNome(), partecipante.getCognome(),cf, session)) {

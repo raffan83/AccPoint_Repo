@@ -829,8 +829,8 @@
   height: 30px;
   background-color: green;
 }
-.riga-rossa {
-    background-color: #F9D290 !important;
+.riga-gialla {
+    background-color: #F8F26D !important;
 }
 
 .select2-container--default .select2-selection--single {
@@ -1463,7 +1463,9 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
 			$(x).css("background-color","#F9F9F9")
 		 
-		 partecipante.nome = data_table[i].nome;
+		partecipante.nome = data_table[i].nome_originale 
+    ? data_table[i].nome_originale 
+    : data_table[i].nome;
 		 partecipante.cognome = data_table[i].cognome;
 		 partecipante.cf = data_table[i].cf;
 		 partecipante.data_nascita = data_table[i].data_nascita;
@@ -1829,6 +1831,8 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			            + '\')" style="margin-top:5px;">Reset azienda/sede</a>';
 			  }
 			  
+			
+			  
 			  if(lista_partecipanti_import[i].nominativo_irregolare == 1){
 				  nomi_irregolari.push(lista_partecipanti_import[i].cf);
 			  }
@@ -1844,8 +1848,39 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			  table_data.push(dati);
 			  }
 		  currentTipoImport = tipo;
-
+		  
 			
+			$('#label_duplicati').hide();
+			
+			for(var d = 0; d < duplicati.length; d++){
+				$('#label_duplicati').show();
+				
+				  for(var j = 0; j < col_cf.length; j++){
+					  if(col_cf[j] == duplicati[d]){
+						  table_data[j].nome_originale = lista_partecipanti_import[j].nome; // nome pulito per il DB
+				            
+				            // Solo per la visualizzazione nella tabella
+				            table_data[j].nome = '<i class="fa fa-warning" style="color:#ff8080;margin-right:2px;"></i> ' 
+				                + lista_partecipanti_import[j].nome; // usa il nome originale, non table_data[j].nome
+				        }
+				}
+			}
+			
+
+			for(var i = 0;i<nomi_irregolari.length;i++){
+				for(var j = 0; j<col_cf.length;j++){
+					if(col_cf[j] == nomi_irregolari[i]){
+						table_data[j].DT_RowClass = 'riga-gialla';
+					}
+				}
+			}
+		  
+		  var table = $('#tabImportPartecipante').DataTable();
+		  table.clear().draw();
+		   
+			table.rows.add(table_data).draw();
+			
+	
 			if (tipo !== "pdf" && lista_partecipante_ruolo_corso != null) {
 			    for (var j = 0; j < lista_partecipante_ruolo_corso.length; j++) {
 			        var rc = lista_partecipante_ruolo_corso[j];
@@ -1861,8 +1896,7 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			for(var i = 0;i<nomi_irregolari.length;i++){
 				for(var j = 0; j<col_cf.length;j++){
 					if(col_cf[j] == nomi_irregolari[i]){
-						var x = $('#content_corsi_'+col_cf[j])[0].parentNode.parentNode;
-						$(x).css("background-color","#F8F26D")
+						table_data[j].DT_RowClass = 'riga-gialla';
 					}
 				}
 			}
@@ -1874,18 +1908,20 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 				
 				  for(var j = 0; j < col_cf.length; j++){
 					  if(col_cf[j] == duplicati[d]){
-						  table_data[j].nome = '<i class="fa fa-warning" data-icon="fa-warning" style="color:#ff8080;margin-right:2px;"></i> ' + table_data[j].nome;
+						  table_data[j].nome_originale = lista_partecipanti_import[j].nome; // nome pulito per il DB
+				            
+				            // Solo per la visualizzazione nella tabella
+				            table_data[j].nome = '<i class="fa fa-warning" style="color:#ff8080;margin-right:2px;"></i> ' 
+				                + lista_partecipanti_import[j].nome; // usa il nome originale, non table_data[j].nome
 				        }
 				}
 			}
-			  
-			  var table = $('#tabImportPartecipante').DataTable();
-			  
-			   table.clear().draw();
-			   
-				table.rows.add(table_data).draw();
 			
-	 		//table.columns.adjust().draw();
+		//	  var table = $('#tabImportPartecipante').DataTable();
+			  
+			
+			
+	 		table.columns.adjust().draw();
 	 		for(var i = 0; i<lista_partecipanti_import.length;i++){
 				//initSelect2('#azienda_table_'+lista_partecipanti_import[i].cf);
 				$('#sede_table_'+lista_partecipanti_import[i].cf).select2();

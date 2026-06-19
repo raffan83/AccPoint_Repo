@@ -45,7 +45,7 @@
 </div>
 
 <div class="box-body">
-<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
+<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }"> 
 <div class="row">
 
  <div class="col-lg-2">
@@ -174,7 +174,7 @@
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onClick="location.reload()">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Importa da File</h4>
       </div>
        <div class="modal-body">   
@@ -650,7 +650,8 @@
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" onClick="location.reload()">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Seleziona Azienda</h4>
       </div>
        <div class="modal-body">      
@@ -785,6 +786,24 @@
 
 
 
+<div class="modal fade" id="myModalListaDuplicati" role="dialog" aria-labelledby="myLargeModalsaveStato">
+    <div class="modal-dialog modal-lg ui-resizable" role="document">
+        <div class="modal-content">
+            <div class="modal-header ui-draggable-handle" style="cursor: move;">
+                <h4 class="modal-title">Possibili duplicati</h4>
+            </div>
+            <div class="modal-body">
+                <div id="tabellaDuplicati"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Chiudi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 
 </div>
@@ -802,6 +821,7 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <style>
 
@@ -858,6 +878,13 @@
     min-width: 200px !important;
 }
 
+#myModalListaDuplicati .modal-dialog {
+    position: absolute;  /* necessario per draggable */
+}
+#myModalListaDuplicati .modal-header {
+    cursor: move;
+}
+
 .table th {
     background-color: #3c8dbc !important;
   }</style>
@@ -870,6 +897,7 @@
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="plugins/datepicker/locales/bootstrap-datepicker.it.js"></script> 
 <script type="text/javascript" src="plugins/datejs/date.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
 
@@ -1862,6 +1890,16 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 				            // Solo per la visualizzazione nella tabella
 				            table_data[j].nome = '<i class="fa fa-warning" style="color:#ff8080;margin-right:2px;"></i> ' 
 				                + lista_partecipanti_import[j].nome; // usa il nome originale, non table_data[j].nome
+				                
+				            table_data[j].nome = '<i class="fa fa-warning duplicato-warning" '
+				                + 'style="color:#ff8080;margin-right:2px;cursor:pointer;" '
+				                + 'data-cf="' + duplicati[d] + '" '
+				                + 'data-nome="' + lista_partecipanti_import[j].nome + '" '
+				                + 'data-cognome="' + lista_partecipanti_import[j].cognome + '" '
+				                + 'onclick="dettaglioDuplicati.call(this)" '
+				                + 'title="Clicca per dettagli duplicato">'
+				                + '</i> '
+				                + lista_partecipanti_import[j].nome;
 				        }
 				}
 			}
@@ -1929,8 +1967,7 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			}  
 			
 	 		var azienda_val = $('#azienda_import').val();
-			var sede_val = $('#sede_import').val();
-			
+			var sede_val = $('#sede_import').val();	
 			 if(azienda_val!=null && azienda_val!=''){
 					
 					$('#azienda_import_general').val(azienda_val);
@@ -1966,6 +2003,111 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 	 
  }
  
+ function dettaglioDuplicati() {
+	    var cf = $(this).data('cf');
+	    var nome = $(this).data('nome');
+	    var cognome = $(this).data('cognome');
+	    dataObj={};
+		
+		 dataObj.cf= cf
+		 dataObj.nome = nome
+		 dataObj.cognome = cognome;
+	    $.ajax({
+			 type: "POST",
+			 url: "gestioneFormazione.do?action=controllo_duplicato",
+			 data: dataObj,
+			 dataType: "json",
+			 //if received a response from the server
+			 success: function( data, textStatus) {
+			 
+			 	
+			 		 if(data.success) {
+
+			 	        var duplicati = data.listaDuplicati;
+
+			 	        var html = '';
+
+			 	       html += '<table class="table table-bordered table-striped table-white">';
+			 	      html += '<thead style="background-color: white; color:white;">';
+			 	        html += '<tr>';
+			 	        html += '<th>Nome</th>';
+			 	        html += '<th>Cognome</th>';
+			 	        html += '<th>CF</th>';
+			 	        html += '<th>Data nascita</th>';
+			 	        html += '<th>Luogo nascita</th>';
+			 	        html += '<th>Azienda</th>';
+			 	        html += '<th>Sede</th>';
+			 	        html += '</tr>';
+			 	        html += '</thead>';
+			 	        html += '<tbody>';
+
+			 	        $.each(duplicati, function(i, p){
+
+			 	            html += '<tr>';
+			 	            html += '<td>' + (p.nome || '') + '</td>';
+			 	            html += '<td>' + (p.cognome || '') + '</td>';
+			 	            html += '<td>' + (p.cf || '') + '</td>';
+			 	            html += '<td>' + (formatDate(moment(p.data_nascita, "MMM DD, YYYY")) || '') + '</td>';
+			 	            html += '<td>' + (p.luogo_nascita || '') + '</td>';
+			 	            html += '<td>' + (p.nome_azienda || '') + '</td>';
+			 	            html += '<td>' + (p.nome_sede || '') + '</td>';
+			 	            html += '</tr>';
+			 	        });
+
+			 	        html += '</tbody>';
+			 	        html += '</table>';
+
+			 	        $('#tabellaDuplicati').html(html);
+
+			 	        $('#myModalListaDuplicati').modal('show');
+			 	    
+			 		
+			 	  }else{
+			 		 pleaseWaitDiv.modal('hide');
+			 	
+			 		  
+			 		$('#myModalErrorContent').html("Errore nell'importazione dei partecipanti!");
+			 	  	$('#myModalError').removeClass();
+			 		$('#myModalError').addClass("modal modal-danger");	  
+			 		$('#report_button').hide();
+			 		$('#visualizza_report').hide();
+			 		$('#myModalError').modal('show');			
+			 	
+			 	  }
+			 },
+			
+			 error: function( data, textStatus) {
+				 pleaseWaitDiv.modal('hide');
+				 
+		
+			 	  $('#myModalYesOrNo').modal('hide');
+			 	  $('#myModalErrorContent').html(data.messaggio);
+			 	  	$('#myModalError').removeClass();
+			 		$('#myModalError').addClass("modal modal-danger");	  
+			 		$('#report_button').show();
+			 		$('#visualizza_report').show();
+			 			$('#myModalError').modal('show');
+
+			 }
+			 });
+	    
+ };
+ 
+ $('#myModalListaDuplicati').on('shown.bs.modal', function() {
+	    $(this).find('.modal-dialog')
+	        .draggable({
+	            handle: '.modal-header'
+	        })
+	        .resizable({
+	            minHeight: 300,
+	            minWidth: 400,
+	            handles: 'all'
+	        })
+	        .css({
+	        	top: '10%',
+	            left: '25%'  // distanza da sinistra
+	        });
+	});
  
  function associaVecchiaAzienda(cf, idAziendaOld, idSedeOld) {
 	    var $azienda = $("#azienda_table_" + cf);

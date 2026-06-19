@@ -723,6 +723,29 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 				
 		return lista;
 	}
+	
+	public static ArrayList<ForPartecipanteDTO> listaSemiDuplicati(String nome, String cognome, String cf, Session session) {
+		ArrayList<ForPartecipanteDTO> lista = null;
+		
+		Query query = session.createQuery("from ForPartecipanteDTO where (nome =:_nome and cognome =:_cognome) or (cognome =:_nome and nome =:_cognome)"); 
+		
+		query.setParameter("_nome", nome);			
+		query.setParameter("_cognome", cognome);	
+		
+		
+		lista = (ArrayList<ForPartecipanteDTO>) query.list();
+		ArrayList<ForPartecipanteDTO> listaDuplicati = new ArrayList<>();
+		
+		
+		for(int i = 0; i<lista.size();i++) {
+			if(!lista.get(i).getCf().equals(cf)) {
+				listaDuplicati.add(lista.get(i));
+				
+			}
+		}
+		
+		return listaDuplicati;
+	}
 
 	public static boolean controllaDuplicato(String nome, String cognome, String cf, Session session) {
 		

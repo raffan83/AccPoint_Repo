@@ -342,6 +342,8 @@ public class GestioneFormazioneBO {
     
 				}
 				
+			
+				
 				if(partecipante!=null) {
 					partecipante.setNome(nome);
 					partecipante.setCognome(cognome);
@@ -363,6 +365,13 @@ public class GestioneFormazioneBO {
 					//	session.saveOrUpdate(p);
 					}
 				}
+				
+				if(controllaDuplicato(partecipante.getNome(), partecipante.getCognome(),cf, session)) {
+					partecipante.setDuplicato(1);
+				}else {
+					partecipante.setDuplicato(0);
+				}
+				
 				lista_partecipanti_import.add(partecipante);
 			}
 		
@@ -1785,7 +1794,7 @@ public class GestioneFormazioneBO {
 					
 			//		partecipante.setNome("Carlo");
 				//	partecipante.setCognome("Potere");
-					//cf="cf";
+				//	cf="";
 				
 					
 					if(controllaDuplicato(partecipante.getNome(), partecipante.getCognome(),cf, session)) {
@@ -1842,10 +1851,14 @@ public class GestioneFormazioneBO {
 		return obj;
 		//return lista;
 	}
+	
+	public static ArrayList<ForPartecipanteDTO> listaSemiDuplicati(String nome, String cognome,String cf, Session session) {
+		ArrayList<ForPartecipanteDTO> lista = GestioneFormazioneDAO.listaSemiDuplicati(nome, cognome, cf, session);
+		return lista;
 
+	}
 	
-	
-	private static boolean controllaDuplicato(String nome, String cognome,String cf, Session session) {
+	public static boolean controllaDuplicato(String nome, String cognome,String cf, Session session) {
 		
 		boolean result = GestioneFormazioneDAO.controllaDuplicato(nome, cognome,cf, session);
 	

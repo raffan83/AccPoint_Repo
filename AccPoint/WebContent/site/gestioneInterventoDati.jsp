@@ -905,7 +905,7 @@
        <select class="form-control select2" id="lat_master" disabled data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%">
        <option value=""></option>
        <c:forEach items="${lista_lat_master }" var="lat_master">
-       <option value="${lat_master.id }" data-sigla="${lat_master.sigla}">${lat_master.descrizione}</option>
+       <option value="${lat_master.rif_tipo_strumento}" data-sigla="${lat_master.sigla}">${lat_master.descrizione}</option>
        </c:forEach>
        </select>
        </div>
@@ -1043,6 +1043,7 @@
  		<input type="hidden"  id="note_obsolescenza_form" name="note_obsolescenza_form" >
  		<input type="hidden"  id="non_sovrascrivere_mis" name="non_sovrascrivere_mis" value="0">
  		<input type="hidden"  id="check_nome_lat" name="check_nome_lat" value="0">
+ 		
  	<input type="hidden"  id="isDuplicato" name="isDuplicato" >
         <button  class="btn btn-primary" type="submit">Salva</button>
       </div>
@@ -1055,6 +1056,7 @@
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
+     	
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Seleziona Strumento</h4>
       </div>
@@ -1068,6 +1070,7 @@
   		
   		
       <div class="modal-footer">
+      <input type="hidden"  id="lat_master" name="lat_master" value="${lat_master.rif_tipo_strumento}">
 	<a  class="btn btn-primary" onClick="selezionaStrumento()">Seleziona</a>
        
       </div>
@@ -2252,20 +2255,81 @@ function reloadDrive()   {
 	}
  
  function selezionaStrumentoModal(){
-	 
-	 dataString="action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}";
+	 var lat_master = $("#lat_master").val();
+
+
+
+	 dataString="action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}&lat_master=" + lat_master;
 	 
 	 exploreModal("listaStrumentiSedeNew.do",dataString,"#strumenti_content")
 	 $('#modalStrumenti').modal();
  }
  
- function selezionaStrumento(){
-	 $('#id_strumento').val($('#selected').val());
-	 $('#modalStrumenti').modal('hide');
-	 console.log( $('#selectedFreq').val());
-	 $('#label_strumento').html("ID Strumento: "+$('#selected').val()+ " - Matricola:"+$('#selectedMatricola').val());
-	 $('#freq_sel').val($('#selectedFreq').val());
- }
+ function selezionaStrumento() {
+
+	    var lat_master = $('#lat_master').val();
+	    console.log("lat master  " + lat_master);
+
+	    $('#id_strumento').val($('#selected').val());
+
+	    var dataObj = {};
+	    dataObj.lat_master = lat_master;
+	    dataObj.id_strumento = $('#selected').val(); 
+
+	    $.ajax({
+	        type: "POST",
+	        url: "listaStrumentiSedeNew.do?action=controllo_tipo_strumento",
+	        data: dataObj,
+	        dataType: "json",
+
+	        success: function (data, textStatus) {
+	            if (data.success) {
+
+	                $('#modalStrumenti').modal('hide');
+
+	                console.log($('#selectedFreq').val());
+
+	                $('#label_strumento').html(
+	                    "ID Strumento: " + $('#selected').val() +
+	                    " - Matricola:" + $('#selectedMatricola').val()
+	                );
+
+	                $('#freq_sel').val($('#selectedFreq').val());
+
+	            } else {
+	            	var Lat = $('#LAT').val()
+	                pleaseWaitDiv.modal('hide');
+
+	                $('#myModalErrorContent').html(
+	                        "Errore! Il tipo strumento selezionato (" + data.denominazioneStrumento +
+	                        ") non è compatibile con la misura LAT selezionata. \n Controllare bene!"
+	                    );
+	                $('#myModalError').removeClass();
+	                $('#myModalError').addClass("modal modal-danger");
+	                $('#report_button').hide();
+	                $('#visualizza_report').hide();
+	                $('#myModalError').modal('show');
+	            }
+	        },
+
+	        error: function (data, textStatus) {
+
+	            pleaseWaitDiv.modal('hide');
+
+	            $('#myModalYesOrNo').modal('hide');
+
+	            $('#myModalErrorContent').html(data.messaggio);
+
+	            $('#myModalError').removeClass();
+	            $('#myModalError').addClass("modal modal-danger");
+
+	            $('#report_button').show();
+	            $('#visualizza_report').show();
+
+	            $('#myModalError').modal('show');
+	        }
+	    });
+	}
  
  function inserisciSede(id_intervento){
 	 

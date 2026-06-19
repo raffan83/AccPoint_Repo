@@ -33,6 +33,7 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -308,9 +309,15 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			Gson gson = new Gson(); 
 	        JsonElement obj = gson.toJsonTree(lista_strumenti);
 			
-	        
+	        /*
+	        LatMasterDTO lat_master = (LatMasterDTO) request.getSession().getAttribute("lat_master");
+	   
+	        request.getSession().setAttribute("lat_master", lat_master);
+	    */
+	    	
 	        
 	        myObj.add("dataInfoStr", obj);
+	    
 	        
 	        request.getSession().setAttribute("myObjStr",myObj);
 	       
@@ -318,6 +325,42 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaStrumentiCampioni.jsp");
 		     dispatcher.forward(request,response);
 		    
+		} else if(action.equals("controllo_tipo_strumento")){
+			ajax = true;
+			JsonObject myObj = new JsonObject();
+			
+			response.setContentType("application/json");
+			 myObj = new JsonObject();
+			
+				PrintWriter  out = response.getWriter();
+			
+				String lat_master_rif   = request.getParameter("lat_master");
+			String id_strumento   = request.getParameter("id_strumento");
+			
+			
+			String rif = lat_master_rif;
+			String[] rifSingolo;
+			if (rif != null && rif.contains(";")) {
+			    rifSingolo = rif.split(";");
+			} else {
+			    rifSingolo = new String[]{rif};
+			}
+		
+			StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
+			TipoStrumentoDTO tipoStrumento = strumento.getTipo_strumento();
+			boolean esito = false;
+			for(String s : rifSingolo) {				
+				if(tipoStrumento.getId() == Integer.parseInt(s)) {
+					esito=true;
+			}
+		}
+
+			myObj.addProperty("denominazioneStrumento", strumento.getDenominazione());
+			myObj.addProperty("success", esito);
+			out.print(myObj.toString());
+			session.getTransaction().commit();
+			session.close();
+	
 		}
 		else if(action.equals("in_servizio")) {
 			

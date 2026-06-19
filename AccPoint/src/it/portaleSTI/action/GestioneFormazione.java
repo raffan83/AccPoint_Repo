@@ -285,6 +285,30 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				session.getTransaction().commit();
 				session.close();
 			}
+			else if (action.equals("controllo_duplicato")){
+				ajax = true;
+				response.setContentType("application/json");
+				
+				String cf      = request.getParameter("cf");
+			    String nome    = request.getParameter("nome");
+			    String cognome = request.getParameter("cognome");
+			    
+			    ArrayList<ForPartecipanteDTO> listaDuplicati = GestioneFormazioneBO.listaSemiDuplicati(nome, cognome, cf, session);
+			    myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+			    if(listaDuplicati.size()>0) {
+			    	
+					myObj.addProperty("success", true);
+					 Gson gson = new Gson();
+				        JsonArray jsonArray = gson.toJsonTree(listaDuplicati).getAsJsonArray();
+				        myObj.add("listaDuplicati", jsonArray);
+				        
+				    } else {
+				        myObj.addProperty("success", false);
+				    }
+				    
+				    out.print(myObj.toString());
+			}
 			
 			else if(action.equals("modifica_docente")) {
 				

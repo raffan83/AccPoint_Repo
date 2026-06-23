@@ -113,7 +113,7 @@
 	
 <%-- <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${utl:escapeJS(strumento.descrizione)}','${utl:escapeJS(strumento.matricola)}','${utl:escapeJS(strumento.tipo)}','${utl:escapeJS(strumento.volume)}','${utl:escapeJS(strumento.pressione)}','${utl:escapeJS(strumento.costruttore)}','${utl:escapeJS(strumento.nFabbrica)}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${utl:escapeJS(strumento.frequenza)}','${utl:escapeJS(strumento.anno)}','${strumento.id_cliente}','${strumento.id_sede}',${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a> --%>
 
- <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento(${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a>
+ <a class="btn btn-warning" title="Click per modificare l'intervento" data-strumento='${utl:escapeHTML(utl:toJson(strumento))}'  onclick="modificaStrumento(this)"><i class="fa fa-edit"></i></a>
  <a href="#" class="btn btn-primary customTooltip" title="Click per clonare oggetto in prova" onClick="clona('${strumento.id}')"><i class="fa fa-clone"></i></a>
 <a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>	
 	</td>
@@ -770,71 +770,66 @@
 
 
 	
-	function modificaStrumento(strumento) { 
+function modificaStrumento(el) {
 
-		$('#id_strumento').val(strumento.id);
-		
+    const strumento = JSON.parse(el.dataset.strumento);
 
-		  $('#descrizione_mod').val(strumento.descrizione);
-		    $('#matricola_mod').val(strumento.matricola);
-		    $('#tipo_mod').val(strumento.tipo);
-		    $('#volume_mod').val(strumento.volume);
+    $('#id_strumento').val(strumento.id);
+    $('#descrizione_mod').val(strumento.descrizione);
+    $('#matricola_mod').val(strumento.matricola);
+    $('#tipo_mod').val(strumento.tipo);
+    $('#volume_mod').val(strumento.volume);
 
-		    $('#pressione_mod').val(strumento.pressione);
-		    $('#costruttore_mod').val(strumento.costruttore);
-		    $('#numero_fabbrica_mod').val(strumento.nFabbrica);
+    $('#pressione_mod').val(strumento.pressione);
+    $('#costruttore_mod').val(strumento.costruttore);
+    $('#numero_fabbrica_mod').val(strumento.nFabbrica);
 
-		    $('#data_verifica_mod').val(strumento.dataVerifica);
-		    $('#data_prossima_verifica_mod').val(strumento.dataProssimaVerifica);
-		    $('#frequenza_mod').val(strumento.frequenza);
-		    $('#anno_mod').val(strumento.anno);
-		    $('#sonda_velocita_mod').val(strumento.sondaVelocita);
+    $('#data_verifica_mod').val(strumento.dataVerifica);
+    $('#data_prossima_verifica_mod').val(strumento.dataProssimaVerifica);
+    $('#frequenza_mod').val(strumento.frequenza);
+    $('#anno_mod').val(strumento.anno);
+    $('#sonda_velocita_mod').val(strumento.sondaVelocita);
 
-		    
-		    $('#cliente_general_mod').val(strumento.id_cliente);
-		    $('#cliente_general_mod').change()
-		    
-		    if(strumento.id_sede!=0){
-		    	$('#sede_general_mod').val(strumento.id_sede+"_"+strumento.id_cliente);
-		    }else{
-		    	$('#sede_general_mod').val(strumento.id_sede);
-		    }
-		    
-		    $('#numero_porzioni_mod').val(strumento.numero_porzioni);
-		    $('#label_img_mod').html(strumento.filename_img)
-		    
-		    $('#sede_general_mod').change()
-		    
-		    
-		    	initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
-		    
-		    
-		    var lista_zone = strumento.listaZoneRiferimento.sort(function(a, b) {
-		    	  return a.id - b.id;
-		    });
+    $('#cliente_general_mod').val(strumento.id_cliente).change();
+
+    if (strumento.id_sede != 0) {
+        $('#sede_general_mod').val(strumento.id_sede + "_" + strumento.id_cliente);
+    } else {
+        $('#sede_general_mod').val(strumento.id_sede);
+    }
+
+    $('#numero_porzioni_mod').val(strumento.numero_porzioni);
+    $('#label_img_mod').html(strumento.filename_img);
+
+    $('#sede_general_mod').change();
+
+    initSelect2Gen('#cliente_general_mod', null, '#modalModificaStrumento');
+
+    var lista_zone = strumento.listaZoneRiferimento.sort(function (a, b) {
+        return a.id - b.id;
+    });
+
+    var table = $('#tabZone_mod').DataTable();
+    table.clear();
+
+    lista_zone.forEach(function (zona) {
+        table.row.add([
+            zona.zonaRiferimento,
+            zona.materiale,
+            zona.spessore,
+            zona.indicazione,
+            zona.punto_intervallo_inizio,
+            zona.punto_intervallo_fine,
+            '<a class="btn btn-danger btn-xs remove-btn" id="' + zona.id + '"><i class="fa fa-minus"></i></a>'
+        ]);
+    });
+
+    table.draw();
+
+    $('#modalModificaStrumento').modal();
+}
+
 	
-		    
-		    var table = $('#tabZone_mod').DataTable();
-		    table.clear();
-		    lista_zone.forEach(function(zona) {
-		        table.row.add([
-		            zona.zonaRiferimento,
-		            zona.materiale,
-		            zona.spessore,
-		            zona.indicazione,
-		            zona.punto_intervallo_inizio,
-		            zona.punto_intervallo_fine,
-		           '<a class="btn btn-danger btn-xs remove-btn" id="'+zona.id+'"><i class="fa fa-minus"></a>'
-		        ]);
-		    });
-
-		    table.draw();
-		    
-
-		
-		 $('#modalModificaStrumento').modal()
-	}
-
 
 
 $('#myModalModificaStrumento').on('hidden.bs.modal',function(){

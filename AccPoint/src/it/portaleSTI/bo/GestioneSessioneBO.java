@@ -75,8 +75,8 @@ public class GestioneSessioneBO {
 	}
 	
 	
-	public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente) {
-		GestioneSessioneDAO.updateAbilitato(sessione,utente);
+	public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Session session) {
+		GestioneSessioneDAO.updateAbilitato(sessione,utente,session);
 	}
 	
 

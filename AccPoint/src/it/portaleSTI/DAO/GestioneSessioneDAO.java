@@ -104,24 +104,17 @@ public static void saveSession(SessioneDTO sessione,  Session session) {
 	   
 	}
 		
-public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente) {
-	Session session=null;
+public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Session session) {
+
 	
 	session=SessionFacotryDAO.get().openSession();
 		
 	session.beginTransaction();
-	try {
+	
 		sessione.setData_modifica(new Date());
 		sessione.setUser_modifica(utente);
 		sessione.setAbilitato(0);
 		session.merge(sessione);
-		session.getTransaction().commit();
-	} catch (Exception e) {
-		e.printStackTrace();
-		session.getTransaction().rollback();
-	}  finally {
-		session.close();
-	}
 
 }
 

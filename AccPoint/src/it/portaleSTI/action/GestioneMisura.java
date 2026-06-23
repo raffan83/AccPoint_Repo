@@ -565,11 +565,14 @@ public class GestioneMisura extends HttpServlet {
 				
 				SessioneDTO sessione = GestioneSessioneDAO.getSessioneById(idSessione, session);
 				
-				GestioneSessioneBO.updateAbilitato(sessione,utente); //LATO CALVER
+				GestioneSessioneBO.updateAbilitato(sessione,utente,session); //LATO CALVER
 				
 				//LATO DOCUMENTALWEB
 				 boolean rispUpdate = updateAbilitatoFileService(sessione, Costanti.URL_DELIVERY);
 				 System.out.println("rsipUpdate: "+rispUpdate  );
+				 if (rispUpdate == true) {
+						session.getTransaction().commit();
+				 }
 				 
 				 response.setContentType("application/json");
 				 response.getWriter().write("{\"successo\": " + rispUpdate + "}");
@@ -616,6 +619,10 @@ public class GestioneMisura extends HttpServlet {
 		        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/error.jsp");
 		        dispatcher.forward(request, response);
 		    }
+		} finally {
+			   if (session != null && session.isOpen()) {
+		            session.close();
+		        }
 		}
 		
 	}

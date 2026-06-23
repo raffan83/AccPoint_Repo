@@ -1259,7 +1259,7 @@ public class GestioneCertificatoBO {
 		
 		MisuraDTO misura = certificato.getMisura();
 	    
-		if(misura.getListaPunti().size()==0) 
+		if(misura.getListaPunti().size()==0 && !misura.getLat().equals("E")) 
 		{
 			return false;
 		}

@@ -2301,8 +2301,8 @@ function reloadDrive()   {
 	                pleaseWaitDiv.modal('hide');
 
 	                $('#myModalErrorContent').html(
-	                        "Errore! Il tipo strumento selezionato (" + data.denominazioneStrumento +
-	                        ") non è compatibile con la misura LAT selezionata. \n Controllare bene!"
+	                        "Attenzione! Il tipo strumento selezionato (" + data.denominazioneStrumento +
+	                        ") non è compatibile con la misura LAT selezionata. \n Controllare Tipo Strumento!"
 	                    );
 	                $('#myModalError').removeClass();
 	                $('#myModalError').addClass("modal modal-danger");

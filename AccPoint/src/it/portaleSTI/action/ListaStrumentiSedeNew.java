@@ -334,7 +334,7 @@ public class ListaStrumentiSedeNew extends HttpServlet {
 			
 				PrintWriter  out = response.getWriter();
 			
-				String lat_master_rif   = request.getParameter("lat_master");
+				String lat_master_rif   = request.getParameter("lat_master_rif");
 			String id_strumento   = request.getParameter("id_strumento");
 			
 			

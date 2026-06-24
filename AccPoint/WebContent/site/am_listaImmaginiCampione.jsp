@@ -82,12 +82,12 @@
 
 	</c:if></td>
 <td>
-	<a class="btn btn-warning" title="Click per modificare l'immagine" onClick="modificaImmagine('${immagine.id}','${immagine.descrizione}','${immagine.nome_file}')"><i class="fa fa-edit"></i></a>
+	<a class="btn btn-warning" title="Click per modificare l'immagine" data-immagine='${utl:escapeHTML(utl:toJson(immagine))}' onClick="modificaImmagine(this)"><i class="fa fa-edit"></i></a>
 	<a class="btn btn-danger customTooltip" title="Click per eliminare l'immagine" onClick="modalYesOrNo('${immagine.id}')"><i class="fa fa-trash"></i></a>
 	</td>
 	</tr>
 	</c:forEach> 
-	 
+	
 
  </tbody>
  </table>  
@@ -332,12 +332,14 @@ function formatDate(data){
 }
 
 
-function modificaImmagine(id_immagine,descrizone, nome_file){
+function modificaImmagine(el){
+	
+	  const immagine = JSON.parse(el.dataset.immagine);
 
 			
-			$('#id_immagine').val(id_immagine);
-			$('#descrizione_mod').val(descrizone);
-			$('#label_immagine_mod').html(nome_file);
+			$('#id_immagine').val(immagine.id);
+			$('#descrizione_mod').val(immagine.descrizione);
+			$('#label_immagine_mod').html(immagine.nome_file);
 
 
 			$('#modalModificaImmagine').modal()

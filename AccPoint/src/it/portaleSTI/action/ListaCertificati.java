@@ -190,7 +190,14 @@ public class ListaCertificati extends HttpServlet {
 				}
 				
 				listaCertificati = GestioneCertificatoBO.getListaCertificato(new StatoCertificatoDTO(1), null,cmp,utente,"N",idCliente,idSede,0);
-				request.getSession().setAttribute("listaCertificati",listaCertificati);
+				List<CertificatoDTO> listaCertificatiNonLat = new ArrayList<>();
+				for(CertificatoDTO cert : listaCertificati) {
+					if(!cert.getMisura().getLat().equals("S")) {
+						listaCertificatiNonLat.add(cert);
+					}
+				}
+				
+				request.getSession().setAttribute("listaCertificati",listaCertificatiNonLat);
 				dispatcher = getServletContext().getRequestDispatcher("/site/listaCertificatiInLavorazione.jsp");
 		     	dispatcher.forward(request,response);
 

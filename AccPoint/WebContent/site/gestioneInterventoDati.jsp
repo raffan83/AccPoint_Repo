@@ -531,7 +531,7 @@
             <button class="btn btn-info customTooltip"  style="width: 200px" title="Click per aprire le schede di consegna" onClick="showSchedeConsegna('${utl:encryptData(intervento.id)}')">
                 <i class="fa fa-file-text-o"></i> Visualizza Scheda Consegna
             </button>
-             <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
+             <c:if test="${userObj.checkRuolo('AM')}">
             <c:if test="${intervento.statoIntervento.id == 2}">
             <c:choose>
                    <c:when test="${sessione != null && sessione.abilitato==1}">
@@ -548,7 +548,7 @@
             <button class="btn btn-default"  style="width: 200px" onClick="scaricaListaCampioni('${intervento.id}')">
                 <i class="glyphicon glyphicon-download"></i> Download Lista Campioni
             </button>
-            <c:if test="${userObj.checkRuolo('AM')}">
+            <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
             <c:if test="${intervento.statoIntervento.id == 2}">
                 <c:choose>
                    <c:when test="${sessione == null}">
@@ -572,7 +572,7 @@
 </div>
         </c:when>
                    <c:otherwise>
-     <c:if test="${userObj.checkRuolo('AM')}">              
+     <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">              
     <div style="display: flex; align-items: center; gap: 8px;">
         <button class="btn btn-success" disabled title="Sessione non disponibile" style="width: 200px">
             <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
@@ -584,7 +584,7 @@
          </span>
 
          <span style="margin-left: 30px;">
-              <b>Operatore:</b> ${userObj.nominativo}
+              <b>Operatore:</b> ${sessione.user.nominativo}
          </span>
     </div>
     </c:if>
@@ -905,7 +905,7 @@
        <select class="form-control select2" id="lat_master" disabled data-placeholder="Seleziona Lat Master..." name="lat_master" style="width:100%">
        <option value=""></option>
        <c:forEach items="${lista_lat_master }" var="lat_master">
-       <option value="${lat_master.rif_tipo_strumento}" data-sigla="${lat_master.sigla}">${lat_master.descrizione}</option>
+       <option value="${lat_master.id}" data-sigla="${lat_master.sigla}"  data-rif="${lat_master.rif_tipo_strumento}" >${lat_master.descrizione}</option>
        </c:forEach>
        </select>
        </div>
@@ -971,6 +971,7 @@
        
        <div class="row">
        <div class="col-xs-4">
+       <input type="hidden"  id="lat_master_rif" name="lat_master_rif"  value="${lat_master.rif_tipo_strumento}">
        <a class="btn btn-primary" onClick="selezionaStrumentoModal()">Seleziona Strumento...</a>
        
        </div>
@@ -1056,7 +1057,8 @@
     <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
-     	
+     
+     	 
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Seleziona Strumento</h4>
       </div>
@@ -1070,7 +1072,7 @@
   		
   		
       <div class="modal-footer">
-      <input type="hidden"  id="lat_master" name="lat_master" value="${lat_master.rif_tipo_strumento}">
+<input type="hidden"  id="lat_master_rif" name="lat_master_rif"  value="${lat_master.rif_tipo_strumento}">
 	<a  class="btn btn-primary" onClick="selezionaStrumento()">Seleziona</a>
        
       </div>
@@ -2255,11 +2257,11 @@ function reloadDrive()   {
 	}
  
  function selezionaStrumentoModal(){
-	 var lat_master = $("#lat_master").val();
 
+	 var lat_master_rif = $('#lat_master_rif').val();
+	    console.log("lat master_rif  " + lat_master_rif);
 
-
-	 dataString="action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}&lat_master=" + lat_master;
+	 dataString="action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}";
 	 
 	 exploreModal("listaStrumentiSedeNew.do",dataString,"#strumenti_content")
 	 $('#modalStrumenti').modal();
@@ -2267,13 +2269,13 @@ function reloadDrive()   {
  
  function selezionaStrumento() {
 
-	    var lat_master = $('#lat_master').val();
-	    console.log("lat master  " + lat_master);
+	    var lat_master_rif = $('#lat_master_rif').val();
+	    console.log("lat master_rif  " + lat_master_rif);
 
 	    $('#id_strumento').val($('#selected').val());
 
 	    var dataObj = {};
-	    dataObj.lat_master = lat_master;
+	    dataObj.lat_master_rif = lat_master_rif;
 	    dataObj.id_strumento = $('#selected').val(); 
 
 	    $.ajax({
@@ -2796,6 +2798,14 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
     	var t_doc = initRequisitiTable('#tabRequisitiDocumentaliModal')
     	var t_san = initRequisitiTable('#tabRequisitiSanitariModal')
     	
+    	
+    	$('#lat_master').on('change', function () {
+        var rif = $('#lat_master option:selected').data('rif');
+
+        $('#lat_master_rif').val(rif);
+
+        console.log("rif aggiornato:", rif);
+    });
     	
     	$('.select2').select2();
     	

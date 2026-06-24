@@ -131,6 +131,7 @@ public class GestionePacco extends HttpServlet {
 		logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+utente.getNominativo());
 		
 		int size_json=0;
+		int size_json_rilievi=0;
 		if(action.equals("new")) {
 		ArrayList<MagPaccoDTO> lista_pacchi = (ArrayList<MagPaccoDTO>) request.getSession().getAttribute("lista_pacchi");
 		
@@ -527,6 +528,7 @@ public class GestionePacco extends HttpServlet {
 			if(data_json_rilievi!=null && !data_json_rilievi.equals("") && !data_json_rilievi.equals("[]")) {
 				JsonElement jelement = new JsonParser().parse(data_json_rilievi);
 				JsonArray json_array = jelement.getAsJsonArray();
+				size_json_rilievi=json_array.size();
 				
 
 				if(id_pacco!=null && !id_pacco.equals("")) {
@@ -819,7 +821,7 @@ public class GestionePacco extends HttpServlet {
 			if(pacco.getTipo_nota_pacco()!=null && pacco.getTipo_nota_pacco().getId()==18) 
 			{
 
-				if(size_json>0) 
+				if(size_json>0  || size_json_rilievi>0) 
 				{
 					pacco.setTipo_nota_pacco(null);
 				}

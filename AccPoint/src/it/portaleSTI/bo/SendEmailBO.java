@@ -2524,7 +2524,7 @@ props.put("mail.smtp.writetimeout", "5000");
      }
 	  
      email.setCharset("UTF-8");
-	    email.setFrom("delivery@stisrl.com", "Delivery STI srl");
+	    email.setFrom("delivery@stisrl.com", "Delivery S.T.I. srl");
 	  email.setSubject("Report taratura strumenti disponibile per il download");
 	  
 	  // embed the image and get the content id

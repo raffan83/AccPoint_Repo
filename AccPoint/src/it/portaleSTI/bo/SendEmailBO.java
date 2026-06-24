@@ -2547,7 +2547,7 @@ props.put("mail.smtp.writetimeout", "5000");
 		  		+ "<br>Le comunichiamo che i rapporti di taratura e la relativa documentazione sono disponibili nella Sua area riservata.<br>"
 		  		+ "<br>Per consultare e scaricare i documenti, acceda al seguente link: " 
 		  		+ "<br><a href=\"https://delivery.stisrl.com/DocumentalWEB/\">"
-		  		+ "https://delivery.stisrl.com/DocumentalWEB"
+		  		+ "https://delivery.stisrl.com"
 		  		+ "</a>"
 		  		+ "<br>utilizzando le credenziali riservate riportate di seguito:"
 		  		+ "<br><br> Username: "+ sessione.getUsername()

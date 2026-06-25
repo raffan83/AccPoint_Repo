@@ -1070,10 +1070,15 @@
 
   </div>
   		
-  		
-      <div class="modal-footer">
-<input type="hidden"  id="lat_master_rif" name="lat_master_rif"  value="${lat_master.rif_tipo_strumento}">
-	<a  class="btn btn-primary" onClick="selezionaStrumento()">Seleziona</a>
+  		<div class="modal-footer">
+    <input type="hidden" id="lat_master_rif" name="lat_master_rif" value="${lat_master.rif_tipo_strumento}">
+    
+    <a class="btn btn-primary"
+       onClick="$('#check_lat').is(':checked') ? selezionaStrumento() : selezionaStrumento2()">
+       Seleziona
+    </a>
+</div>
+      
        
       </div>
     </div>
@@ -2266,6 +2271,16 @@ function reloadDrive()   {
 	 exploreModal("listaStrumentiSedeNew.do",dataString,"#strumenti_content")
 	 $('#modalStrumenti').modal();
  }
+ 
+ 
+ function selezionaStrumento2(){
+	 $('#id_strumento').val($('#selected').val());
+	 $('#modalStrumenti').modal('hide');
+	 console.log( $('#selectedFreq').val());
+	 $('#label_strumento').html("ID Strumento: "+$('#selected').val()+ " - Matricola:"+$('#selectedMatricola').val());
+	 $('#freq_sel').val($('#selectedFreq').val());
+ }
+ 
  
  function selezionaStrumento() {
 

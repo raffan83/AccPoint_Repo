@@ -225,8 +225,31 @@
 		<td>${rilievo.disegno }</td>
 		<td>${rilievo.variante }</td>
 		<td>${rilievo.tipo_rilievo.descrizione }</td>
-		<td>${rilievo.n_quote }</td>
-		<td>${rilievo.n_pezzi_tot }</td>
+		<c:choose>
+    <c:when test="${userObj.checkRuolo('AM')}">
+        <td>
+            <a href="#"
+               title="Click per modificare le quote totali"
+               onclick="modificaQuoteTotali('${rilievo.n_quote}','${rilievo.id}')">
+                ${rilievo.n_quote}
+            </a>
+        </td>
+
+        <td>
+            <a href="#"
+               title="Click per modificare i pezzi totali"
+               onclick="modificaPezziTotali('${rilievo.n_pezzi_tot}','${rilievo.id}')">
+                ${rilievo.n_pezzi_tot}
+            </a>
+        </td>
+    </c:when>
+
+    <c:otherwise>
+        <td>${rilievo.n_quote}</td>
+        <td>${rilievo.n_pezzi_tot}</td>
+    </c:otherwise>
+</c:choose>
+		
 		<td>${rilievo.tempo_scansione }</td>
 		<td>${rilievo.nome_cliente_util }</td>
 		<td>${rilievo.nome_sede_util }</td>
@@ -249,9 +272,10 @@
 		<c:choose>
 		<c:when test="${rilievo.scheda_consegna == 0 && rilievo.stato_rilievo.id == 1}">
 			
-			<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievoIntervento('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
-			'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }','${utl:escapeJS(rilievo.denominazione)}','${rilievo.materiale }','${utl:escapeJS(rilievo.note)}')">		
+			<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" data-rilievo='${utl:escapeHTML(utl:toJson(rilievo))}' onclick="modalModificaRilievoIntervento(this)">		
 			<i class="fa fa-edit"></i></a>
+		
+			
 			<%-- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a> --%>
 			<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievoModal('${rilievo.id}')"><i class="fa fa-clone"></i></a>
 			<%-- <a href="#" class="btn btn-danger customTooltip" title="Click per chiudere il rilievo" onclick="chiudiApriRilievo('${rilievo.id}',2)"><i class="glyphicon glyphicon-remove"></i></a> --%>
@@ -330,9 +354,62 @@
       
             
             
+<div id="myModalModificaQuoteTotali" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifca Quote</h4>
+      </div>
+      <div class="modal-body">
 
-
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Quote Totali</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="mod_quote" name="mod_quote" style="width:100%" value=""required>       	
+       	</div>
+       	</div>
+      <div class="modal-footer" id="myModalFooter">
+     <input type="hidden" id="mod_id" name="id_rilievo" value="${rilievo.id }">
+ <a  class="btn btn-primary" onClick="modificaQuoteOrPezzi('quota')">Modifica</a>
  
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+ <div id="myModalModificaPezziTotali" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modifica Pezzi</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Pezzi Totali</label>
+       	</div>
+       	<div class="col-sm-9">
+       		<input class="form-control" id="mod_pezzi" name="mod_pezzi" style="width:100%" value=""required>       	
+       	</div>
+       	</div>
+      <div class="modal-footer" id="myModalFooter">
+      <input type="hidden" id="mod_id" name="id_rilievo" value="">
+ <a  class="btn btn-primary" onClick="modificaQuoteOrPezzi('pezzo')">Modifica</a>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
 
 
@@ -1374,12 +1451,75 @@
 	
     
     
+    function modificaQuoteTotali(quote,id){
+    	 $('#mod_quote').val(quote);
+    	 $('#id_rilievo').val(id);
+    	  $('#myModalModificaQuoteTotali').modal();
+    }
     
     
-    
-    
-    
-    
+    function modificaPezziTotali(pezzi,id){
+   	 $('#mod_pezzi').val(pezzi);
+   	 $('#id_rilievo').val(id);
+   	  $('#myModalModificaPezziTotali').modal();
+   }
+   
+function modificaQuoteOrPezzi(tipo){
+	var nuovaQuota = $('#mod_quote').val() || "";
+	var nuovoPezzo = $('#mod_pezzi').val() || "";
+	 var id_rilievo = $('#id_rilievo').val();
+	console.log("tipo " + tipo);
+	console.log("n_pezzi " + nuovoPezzo);
+	 
+	 var dataObj = {};
+	    dataObj.nuovaQuota = nuovaQuota;
+	    dataObj.nuovoPezzo = nuovoPezzo;
+	    dataObj.id_rilievo = id_rilievo;
+	    dataObj.tipo = tipo;
+	    $.ajax({
+	        type: "POST",
+	        url: "listaRilieviDimensionali.do?action=modificaQuoteOrPezzo",
+	        data: dataObj,
+	        dataType: "json",
+
+	        success: function (data, textStatus) {
+	            if (data.success) {
+	            	$('#myModalModificaQuoteTotali').modal('hide');
+	                $('#myModalModificaPezziTotali').modal('hide');
+	                 location.reload(); // oppure aggiorna solo la cella
+
+	            } else {
+	                $('#myModalErrorContent').html(
+	                        "Errore durante la modifica."
+	                    );
+	                $('#myModalError').removeClass();
+	                $('#myModalError').addClass("modal modal-danger");
+	                $('#report_button').hide();
+	                $('#visualizza_report').hide();
+	                $('#myModalError').modal('show');
+	            }
+	        },
+
+	        error: function (data, textStatus) {
+
+	            pleaseWaitDiv.modal('hide');
+
+	            $('#myModalYesOrNo').modal('hide');
+
+	            $('#myModalErrorContent').html(data.messaggio);
+
+	            $('#myModalError').removeClass();
+	            $('#myModalError').addClass("modal modal-danger");
+
+	            $('#report_button').show();
+	            $('#visualizza_report').show();
+
+	            $('#myModalError').modal('show');
+	        }
+	    });
+	    
+	    
+    }
     
     
     
@@ -1933,46 +2073,47 @@
    
    
    
+  
    
    
    
-   
-   
-   function modalModificaRilievoIntervento(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza, denominazione, materiale, note){
+   function modalModificaRilievoIntervento(el){
 		  
-
-	  			$('#mod_cliente').val(id_cliente);   
+	   const rilievo = JSON.parse(el.dataset.rilievo);
+	  
+	  			$('#mod_cliente').val(rilievo.id_cliente_util);  
+	  			
 	  	 
 			  $('#mod_cliente').change();
 			  
-			  if(id_sede!='0'){
-				  $('#mod_sede').val(id_sede+"_"+id_cliente);
+			  if(rilievo.id_sede_util!='0'){
+				  $('#mod_sede').val(rilievo.id_sede_util+"_"+rilievo.id_cliente_util);
 			  }else{
-				  $('#mod_sede').val(id_sede);
+				  $('#mod_sede').val(rilievo.id_sede_util);
 			  }
 			  
 			  $('#mod_sede').change();
-			  $('#mod_tipo_rilievo').val(tipo_rilievo);
+			  $('#mod_tipo_rilievo').val(rilievo.tipo_rilievo.id);
 			  $('#mod_tipo_rilievo').change();
-			  $('#mod_commessa').val(commessa);
+			  $('#mod_commessa').val(rilievo.commessa);
 			  $('#mod_commessa').change();		  
-			  $('#mod_disegno').val(disegno);
-			  $('#mod_variante').val(variante);
-			  $('#mod_fornitore').val(fornitore);
-			  $('#mod_apparecchio').val(apparecchio);
-			  $('#mod_cifre_decimali').val(cifre_decimali);
-			  $('#mod_materiale').val(materiale);
-			  $('#mod_denominazione').val(denominazione);
-			  if(data_inizio_rilievo!=null && data_inizio_rilievo!=""){
-				  $('#mod_data_inizio_rilievo').val(Date.parse(data_inizio_rilievo).toString("dd/MM/yyyy"));
+			  $('#mod_disegno').val(rilievo.disegno);
+			  $('#mod_variante').val(rilievo.variante);
+			  $('#mod_fornitore').val(rilievo.fornitore);
+			  $('#mod_apparecchio').val(rilievo.apparecchio);
+			  $('#mod_cifre_decimali').val(rilievo.cifre_decimali);
+			  $('#mod_materiale').val(rilievo.materiale);
+			  $('#mod_denominazione').val(rilievo.denominazione);
+			  if(rilievo.data_inizio_rilievo!=null && rilievo.data_inizio_rilievo!=""){
+				  $('#mod_data_inizio_rilievo').val(Date.parse(rilievo.data_inizio_rilievo).toString("dd/MM/yyyy"));
 			  }
-			  $('#mod_mese_riferimento').val(mese_riferimento);
+			  $('#mod_mese_riferimento').val(rilievo.mese_riferimento);
 			  $('#mod_mese_riferimento').change();
-			  $('#mod_classe_tolleranza').val(classe_tolleranza);
+			  $('#mod_classe_tolleranza').val(rilievo.classe_tolleranza);
 			  $('#mod_classe_tolleranza').change();
-			  $('#mod_note_rilievo').val(note)
+			  $('#mod_note_rilievo').val(rilievo.note)
 			  
-			  $('#id_rilievo').val(id_rilievo);
+			  $('#id_rilievo').val(rilievo.id);
 			  initSelect2('#mod_cliente');
 			  
 			  $('#myModalModificaRilievo').modal();

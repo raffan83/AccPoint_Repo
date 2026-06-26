@@ -197,8 +197,7 @@
 		<c:choose>
 		<c:when test="${rilievo.stato_rilievo.id==1 }">
 			
-			<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" onclick="modalModificaRilievo('${rilievo.id }','${rilievo.data_inizio_rilievo }','${rilievo.tipo_rilievo.id }','${rilievo.id_cliente_util }','${rilievo.id_sede_util }','${rilievo.commessa}',
-			'${rilievo.disegno }', '${rilievo.variante }', '${rilievo.fornitore }', '${rilievo.apparecchio }', '${rilievo.data_inizio_rilievo }','${rilievo.mese_riferimento }','${rilievo.cifre_decimali }','${rilievo.classe_tolleranza }','${fn:replace(rilievo.denominazione.replace('\'',' ').replace('\\','/'),newLineChar, ' ')}','${rilievo.materiale }','${fn:replace(rilievo.note.replace('\'',' ').replace('\\','/'),newLineChar, ' ')}')">		
+			<a href="#" class="btn btn-warning customTooltip" title="Click per modificare il rilievo" data-rilievo='${utl:escapeHTML(utl:toJson(rilievo))}' onclick="modalModificaRilievo(this)">		
 			<i class="fa fa-edit"></i></a>
 			<%-- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievo('${rilievo.id}')"><i class="fa fa-clone"></i></a> --%>
 			<a href="#" class="btn btn-primary customTooltip" title="Click per clonare il rilievo" onClick="clonaRilievoModal('${rilievo.id}')"><i class="fa fa-clone"></i></a>

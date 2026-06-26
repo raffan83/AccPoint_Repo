@@ -9151,10 +9151,11 @@ function filtraCertificati(anno){
 	        });
 	   }
 }
-   
-  function modalModificaRilievo(id_rilievo, data_rilievo, tipo_rilievo, id_cliente, id_sede, commessa, disegno, variante, fornitore, apparecchio, data_inizio_rilievo, mese_riferimento,cifre_decimali, classe_tolleranza, denominazione, materiale, note){
+  	
+  function modalModificaRilievo(el){
 	  
-	  $('#myModalModificaRilievo').modal();
+	 
+	  const rilievo = JSON.parse(el.dataset.rilievo);
 	  
 	  if($('#cliente_filtro').val()!=null && $('#cliente_filtro').val()!="0" && $('#cliente_filtro').val()!=""){
 		   		  
@@ -9164,40 +9165,55 @@ function filtraCertificati(anno){
 	  $('#mod_cliente').val($('#cliente_filtro').val());
   	   }else{
   		// $('#mod_cliente').html(options_cliente);
-  		$('#mod_cliente').val(id_cliente);   
+  		$('#mod_cliente').val(rilievo.id_cliente_util);   
   	   }
 		  $('#mod_cliente').change();
 		  
-		  if(id_sede!='0'){
-			  $('#mod_sede').val(id_sede+"_"+id_cliente);
+		  if(rilievo.id_sede!='0'){
+			  $('#mod_sede').val(rilievo.id_sede_util+"_"+rilievo.id_cliente_util);
 		  }else{
-			  $('#mod_sede').val(id_sede);
+			  $('#mod_sede').val(rilievo.id_sede_util);
 		  }
 		  
 		  $('#mod_sede').change();
-		  $('#mod_tipo_rilievo').val(tipo_rilievo);
+		  $('#mod_tipo_rilievo').val(rilievo.tipo_rilievo ? rilievo.tipo_rilievo.id : '');
 		  $('#mod_tipo_rilievo').change();
-		  $('#mod_commessa').val(commessa+"*"+id_cliente);
+		  $('#mod_commessa').val(rilievo.commessa+"*"+rilievo.id_cliente_util);
 		  $('#mod_commessa').change();		  
-		  $('#mod_disegno').val(disegno);
-		  $('#mod_variante').val(variante);
-		  $('#mod_fornitore').val(fornitore);
-		  $('#mod_apparecchio').val(apparecchio);
-		  $('#mod_cifre_decimali').val(cifre_decimali);
-		  $('#mod_materiale').val(materiale);
-		  $('#mod_denominazione').val(denominazione);
-		  if(data_inizio_rilievo!=null && data_inizio_rilievo!=""){
-			  $('#mod_data_inizio_rilievo').val(Date.parse(data_inizio_rilievo).toString("dd/MM/yyyy"));
+		  $('#mod_disegno').val(rilievo.disegno);
+		  $('#mod_variante').val(rilievo.variante);
+		  $('#mod_fornitore').val(rilievo.fornitore);
+		  $('#mod_apparecchio').val(rilievo.apparecchio);
+		  $('#mod_cifre_decimali').val(rilievo.cifre_decimali);
+		  $('#mod_materiale').val(rilievo.materiale);
+		  $('#mod_denominazione').val(
+				    rilievo.denominazione
+				        ? rilievo.denominazione
+				            .replace(/'/g, ' ')
+				            .replace(/\\/g, '/')
+				            .replace(/[\r\n]+/g, ' ')
+				        : ''
+				);
+		  
+		  if(rilievo.data_inizio_rilievo!=null && rilievo.data_inizio_rilievo!=""){
+			  $('#mod_data_inizio_rilievo').val(Date.parse(rilievo.data_inizio_rilievo).toString("dd/MM/yyyy"));
 		  }
-		  $('#mod_mese_riferimento').val(mese_riferimento);
+		  $('#mod_mese_riferimento').val(rilievo.mese_riferimento);
 		  $('#mod_mese_riferimento').change();
-		  $('#mod_classe_tolleranza').val(classe_tolleranza);
+		  $('#mod_classe_tolleranza').val(rilievo.classe_tolleranza);
 		  $('#mod_classe_tolleranza').change();
-		  $('#mod_note_rilievo').val(note)
+		  $('#mod_note_rilievo').val(
+				    rilievo.note
+				        ? rilievo.note
+				            .replace(/'/g, ' ')
+				            .replace(/\\/g, '/')
+				            .replace(/[\r\n]+/g, ' ')
+				        : ''
+				);
 		  
-		  $('#id_rilievo').val(id_rilievo);
+		  $('#id_rilievo').val(rilievo.id);
 		  
-		
+		  $('#myModalModificaRilievo').modal();
 		  
 	  }
  

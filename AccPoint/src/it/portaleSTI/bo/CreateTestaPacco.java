@@ -107,6 +107,17 @@ public class CreateTestaPacco {
 					report.addParameter("sede", "Non associate");
 				}
 				
+				if(pacco.getNome_cliente_util()!=null) {
+					report.addParameter("cliente_util", pacco.getNome_cliente_util());
+					}else {
+						report.addParameter("cliente_util", "");
+					}
+				if(pacco.getNome_sede_util()!=null) {
+					report.addParameter("sede_util", pacco.getNome_sede_util());
+					}else {
+						report.addParameter("sede_util", "");
+					}
+				
 				if(pacco.getNote_pacco()!=null) {
 				report.addParameter("note_pacco", pacco.getNote_pacco());
 				}else {
@@ -222,6 +233,9 @@ public class CreateTestaPacco {
 		 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
 				report.setDetailSplitType(SplitType.PREVENT);
 				
+				report.setColumnStyle((Templates.columnStyle).setFontSize(9).setBorder(stl.penThin()));
+				report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(new Color(204,204,204)));
+				
 				report.setDataSource(createDataSource(lista_item_pacco));
 		  
 			} catch (Exception e) {
@@ -292,7 +306,10 @@ public class CreateTestaPacco {
 	 		report.addColumn(col.column("Pezzi in ingresso", "pezzi_ingresso", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		report.addColumn(col.column("Note", "note_rilievo", type.stringType()).setHorizontalTextAlignment(HorizontalTextAlignment.CENTER));
 	 		
-	 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()));
+	 	
+	 		report.setColumnStyle((Templates.columnStyle).setFontSize(9).setBorder(stl.penThin()));
+			report.setColumnTitleStyle((Templates.boldCenteredStyle).setFontSize(9).setBorder(stl.penThin()).setBackgroundColor(new Color(204,204,204)));
+	 		
 			report.setDetailSplitType(SplitType.PREVENT);
 			
 			report.setDataSource(createDataSourceRil(lista_item_pacco));

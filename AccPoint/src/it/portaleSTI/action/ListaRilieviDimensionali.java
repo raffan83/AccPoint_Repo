@@ -373,6 +373,44 @@ public class ListaRilieviDimensionali extends HttpServlet {
 				out.print(myObj);
 			
 				
+			} else if(action.equals("modificaQuoteOrPezzo")) {
+				ajax = true;
+			
+				response.setContentType("application/json");
+				 myObj = new JsonObject();
+				
+					PrintWriter  out = response.getWriter();
+				
+					int id_rilievo   = Integer.parseInt(request.getParameter("id_rilievo"));
+					String nuovaQuota = request.getParameter("nuovaQuota");
+					String n_pezzi = request.getParameter("nuovoPezzo");
+					String tipo  = request.getParameter("tipo");
+					
+					RilMisuraRilievoDTO ril = GestioneRilieviBO.getRilievoFromId(id_rilievo, session);
+					int valore = 0;
+					boolean risp=false;
+				    if(tipo.equals("quota") && nuovaQuota != null && !nuovaQuota.isEmpty()) {
+				        valore = Integer.parseInt(nuovaQuota);
+				        risp =true;
+				    } else if(tipo.equals("pezzo") && n_pezzi != null && !n_pezzi.isEmpty()) {
+				        valore = Integer.parseInt(n_pezzi);
+				        risp =true;
+				    }
+				    boolean esito = false;
+					if(risp) {
+					 esito = GestioneRilieviBO.updateQuoteOrPezzi(valore, tipo, ril, session);
+					}
+			
+					if(esito) {
+						myObj.addProperty("success", esito);
+					} else {
+						myObj.addProperty("success", esito);
+					}
+					
+					out.print(myObj.toString());
+					session.getTransaction().commit();
+					session.close();
+
 			}
 			
 		} catch (Exception e) {

@@ -275,6 +275,21 @@ public class GestioneRilieviBO {
 		GestioneRilieviDAO.updatePezzi(n_pezzi, id_rilievo, session);
 		
 	}
+	
+	public static boolean updateQuoteOrPezzi(int n, String tipo,RilMisuraRilievoDTO ril, Session session) {
+		
+		if(tipo.equals("quota")) {
+			ril.setN_quote(n);
+			GestioneRilieviDAO.updateRilievo(ril, session);
+			return true;
+		} else if(tipo.equals("pezzo")) {
+			ril.setN_pezzi_tot(n);
+			GestioneRilieviDAO.updateRilievo(ril, session);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public static void chiudiRilievo(int id_rilievo, Session session) {
 

@@ -2093,7 +2093,7 @@ function modificaQuoteOrPezzi(tipo){
 			  }
 			  
 			  $('#mod_sede').change();
-			  $('#mod_tipo_rilievo').val(rilievo.tipo_rilievo.id);
+			  $('#mod_tipo_rilievo').val(rilievo.tipo_rilievo ? rilievo.tipo_rilievo.id : '');
 			  $('#mod_tipo_rilievo').change();
 			  $('#mod_commessa').val(rilievo.commessa);
 			  $('#mod_commessa').change();		  

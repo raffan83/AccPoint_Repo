@@ -2262,15 +2262,21 @@ function reloadDrive()   {
 	}
  
  function selezionaStrumentoModal(){
-
-	 var lat_master_rif = $('#lat_master_rif').val();
+	    var lat_master_rif = $('#lat_master_rif').val();
 	    console.log("lat master_rif  " + lat_master_rif);
 
-	 dataString="action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}";
-	 
-	 exploreModal("listaStrumentiSedeNew.do",dataString,"#strumenti_content")
-	 $('#modalStrumenti').modal();
- }
+	    dataString = "action=lista_strumenti_campione&id_cliente=${intervento.id_cliente}&id_sede=${intervento.idSede}";
+	    
+	    exploreModal("listaStrumentiSedeNew.do", dataString, "#strumenti_content");
+	    
+	    $('#modalStrumenti').one('shown.bs.modal', function () {
+	        if ($.fn.DataTable.isDataTable('#tabStrumentiCampioni')) {
+	            $('#tabStrumentiCampioni').DataTable().columns.adjust().draw();
+	        }
+	    });
+	    
+	    $('#modalStrumenti').modal();
+	}
  
  
  function selezionaStrumento2(){

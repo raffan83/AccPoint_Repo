@@ -709,7 +709,7 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
    		 format: "dd/mm/yyyy"
    	 });   
         
-        var maxSelect = 100;
+        var maxSelect = 50;
         $('body').css('padding-right', '');
     	table = $('#tabPM').DataTable({
     		pageLength: 100,

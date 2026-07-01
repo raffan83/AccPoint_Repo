@@ -318,7 +318,11 @@ public class GestioneAttivitaCampioni extends HttpServlet {
 				DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 				Date date = format.parse(data_attivita);
 				attivita.setData(date);
+				if(Integer.parseInt(tipo_attivita)==1 || Integer.parseInt(tipo_attivita)==2 || Integer.parseInt(tipo_attivita)==3) {
 				attivita.setData_scadenza(format.parse(data_scadenza));
+				} else {
+					attivita.setData_scadenza(null);
+				}
 				attivita.setDescrizione_attivita(descrizione);
 				if(operatore!=null && !operatore.equals("")) {
 					UtenteDTO user = GestioneUtenteBO.getUtenteById(operatore, session);

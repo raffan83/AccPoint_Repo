@@ -2469,25 +2469,22 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 	  email.setHostName("mail.vianova.it");
 		 //email.setDebug(true);
 	//  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
-	  email.setSmtpPort(587);
+	//  email.setSmtpPort(587);
 	  email.setAuthentication("delivery@stisrl.com", Costanti.PASS_EMAIL_DOC);
 	  
-Properties props = email.getMailSession().getProperties();
+	  email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	  email.getMailSession().getProperties().put("mail.debug", "true");
+	  email.getMailSession().getProperties().put("mail.smtp.port", "587");
+	  email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+	  email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	  email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+	  email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
-props.put("mail.smtp.auth", "true");
-props.put("mail.smtp.starttls.enable", "true");
 
-// IMPORTANTI: NON usare SSL implicito
-props.put("mail.smtp.ssl.enable", "false");
-
-props.put("mail.smtp.ssl.trust", "*");
-props.put("mail.smtp.ssl.checkserveridentity", "false");
-
-//timeout in millesecondi
-
-props.put("mail.smtp.connectiontimeout", "5000");  //per connetersi
-props.put("mail.smtp.timeout", "5000");  //per inviare
-props.put("mail.smtp.writetimeout", "5000");
+	// timeout in millisecondi
+	  email.getMailSession().getProperties().put("mail.smtp.connectiontimeout", "5000"); // per connettersi
+	  email.getMailSession().getProperties().put("mail.smtp.timeout", "5000");           // per inviare/ricevere dati
+	  email.getMailSession().getProperties().put("mail.smtp.writetimeout", "5000");      // per scrivere sul socket
 /*
        email.getMailSession().getProperties().put("mail.smtp.auth", "true");
        email.getMailSession().getProperties().put("mail.debug", "true");

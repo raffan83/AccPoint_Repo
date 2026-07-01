@@ -79,14 +79,14 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 <td>
 <c:if test="${attivita.tipo_attivita.id==1}">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
-<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioManutenzione('${attivita.id}','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.tipo_manutenzione }','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di manutenzione"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${attivita.tipo_attivita.id==4 }">
 <%-- ${fn:replace(fn:replace(evento.descrizione.replace('\'',' ').replace('\\','/'),newLineChar, ' '),newLineChar2, ' ')} --%>
-<button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioFuoriServizio('${attivita.id}','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data }','${utl:escapeJS(attivita.operatore.nominativo) }')" title="Click per visualizzare l'attività di fuori servizio"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <c:if test="${(attivita.tipo_attivita.id==2 || attivita.tipo_attivita.id==3) }">
-<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}','${attivita.numero_certificato }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
+<button class="btn customTooltip btn-info" onClick="dettaglioVerificaTaratura('${attivita.id}','${utl:escapeJS(attivita.tipo_attivita.descrizione) }','${attivita.data}','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.campo_sospesi }','${utl:escapeJS(attivita.operatore.nominativo) }','${attivita.certificato.misura.nCertificato }','${attivita.certificato.misura.id }','${utl:encryptData(attivita.certificato.misura.id)}','${attivita.numero_certificato }')" title="Click per visualizzare l'attività di verifica intermedia"><i class="fa fa-arrow-right"></i></button>
 </c:if>
 <button class="btn customTooltip btn-warning" onClick="modificaAttivita('${attivita.id}','${attivita.tipo_attivita.id }','${utl:escapeJS(attivita.descrizione_attivita)}','${attivita.data}','${attivita.tipo_manutenzione }','${utl:escapeJS(attivita.ente) }','${attivita.data_scadenza }','${utl:escapeJS(attivita.campo_sospesi) }','${attivita.operatore.id }','${utl:escapeJS(attivita.etichettatura) }','${attivita.stato }','${attivita.certificato.id }', '${attivita.pianificata }', '${attivita.numero_certificato }')" title="Click per modificare l'attività"><i class="fa fa-edit"></i></button>
  <c:if test="${attivita.allegato!=null && !attivita.allegato.equals('') }">
@@ -253,7 +253,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close"id="close_btn_modifica_man" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modifica Attività</h4>
+      <h4 class="modal-title" id="myModalLabel"> Modifica Attività - ID: <span id="attivitaIdLabel"></span></h4>
       </div>
        <div class="modal-body" >
        
@@ -340,7 +340,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      <div class="modal-header">
         <button type="button" class="close" id="close_btn_man_fs" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
        
-        <h4 class="modal-title" id="myModalLabel">Dettaglio Fuori Servizio</h4>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Fuori Servizio - ID: <span id="attivitaIdLabel3"></span></h4>
       </div>
        <div class="modal-body" id="modalDettaglioContent" >
      
@@ -382,7 +382,7 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
      <div class="modal-header">
         <button type="button" class="close" id="close_btn_man" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
        
-        <h4 class="modal-title" id="myModalLabel">Dettaglio Manutenzione</h4>
+        <h4 class="modal-title" id="myModalLabel">Dettaglio Manutenzione - ID: <span id="attivitaIdLabel2"></span></h4>
       </div>
        <div class="modal-body" id="modalDettaglioContent" >
      
@@ -922,8 +922,9 @@ SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy");
 
  });
  
- function dettaglioFuoriServizio(descrizione,  data,operatore){
+ function dettaglioFuoriServizio(id,descrizione,  data,operatore){
 	 $('#dettaglio_descrizione_fs').val(descrizione);
+	 $('#attivitaIdLabel3').text(id);
 
 	 $('#dettaglio_operatore_fs').val(operatore);
 	 $('#dettaglio_data_fs').val(formatDate(data));
@@ -1112,9 +1113,9 @@ function caricaMisura(){
 });
 } 
 
-function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore, certificato, misura, misura_encrypted, numero_certificato){
-	
-	$('#myModalLabeldtl').html("Dettaglio "+tipo_attivita);
+function dettaglioVerificaTaratura(id,tipo_attivita, data_attivita, ente, data_scadenza, etichettatura, stato, campo_sospesi, operatore, certificato, misura, misura_encrypted, numero_certificato){
+	$('#attivitaIdLabel').text(id);
+	$('#myModalLabeldtl').html("Dettaglio "+tipo_attivita + " - ID: " + id);
 	
 	$('#tipo_attivita_dtl').val(tipo_attivita);
 	$('#data_attivita_dtl').val(formatDate(data_attivita));
@@ -1146,8 +1147,9 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	$('#modalDettaglioVerificaTaratura').modal();
 }
  
- function dettaglioManutenzione(descrizione, tipo, data,operatore){
+ function dettaglioManutenzione(id,descrizione, tipo, data,operatore){
 	 $('#dettaglio_descrizione').val(descrizione);
+	 $('#attivitaIdLabel2').text(id);
 	 if(tipo==1){
 		 $('#label_tipo_manutenzione').val("Preventiva");	 
 	 }else{
@@ -1162,7 +1164,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
  function modificaAttivita(id, tipo_attivita, descrizione, data, tipo_manutenzione, ente, data_scadenza, campo_sospesi, operatore, etichettatura, stato, id_certificato, pianificata, numero_certificato){
 	 
 	 if(pianificata == 1){
-		 
+		 $('#attivitaIdLabel').text(id);
 		  $('#id_evento_pianificato').val(id);
 		 
 		 $('#select_tipo_evento_pianificato_mod').val(tipo_attivita);
@@ -1181,7 +1183,7 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 		 
 	 }else{
 	 
-	 
+		 $('#attivitaIdLabel').text(id);
 	 $('#select_tipo_attivita_mod').val(tipo_attivita);
 	 $('#select_tipo_attivita_mod').change();
 	 var date = formatDate(data);
@@ -1319,12 +1321,13 @@ function dettaglioVerificaTaratura(tipo_attivita, data_attivita, ente, data_scad
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      "order": [[ 0, "desc" ]],
+	      "order": [[ 1, "desc" ]],
 	       columnDefs: [
-				   { responsivePriority: 1, targets: 0 },
+				   { responsivePriority: 1, targets: 0, visible: false, },
 	                   { responsivePriority: 2, targets: 1 },
 	                   { responsivePriority: 3, targets: 2 }
 	               ], 
+	    
 
 	    	
 	    });

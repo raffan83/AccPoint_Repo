@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
 import it.portaleSTI.DTO.CampioneDTO;
@@ -152,6 +154,8 @@ public class CreateSchedaManutenzioniCampione {
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
+		
+		lista_evento_manutenzione.sort( Comparator.comparing(AcAttivitaCampioneDTO::getData).reversed());
 	 	report.setDataSource(createDataSourceEvento(lista_evento_manutenzione));
 	 	report.highlightDetailEvenRows();
 		return report;
@@ -169,6 +173,7 @@ public class CreateSchedaManutenzioniCampione {
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
+		lista_fuori_servizio.sort( Comparator.comparing(AcAttivitaCampioneDTO::getData).reversed());
 	 	report.setDataSource(createDataSourceFs(lista_fuori_servizio));
 	 	report.highlightDetailEvenRows();
 		return report;
@@ -203,6 +208,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
+		lista_manutenzioni.sort( Comparator.comparing(AcAttivitaCampioneDTO::getData).reversed());
 	 	report.setDataSource(createDataSource(lista_manutenzioni));
 	 	report.highlightDetailEvenRows();
 		return report;

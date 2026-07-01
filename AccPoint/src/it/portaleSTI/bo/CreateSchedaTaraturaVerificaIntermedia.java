@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import TemplateReport.PivotTemplate;
 import it.portaleSTI.DTO.AcAttivitaCampioneDTO;
@@ -164,6 +165,7 @@ private void build(ArrayList<AcAttivitaCampioneDTO> lista_tar_ver, ArrayList<AcA
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
+		lista_tar_ver.sort(Comparator.comparing(AcAttivitaCampioneDTO::getData).reversed());
 	 	report.setDataSource(createDataSource(lista_tar_ver));
 		report.highlightDetailEvenRows();
 		return report;
@@ -181,6 +183,7 @@ private JasperReportBuilder getTableReportFs(ArrayList<AcAttivitaCampioneDTO> li
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
+		lista_fuori_servizio.sort(Comparator.comparing(AcAttivitaCampioneDTO::getData).reversed());
 	 	report.setDataSource(createDataSourceFs(lista_fuori_servizio));
 	 	report.highlightDetailEvenRows();
 		return report;
@@ -221,6 +224,7 @@ private JasperReportBuilder getTableReportFsEv(ArrayList<RegistroEventiDTO> list
 	 	
 		report.setColumnTitleStyle((Templates.boldCenteredStyle).setBackgroundColor(Color.WHITE).setFontSize(9).setBorder(stl.penThin()));
 		
+		lista_tarature_evento.sort( Comparator.comparing(AcAttivitaCampioneDTO::getData).reversed());
 	 	report.setDataSource(createDataSourceEvento(lista_tarature_evento));
 		report.highlightDetailEvenRows();
 		return report;

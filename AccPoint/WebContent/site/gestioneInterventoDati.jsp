@@ -2991,7 +2991,7 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	    	      responsive: true,
 	    	      scrollX: false,
 	    	      stateSave: true,
-	    	      order:[[0,'desc']],
+	    	      order:[[1,'desc']],
 	    	      columnDefs: [
 							   { responsivePriority: 1, targets: 0 },
 	    	                   { responsivePriority: 3, targets: 2 },

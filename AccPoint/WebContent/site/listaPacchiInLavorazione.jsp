@@ -434,7 +434,13 @@ $(document).ready(function() {
 riorganizzaColonna8(tab)
  initContextMenu();
 
- 
+
+$('#tabPacchi').on('draw.dt', function () {
+    var searchValue = tab.search();
+    if (searchValue === '') {
+        riorganizzaColonna8(tab);
+    }
+});
 
 
 });

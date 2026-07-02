@@ -194,6 +194,11 @@ public class ListaCertificati extends HttpServlet {
 				for(CertificatoDTO cert : listaCertificati) {
 					if(!cert.getMisura().getLat().equals("S")) {
 						listaCertificatiNonLat.add(cert);
+					} else {
+					
+						if(cert.getMisura().getMisuraLAT()!=null && (cert.getMisura().getMisuraLAT().getMisura_lat().getId()==1 || cert.getMisura().getMisuraLAT().getMisura_lat().getId()==2)) {
+							listaCertificatiNonLat.add(cert);
+						}
 					}
 				}
 				

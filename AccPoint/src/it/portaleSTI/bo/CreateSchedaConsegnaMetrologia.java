@@ -47,17 +47,17 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 public class CreateSchedaConsegnaMetrologia {
-	public CreateSchedaConsegnaMetrologia(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, Session session, ServletContext context) throws Exception {
+	public CreateSchedaConsegnaMetrologia(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, Session session, ServletContext context,long systime) throws Exception {
 		try {
 		
-			build(intervento,consegnaDi,checkStato, ca, listaStrumenti, context);
+			build(intervento,consegnaDi,checkStato, ca, listaStrumenti, context, systime);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			throw e;
 		} 
 	}
-	private void build(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, ServletContext context) throws Exception {
+	private void build(InterventoDTO intervento, String consegnaDi, int checkStato, String ca, ArrayList<StrumentoDTO> listaStrumenti, ServletContext context, long systime) throws Exception {
 		
 		InputStream is = PivotTemplate.class.getResourceAsStream("schedaConsegnaMetrologiaMOD-SGI-031.jrxml");
 		 
@@ -140,7 +140,7 @@ public class CreateSchedaConsegnaMetrologia {
 		
 			report.setDataSource(new JREmptyDataSource());
 			
-			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna.pdf");
+			  java.io.File file = new java.io.File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna"+systime+".pdf");
 			  FileOutputStream fos = new FileOutputStream(file);
 			  report.toPdf(fos);
 			  

@@ -56,6 +56,7 @@ import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.MisuraWebDTO;
+import it.portaleSTI.DTO.SchedaConsegnaDTO;
 import it.portaleSTI.DTO.SessioneDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
@@ -390,6 +391,7 @@ public class GestioneMisura extends HttpServlet {
 			 //  String urlDestinazione = "http://delivery.stisrl.com/DocumentalWEB/serviceRest.do";
 			//	   String urlDestinazione = "http://localhost:8082/DocumentalWEB/serviceRest.do";  //CAMBIARE ANCHE IN ACTION=invalidaSessione
 			    
+			    long systime=System.currentTimeMillis();
 			    
 
 			    try {
@@ -414,9 +416,9 @@ public class GestioneMisura extends HttpServlet {
 			        out.write("data: {\"progress\":15, \"fase\":1, \"testo\":\"Generazione scheda consegna...\"}\n\n");
 			        out.flush();
 			        Thread.sleep(1000);
-			        new CreateSchedaConsegnaMetrologia(intervento, notaConsegna, Integer.parseInt(stato), corteseAttenzione, listaStrumenti, session, getServletContext());
+			        new CreateSchedaConsegnaMetrologia(intervento, notaConsegna, Integer.parseInt(stato), corteseAttenzione, listaStrumenti, session, getServletContext(),systime);
 
-			        File schedaConsegna = new File(Costanti.PATH_FOLDER + File.separator + intervento.getNomePack() + "//SchedaDiConsegna.pdf");
+			        File schedaConsegna = new File(Costanti.PATH_FOLDER + File.separator + intervento.getNomePack() + "//SchedaDiConsegna"+systime+ ".pdf");
 
 			        out.write("data: {\"progress\":35, \"fase\":2, \"testo\":\"Recupero misure e certificati...\"}\n\n");
 			        out.flush();
@@ -507,7 +509,16 @@ public class GestioneMisura extends HttpServlet {
 
 			          GestioneSessioneBO.sendEmailClienteDocumentalWeb(schedaConsegna, email, getServletContext(), sessione);
 			            
-			          
+			          SchedaConsegnaDTO scheda = new SchedaConsegnaDTO();
+			   	   // InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento);
+			   	    scheda.setIntervento(intervento);
+			   	    scheda.setNome_file( "SchedaDiConsegna"+systime+ ".pdf");
+			   	 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			   	String dateCar= dateFormat.format(new Date()).toString();
+			   	    scheda.setData_caricamento(dateCar);
+			   	    scheda.setAbilitato(1);
+			   	 session.save(scheda);
+
 			            System.out.println("Email inviata");
 
 			            session.getTransaction().commit();

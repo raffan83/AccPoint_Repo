@@ -158,10 +158,10 @@ public class ScaricaSchedaConsegna extends HttpServlet {
 				ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiInt");
 			
 				
-			
-				new CreateSchedaConsegnaMetrologia(intervento,notaConsegna,Integer.parseInt(stato),corteseAttenzione,listaStrumenti,session,getServletContext());
+			    long systime=System.currentTimeMillis();
+				new CreateSchedaConsegnaMetrologia(intervento,notaConsegna,Integer.parseInt(stato),corteseAttenzione,listaStrumenti,session,getServletContext(),systime);
 				
-				File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna.pdf");
+				File d = new File(Costanti.PATH_FOLDER+"//"+intervento.getNomePack()+"//SchedaDiConsegna" +systime+".pdf");
 				
 				 FileInputStream fileIn = new FileInputStream(d);
 				 

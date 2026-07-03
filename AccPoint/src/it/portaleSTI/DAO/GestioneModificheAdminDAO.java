@@ -19,6 +19,8 @@ public class GestioneModificheAdminDAO {
 			ricerca= "misura.strumento.__id";
 		}else if(tipo_ricerca.equals("id_misura")) {
 			ricerca= "misura.id";
+		} else if(tipo_ricerca.equals("id_intervento")) {
+			ricerca= "misura.intervento.id";
 		}
 		
 		

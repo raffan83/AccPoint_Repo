@@ -56,6 +56,7 @@
 <option value="id_strumento">ID STRUMENTO</option>
 <option value="id_misura">ID MISURA</option>
 <option value="id_certificato">ID CERTIFICATO</option>
+<option value="id_intervento">ID INTERVENTO</option>
 
  </select>
  </div>

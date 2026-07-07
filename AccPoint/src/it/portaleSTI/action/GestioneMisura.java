@@ -424,7 +424,8 @@ public class GestioneMisura extends HttpServlet {
 			        out.flush();
 			        Thread.sleep(1000);
 			        
-			        ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
+			        ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureNonObsoleteByIntervento(intervento.getId(), session);
+			     //   ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 
 			        ArrayList<CertificatoDTO> listaCertificati = new ArrayList<>();
 			        for (MisuraDTO mm : listaMisure) {

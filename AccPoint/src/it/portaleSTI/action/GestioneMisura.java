@@ -463,8 +463,10 @@ public class GestioneMisura extends HttpServlet {
 
 			        ArrayList<MisuraWebDTO> listaMisureWeb = new ArrayList<>();
 			        for (int i = 0; i < listaMisure.size(); i++) {
-			            MisuraDTO misura = listaMisure.get(i);
+			          
+			        	MisuraDTO misura = listaMisure.get(i);
 			           
+			        	if(misura.getObsoleto().equals("N")) {
 			            
 			            MisuraWebDTO web = new MisuraWebDTO();
 			            web.setData_misura(misura.getDataMisura());
@@ -478,6 +480,8 @@ public class GestioneMisura extends HttpServlet {
 			            web.setNome_file(certificato.getNomeCertificato());  //CM23255_241...
 			            
 			            listaMisureWeb.add(web);
+			        	
+			        	}
 			        }
 
 			        sessione.setLista_misure_inviate(new HashSet<>(listaMisure));

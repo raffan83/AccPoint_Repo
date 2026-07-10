@@ -3139,6 +3139,8 @@ public static ArrayList<ForPartecipanteDTO> getListaPartecipantiDirect() throws 
 				partecipante.setNome_sede(rs.getString("nome_sede"));
 				partecipante.setNote(rs.getString("note"));
 				partecipante.setEmail(rs.getString("email"));
+				partecipante.setDisabilitato(rs.getInt("disabilitato"));
+				partecipante.setStato(rs.getInt("stato"));
 				
 				
 				lista.add(partecipante);

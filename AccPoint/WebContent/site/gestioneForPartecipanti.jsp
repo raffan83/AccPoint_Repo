@@ -102,6 +102,9 @@
 <th>Codice fiscale</th>
 <th>Stato</th>
 <th>Email</th>
+<c:if test="${(id_azienda == 0 ) && (userObj.checkRuolo('AM') || userObj.checkRuolo('F1'))}">
+<th>Disabilitato</th>
+</c:if>
 <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1')  }"> 
 <th>Inserito da</th>
 </c:if>
@@ -125,6 +128,12 @@
 	<c:if test="${partecipante.stato == 1}">NON ATTIVO</c:if>
 	</td>
 	<td>${partecipante.email }</td>	
+<c:if test="${(id_azienda == 0) && (userObj.checkRuolo('AM') || userObj.checkRuolo('F1'))}">
+    <td>
+        <c:if test="${partecipante.disabilitato == 0 }">NO</c:if>
+        <c:if test="${partecipante.disabilitato == 1}">SI</c:if>
+    </td>
+</c:if>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('F1') }"> 
 	<c:choose>
     <c:when test="${partecipante.utente != null}">

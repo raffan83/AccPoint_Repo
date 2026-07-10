@@ -1721,7 +1721,7 @@ String permesso = "0";
 		var nota_pacco = '${pacco.tipo_nota_pacco.id}'
 		var origine = '${pacco.origine}';
 		
-		
+		console.log("fornitore  dentro modif" + fornitore);
 		$('#select_nota_pacco').val(nota_pacco);
 		
 		$('#id_pacco').val(id_pacco);
@@ -1900,6 +1900,7 @@ String permesso = "0";
 $('#stato_lavorazione').change(function(){
  		
  		var selection = $('#stato_lavorazione').val()
+ 		console.log("selection  " + selection);
  		var fornitore = "${pacco.fornitore}";
  		if(selection==4){
  			
@@ -1993,7 +1994,26 @@ $('#stato_lavorazione').change(function(){
 			 $('#tipo_ddt').val(2);
 			 $('#tipo_ddt').change();
 			// destinazioneOptions(selection);
- 		}else{
+ 		}  else if(selection==6){
+ 			console.log("fornitore 6");
+ 			$('#data_arrivo').attr("disabled",true);
+ 			$('#data_spedizione').attr("disabled", false);
+ 			$('#data_arrivo').val('');
+ 			$('#data_spedizione').val('');
+ 			 $('#mitt_dest').html("Destinatario");
+ 			$('#sede_mitt_dest').html("Sede Destinatario");
+ 			/*  $('#destinatario').select2({
+					placeholder : "Seleziona Destinatario..."
+			 }); */
+			 initSelect2('#destinatario', "Seleziona Destinatario...");
+		 	$('#sede_destinatario').select2({
+		 	  placeholder : "Seleziona Sede Destinatario..."
+		 	});
+			 $('#row_destinazione').show();
+			 $('#tipo_ddt').val(2);
+			 $('#tipo_ddt').change();
+			// destinazioneOptions(selection);
+ 		}  else{
  			
  			$('#select_fornitore').attr("disabled", true);
  			$("#select_fornitore").prepend("<option value='' selected='selected'></option>");
@@ -2376,6 +2396,13 @@ function modalSpostaStrumenti(id_util, id_sede_util){
 			 $('#destinatario').select2({
 					placeholder : "Seleziona Destinatario..."
 				}); 
+		 }	 else if(stato==6){ 
+			 $('#select_fornitore').attr('disabled', true);
+			 $('#data_arrivo').attr('disabled', true);
+			 $('#row_destinazione').show();
+			 $('#destinatario').select2({
+					placeholder : "Seleziona Destinatario..."
+				}); 		
 		 }else{
 			 $('#select_fornitore').attr('disabled', false);
 			 $('#data_arrivo').attr('disabled', false);

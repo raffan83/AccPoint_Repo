@@ -539,7 +539,16 @@ public class CreateCertificato {
 				if(pivot.startsWith("M")) {
 					 um = (String) listItem.get(0).getUnitaDiMisura().get(0).get("um");
 					numberOfRow += 2 + listItem.size();
-					subreport = cmp.subreport(getTableReportMABBA(listItem, um,tipoScheda));
+					 report.detail(cmp.verticalGap(8));
+					report.detail(
+						    cmp.horizontalList(
+						        cmp.horizontalGap(0),
+						        cmp.text("( " + listItem.get(0).getTipoVerifica().get(0).get("tv") + " )")
+						           .setHorizontalTextAlignment(HorizontalTextAlignment.CENTER)
+						    )
+						);
+			subreport = cmp.subreport(getTableReportMABBA(listItem, um,tipoScheda));		
+			//subreport = cmp.subreport(getTableReportMABBA2(listItem, um, tipoScheda,"COD123", "MAT456"));
 				}
 				
 				if(pivot.startsWith("S")) {

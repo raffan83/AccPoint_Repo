@@ -450,6 +450,24 @@
         <div class="row">
        
        	<div class="col-sm-3">
+       		<label>Corso Moodle</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="corsi_moodle_mod" name="corsi_moodle_mod" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso Moodle...">
+       <option value="0">Nessun Corso</option>
+       <c:forEach items="${lista_corsi_moodle}" var="corso">
+       <option value="${corso.id}">${corso.descrizione }</option>
+       </c:forEach>
+       </select>
+       			
+       	</div>       	
+       </div>
+       <br>
+       
+        <div class="row">
+       
+       	<div class="col-sm-3">
        		<label>Commessa</label>
        	</div>
        	<div class="col-sm-9">      
@@ -615,13 +633,13 @@
        	</div>       	
        </div><br>
        
-       <div class="row">
+        <div class="row">
        
        	<div class="col-sm-3">
        		<label>Giorni Preavviso</label>
        	</div>
        	<div class="col-sm-9">      
-       	  
+       	  	
         <input id="giorni_preavviso_mod" name="giorni_preavviso_mod" class="form-control" type="number" step="1"  min = "0" style="width:100%" >
        			
        	</div>       	

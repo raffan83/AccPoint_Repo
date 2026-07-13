@@ -151,8 +151,9 @@
 	<a class="btn btn-info customTooltip" title="Click per aprire il dettaglio" onClick="dettaglioPartecipante('${utl:encryptData(partecipante.id)}')"><i class="fa fa-search"></i></a>
 	<c:if test="${userObj.checkRuolo('AM') || userObj.checkPermesso('GESTIONE_FORMAZIONE_ADMIN') }"> 
 	<a class="btn btn-warning customTooltip" onClicK="modificaPartecipanteModal('${partecipante.id}','${utl:escapeJS(partecipante.nome) }','${utl:escapeJS(partecipante.cognome)}','${partecipante.data_nascita }','${partecipante.id_azienda }','${partecipante.id_sede }','${utl:escapeJS(partecipante.luogo_nascita) }','${partecipante.cf }', '${partecipante.email }')" title="Click per modificare il partecipante"><i class="fa fa-edit"></i></a>
-
+<c:if test="${partecipante.disabilitato == 0}">
 	 <a class="btn btn-danger customTooltip" title="Click per eliminare il partecipante" onClick="modalEliminaPartecipante('${partecipante.id}')"><i class="fa fa-times"></i></a>
+</c:if>
 	 <a class="btn btn-default customTooltip" title="Click per attivare/disattivare il partecipante" onClick="cambiaStatoPartecipante('${partecipante.id}')"><i class="glyphicon glyphicon-refresh"></i></a>
 	 	</c:if>
 	</td>

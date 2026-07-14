@@ -4,11 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,9 +31,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.GestioneCertificatoDAO;
+import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.IndicePrestazioneDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.LatPuntoLivellaElettronicaDTO;
@@ -40,11 +45,13 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
 import it.portaleSTI.DTO.ReportSVT_DTO;
 import it.portaleSTI.DTO.SicurezzaElettricaDTO;
+import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.SvtRowView;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneLivellaBollaBO;
 import it.portaleSTI.bo.GestioneLivellaElettronicaBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -422,27 +429,110 @@ public class DettaglioMisura extends HttpServlet {
 			
 			
 			else if(action.equals("andamento_temporale")) {
+			    
+			    String id_strumento = request.getParameter("id_strumento");
+			    id_strumento = Utility.decryptData(id_strumento);
+			    StrumentoDTO strumento = GestioneStrumentoBO.getStrumentoById(id_strumento, session);
+			
+			    List<IndicePrestazioneDTO> listaIndiciMedi = new ArrayList<>();
+			    List<IndicePrestazioneDTO> listaIndiciMax = new ArrayList<>();
+			    
+			    ArrayList<MisuraDTO> lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id_strumento), session);
+			    
+			    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			    
+			    if(strumento.getTipoRapporto().getNoneRapporto().equals("SVT")) {
+			    for (MisuraDTO misura : lista_misure) {
+			        BigDecimal sommaD = BigDecimal.ZERO;
+			        Set<PuntoMisuraDTO> listaPuntoMisura = misura.getListaPunti();
+			      //  listaPuntiMisuraPerCalcoloIndice.addAll(listaPuntoMisura);
+			        BigDecimal indicePrestazioneMax=calcolaIndicePrestazione( new ArrayList<>(listaPuntoMisura));
+			     
+			        for (PuntoMisuraDTO pm : listaPuntoMisura) {
+			            BigDecimal rapporto = pm.getIncertezza().divide(pm.getAccettabilita(), MathContext.DECIMAL64);
+			            sommaD = sommaD.add(rapporto);
+			        }
+			        if (!listaPuntoMisura.isEmpty()) {
+			            BigDecimal media = sommaD.divide(
+			                BigDecimal.valueOf(listaPuntoMisura.size()),
+			                MathContext.DECIMAL64
+			            );
+			            
+			            IndicePrestazioneDTO indiceMedio =new IndicePrestazioneDTO();
+			            IndicePrestazioneDTO indiceMax=new IndicePrestazioneDTO();
+			            indiceMedio.setIndice(media);
+			            indiceMedio.setMisura(misura);
+			            indiceMax.setIndice(indicePrestazioneMax.divide(BigDecimal.valueOf(100)));
+			            indiceMax.setMisura(misura);
+			            
+			            listaIndiciMax.add(indiceMax);
+			            listaIndiciMedi.add(indiceMedio);
+			           
+			        }
+			    }
+			    }
+			    request.setAttribute("listaindiciPrestazioniMax", listaIndiciMax);
+			    request.setAttribute("indiciPrestazioni", listaIndiciMedi);
+			    request.setAttribute("tipoRapporto", strumento.getTipoRapporto().getNoneRapporto());
+			    
+			    request.setAttribute("lista_misure", lista_misure);
+			    Gson g = new Gson();
+			    request.setAttribute("lista_punti_misure", g.toJsonTree(lista_misure));
+			    
+			    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/graficoAndamentoTemporale.jsp");
+			    dispatcher.forward(request, response);
+			    
+			    session.getTransaction().commit();
+			    session.close();
+			} else if(action.equals("dettaglio_indice_max")) {
+				JsonObject myObj = new JsonObject();
+				boolean ajax = true;
 				
-				String id_strumento = request.getParameter("id_strumento");
+				String id_misura= request.getParameter("id_misura");
 				
-				id_strumento = Utility.decryptData(id_strumento);
+				MisuraDTO misura =GestioneMisuraBO.getMiruraByID(Integer.parseInt(id_misura), session);
+				int numeroTabelle = GestioneMisuraBO.getMaxTabellePerMisura(misura.getListaPunti());
+				
+				ArrayList<ArrayList<PuntoMisuraDTO>> arrayPunti = new ArrayList<ArrayList<PuntoMisuraDTO>>();
+				
+				for(int i = 0; i < numeroTabelle; i++){
+					ArrayList<PuntoMisuraDTO> punti = GestioneMisuraBO.getListaPuntiByIdTabella(misura.getListaPunti(), i+1);
 					
-				ArrayList<MisuraDTO> lista_misure = GestioneStrumentoBO.getListaMisureByStrumento(Integer.parseInt(id_strumento), session);
+					if(punti.size()>0)
+					{
+						
+						arrayPunti.add(punti);
+					}
+				}
+				Gson gson = new Gson();
+				JsonArray listaPuntiJson = gson.toJsonTree(arrayPunti).getAsJsonArray();
+				myObj.add("listaPuntiJson", listaPuntiJson);
 				
-				request.setAttribute("lista_misure", lista_misure);
-				Gson g = new Gson();
+				request.getSession().setAttribute("arrayPunti", arrayPunti);
+				request.getSession().setAttribute("misura", misura);
 				
-				request.setAttribute("lista_punti_misure", g.toJsonTree(lista_misure));
+				PrintWriter out = response.getWriter();
 				
-
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/graficoAndamentoTemporale.jsp");
-		     	dispatcher.forward(request,response);
-				
+				if(misura!=null) {
+						
+		        	myObj.addProperty("success",true);
+		        	
+				}else {
+					myObj.addProperty("success", false);
+				}
+			
 				
 				session.getTransaction().commit();
 				session.close();
-			}
-			else if(action.equals("select_tabella")) {
+				
+				out.print(myObj);
+				
+			}  else if(action.equals("dettaglio_indice_max_fragment")) {
+			    // i dati sono già in sessione, basta fare il forward al fragment
+			    RequestDispatcher dispatcher = getServletContext()
+			        .getRequestDispatcher("/site/dettaglioIndiceMax.jsp");
+			    dispatcher.forward(request, response);
+			} else if(action.equals("select_tabella")) {
 				
 				String id = request.getParameter("id_misura");
 				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(Integer.parseInt(id), session);	
@@ -565,5 +655,31 @@ public class DettaglioMisura extends HttpServlet {
 	    out.add(val);
 	  }
 	  return out;
+	}
+	
+private static BigDecimal calcolaIndicePrestazione(ArrayList<PuntoMisuraDTO> listaPuntiMisura) throws Exception {
+		
+		BigDecimal max = BigDecimal.ZERO;
+		String indice = null;
+		
+		if(listaPuntiMisura.size()==0) 
+		{
+			return null;
+		}
+		for (PuntoMisuraDTO punto : listaPuntiMisura) {
+			if(!punto.getTipoProva().equals("D") && punto.getApplicabile().equals("S") ){
+				BigDecimal indice_prestazione = punto.getIncertezza().multiply(new BigDecimal(100)).divide(punto.getAccettabilita(),3,RoundingMode.HALF_UP);
+				if(indice_prestazione.compareTo(max)==1) {
+					max = indice_prestazione;
+				}
+			}
+					
+		}
+		
+		if(max.doubleValue() == 0) {
+			return null;
+		}
+		return max;
+	
 	}
 }

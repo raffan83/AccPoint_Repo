@@ -545,20 +545,20 @@
         </div>
 
         <div style="display: flex; gap: 8px;">
-            <button class="btn btn-default"  style="width: 200px" onClick="scaricaListaCampioni('${intervento.id}')">
+            <button class="btn btn-default"  style=" flex: none;  width: 200px" onClick="scaricaListaCampioni('${intervento.id}')">
                 <i class="glyphicon glyphicon-download"></i> Download Lista Campioni
             </button>
             <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
             <c:if test="${intervento.statoIntervento.id == 2}">
                 <c:choose>
                    <c:when test="${sessione == null}">
-            <button class="btn btn-success" style="width: 200px"
+            <button class="btn btn-success" style="flex: none;  width: 200px"
                 onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
                 <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
             </button>
         </c:when>
        <c:when test= "${sessione != null && sessione.abilitato==0}">
- <button class="btn btn-success" style="width: 200px"
+ <button class="btn btn-success" style=" flex: none; width: 200px"
                 onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
                 <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
             </button>
@@ -574,17 +574,23 @@
                    <c:otherwise>
      <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">              
     <div style="display: flex; align-items: center; gap: 8px;">
-        <button class="btn btn-success" disabled title="Sessione non disponibile" style="width: 200px">
+        <button class="btn btn-success" disabled title="Sessione non disponibile" style="flex: none;  width: 200px">
             <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
         </button>
+          <span style=" font-size:13px ">
        <b>Sessione ID:</b> ${sessione.session_id}
+       </span>
 
-       <span style="margin-left: 30px;">
+       <span style="margin-left: 10px; font-size:13px ">
           <b>Data invio:</b> ${sessione.dataCreazione}
          </span>
 
-         <span style="margin-left: 30px;">
+         <span style="margin-left: 10px; font-size:13px">
               <b>Operatore:</b> ${sessione.user.nominativo}
+         </span>
+         
+                  <span style="margin-left: 10px; font-size:13px">
+              <b>Email:</b> ${sessione.email_cliente}
          </span>
     </div>
     </c:if>

@@ -1292,6 +1292,16 @@ public class GestioneParcoAuto extends HttpServlet {
 					       segnalazione.setUtente(utente);
 
 					       session.save(segnalazione);
+				    	} else {
+				    		PaaPrenotazioneDTO prenotazione = (PaaPrenotazioneDTO) session.get(PaaPrenotazioneDTO.class, Integer.parseInt(id_prenotazione));
+					    	segnalazione.setPrenotazione(prenotazione);
+					    	PaaTipoSegnalazioneDTO tipo = (PaaTipoSegnalazioneDTO) session.get(PaaTipoSegnalazioneDTO.class, Integer.parseInt(id));
+					    	segnalazione.setTipo(tipo);
+					    	segnalazione.setNote(note);		
+					       segnalazione.setData_segnalazione(new Date());
+					       segnalazione.setUtente(utente);
+					       
+					       session.update(segnalazione);
 				    	}
 				    	 
 				       

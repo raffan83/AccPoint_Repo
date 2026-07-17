@@ -359,10 +359,15 @@ public class ListaCertificati extends HttpServlet {
 					String resultFirma = GestioneCertificatoBO.createCertificato(idCertificato, data_emissione,session,context, utente);	
 
 					
+					if(resultFirma.equals("")) {
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato generato con successo. <br>"+ resultFirma);
+					} else {
+					myObj.addProperty("success", false);
+					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato generato con successo senza firma digitale. <br>"+ resultFirma);
+					}
 					
-
-					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo <br>"+ resultFirma);
+					
 			        out.println(myObj.toString());
 				}
 			
@@ -399,7 +404,7 @@ public class ListaCertificati extends HttpServlet {
 				}
 				
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato generato con successo");
 		        out.println(myObj.toString());
 				
 			}
@@ -420,7 +425,7 @@ public class ListaCertificati extends HttpServlet {
 					new CreaCertificatoLivellaElettronica(certificato, certificato.getMisura().getMisuraLAT(), utente, null,dt_emissione,session);
 				}
 				myObj.addProperty("success", true);
-				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo");
+				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato generato con successo");
 		        out.println(myObj.toString());
 				
 			}
@@ -437,10 +442,14 @@ public class ListaCertificati extends HttpServlet {
 			
 //				}
 					
-				
-
+				if(resultFirma.messaggio_firma.equals("")) {
 					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato genereato con successo <br>"+ resultFirma.messaggio_firma);
+					myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato generato con successo. <br>"+ resultFirma.messaggio_firma);
+				} else {
+				myObj.addProperty("success", false);
+				myObj.addProperty("messaggio", "Misura Approvata, il certificato &egrave; stato generato con successo senza firma digitale. <br>"+ resultFirma.messaggio_firma);
+				}
+				
 			        out.println(myObj.toString());
 				
 //				myObj.addProperty("success", true);
@@ -533,15 +542,25 @@ public class ListaCertificati extends HttpServlet {
 				JsonObject jsonObj = jelement.getAsJsonObject();
 				JsonArray jsArr = jsonObj.get("ids").getAsJsonArray();
 				boolean dataCampioneSuccessiva = false;
+				String resultFirma="";
+				CreateCertificatoSE resultFirmaSE = null;
+				int count=0;
+				List<CertificatoDTO> lista_cert_senza_firma = new ArrayList<>();
+				List<CertificatoDTO> lista_cert_campione_post = new ArrayList<>();
 			//	String resultFirma = "";
 				for(int i=0; i<jsArr.size(); i++){
 					String id =  jsArr.get(i).toString().replaceAll("\"", "");
-				
+					dataCampioneSuccessiva = false;
 					ServletContext context =getServletContext();
 					CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id,session);
 					
 					if(certificato.getMisura().getLat().equals("E")) {
-						new CreateCertificatoSE(certificato,data_emissione,utente,session);
+						resultFirmaSE = new CreateCertificatoSE(certificato,data_emissione,utente,session);
+						if(resultFirmaSE.messaggio_firma.equals("")) {
+							count+=1;
+						} else {
+							lista_cert_senza_firma.add(certificato);
+						}
 					}/*
 					else if(certificato.getMisura().getMisuraLAT()!=null && certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
 						new CreaCertificatoLivellaBolla(certificato, certificato.getMisura().getMisuraLAT(), null,utente, session);
@@ -556,27 +575,75 @@ public class ListaCertificati extends HttpServlet {
 						List<CampioneDTO> listaCampioni = GestioneMisuraBO.getListaCampioni(certificato.getMisura().getListaPunti(),certificato.getMisura().getStrumento().getTipoRapporto());
 						for (CampioneDTO campioneDTO : listaCampioni) {
 							if(campioneDTO.getDataVerifica()!= null && campioneDTO.getDataVerifica().after(certificato.getMisura().getDataMisura())) {
-								myObj.addProperty("success", false);
-								myObj.addProperty("messaggio", "Attenzione! La data verifica del campione sul certificato ID "+certificato.getId()+" è successiva alla data misura!");
-						        out.println(myObj.toString());
+								//myObj.addProperty("success", false);
+								//myObj.addProperty("messaggio", "Attenzione! La data verifica del campione sul certificato ID "+certificato.getId()+" è successiva alla data misura!");
+						      //  out.println(myObj.toString());
 						        dataCampioneSuccessiva = true;
+						        lista_cert_campione_post.add(certificato);
 						        break;
 						        
 							}
 						}
 						if(dataCampioneSuccessiva == false) {
-							GestioneCertificatoBO.createCertificato(id,data_emissione, session,context, utente);	
+							resultFirma = GestioneCertificatoBO.createCertificato(id,data_emissione, session,context, utente);	
+							if(resultFirma.equals("")) {
+								count+=1;
+							}else {
+								lista_cert_senza_firma.add(certificato);
+							}
 						}
 							
 					}
 					
 				}		
 				
-				if(dataCampioneSuccessiva == false) {
-					myObj.addProperty("success", true);
-					myObj.addProperty("messaggio", "Sono stati approvati "+jsArr.size()+" certificati ");
+			
+					if(count==0 && lista_cert_senza_firma.size()==0) {
+						myObj.addProperty("success", false);
+						myObj.addProperty("messaggio", "Nessun certificato è stato approvato!");
+						
+					} else if(count==jsArr.size()){
+						myObj.addProperty("success", true);
+						myObj.addProperty("messaggio", "Tutti i certificati sono stati approvati");
+						
+					}else {
+					
+					myObj.addProperty("success", false);
+					
+					StringBuilder messaggio = new StringBuilder();
+					
+					messaggio.append("Sono stati approvati (con firma digitale) ")
+			          .append(count)
+			          .append(" certificati su ")
+			          .append(jsArr.size());
+					
+					if (!lista_cert_senza_firma.isEmpty()) {
+					    messaggio.append("\n\nCertificati approvati senza firma digitale:\n");
+					
+					for(CertificatoDTO c : lista_cert_senza_firma) {
+						 messaggio.append("- ID: ")
+		                 .append(c.getId())
+		                 .append(",   Cliente: ")
+		                 .append(c.getMisura().getIntervento().getNome_cliente())
+		                 .append("\n");
+					}
+					}
+					if(!lista_cert_campione_post.isEmpty()) {
+						messaggio.append("\n\nAttenzione trovati certificati con data verifica del campione  successiva alla data misura:\n");
+						for(CertificatoDTO c : lista_cert_campione_post) {
+							 messaggio.append("- ID: ")
+			                 .append(c.getId())
+			                 .append(",   Cliente: ")
+			                 .append(c.getMisura().getIntervento().getNome_cliente())
+			                 .append("\n");
+						}
+					}
+
+          myObj.addProperty("messaggio", messaggio.toString());
+					}
+				
 			        out.println(myObj.toString());
-				}
+				
 			        
 			}else if(action.equals("annullaCertificatiMulti")){
 				

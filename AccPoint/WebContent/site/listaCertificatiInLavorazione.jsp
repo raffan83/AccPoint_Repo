@@ -64,7 +64,7 @@
  
  <c:forEach items="${listaCertificati}" var="certificato" varStatus="loop">
 
-	<tr role="row" id="${certificato.id}-${loop.index}">
+	<tr role="row" id="${certificato.id}-${loop.index}" data-lat="${certificato.misura.lat}">
 	<td></td>
 		<td></td>
 	<td>${certificato.id}</td>
@@ -960,7 +960,7 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
 
 	
 		
-		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi");
+		$('#myModalErrorContent').html("Verranno selezionati solo i primi "+maxSelect+" elementi. Certificati LAT non selezionati.");
 	  	$('#myModalError').removeClass();
 		$('#myModalError').addClass("modal modal-warning");
 		$('#myModalError').modal('show');
@@ -972,15 +972,25 @@ function getListaCertificatiprecedenti(id_strumento, id_certificato, lat_master)
 			table.rows().deselect();
 			i = 0;
 			table.rows({filter: 'applied'}).every( function ( rowIdx, tableLoop, rowLoop ) {
-			    if(i	<maxSelect){
-					 this.select();
-			    }else{
-			    		exit;
-			    }
+				 if (i < maxSelect) {
+					 var row = $(this.node());
+					    var lat = row.data('lat');
+
+
+			            // salta le righe
+			            if (lat==="S") {
+			                return; // continua al prossimo elemento senza selezionare e senza contare
+			            }
+
+			            this.select();
+			        } else {
+			            return false; // esce dal ciclo, raggiunto maxSelect
+			        }
 			    i++;
 			    
 			} );
 
+			
 	  	});
 		$('#selectAlltabPM').on('ifUnchecked', function (ev) {
 

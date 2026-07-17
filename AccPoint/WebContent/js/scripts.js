@@ -3668,7 +3668,7 @@ function eliminaCompany(){
                 $('#myModalErrorContent').html(data.messaggio);
                 $('#myModalError')
                     .removeClass('modal-success')
-                    .addClass('modal-danger')
+                    .addClass('modal-warning')
                     .modal('show');
             }
         },
@@ -4097,10 +4097,21 @@ function eliminaCompany(){
        	         
     		
     		  }else{
-    			  $('#myModalErrorContent').html(data.messaggio);
+      			  $('#myModalErrorContent').html(data.messaggio.replace(/\n/g, '<br>'));
     			  	$('#myModalError').removeClass();
-    				$('#myModalError').addClass("modal modal-danger");
+    				$('#myModalError').addClass("modal modal-warning");
     				$('#myModalError').modal('show');
+    			    $('#myModalError').one('hidden.bs.modal', function (e) {
+    			        if ($('#myModalError').hasClass('modal-warning')) {
+    			            filtraCertificati();
+    			        }
+    			        // fix eventuali bug Bootstrap
+    			        $('body').css('padding-right', '');
+    			        $('body').removeClass('modal-open');
+    			        $('.modal-backdrop').hide();
+    			       
+    			    });
+    				 
     		  }
     	  },
 

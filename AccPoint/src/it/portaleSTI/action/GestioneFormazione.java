@@ -859,7 +859,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso));
 					Calendar c = Calendar.getInstance();
 					c.setTime(corso.getData_corso());
-					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso));
+					c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso)* -1);
 					corso.setData_preavviso(c.getTime());
 				}else if(frequenza_remind.equals("0")){
 					corso.setfrequenza_remind(Integer.parseInt(giorni_preavviso));

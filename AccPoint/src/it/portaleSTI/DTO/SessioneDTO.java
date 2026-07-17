@@ -25,6 +25,7 @@ public class SessioneDTO {
 	private Integer abilitato;
 	private UtenteDTO user_modifica;
 	private Date data_modifica;
+	private String note_disab;
 	
 	
 	public SessioneDTO() {
@@ -206,7 +207,16 @@ public class SessioneDTO {
 	public void setData_modifica(Date data_modifica) {
 		this.data_modifica = data_modifica;
 	}
-	
+
+	public String getNote_disab() {
+		return note_disab;
+	}
+
+	public void setNote_disab(String note_disab) {
+		this.note_disab = note_disab;
+	}
+
+
 	
 	
 

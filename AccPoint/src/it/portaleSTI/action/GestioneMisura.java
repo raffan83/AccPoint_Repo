@@ -578,10 +578,13 @@ public class GestioneMisura extends HttpServlet {
 				
 				 ajax = true;
 				int idSessione = Integer.parseInt(request.getParameter("idSessione"));
+				String noteDisab = request.getParameter("noteDisab");
 				
 				SessioneDTO sessione = GestioneSessioneDAO.getSessioneById(idSessione, session);
 				
-				GestioneSessioneBO.updateAbilitato(sessione,utente,session); //LATO CALVER
+	
+				
+				GestioneSessioneBO.updateAbilitato(sessione,utente,session, noteDisab); //LATO CALVER
 				
 				//LATO DOCUMENTALWEB
 				 boolean rispUpdate = updateAbilitatoFileService(sessione, Costanti.URL_DELIVERY);
@@ -663,6 +666,7 @@ public class GestioneMisura extends HttpServlet {
 
 	    
 	    String sessionId = sessione.getSession_id();
+	    String noteDisab = sessione.getNote_disab();
 	  //  String action = gson.toJson("elimina");
 	    try (OutputStream output = conn.getOutputStream();
 	            PrintWriter writer = new PrintWriter(
@@ -673,6 +677,9 @@ public class GestioneMisura extends HttpServlet {
 
 	           // sessione
 	           addFormField(writer, boundary, "sessioneId", sessionId);
+	           
+	           //noteDisab
+	           addFormField(writer, boundary, "noteDisab", noteDisab);
 
 
 	           // chiusura multipart
@@ -840,6 +847,7 @@ public class GestioneMisura extends HttpServlet {
 	    	System.out.println("misureJson "+ misureJson);
 	        addFormField(writer, boundary, "misureJson", misureJson);
 	        addFormField(writer, boundary, "sessioneJson", sessioneJson);
+	        addFormField(writer, boundary, "email_invio", sessione.getEmail_cliente());
 	        addFormField(writer, boundary, "interventoId", "" + sessione.getId_intervento());
 	        addFilePart(writer, output, boundary, "schedaConsegna", schedaConsegna);
 

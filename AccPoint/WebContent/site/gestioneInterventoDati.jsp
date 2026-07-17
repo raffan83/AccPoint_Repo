@@ -566,9 +566,14 @@
     <span>
         <b>Sessione Invalidata da: </b>${userModificaInvalidaSessione.nominativo} 
     </span>
-     <span style="margin-left: 30px;">
+      <span style="margin-left: 30px;">
           <b>Data Modifica:</b> ${sessione.data_modifica}
          </span>
+     <span style="margin-left: 30px;">
+          <b>Motivo:</b> ${sessione.note_disab}
+         </span>
+         
+        
 </div>
         </c:when>
                    <c:otherwise>
@@ -825,12 +830,17 @@
           <div class="modal-header" id="esitoModalHeader">
             <h4 class="modal-title">Conferma Invalida Sessione</h4>
           </div>
-     
-          <div class="modal-body">
+           <div class="modal-body">
+       <div class="form-group">
+		  <label for="notaDisab">Motivazione invalidazione sessione:</label>
+		  <textarea class="form-control" rows="5" name="notaDisab" id="notaDisab"></textarea>
+		</div>
+	
+          
                 <p>Stai per invalidare questa sessione? Procedere con l'operazione?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="btnConfermaInvio" onClick="invalidaSessione(${sessione.id})">
+                <button type="button" class="btn btn-default" id="btnConfermaInvio"  onClick="invalidaSessione(${sessione.id}, $('#notaDisab').val())">
                     <i class="glyphicon glyphicon-ok"></i> Sì
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"   onClick="chiudiModalInvalidaSessione()" >
@@ -2775,11 +2785,12 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		}
 	 
 	  
-	 function invalidaSessione(idSessione) {
+	 function invalidaSessione(idSessione, noteDisab) {
 		    $.ajax({
 		        url: "gestioneMisura.do?action=invalidaSessione",
 		        type: "POST",
-		        data: { idSessione: idSessione },
+		        data: { idSessione: idSessione,
+		        	noteDisab: noteDisab},
 		        dataType: "json",
 		        success: function(datab) {
 		            console.log("risposta:", datab);

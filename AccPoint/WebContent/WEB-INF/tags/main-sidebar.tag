@@ -77,7 +77,10 @@
     			<li><a href="#" onclick="callAction('listaInterventiOperatore.do?action=filtra_date&mese=1',null,true);">Interventi Operatore</a></li>
     			<% if(user.checkRuolo("AM") || user.checkPermesso("GESTIONE_ASSEGNAZIONE_ATTIVITA_ADMIN")){%>
     			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=lista&admin=1',null,true);">Assegnazione Attività Admin</a></li>
-    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attività Admin</a></li>
+    			<li><a href="#" onclick="callAction('gestioneAssegnazioneAttivita.do?action=controllo_attivita&admin=1',null,true);">Controllo Attività Admin</a></li>		
+    			<% }%>
+    			  	<% if(user.checkRuolo("AM") || user.checkRuolo("SR") ){%>
+    			<li><a href="#" onclick="callAction('listaSessioni.do',null,true);">Lista Sessioni</a></li>
     			
     			<% }%>
     			

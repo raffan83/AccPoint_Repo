@@ -58,9 +58,20 @@ public class GestioneSessioneBO {
 		query.setParameter("_abilitato", abilitato);
 				
 		List<SessioneDTO> result =query.list();
+		int idS=1;
 		if(result.size()>0)
 		{			
-			return result.get(0);
+			int maxId = idS;
+			int i=0;
+			int iMax=0;
+			for(SessioneDTO s: result) {
+				if(s.getId()>maxId) {
+					maxId= s.getId();
+					iMax=i;
+				}
+				i++;
+			}
+			return result.get(iMax);
 		}
 		
 		session.getTransaction().commit();
@@ -75,10 +86,19 @@ public class GestioneSessioneBO {
 	}
 	
 	
-	public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Session session) {
-		GestioneSessioneDAO.updateAbilitato(sessione,utente,session);
+	public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Session session,String noteDisab) {
+		GestioneSessioneDAO.updateAbilitato(sessione,utente,session,noteDisab);
 	}
 	
+	public static ArrayList<SessioneDTO> getSessioni(int year){
+
+		List<SessioneDTO> listaSessioni= new ArrayList<>();
+		listaSessioni = GestioneSessioneDAO.getAllSessioni(year);
+		
+		return (ArrayList) listaSessioni;
+	}
+	
+
 
 	
 	public static void sendEmailClienteDocumentalWeb(File d, String mailTo,ServletContext ctx, SessioneDTO sessione  ) throws Exception {

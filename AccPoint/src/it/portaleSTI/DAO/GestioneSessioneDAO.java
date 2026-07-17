@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -104,7 +105,7 @@ public static void saveSession(SessioneDTO sessione,  Session session) {
 	   
 	}
 		
-public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Session session) {
+public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Session session, String noteDisab) {
 
 	
 	session=SessionFacotryDAO.get().openSession();
@@ -113,12 +114,41 @@ public static void updateAbilitato(SessioneDTO sessione, UtenteDTO utente, Sessi
 	
 		sessione.setData_modifica(new Date());
 		sessione.setUser_modifica(utente);
+		sessione.setNote_disab(noteDisab);
 		sessione.setAbilitato(0);
 		session.merge(sessione);
 
 }
 
+public static ArrayList<SessioneDTO> getAllSessioni(int year){
+	Session session=null;
+	 session =SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		 Query query = session.createQuery(
+			        "from SessioneDTO s where s.dataCreazione >= :inizio " +
+			        "and s.dataCreazione < :fine"
+			    );
 
+			    Calendar inizio = Calendar.getInstance();
+			    inizio.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+
+			    Calendar fine = Calendar.getInstance();
+			    fine.set(year + 1, Calendar.JANUARY, 1, 0, 0, 0);
+
+			    query.setParameter("inizio", inizio.getTime());
+			    query.setParameter("fine", fine.getTime());
+
+			    ArrayList<SessioneDTO> result = new ArrayList<>(query.list());
+
+			    session.getTransaction().commit();
+			    session.close();
+			    if(result.size()>0)
+				{			
+					return result;
+				}
+				
+				return null;
+}
 
 public static ArrayList<SessioneDTO> getListaSessioniScadute(Date today){
 	Session session=null;

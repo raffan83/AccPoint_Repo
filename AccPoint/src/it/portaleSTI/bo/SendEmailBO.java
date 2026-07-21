@@ -2294,6 +2294,8 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 		 email.addTo(referente.getEmail());
+	//	 email.addTo("edoardo.boccitto@ncsnetwork.it");
+
 
 		 ArrayList<InternetAddress> lista_cc = new ArrayList<InternetAddress>();
 		 InternetAddress cc1 = new InternetAddress("segreteria@crescosrl.net");
@@ -2309,10 +2311,13 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 
 		  email.setSubject("Remind Valutazione Efficacia Corso");
 		  
-		  String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
-		  messaggio+="Le ricordiamo che ha l'obbligo di effettuare la valutazione dell'efficacia del corso "+corso.getDescrizione();
-		  messaggio +=" effettuato in data "+df.format(corso.getData_corso())+".<br>";
-		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
+		  String messaggio = "<b>Gentile "+referente.getNome()+" "+referente.getCognome()+"</b>,<br><br>";
+		  messaggio += "Le ricordiamo che, ai sensi dell'<b>Accordo Stato-Regioni del 17 aprile 2025, Parte IV, punto 7</b>,"
+		  		+ " &egrave; necessario effettuare la verifica dell'efficacia della formazione. "
+		  		+ "La invitiamo pertanto a pianificare ed effettuare la valutazione dell'efficacia del corso \"<b>"
+		  		+corso.getDescrizione()+"</b>\", svolto in data <b>"+df.format(corso.getData_corso())+"</b>,"
+		  		+ " documentandone gli esiti secondo le modalit&agrave; previste dalla normativa vigente.<br><br>";
+		  messaggio += "Restiamo a disposizione per eventuali chiarimenti o supporto.<br><br>";
 		  
 		  messaggio +=FIRMA_CALCE_CRESCO;
 		  
@@ -2619,15 +2624,15 @@ public static void main(String[] args) throws Exception {
 	new ContextListener().configCostantApplication();
 	org.hibernate.classic.Session session=SessionFacotryDAO.get().openSession();
 	session.beginTransaction();
-	ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(2017, session);
+	ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(338, session);
 
 //	sendEmailPreavvisoCorso(corso,  session);
 	
 	
 	ForReferenteDTO utente = new ForReferenteDTO();
-	utente.setNome("Raffaele");
-	utente.setCognome("Fantini");
-	utente.setEmail("raffaele.fantini@ncsnetwork.it");
+	utente.setNome("Edoardo");
+	utente.setCognome("Boccitto");
+//	utente.setEmail("raffaele.fantini@ncsnetwork.it");
 	
 	sendEmailEfficaciaCorso(corso,utente);
 		session.getTransaction().commit();

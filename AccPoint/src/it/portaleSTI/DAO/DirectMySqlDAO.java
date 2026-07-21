@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -61,6 +62,7 @@ import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
 import it.portaleSTI.DTO.PRRisorsaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
+import it.portaleSTI.DTO.SessioneDTO;
 import it.portaleSTI.DTO.StatoInterventoDTO;
 import it.portaleSTI.DTO.StatoPackDTO;
 import it.portaleSTI.DTO.StatoStrumentoDTO;
@@ -4653,6 +4655,80 @@ public static HashMap<String, Integer> getHashDecrypt() throws SQLException {
 	
 	return listaHash;
 }
+
+
+public static ArrayList<SessioneDTO> getAllSessioni(int year) throws Exception {
+	
+	ArrayList<SessioneDTO> lista = new ArrayList<SessioneDTO>();
+		
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	try {
+		con=getConnection();
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+	String query = "select  *  from sessione  where sessione.data_creazione >= ? and sessione.data_creazione < ? ";
+	
+	Calendar inizio = Calendar.getInstance();
+    inizio.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+
+    Calendar fine = Calendar.getInstance();
+    fine.set(year + 1, Calendar.JANUARY, 1, 0, 0, 0);
+
+	
+	pst=con.prepareStatement(query);
+	pst.setTimestamp(1, new java.sql.Timestamp(inizio.getTimeInMillis()));
+	pst.setTimestamp(2, new java.sql.Timestamp(fine.getTimeInMillis()));
+
+	rs=pst.executeQuery();
+	
+	SessioneDTO sessione = null;
+	
+	while(rs.next())
+	{
+		sessione = new SessioneDTO();
+		
+		sessione.setId(rs.getInt(1));
+		sessione.setUsername(rs.getString(2));
+		sessione.setPassword(rs.getString(3));
+		sessione.setDataCreazione(rs.getDate(4));
+		sessione.setDataScadenza(rs.getDate(5));
+		sessione.setId_cliente(rs.getInt(6));
+		sessione.setNome_cliente(rs.getString(7));
+		sessione.setId_sede(rs.getInt(8));
+		sessione.setNome_sede(rs.getString(9));
+		sessione.setSession_id(rs.getString(10));
+		sessione.setId_intervento(rs.getInt(11));
+	//	sessione.setUser(rs.getInt(1));
+		sessione.setEmail_cliente(rs.getString(13));
+		sessione.setAbilitato(rs.getInt(14));
+		sessione.setNote_disab(rs.getString(17));
+		
+			
+
+		lista.add(sessione);
+
+		
+	}
+	
+	} catch (Exception e) {
+		
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		pst.close();
+		con.close();
+	}
+	
+
+	return lista;
+}
+
 
 }
 

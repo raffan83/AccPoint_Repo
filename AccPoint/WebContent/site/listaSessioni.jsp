@@ -7,7 +7,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 
-<t:layout title="Documentale" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="extra_css">
   <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
@@ -182,10 +182,6 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
-  <script src="js/customCharts.js"></script>
-  <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-  <script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/date-euro.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
   <script type="text/javascript">

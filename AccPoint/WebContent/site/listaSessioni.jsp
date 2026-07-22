@@ -5,9 +5,10 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 
-<t:layout title="Documentale" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
 
 <jsp:attribute name="extra_css">
   <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
@@ -42,7 +43,14 @@
     color: #1d6fa5;
 }
 
-
+#tabMisuraUtente th:nth-child(10),
+#tabMisuraUtente td:nth-child(10) {
+    width: 180px !important;
+    max-width: 180px;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+}
 </style>
 
 
@@ -154,7 +162,7 @@
     </td>
                   <td>${s.nome_cliente}</td>
                   <td>${s.nome_sede}</td>
-                  <td>${s.email_cliente}</td>
+                  <td>${fn:replace(s.email_cliente, ';', '<wbr/>')}</td>
                      
                 </tr>
               </c:forEach>
@@ -182,10 +190,6 @@
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
-  <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
-  <script src="js/customCharts.js"></script>
-  <script src="https://cdn.datatables.net/select/1.2.2/js/dataTables.select.min.js"></script>
-  <script src="https://cdn.datatables.net/plug-ins/1.10.16/sorting/date-euro.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
   <script type="text/javascript">
@@ -273,6 +277,7 @@
       responsive: true,
       scrollX: false,
       stateSave: true,
+      autoWidth: false,
       columnDefs: [
         { targets: [5, 6], type: 'date' },
         { responsivePriority: 1, targets: 9 },
@@ -282,7 +287,7 @@
         { responsivePriority: 4, targets: 6 },
         { responsivePriority: 5, targets: 7 },
         { responsivePriority: 6, targets: 8 },
-      
+        { width: "100px", targets: 9 }   
      
         
       ],

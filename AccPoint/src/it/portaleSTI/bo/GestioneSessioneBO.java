@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.GestioneSessioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -90,10 +91,10 @@ public class GestioneSessioneBO {
 		GestioneSessioneDAO.updateAbilitato(sessione,utente,session,noteDisab);
 	}
 	
-	public static ArrayList<SessioneDTO> getSessioni(int year){
+	public static ArrayList<SessioneDTO> getSessioni(int year) throws Exception{
 
 		List<SessioneDTO> listaSessioni= new ArrayList<>();
-		listaSessioni = GestioneSessioneDAO.getAllSessioni(year);
+		listaSessioni= DirectMySqlDAO.getAllSessioni(year);
 		
 		return (ArrayList) listaSessioni;
 	}

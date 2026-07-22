@@ -114,7 +114,7 @@
 <%-- <a class="btn btn-warning" title="Click per modificare l'intervento" onClick="modificaStrumento('${strumento.id}','${utl:escapeJS(strumento.descrizione)}','${utl:escapeJS(strumento.matricola)}','${utl:escapeJS(strumento.tipo)}','${utl:escapeJS(strumento.volume)}','${utl:escapeJS(strumento.pressione)}','${utl:escapeJS(strumento.costruttore)}','${utl:escapeJS(strumento.nFabbrica)}','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataVerifica}" />','<fmt:formatDate pattern="dd/MM/yyyy" value="${strumento.dataProssimaVerifica}" />','${utl:escapeJS(strumento.frequenza)}','${utl:escapeJS(strumento.anno)}','${strumento.id_cliente}','${strumento.id_sede}',${utl:escapeJS(utl:toJson(strumento)) })"><i class="fa fa-edit"></i></a> --%>
 
  <a class="btn btn-warning" title="Click per modificare l'intervento" data-strumento='${utl:escapeHTML(utl:toJson(strumento))}'  onclick="modificaStrumento(this)"><i class="fa fa-edit"></i></a>
- <a href="#" class="btn btn-primary customTooltip" title="Click per clonare oggetto in prova" onClick="clona('${strumento.id}')"><i class="fa fa-clone"></i></a>
+ <a href="#" class="btn btn-primary customTooltip" title="Click per clonare oggetto in prova" onClick="openModalConfermaClone('${strumento.id }')"><i class="fa fa-clone"></i></a>
 <a href="#" class="btn btn-primary customTooltip customLink" title="Click per visualizzare gli allegati" onclick="modalAllegati('${strumento.id }')"><i class="fa fa-archive"></i></a>	
 	</td>
 	</tr>
@@ -686,6 +686,29 @@
 </div>
 
 
+  <div class="modal fade" id="myModalConfermaClone" tabindex="-1" role="dialog"
+         data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header" id="esitoModalHeader">
+            <h4 class="modal-title">Conferma Clonazione</h4>
+          </div>
+           <div class="modal-body"
+          
+                <p>Stai per clonare questa attrezzatura? Procedere con l'operazione?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnConfermaInvio"  onClick="clona()">
+                    <i class="glyphicon glyphicon-ok"></i> Sì
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"   onClick="chiudiModalConfermaClone()" >
+                    <i class="glyphicon glyphicon-remove"></i> No
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
+
 
 
 
@@ -905,10 +928,20 @@ function formatDate(data){
 }
 
 
-function clona(id_strumento)
+function openModalConfermaClone(id_strumento){
+	 $('#myModalConfermaClone').data('id-strumento', id_strumento).modal('show');
+	 }
+
+function chiudiModalConfermaClone(){
+	$('#myModalConfermaClone').modal('hide');
+}
+
+function clona()
 {
+	chiudiModalConfermaClone();
+	var id_strumento = $('#myModalConfermaClone').data('id-strumento');
 	dataObj={};
-	dataObj.id_strumento = id_strumento;
+	dataObj.id_strumento =id_strumento;
 	
 	callAjax(dataObj, "amGestioneStrumenti.do?action=clona")
 	

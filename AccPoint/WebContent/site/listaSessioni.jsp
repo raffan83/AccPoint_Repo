@@ -155,10 +155,10 @@
                   <td>${s.session_id}</td>
                   <td>${s.id_intervento} </td>
                   <td>
-    <fmt:formatDate value="${s.dataCreazione}" pattern="yyyy-MM-dd"/>
+    <fmt:formatDate value="${s.dataCreazione}" pattern="dd/MM/yyyy"/>
     </td>
                   <td>
-    <fmt:formatDate value="${s.dataScadenza}" pattern="yyyy-MM-dd"/>
+    <fmt:formatDate value="${s.dataScadenza}" pattern="dd/MM/yyyy"/>
     </td>
                   <td>${s.nome_cliente}</td>
                   <td>${s.nome_sede}</td>
@@ -279,7 +279,7 @@
       stateSave: true,
       autoWidth: false,
       columnDefs: [
-        { targets: [5, 6], type: 'date' },
+      
         { responsivePriority: 1, targets: 9 },
         { responsivePriority: 2, targets: 3 },
         { responsivePriority: 4, targets: 4 },

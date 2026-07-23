@@ -30,10 +30,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.axis2.databinding.types.soapencoding.Array;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -42,6 +44,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.itextpdf.text.log.SysoCounter;
 
 import atg.taglib.json.util.JSONObject;
 import it.portaleSTI.DAO.DirectMySqlDAO;
@@ -428,9 +431,42 @@ public class GestioneMisura extends HttpServlet {
 			     //   ArrayList<MisuraDTO> listaMisure = GestioneInterventoBO.getListaMirureByIntervento(intervento.getId(), session);
 
 			        ArrayList<CertificatoDTO> listaCertificati = new ArrayList<>();
+			        List<File> listaAllegati = new ArrayList<>(); 
 			        for (MisuraDTO mm : listaMisure) {
 			            CertificatoDTO cc = GestioneCertificatoBO.getCertificatoByIdMisura("" + mm.getId(), session);
 			            listaCertificati.add(cc);
+			            if(mm.getFile_allegato()!=null && !mm.getFile_allegato().equals("")) {
+			            	String pathAllegato= Costanti.PATH_FOLDER + File.separator + intervento.getNomePack() + File.separator + mm.getId() + File.separator+"Allegati" + File.separator+mm.getFile_allegato();
+			            	File fAllegato = new File(pathAllegato);
+			            	listaAllegati.add(fAllegato);
+			            }
+			        }
+			        //aggiungo alla scheda di consegna i file allegati dei lat se ci sono
+			        if(listaAllegati.size()>0) {
+			        	File tempMerge = new File(
+			        	        Costanti.PATH_FOLDER 
+			        	        + File.separator 
+			        	        + intervento.getNomePack()
+			        	        + File.separator
+			        	        + "SchedaDiConsegna_temp.pdf"
+			        	);
+			        	PDFMergerUtility merger = new PDFMergerUtility();
+
+			        	// prima la scheda
+			        	merger.addSource(schedaConsegna);
+
+			        	// poi gli allegati
+			        	for (File allegato : listaAllegati) {
+			        	    merger.addSource(allegato);
+			        	}
+
+			        	merger.setDestinationFileName(tempMerge.getAbsolutePath());
+			        	merger.mergeDocuments(null);
+
+			        	// sostituisco la scheda originale
+			        	if (schedaConsegna.delete()) {
+			        	    tempMerge.renameTo(schedaConsegna);
+			        	}
 			        }
 
 			        Date today = new Date();
@@ -462,7 +498,9 @@ public class GestioneMisura extends HttpServlet {
 			        sessione.setEmail_cliente(email);
 			        sessione.setAbilitato(1);
 
-			        ArrayList<MisuraWebDTO> listaMisureWeb = new ArrayList<>();
+			
+			        
+		        ArrayList<MisuraWebDTO> listaMisureWeb = new ArrayList<>();
 			        for (int i = 0; i < listaMisure.size(); i++) {
 			          
 			        	MisuraDTO misura = listaMisure.get(i);

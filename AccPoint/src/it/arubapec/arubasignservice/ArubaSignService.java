@@ -74,8 +74,7 @@ public class ArubaSignService {
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-	//	identity.setDelegated_password("uBFqc8YYslTG");
-		identity.setDelegated_password(Costanti.	PASS_FIRMA);
+		identity.setDelegated_password(Costanti.PASS_FRIMA);
 		
 		sign.setIdentity(identity);
 		//${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}
@@ -150,8 +149,7 @@ public class ArubaSignService {
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-	//	identity.setDelegated_password("uBFqc8YYslTG");
-		identity.setDelegated_password(Costanti.	PASS_FIRMA);	
+		identity.setDelegated_password(Costanti.PASS_FRIMA);	
 		
 		sign.setIdentity(identity);
 		
@@ -228,8 +226,7 @@ public static JsonObject signDocumento(String utente, String filename) throws Ty
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-	//	identity.setDelegated_password("uBFqc8YYslTG");
-		identity.setDelegated_password(Costanti.	PASS_FIRMA);
+		identity.setDelegated_password(Costanti.PASS_FRIMA);
 		
 		sign.setIdentity(identity);
 	
@@ -301,8 +298,7 @@ public static JsonObject signDocumentoPades(String utente, String filename) thro
 	identity.setUser(utente);
 	
 	identity.setDelegated_user("admin.firma");
-//	identity.setDelegated_password("uBFqc8YYslTG");
-	identity.setDelegated_password(Costanti.	PASS_FIRMA);
+	identity.setDelegated_password(Costanti.PASS_FRIMA);
 	
 	sign.setIdentity(identity);
 
@@ -378,8 +374,7 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 	identity.setUser(utente.getIdFirma());
 	
 	identity.setDelegated_user("admin.firma");
-	//identity.setDelegated_password("uBFqc8YYslTG");
-	identity.setDelegated_password(Costanti.	PASS_FIRMA);
+	identity.setDelegated_password(Costanti.PASS_FRIMA);
 	
 	sign.setIdentity(identity);
 	
@@ -481,8 +476,7 @@ public static JsonObject signRilievoPades(UtenteDTO utente,String keyWord, RilMi
 	identity.setUser(utente.getIdFirma());
 	
 	identity.setDelegated_user("admin.firma");
-//	identity.setDelegated_password("uBFqc8YYslTG");
-	identity.setDelegated_password(Costanti.	PASS_FIRMA);
+	identity.setDelegated_password(Costanti.PASS_FRIMA);
 	
 	sign.setIdentity(identity);
 	
@@ -620,8 +614,7 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 
 	
 	identity.setDelegated_user("admin.firma");
-	//identity.setDelegated_password("uBFqc8YYslTG");
-	identity.setDelegated_password(Costanti.	PASS_FIRMA);
+	identity.setDelegated_password(Costanti.PASS_FRIMA);
 
 	
 	String path = Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+File.separator +certificato.getNomeCertificato();

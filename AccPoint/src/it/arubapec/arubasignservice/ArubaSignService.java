@@ -52,6 +52,11 @@ import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 
 public class ArubaSignService {
 
+	private static final String SOSTITUTO_LAT = "alessio.aversali";
+	private static final String RESPONSABILE_LAT = "eliseo.crescenzi";
+	private static final String KEY_WORD_LAT = "Alessio";
+
+
 	public static JsonObject sign(String utente, CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
 	
 		 
@@ -65,19 +70,11 @@ public class ArubaSignService {
 		
 		sign.setCertID("AS0");
 		
-		Auth identity = new Auth();
-		identity.setDelegated_domain("faSTI");
-		identity.setTypeOtpAuth("faSTI");
-		identity.setOtpPwd("dsign");
-		identity.setTypeOtpAuth("faSTI");
-		
+		Auth identity = getAuth();
 		identity.setUser(utente);
 		
-		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password(Costanti.PASS_FRIMA);
-		
 		sign.setIdentity(identity);
-		//${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}
+
 		
 		String nomeCert = Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+"/"+certificato.getNomeCertificato();
 		File f = new File(nomeCert);
@@ -87,9 +84,7 @@ public class ArubaSignService {
 		javax.activation.DataHandler dh = new DataHandler(uri.toURL());
 		
 		sign.setBinaryinput(dh);
-	//	sign.setSrcName("C:\\Users\\raffaele.fantini\\Desktop\\FirmDigitale\\Test\\test_firm.pdf");
-		
-	//	sign.setDstName("C:\\Users\\raffaele.fantini\\Desktop\\FirmDigitale\\Test\\TestFirm_firmato.pdf.p7m");
+
 		
 		
 		sign.setTransport(TypeTransport.BYNARYNET);
@@ -103,10 +98,7 @@ public class ArubaSignService {
 		
 
 	
-//	System.out.println("Status :"+response.getPkcs7SignV2Response().get_return().getStatus());
-//	System.out.println("Status :"+response.getPkcs7SignV2Response().get_return().getDescription());
-//	System.out.println("Status :"+response.getPkcs7SignV2Response().get_return().getReturn_code());
-	
+
 		if( response.getPkcs7SignV2Response().get_return().getStatus().equals("KO")) {
 			jsonObj.addProperty("success", false);
 			jsonObj.addProperty("messaggio", response.getPkcs7SignV2Response().get_return().getDescription());
@@ -140,16 +132,8 @@ public class ArubaSignService {
 		
 		sign.setCertID("AS0");
 		
-		Auth identity = new Auth();
-		identity.setDelegated_domain("faSTI");
-		identity.setTypeOtpAuth("faSTI");
-		identity.setOtpPwd("dsign");
-		identity.setTypeOtpAuth("faSTI");
-		
+		Auth identity = getAuth();
 		identity.setUser(utente);
-		
-		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password(Costanti.PASS_FRIMA);	
 		
 		sign.setIdentity(identity);
 		
@@ -162,9 +146,7 @@ public class ArubaSignService {
 		javax.activation.DataHandler dh = new DataHandler(uri.toURL());
 		
 		sign.setBinaryinput(dh);
-	//	sign.setSrcName("C:\\Users\\raffaele.fantini\\Desktop\\FirmDigitale\\Test\\test_firm.pdf");
-		
-	//	sign.setDstName("C:\\Users\\raffaele.fantini\\Desktop\\FirmDigitale\\Test\\TestFirm_firmato.pdf.p7m");
+	
 		
 		
 		sign.setTransport(TypeTransport.BYNARYNET);
@@ -178,9 +160,6 @@ public class ArubaSignService {
 		
 
 	
-	//System.out.println("Status :"+response.getPkcs7SignV2Response().get_return().getStatus());
-	//System.out.println("Status :"+response.getPkcs7SignV2Response().get_return().getDescription());
-	//System.out.println("Status :"+response.getPkcs7SignV2Response().get_return().getReturn_code());
 	
 		if( response.getPkcs7SignV2Response().get_return().getStatus().equals("KO")) {
 			jsonObj.addProperty("success", false);
@@ -217,16 +196,8 @@ public static JsonObject signDocumento(String utente, String filename) throws Ty
 		
 		sign.setCertID("AS0");
 		
-		Auth identity = new Auth();
-		identity.setDelegated_domain("faSTI");
-		identity.setTypeOtpAuth("faSTI");
-		identity.setOtpPwd("dsign");
-		identity.setTypeOtpAuth("faSTI");
-		
+		Auth identity = getAuth();
 		identity.setUser(utente);
-		
-		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password(Costanti.PASS_FRIMA);
 		
 		sign.setIdentity(identity);
 	
@@ -289,16 +260,9 @@ public static JsonObject signDocumentoPades(String utente, String filename) thro
 	
 	sign.setCertID("AS0");
 	
-	Auth identity = new Auth();
-	identity.setDelegated_domain("faSTI");
-	identity.setTypeOtpAuth("faSTI");
-	identity.setOtpPwd("dsign");
-	identity.setTypeOtpAuth("faSTI");
-	
+	Auth identity = getAuth();
 	identity.setUser(utente);
 	
-	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password(Costanti.PASS_FRIMA);
 	
 	sign.setIdentity(identity);
 
@@ -365,16 +329,8 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 	
 	sign.setCertID("AS0");
 	
-	Auth identity = new Auth();
-	identity.setDelegated_domain("faSTI");
-	identity.setTypeOtpAuth("faSTI");
-	identity.setOtpPwd("dsign");
-	identity.setTypeOtpAuth("faSTI");
-	
+	Auth identity = getAuth();
 	identity.setUser(utente.getIdFirma());
-	
-	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password(Costanti.PASS_FRIMA);
 	
 	sign.setIdentity(identity);
 	
@@ -412,7 +368,7 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 			}
 		}
 		
-	//  apparence.setImage(Costanti.PATH_FOLDER+"FileFirme\\"+utente.getFile_firma());
+
 	    
 		apparence.setImage(utente.getFile_firma());
 	  
@@ -435,7 +391,7 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
      if( !response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
 
      	DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
-     	//File targetFile=  new File(path);
+     	
      	File targetFile=  new File(path);
      			     			
      	FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
@@ -467,16 +423,8 @@ public static JsonObject signRilievoPades(UtenteDTO utente,String keyWord, RilMi
 	
 	sign.setCertID("AS0");
 	
-	Auth identity = new Auth();
-	identity.setDelegated_domain("faSTI");
-	identity.setTypeOtpAuth("faSTI");
-	identity.setOtpPwd("dsign");
-	identity.setTypeOtpAuth("faSTI");
-	
+	Auth identity = getAuth();
 	identity.setUser(utente.getIdFirma());
-	
-	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password(Costanti.PASS_FRIMA);
 	
 	sign.setIdentity(identity);
 	
@@ -606,15 +554,8 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 	
 	sign.setCertID("AS0");
 	
-	Auth identity = new Auth();
-	identity.setDelegated_domain("faSTI");
-	identity.setTypeOtpAuth("faSTI");
-	identity.setOtpPwd("dsign");
-	identity.setTypeOtpAuth("faSTI");
+	Auth identity = getAuth();
 
-	
-	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password(Costanti.PASS_FRIMA);
 
 	
 	String path = Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+File.separator +certificato.getNomeCertificato();
@@ -636,7 +577,7 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 	    Integer[] fontPosition = null;
 	    boolean AlessioPresent=false;
 		for(int i = 1;i<=reader.getNumberOfPages();i++) {
-			fontPosition = getFontPosition(reader, "Alessio", i);
+			fontPosition = getFontPosition(reader, KEY_WORD_LAT, i);
 			
 			if(fontPosition[0] != null && fontPosition[1] != null) {
 	      	AlessioPresent = true;
@@ -645,10 +586,10 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 			}
 		} 
 		if(AlessioPresent) {
-			identity.setUser("alessio.aversali");
+			identity.setUser(SOSTITUTO_LAT);
 		} else {
-		//	identity.setUser("alessio.aversali");		
-			identity.setUser("eliseo.crescenzi");
+		
+			identity.setUser(RESPONSABILE_LAT);
 		}
 		
 		sign.setIdentity(identity);
@@ -672,7 +613,7 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
      if( !response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
 
      	DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
-     	//File targetFile=  new File(path);
+   
      	File targetFile=  new File(path);
      			     			
      	FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
@@ -686,6 +627,21 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 	return myObj;
 
 
+}
+
+
+private static Auth getAuth() {
+	Auth identity = new Auth();
+	identity.setDelegated_domain("faSTI");
+	identity.setTypeOtpAuth("faSTI");
+	identity.setOtpPwd("dsign");
+	identity.setTypeOtpAuth("faSTI");
+
+	
+	identity.setDelegated_user("admin.firma");
+	identity.setDelegated_password(Costanti.PASS_FIRMA);
+	
+	return identity;
 }
 
 }

@@ -10787,10 +10787,11 @@ function submitNuovaMisura( note_obsolescenza, cliente, check_nome_lat){
    			  	$('#myModalError').removeClass();
    				$('#myModalError').addClass("modal modal-warning");	  
 						$('#visualizza_report').show();
-						$('#myModalError').modal('show');
-					
-   	   						location.reload()
-   	   					
+						 $('#myModalError').one('hidden.bs.modal', function () {
+						        location.reload();
+						    });
+
+						    $('#myModalError').modal('show');
 
    		  }
 

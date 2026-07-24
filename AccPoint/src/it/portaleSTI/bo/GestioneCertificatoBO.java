@@ -1143,6 +1143,36 @@ public class GestioneCertificatoBO {
 			}
 		
 	}
+	
+	
+	public static void uploadCertificatoLat(FileItem item, String pack, int idInt, int id_strumento) throws Exception {
+		String nomeFile=pack+"_"+idInt+""+id_strumento+".pdf";
+		String pathFile= Costanti.PATH_FOLDER+ File.separator +pack+ File.separator + nomeFile;
+
+		
+		File f_temp= new File(Costanti.PATH_FOLDER+File.separator+ pack + File.separator +item.getName());
+		try {
+			item.write(f_temp);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//applicoTestata
+		Utility.applicaTestata(f_temp.getAbsolutePath(),  "C:\\Users\\edoardo.boccitto\\Desktop\\header.png", pathFile); //da cambiare
+		
+	
+		File f = new File(pathFile);
+    	f_temp.delete();
+		
+		try {
+			item.write(f);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	public static JsonObject addSign(UtenteDTO utente, String keyWord, boolean multi, CertificatoDTO certificato) throws Exception {
 		

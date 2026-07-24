@@ -1795,7 +1795,28 @@
   
   
   
-  
+  <div class="modal fade" id="modalErroreDate" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header bg-danger">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Attenzione</h4>
+            </div>
+
+            <div class="modal-body">
+                <p id="messaggioErroreDate"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">
+                    OK
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
   
   
   
@@ -2148,7 +2169,8 @@ function reloadDrive()   {
 
  $('#formNuovaMisura').on('submit', function (e) {
 	    e.preventDefault();
-
+	
+		
 	    if ($('#id_strumento').val() != null && $('#id_strumento').val() !== '') {
 
 	        if ($('#check_lat').is(':checked')) {
@@ -2486,11 +2508,15 @@ function reloadDrive()   {
 				$('#check_lat').iCheck('uncheck');
 				$('#lat_master').attr("disabled", true);
 				$('#lat_master').attr("required", false);
+				$('#lat_master').val(0).change();
+				 $('#nCertificato').val('');
+				 $('#nCertificato').prop('required', false);
 			 }else{
 				
 				$('#check_lat').iCheck('check');				
 				$('#lat_master').attr("disabled", false);
 				$('#lat_master').attr("required", true);
+				 $('#nCertificato').prop('required', true);
 			 }
 
 		 });   
@@ -2835,13 +2861,54 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
     	
     	var t_doc = initRequisitiTable('#tabRequisitiDocumentaliModal')
     	var t_san = initRequisitiTable('#tabRequisitiSanitariModal')
+    	 $('#nCertificato').prop('required', true);
+
+    $('#data_misura, #data_emissione').on('change', function () {
+    controllaDate();
+});
+
+    	function controllaDate() {
+
+    	    var dataMisura = moment($('#data_misura').val(), "DD/MM/YYYY");
+    	    var dataEmissione = moment($('#data_emissione').val(), "DD/MM/YYYY");
+
+    	    if (!dataMisura.isValid() || !dataEmissione.isValid()) {
+    	        return;
+    	    }
+
+    	    if (dataMisura.isAfter(dataEmissione)) {
+    	    	 mostraErroreDate("La data di misura non può essere successiva alla data di emissione.");
+    	    	    $('#data_emissione').val('');
+    	    	    return;
+    	    }
+
+    	    if (dataEmissione.diff(dataMisura, 'days') > 5) {
+    	    	 mostraErroreDate("Tra la data di misura e la data di emissione non possono trascorrere più di 5 giorni.");
+    	    	    $('#data_emissione').val('');
+    	    	    return;
+    	    }
+    	}
     	
+    	
+    	function mostraErroreDate(messaggio) {
+    	    $('#messaggioErroreDate').text(messaggio);
+    	    $('#modalErroreDate').modal('show');
+    	}
+
+function parseData(data) {
+    var parti = data.split('/');
+    return new Date(parti[2], parti[1] - 1, parti[0]);
+}
     	
     	$('#lat_master').on('change', function () {
         var rif = $('#lat_master option:selected').data('rif');
+        var siglaCertificato = "00283LAT" + $('#lat_master option:selected').data('sigla');
+       
 
         $('#lat_master_rif').val(rif);
-
+        $('#nCertificato').val(siglaCertificato);
+        
+        console.log("sigla:", nCertificato);
         console.log("rif aggiornato:", rif);
     });
     	

@@ -30,7 +30,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mysql.jdbc.Util;
 
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -57,6 +59,7 @@ import it.portaleSTI.DTO.TipoRapportoDTO;
 import it.portaleSTI.DTO.TipoStrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
+import it.portaleSTI.Util.ApplicaTestata;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
@@ -67,6 +70,7 @@ import it.portaleSTI.bo.GestioneMagazzinoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
 import it.portaleSTI.bo.GestioneRilieviBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -488,7 +492,11 @@ public class GestioneIntervento extends HttpServlet {
 			    		session.save(interventoDati);
 			    		String nomeFilePdfCertificato= "";
 			    		if(file_pdf!=null && !file_pdf.getName().equals("")) {
+			    			if(lat_master!=null && !lat_master.equals("")) {
+			    				nomeFilePdfCertificato= saveExcelPDFLat(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
+			    			} else {
 			    			nomeFilePdfCertificato= saveExcelPDF(file_pdf,intervento.getNomePack(),interventoDati.getId(),id_strumento);	
+			    			}
 			    		}
 			    		
 			    		LatMisuraDTO misuraLAT = new LatMisuraDTO();
@@ -602,19 +610,37 @@ public class GestioneIntervento extends HttpServlet {
 			    		}else {
 			    			certificato.setDataCreazione(new Date());	
 			    		}
-						
-						
-						int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
 			    		
+			    		
+			    		boolean success =false;
+			    		if(file_pdf!=null && !file_pdf.getName().equals("") && certificato.getMisura().getLat().equals("S")) {
+			    		//controlloFirma
+			    		JsonObject jsonOP = new JsonObject();
+			    	
+			    		jsonOP =	ArubaSignService.signCertificatoPadesLat(certificato);
+
+			    		success = jsonOP.get("success").getAsBoolean();
+			    		}
+			    	
+			    		int idItem=GestioneMagazzinoBO.checkStrumentoInMagazzino(misura.getStrumento().get__id(),misura.getIntervento().getIdCommessa());
 			    		if(idItem!=0) 
 			    		{
 			    		 GestioneMagazzinoBO.cambiaStatoStrumento(idItem, 2, session);
 			    		}
 			    		GestioneInterventoBO.setControllato(intervento.getId(), utente.getId(), 0, session);
 			    		session.save(certificato);
-			    							
+			    
+						
+						if (!success && (file_pdf==null || file_pdf.getName().equals("") ) && certificato.getMisura().getLat().equals("S")) {
+			    			myObj.addProperty("success", false);	
+			    			myObj.addProperty("messaggio", "Misura inserita senza certificato");
+			    		} else if (!success && certificato.getMisura().getLat().equals("S")) {
+			    			myObj.addProperty("success", false);	
+			    			myObj.addProperty("messaggio", "Non è stato possibile firmare digitalmente la misura!");
+			    		} else {
 						myObj.addProperty("success", true);				
 						myObj.addProperty("messaggio", "Misura inserita con successo!");
+			    		}
 						out.print(myObj);
 				}
 				
@@ -930,6 +956,38 @@ public class GestioneIntervento extends HttpServlet {
 		String nomeFile=nomePack+"_"+idInt+""+id_strumento+".pdf";
 		
 		File f= new File(Costanti.PATH_FOLDER+"//"+nomePack+"//"+nomePack+"_"+idInt+""+id_strumento+".pdf");
+		
+		try {
+			item.write(f);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return nomeFile;
+	}
+	
+	
+	private String saveExcelPDFLat(FileItem item, String nomePack, int idInt, String id_strumento) throws Exception {
+		
+		String nomeFile=nomePack+"_"+idInt+""+id_strumento+".pdf";
+		String pathFile= Costanti.PATH_FOLDER+ File.separator +nomePack+ File.separator + nomeFile;
+
+		
+		File f_temp= new File(Costanti.PATH_FOLDER+File.separator+ nomePack + File.separator +item.getName());
+		try {
+			item.write(f_temp);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//applicoTestata
+		Utility.applicaTestata(f_temp.getAbsolutePath(),  "C:\\Users\\edoardo.boccitto\\Desktop\\header.png", pathFile); //da cambiare
+		
+	
+		File f = new File(pathFile);
+    	f_temp.delete();
 		
 		try {
 			item.write(f);

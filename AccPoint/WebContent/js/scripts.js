@@ -9758,7 +9758,8 @@ function eliminaAllegato(id_misura, id_strumento, caller){
 
 
 function submitFormCertificato(){
-	  
+	pleaseWaitDiv = $('#pleaseWaitDialog');
+	pleaseWaitDiv.modal();
 	  var form = $('#formCertificato')[0]; 
 	  var formData = new FormData(form);
 	  
@@ -9777,6 +9778,7 @@ function submitFormCertificato(){
 
     		  if(data.success)
     		  { 
+    			  pleaseWaitDiv.hide();
     			$('#report_button').hide();
 				$('#visualizza_report').hide();
 				$('#myModalErrorContent').html(data.messaggio);
@@ -9798,6 +9800,7 @@ function submitFormCertificato(){
     			
     		  }else
     		  {
+    			  pleaseWaitDiv.hide();
     			$('#report_button').hide();
 				$('#visualizza_report').hide();
 				$('#myModalErrorContent').html(data.messaggio);
@@ -10727,8 +10730,11 @@ function submitNuovaMisura( note_obsolescenza, cliente, check_nome_lat){
 	  if(note_obsolescenza!=null){
 		  $('#note_obsolescenza_form').val(note_obsolescenza);  
 	  }	  
+	  pleaseWaitDiv = $('#pleaseWaitDialog');
+		pleaseWaitDiv.modal();
 	  var form = $('#formNuovaMisura')[0]; 
 	  var formData = new FormData(form);
+	    
 	  
 	  var url = "gestioneIntervento.do?action=nuova_misura";
 	  if(cliente!=null){
@@ -10756,7 +10762,7 @@ function submitNuovaMisura( note_obsolescenza, cliente, check_nome_lat){
    					  
    					$('#myModalYesOrNo').modal('show');
    				  }else{
-   					  $('#report_button').hide();
+   					 $('#report_button').hide();
    					$('#visualizza_report').hide();
    					$('#myModalErrorContent').html(data.messaggio);
    	   			  	$('#myModalError').removeClass();
@@ -10777,15 +10783,17 @@ function submitNuovaMisura( note_obsolescenza, cliente, check_nome_lat){
    			  }
 
    		  }else{
-   			  $('#myModalErrorContent').html("Errore nell'inserimento della misura!");
+   			  $('#myModalErrorContent').html(data.messaggio);
    			  	$('#myModalError').removeClass();
-   				$('#myModalError').addClass("modal modal-danger");	  
-   				$('#report_button').show();
+   				$('#myModalError').addClass("modal modal-warning");	  
 						$('#visualizza_report').show();
 						$('#myModalError').modal('show');
-						
+					
+   	   						location.reload()
+   	   					
 
    		  }
+
    	  },
 
    	  error: function(jqXHR, textStatus, errorThrown){
@@ -10798,7 +10806,10 @@ function submitNuovaMisura( note_obsolescenza, cliente, check_nome_lat){
 				$('#myModalError').modal('show');
 				
 			
-   	  }
+   	  },
+   	complete: function(){
+   	    pleaseWaitDiv.modal('hide');
+   	}
      });
 	 
 }

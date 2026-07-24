@@ -82,8 +82,15 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.sun.mail.smtp.SMTPMessage;
 import com.sun.mail.smtp.SMTPTransport;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+
 
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
@@ -2379,5 +2386,38 @@ public class Utility extends HttpServlet {
 					return false;
 				}
 			}
+
+			public static void applicaTestata(String inputPdf, String headerPng, String outputPdf) throws Exception {
+
+		
+			       headerPng = "C:\\Users\\edoardo.boccitto\\Desktop\\header.png";
+			     //  headerPng = Costanti.PATH_FOLDER_LOGHI +File.separator +"header.png";
+
+			        PdfReader reader = new PdfReader(inputPdf);
+			        PdfStamper stamper = new PdfStamper(reader,
+			                new FileOutputStream(outputPdf));
+
+			        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+
+			            Rectangle page = reader.getPageSize(i);
+
+			            com.itextpdf.text.Image header = com.itextpdf.text.Image.getInstance(headerPng);
+
+			            // Adatta l'immagine alla larghezza della pagina
+			            header.scaleAbsolute(page.getWidth(), 125);
+
+			            // Posizionamento in alto
+			            float x = 0;
+			            float y = page.getHeight() - 125;
+
+			            header.setAbsolutePosition(x, y);
+
+			            PdfContentByte cb = stamper.getOverContent(i);
+			            cb.addImage(header);
+			        }
+
+			        stamper.close();
+			        reader.close();
+			    }
 
 }

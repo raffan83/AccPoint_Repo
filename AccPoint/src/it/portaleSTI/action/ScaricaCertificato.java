@@ -24,6 +24,7 @@ import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
 
+import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneMisuraDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -417,12 +418,19 @@ public class ScaricaCertificato extends HttpServlet {
 				
 					items = uploadHandler.parseRequest(request);
 					
+			
+					
 					for (FileItem item : items) {
 						if (item.isFormField()) {
 						
 						}else {
 							if(item.getName()!="") {
-								GestioneCertificatoBO.uploadCertificato(item, pack, certificato.getMisura().getInterventoDati().getId(), certificato.getMisura().getStrumento().get__id());								
+								if(certificato.getMisura().getLat().equals("S")) {
+									GestioneCertificatoBO.uploadCertificatoLat(item, pack, certificato.getMisura().getInterventoDati().getId(), certificato.getMisura().getStrumento().get__id());	
+									
+								} else {
+								GestioneCertificatoBO.uploadCertificato(item, pack, certificato.getMisura().getInterventoDati().getId(), certificato.getMisura().getStrumento().get__id());		
+								}
 							}		
 						}
 					}
@@ -430,6 +438,15 @@ public class ScaricaCertificato extends HttpServlet {
 					String filename=pack+"_"+certificato.getMisura().getInterventoDati().getId()+""+certificato.getMisura().getStrumento().get__id()+".pdf";
 					certificato.setStato(new StatoCertificatoDTO(2));
 					certificato.setNomeCertificato(filename);
+					
+					//firma certificato solo se LAT
+					if(certificato.getMisura().getLat().equals("S")) {	
+						JsonObject jsonOP = new JsonObject();
+			    	
+						jsonOP =	ArubaSignService.signCertificatoPadesLat(certificato);
+
+						boolean success = jsonOP.get("success").getAsBoolean();
+					}
 				
 					session.update(certificato);
 					session.getTransaction().commit();

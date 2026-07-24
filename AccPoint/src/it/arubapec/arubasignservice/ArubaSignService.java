@@ -47,6 +47,7 @@ import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.Util.Costanti;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 
 public class ArubaSignService {
@@ -73,7 +74,8 @@ public class ArubaSignService {
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password("uBFqc8YYslTG");
+	//	identity.setDelegated_password("uBFqc8YYslTG");
+		identity.setDelegated_password(Costanti.	PASS_FIRMA);
 		
 		sign.setIdentity(identity);
 		//${certificato.nomeCertificato}&pack=${certificato.misura.intervento.nomePack}
@@ -148,7 +150,8 @@ public class ArubaSignService {
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password("uBFqc8YYslTG");
+	//	identity.setDelegated_password("uBFqc8YYslTG");
+		identity.setDelegated_password(Costanti.	PASS_FIRMA);	
 		
 		sign.setIdentity(identity);
 		
@@ -225,7 +228,8 @@ public static JsonObject signDocumento(String utente, String filename) throws Ty
 		identity.setUser(utente);
 		
 		identity.setDelegated_user("admin.firma");
-		identity.setDelegated_password("uBFqc8YYslTG");
+	//	identity.setDelegated_password("uBFqc8YYslTG");
+		identity.setDelegated_password(Costanti.	PASS_FIRMA);
 		
 		sign.setIdentity(identity);
 	
@@ -297,7 +301,8 @@ public static JsonObject signDocumentoPades(String utente, String filename) thro
 	identity.setUser(utente);
 	
 	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password("uBFqc8YYslTG");
+//	identity.setDelegated_password("uBFqc8YYslTG");
+	identity.setDelegated_password(Costanti.	PASS_FIRMA);
 	
 	sign.setIdentity(identity);
 
@@ -373,7 +378,8 @@ public static JsonObject signCertificatoPades(UtenteDTO utente,String keyWord, b
 	identity.setUser(utente.getIdFirma());
 	
 	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password("uBFqc8YYslTG");
+	//identity.setDelegated_password("uBFqc8YYslTG");
+	identity.setDelegated_password(Costanti.	PASS_FIRMA);
 	
 	sign.setIdentity(identity);
 	
@@ -475,7 +481,8 @@ public static JsonObject signRilievoPades(UtenteDTO utente,String keyWord, RilMi
 	identity.setUser(utente.getIdFirma());
 	
 	identity.setDelegated_user("admin.firma");
-	identity.setDelegated_password("uBFqc8YYslTG");
+//	identity.setDelegated_password("uBFqc8YYslTG");
+	identity.setDelegated_password(Costanti.	PASS_FIRMA);
 	
 	sign.setIdentity(identity);
 	
@@ -591,6 +598,101 @@ private static Integer[] getFontPosition(  PdfReader pdfReader, final String key
     return result;
 }
 
+public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
+	
 
+	ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
+	
+	
+	PdfsignatureV2E request= new PdfsignatureV2E();
+	PdfsignatureV2 pkcs = new PdfsignatureV2();
+	
+	SignRequestV2  sign = new SignRequestV2();
+	
+	
+	sign.setCertID("AS0");
+	
+	Auth identity = new Auth();
+	identity.setDelegated_domain("faSTI");
+	identity.setTypeOtpAuth("faSTI");
+	identity.setOtpPwd("dsign");
+	identity.setTypeOtpAuth("faSTI");
+
+	
+	identity.setDelegated_user("admin.firma");
+	//identity.setDelegated_password("uBFqc8YYslTG");
+	identity.setDelegated_password(Costanti.	PASS_FIRMA);
+
+	
+	String path = Costanti.PATH_FOLDER+certificato.getMisura().getIntervento().getNomePack()+File.separator +certificato.getNomeCertificato();
+	
+	File f = new File(path);
+
+	URI uri = f.toURI();	
+
+
+	javax.activation.DataHandler dh = new DataHandler(uri.toURL());
+	
+	
+ 	
+ 	
+
+		
+	    PdfReader reader = new PdfReader(path);
+		
+	    Integer[] fontPosition = null;
+	    boolean AlessioPresent=false;
+		for(int i = 1;i<=reader.getNumberOfPages();i++) {
+			fontPosition = getFontPosition(reader, "Alessio", i);
+			
+			if(fontPosition[0] != null && fontPosition[1] != null) {
+	      	AlessioPresent = true;
+		
+				break;
+			}
+		} 
+		if(AlessioPresent) {
+			identity.setUser("alessio.aversali");
+		} else {
+		//	identity.setUser("alessio.aversali");		
+			identity.setUser("eliseo.crescenzi");
+		}
+		
+		sign.setIdentity(identity);
+		sign.setBinaryinput(dh);
+
+		sign.setTransport(TypeTransport.BYNARYNET);	
+
+		pkcs.setSignRequestV2(sign);
+		pkcs.setPdfprofile(PdfProfile.BASIC);
+	 	request.setPdfsignatureV2(pkcs);
+	 	
+	 	
+	    reader.close();
+	
+	
+    
+     PdfsignatureV2ResponseE response= stub.pdfsignatureV2(request);
+     
+     JsonObject myObj = new JsonObject();
+     		
+     if( !response.getPdfsignatureV2Response().get_return().getStatus().equals("KO")) {
+
+     	DataHandler fileReturn=response.getPdfsignatureV2Response().get_return().getBinaryoutput();
+     	//File targetFile=  new File(path);
+     	File targetFile=  new File(path);
+     			     			
+     	FileUtils.copyInputStreamToFile(fileReturn.getInputStream(), targetFile);
+     	myObj.addProperty("success", true);
+     }else {
+    	 myObj.addProperty("success", false);
+     }
+
+	
+	
+	return myObj;
+
+
+}
 
 }

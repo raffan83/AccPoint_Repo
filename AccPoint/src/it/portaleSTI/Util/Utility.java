@@ -2387,11 +2387,11 @@ public class Utility extends HttpServlet {
 				}
 			}
 
-			public static void applicaTestata(String inputPdf, String headerPng, String outputPdf) throws Exception {
+			public static void applicaTestata(String inputPdf, String outputPdf) throws Exception {
 
 		
-			       headerPng = "C:\\Users\\edoardo.boccitto\\Desktop\\header.png";
-			     //  headerPng = Costanti.PATH_FOLDER_LOGHI +File.separator +"header.png";
+			   //    headerPng = "C:\\Users\\edoardo.boccitto\\Desktop\\header.png";
+			      String headerPng = Costanti.PATH_FOLDER_LOGHI +File.separator +"header.png";
 
 			        PdfReader reader = new PdfReader(inputPdf);
 			        PdfStamper stamper = new PdfStamper(reader,

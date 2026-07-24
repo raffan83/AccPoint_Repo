@@ -845,7 +845,22 @@ public class GestioneMisura extends HttpServlet {
 	        File schedaConsegna, Session session, String urlDestinazione) throws Exception {
 
 		
-	
+	//non mi porto lista misure in JSon(potrebbe essere troppo grande e creare problemi
+		SessioneDTO sessioneWeb =new SessioneDTO();
+		   sessioneWeb.setSession_id(sessione.getSession_id());
+	        sessioneWeb.setUsername(sessione.getUsername());
+	        sessioneWeb.setPassword(sessione.getPassword());
+	        sessioneWeb.setDataCreazione(sessione.getDataCreazione());
+	        sessioneWeb.setDataScadenza(sessione.getDataScadenza());
+	        sessioneWeb.setNome_cliente(sessione.getNome_cliente());
+	        sessioneWeb.setId_cliente(sessione.getId_cliente());
+	        sessioneWeb.setNome_sede(sessione.getNome_sede());
+	        sessioneWeb.setId_sede(sessione.getId_sede());
+	        sessioneWeb.setId_intervento(sessione.getId_intervento());
+	        sessioneWeb.setUser(sessione.getUser());
+	        sessioneWeb.setEmail_cliente(sessione.getEmail_cliente());
+	        sessioneWeb.setAbilitato(1);
+		
 	    String token = "TOKEN_SEGRETO_123456";
 	    String boundary = "----Boundary" + System.currentTimeMillis();
 
@@ -876,15 +891,17 @@ public class GestioneMisura extends HttpServlet {
 
 	    System.out.println("id cliente (inviaFile): " + sessione.getId_cliente());
 	    String misureJson = gson.toJson(listaMisure);
-	    String sessioneJson = gson.toJson(sessione);
+	    String sessioneJson = gson.toJson(sessioneWeb);
+	  
 
 	    //  Try-with-resources SOLO per l'invio
 	    try (OutputStream output = conn.getOutputStream();
 	         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, "UTF-8"), true)) {
 
-	    	System.out.println("misureJson "+ misureJson);
+	    	
 	        addFormField(writer, boundary, "misureJson", misureJson);
 	        addFormField(writer, boundary, "sessioneJson", sessioneJson);
+	        
 	        addFormField(writer, boundary, "email_invio", sessione.getEmail_cliente());
 	        addFormField(writer, boundary, "interventoId", "" + sessione.getId_intervento());
 	        addFilePart(writer, output, boundary, "schedaConsegna", schedaConsegna);

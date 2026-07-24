@@ -1159,7 +1159,7 @@ public class GestioneCertificatoBO {
 		}
 		
 		//applicoTestata
-		Utility.applicaTestata(f_temp.getAbsolutePath(),  "C:\\Users\\edoardo.boccitto\\Desktop\\header.png", pathFile); //da cambiare
+		Utility.applicaTestata(f_temp.getAbsolutePath(), pathFile); //da cambiare
 		
 	
 		File f = new File(pathFile);

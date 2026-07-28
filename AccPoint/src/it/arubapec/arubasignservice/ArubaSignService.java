@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -23,6 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import com.google.gson.JsonObject;
+import com.itextpdf.awt.geom.Rectangle2D;
 import com.itextpdf.text.io.RandomAccessSourceFactory;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.RandomAccessFileOrArray;
@@ -51,10 +54,24 @@ import it.portaleSTI.bo.GestioneUtenteBO;
 import net.sf.dynamicreports.report.constant.HorizontalImageAlignment;
 
 public class ArubaSignService {
+	
+	
+    private static class Chunk {
+        String text;
+        float x;
+        float y;
+
+        Chunk(String text, float x, float y) {
+            this.text = text;
+            this.x = x;
+            this.y = y;
+        }
+    }
+
 
 	private static final String SOSTITUTO_LAT = "alessio.aversali";
 	private static final String RESPONSABILE_LAT = "eliseo.crescenzi";
-	private static final String KEY_WORD_LAT = "Alessio";
+	private static final String KEY_WORD_LAT = "Alessio Aversali";
 
 
 	public static JsonObject sign(String utente, CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
@@ -540,7 +557,7 @@ private static Integer[] getFontPosition(  PdfReader pdfReader, final String key
     return result;
 }
 
-public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) throws TypeOfTransportNotImplementedException, IOException {
+public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) throws Exception {
 	
 
 	ArubaSignServiceServiceStub stub = new ArubaSignServiceServiceStub();
@@ -567,29 +584,29 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 
 	javax.activation.DataHandler dh = new DataHandler(uri.toURL());
 	
-	
- 	
- 	
 
 		
 	    PdfReader reader = new PdfReader(path);
 		
 	    Integer[] fontPosition = null;
 	    boolean AlessioPresent=false;
-		for(int i = 1;i<=reader.getNumberOfPages();i++) {
-			fontPosition = getFontPosition(reader, KEY_WORD_LAT, i);
-			
-			if(fontPosition[0] != null && fontPosition[1] != null) {
-	      	AlessioPresent = true;
+	    Integer[] pos;
+		 pos = getWordPositionByLine(reader, KEY_WORD_LAT , null);
 		
-				break;
-			}
-		} 
+		 if(pos!=null) {
+				AlessioPresent = true;				
+		 }
+		 
+	
+		 
+		
 		if(AlessioPresent) {
 			identity.setUser(SOSTITUTO_LAT);
+		
 		} else {
 		
 			identity.setUser(RESPONSABILE_LAT);
+		
 		}
 		
 		sign.setIdentity(identity);
@@ -601,7 +618,26 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 		pkcs.setPdfprofile(PdfProfile.BASIC);
 	 	request.setPdfsignatureV2(pkcs);
 	 	
-	 	
+		PdfSignApparence apparence = new PdfSignApparence();
+	
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		apparence.setImage("simbolo_firma.png");
+	//	apparence.setTesto("Firmato digitalmente \n " + sdf.format(new Date())  );
+		apparence.setBShowDateTime(true);
+		apparence.setPage(1);
+		   
+		   apparence.setLeftx(235);        	
+		   apparence.setLefty(80); 
+
+		   apparence.setRightx(355);
+		   apparence.setRighty(140);
+		//   apparence.setImageOnly(true);
+		   apparence.setResizeMode(1);
+		   pkcs.setApparence(apparence);
+		  
+		   
+	 			
 	    reader.close();
 	
 	
@@ -642,6 +678,91 @@ private static Auth getAuth() {
 	identity.setDelegated_password(Costanti.PASS_FIRMA);
 	
 	return identity;
+}
+
+
+public static Integer[] getWordPositionByLine(PdfReader pdfReader, final String keyWord, Integer pageNum) throws Exception {
+
+    int startPage = 1;
+    int endPage = pdfReader.getNumberOfPages();
+    if (pageNum != null) {
+        startPage = pageNum;
+        endPage = pageNum;
+    }
+
+    final float Y_TOLERANCE = 2.0f; // tolleranza in punti per considerare due chunk sulla stessa riga
+
+    PdfReaderContentParser parser = new PdfReaderContentParser(pdfReader);
+
+    for (int page = startPage; page <= endPage; page++) {
+
+        final List<Chunk> chunks = new ArrayList<>();
+
+        parser.processContent(page, new RenderListener() {
+            public void beginTextBlock() {}
+
+            public void renderText(TextRenderInfo textRenderInfo) {
+                String text = textRenderInfo.getText();
+                if (text == null || text.isEmpty()) return;
+
+                Rectangle2D.Float rect = textRenderInfo.getBaseline().getBoundingRectange();
+                chunks.add(new Chunk(text, rect.x, rect.y));
+            }
+
+            public void endTextBlock() {}
+            public void renderImage(ImageRenderInfo renderInfo) {}
+        });
+
+        // Raggruppa i chunk per riga: chiave = y arrotondata, valore = lista di chunk ordinati per x
+        // Uso una TreeMap con comparator a tolleranza per raggruppare y "vicine"
+        List<List<Chunk>> lines = groupByLine(chunks, Y_TOLERANCE);
+
+        for (List<Chunk> line : lines) {
+            // Ordina i chunk della riga da sinistra a destra
+            line.sort((a, b) -> Float.compare(a.x, b.x));
+
+            StringBuilder lineText = new StringBuilder();
+            for (Chunk c : line) {
+                lineText.append(c.text);
+            }
+
+            if (lineText.toString().contains(keyWord)) {
+                // Ritorno la posizione del primo chunk della riga (inizio riga)
+                Chunk first = line.get(0);
+                return new Integer[]{(int) first.x, (int) first.y, page};
+            }
+        }
+    }
+
+    return null;
+}
+
+// Raggruppa i chunk in righe basandosi sulla y, con tolleranza
+private static List<List<Chunk>> groupByLine(List<Chunk> chunks, float tolerance) {
+    List<List<Chunk>> lines = new ArrayList<>();
+
+    // Ordino tutti i chunk per y decrescente (dall'alto verso il basso della pagina)
+    List<Chunk> sorted = new ArrayList<>(chunks);
+    sorted.sort((a, b) -> Float.compare(b.y, a.y));
+
+    for (Chunk c : sorted) {
+        boolean addedToExistingLine = false;
+        for (List<Chunk> line : lines) {
+            float lineY = line.get(0).y;
+            if (Math.abs(lineY - c.y) <= tolerance) {
+                line.add(c);
+                addedToExistingLine = true;
+                break;
+            }
+        }
+        if (!addedToExistingLine) {
+            List<Chunk> newLine = new ArrayList<>();
+            newLine.add(c);
+            lines.add(newLine);
+        }
+    }
+
+    return lines;
 }
 
 }

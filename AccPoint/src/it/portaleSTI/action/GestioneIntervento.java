@@ -977,24 +977,18 @@ public class GestioneIntervento extends HttpServlet {
 		File f_temp= new File(Costanti.PATH_FOLDER+File.separator+ nomePack + File.separator +item.getName());
 		try {
 			item.write(f_temp);
+			Utility.applicaTestata(f_temp.getAbsolutePath(),  pathFile); //da cambiare
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		//applicoTestata
-		Utility.applicaTestata(f_temp.getAbsolutePath(),  pathFile); //da cambiare
-		
-	
-		File f = new File(pathFile);
-    	f_temp.delete();
-		
-		try {
-			item.write(f);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		}finally {
+
+	        // 3. Elimino il temporaneo
+	        if (f_temp.exists()) {
+	            f_temp.delete();
+	        }
+	    }
 		
 		return nomeFile;
 	}

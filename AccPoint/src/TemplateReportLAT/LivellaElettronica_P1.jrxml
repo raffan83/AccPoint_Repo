@@ -242,28 +242,28 @@
 				<textFieldExpression><![CDATA[$P{registro_laboratorio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="600" width="554" height="35" uuid="e7c2bb34-6611-4417-b719-fcaf3aff5558"/>
+				<reportElement x="1" y="590" width="554" height="35" uuid="e7c2bb34-6611-4417-b719-fcaf3aff5558"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[I risultati di misura riportati nel presente Certificato sono stati ottenuti applicando le procedure di taratura citate alla pagina seguente, dove sono specificati anche i campioni o gli strumenti che garantiscono la catena di riferibilità del Centro e i rispettivi certificati di taratura in corso di validità. Essi si riferiscono esclusivamente all’oggetto in taratura e sono validi nel momento e nelle condizioni di taratura, salvo diversamente specificato.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-1" y="635" width="554" height="35" uuid="2c502251-109a-4e88-983d-af614ecf4dae"/>
+				<reportElement x="0" y="625" width="554" height="35" uuid="2c502251-109a-4e88-983d-af614ecf4dae"/>
 				<textElement textAlignment="Justified">
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[The measurement results reported in this Certificate were obtained following the calibration procedures given in the following page, where the reference standards or instruments are indicated which guarantee the traceability chain of the laboratory, and the related calibration certificates in the course of validity are indicated as well. They relate only to the calibrated item and they are valid for the time and conditions of calibration, unless otherwise specified.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="672" width="554" height="35" uuid="9998af38-5fde-4ce3-b6c2-b119df0ecc23"/>
+				<reportElement x="1" y="662" width="554" height="35" uuid="9998af38-5fde-4ce3-b6c2-b119df0ecc23"/>
 				<textElement textAlignment="Justified">
 					<font size="8" isItalic="false"/>
 				</textElement>
 				<text><![CDATA[Le incertezze di misura dichiarate in questo documento sono state determinate conformemente alla ISO/IEC Guide 98-3 e al documento EA-4/02. Solitamente sono espresse come incertezza estesa ottenuta moltiplicando l’incertezza tipo per il fattore di copertura   corrispondente ad un livello di fiducia di circa il 95 %. Normalmente tale fattore    vale 2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="705" width="554" height="35" uuid="f6b7d5e2-bdfa-4dbe-9bae-692bdc0091e5"/>
+				<reportElement x="1" y="695" width="554" height="35" uuid="f6b7d5e2-bdfa-4dbe-9bae-692bdc0091e5"/>
 				<textElement textAlignment="Justified">
 					<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
@@ -382,12 +382,8 @@
 				<reportElement x="0" y="2" width="561" height="111" uuid="3d0b5f37-702b-4d37-98cf-3b6cd946cf24"/>
 				<imageExpression><![CDATA[$P{immagine_sti}]]></imageExpression>
 			</image>
-			<image hAlign="Center">
-				<reportElement x="370" y="782" width="181" height="20" uuid="bae77aa9-3aa7-4c97-9328-76788f741940"/>
-				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
-			</image>
 			<textField>
-				<reportElement x="0" y="789" width="130" height="11" uuid="921a70d6-12bd-4843-ac7c-9bde39149acf"/>
+				<reportElement x="0" y="790" width="130" height="11" uuid="921a70d6-12bd-4843-ac7c-9bde39149acf"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="6" isBold="false"/>
 				</textElement>
@@ -400,6 +396,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{destinatario}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="170" y="791" width="220" height="11" uuid="64af3384-6130-4667-97f0-c35556027395"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

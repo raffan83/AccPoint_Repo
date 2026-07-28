@@ -318,9 +318,9 @@ public class CreaCertificatoLivellaElettronica {
 		}
 		report.addParameter("numero_pagine","2");
 		
-		report.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+	//	report.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
-		report.addParameter("revisione", "MOD-PT008-01 Rev. 0");
+		report.addParameter("revisione", "MOD-PT008-01 Rev. A");
 		
 		InputStream is2 =  PivotTemplateLAT.class.getResourceAsStream("LivellaElettronica_P2.jrxml");
 		
@@ -389,7 +389,7 @@ public class CreaCertificatoLivellaElettronica {
 			reportP2.addParameter("campione_riferimento", "");
 		}
 		
-		reportP2.addParameter("revisione", "MOD-PT008-01 Rev. 0");
+		reportP2.addParameter("revisione", "MOD-PT008-01 Rev. A");
 //		if(misura.getRif_campione_lavoro()!=null) {
 //			reportP2.addParameter("campione_lavoro", misura.getRif_campione_lavoro().getCodice());
 //			if(!misura.getRif_campione().getCodice().equals(misura.getRif_campione_lavoro().getCodice())) {
@@ -476,7 +476,7 @@ public class CreaCertificatoLivellaElettronica {
 			reportP2.addParameter("note", "");
 		}
 		
-		reportP2.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
+		//reportP2.addParameter("firma",PivotTemplateLAT_Image.class.getResourceAsStream("firma_eliseo_crescenzi.png"));
 		
 		
 		if(certificato_riemesso!=null) {
@@ -510,7 +510,7 @@ public class CreaCertificatoLivellaElettronica {
 		this.file = new File(path);
 		
 		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
-		JsonObject jsonOP =  ArubaSignService.signCertificatoPades(responsabile, null,true,certificato);
+		JsonObject jsonOP =  ArubaSignService.signCertificatoPadesLat(certificato);
 		
 		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());

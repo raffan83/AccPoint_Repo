@@ -95,10 +95,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center">
-				<reportElement x="385" y="101" width="151" height="20" uuid="1acb3358-ce58-46f5-9c32-48ea9fd23a9d"/>
-				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
-			</image>
 			<line>
 				<reportElement x="-3" y="151" width="561" height="1" forecolor="#DE7E00" uuid="dc28c57e-80b7-4e37-8250-7992e3212a8e"/>
 			</line>
@@ -126,6 +122,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="170" y="164" width="220" height="14" uuid="e8903ee4-a05b-47a0-8da6-96d4794202eb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -374,7 +374,7 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="61">
+		<band height="67">
 			<staticText>
 				<reportElement x="402" y="2" width="151" height="14" uuid="af09df32-98e2-4e2a-82c6-f245ebe55784"/>
 				<textElement textAlignment="Center"/>
@@ -392,17 +392,20 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Eliseo Crescenzi]]></text>
 			</staticText>
-			<image hAlign="Center">
-				<reportElement x="402" y="40" width="151" height="20" uuid="aa84726d-849c-4c50-881a-88ad661c7bfd"/>
-				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
-			</image>
 			<textField>
-				<reportElement x="0" y="50" width="130" height="11" uuid="eb2a3a4f-d728-407f-818a-ae6409843d31"/>
+				<reportElement x="0" y="56" width="130" height="11" uuid="eb2a3a4f-d728-407f-818a-ae6409843d31"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="170" y="56" width="220" height="11" uuid="8b312341-375f-4ef0-b27c-0208bf7adc9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

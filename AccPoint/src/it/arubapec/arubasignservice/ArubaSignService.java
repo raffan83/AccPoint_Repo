@@ -623,17 +623,31 @@ public static JsonObject signCertificatoPadesLat(CertificatoDTO certificato) thr
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		apparence.setImage("simbolo_firma.png");
-	//	apparence.setTesto("Firmato digitalmente \n " + sdf.format(new Date())  );
 		apparence.setBShowDateTime(true);
 		apparence.setPage(1);
-		   
+		
+		   if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==1) {
+			   apparence.setLeftx(265);        	
+			   apparence.setLefty(35); 
+			   apparence.setRightx(380);
+			   apparence.setRighty(100);
+			   apparence.setResizeMode(1);
+			   
+		   } else  if(certificato.getMisura().getMisuraLAT().getMisura_lat().getId()==2) {
+			   apparence.setLeftx(235);        	
+			   apparence.setLefty(30); 
+			   apparence.setRightx(355);
+			   apparence.setRighty(100);
+			   apparence.setResizeMode(1);
+			   
+		   } else {
 		   apparence.setLeftx(235);        	
 		   apparence.setLefty(80); 
-
 		   apparence.setRightx(355);
 		   apparence.setRighty(140);
-		//   apparence.setImageOnly(true);
 		   apparence.setResizeMode(1);
+		   }
+		   
 		   pkcs.setApparence(apparence);
 		  
 		   

@@ -1017,7 +1017,7 @@
 	<pageFooter>
 		<band height="100">
 			<staticText>
-				<reportElement x="1" y="69" width="554" height="24" uuid="dbf4beb3-96f8-4488-820e-7a375931edd7"/>
+				<reportElement x="1" y="65" width="554" height="24" uuid="dbf4beb3-96f8-4488-820e-7a375931edd7"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding=""/>
 				</textElement>
@@ -1061,30 +1061,33 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center">
-				<reportElement x="387" y="51" width="151" height="17" uuid="72e6de1e-b9c1-4d2c-adfe-6d25e2f440f9"/>
-				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
-			</image>
 			<line>
-				<reportElement x="-3" y="92" width="561" height="1" forecolor="#DE7E00" uuid="2911e704-95d7-45ff-a9d8-66aba3d56f4b"/>
+				<reportElement x="-3" y="88" width="561" height="1" forecolor="#DE7E00" uuid="2911e704-95d7-45ff-a9d8-66aba3d56f4b"/>
 			</line>
 			<staticText>
-				<reportElement x="1" y="80" width="554" height="12" uuid="df997577-cf59-4aea-827b-777d5244df6d"/>
+				<reportElement x="1" y="76" width="554" height="12" uuid="df997577-cf59-4aea-827b-777d5244df6d"/>
 				<textElement textAlignment="Center">
 					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
 				</textElement>
 				<text><![CDATA[End of certificate]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-3" y="69" width="561" height="1" forecolor="#DE7E00" uuid="125b599b-4dca-4988-903c-b8ffcbcc1850"/>
+				<reportElement x="-3" y="65" width="561" height="1" forecolor="#DE7E00" uuid="125b599b-4dca-4988-903c-b8ffcbcc1850"/>
 			</line>
 			<textField>
 				<reportElement x="0" y="89" width="130" height="11" uuid="daadb853-7465-467d-94eb-013d9c17355c"/>
-				<textElement verticalAlignment="Bottom">
+				<textElement verticalAlignment="Middle">
 					<font fontName="Arial" size="6" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="170" y="89" width="220" height="11" uuid="db05794d-8ab9-4dca-b564-5290941019e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

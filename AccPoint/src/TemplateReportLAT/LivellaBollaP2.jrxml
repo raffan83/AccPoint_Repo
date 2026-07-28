@@ -461,10 +461,6 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Ing. Eliseo Crescenzi]]></text>
 			</staticText>
-			<image hAlign="Center">
-				<reportElement x="375" y="51" width="151" height="20" uuid="564d9fbb-f8d1-4242-80b1-10567894d867"/>
-				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
-			</image>
 			<textField>
 				<reportElement x="0" y="64" width="130" height="11" uuid="d2f726e1-9dbb-4c09-b79d-45f06e1042c6"/>
 				<textElement verticalAlignment="Middle">
@@ -472,6 +468,13 @@ L'incertezza estesa associata alle correzioni tabulate, espressa come incertezza
 				</textElement>
 				<textFieldExpression><![CDATA[$P{revisione}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="170" y="64" width="220" height="11" uuid="25725e83-89e5-4eca-adde-dae5ed093417"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[Documento firmato digitalmente con firma elettronica digitale certificata (PAdES)]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -52,6 +52,8 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateRapportoSegnalazioniVeicoli;
+import it.portaleSTI.bo.CreateReportSegnalazioneAuto;
+import it.portaleSTI.bo.CreateSchedaListaCampioni;
 import it.portaleSTI.bo.GestioneDocumentaleBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneParcoAutoBO;
@@ -1010,8 +1012,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				myObj.addProperty("messaggio", "Salvato con successo!");
 	        	out.print(myObj);
 				
-			}
-			
+			} 
 			
 			else if(action.equals("modifica_richiesta")) {
 				
@@ -1326,6 +1327,48 @@ public class GestioneParcoAuto extends HttpServlet {
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSegnalazioni.jsp");
 		     	dispatcher.forward(request,response);
 				
+			}else if(action.equals("download_report")) {
+				
+				ajax = true;
+				
+				String id_segnalazione = request.getParameter("id_segnalazione");
+				PaaSegnalazioneDTO segn = GestioneParcoAutoBO.getSegnalazioneById(Integer.parseInt(id_segnalazione));
+				
+				String targa = segn.getPrenotazione().getVeicolo().getTarga();
+				String modello = segn.getPrenotazione().getVeicolo().getModello();
+				Date data = segn.getData_segnalazione();
+				String note = segn.getNote();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				String dataString = sdf.format(data);
+				
+				new CreateReportSegnalazioneAuto(id_segnalazione, targa, modello, dataString, note);
+				
+				File d = new File(Costanti.PATH_FOLDER+"//temp"+"//SchedaReportSegnalazioneAuto_" +id_segnalazione +".pdf");
+				
+				FileInputStream fileIn = new FileInputStream(d);
+				 
+				 response.setContentType("application/pdf");
+				 response.setContentLength((int) d.length());
+				 response.setHeader("Content-Disposition",  "inline; filename=\"" + "report_" + id_segnalazione +".pdf" +"\"");
+				
+
+				 ServletOutputStream outp = response.getOutputStream();
+				     
+				 byte[] buffer = new byte[4096];
+				 int bytesRead;
+
+				 while ((bytesRead = fileIn.read(buffer)) != -1) {
+				     outp.write(buffer, 0, bytesRead);
+				 }
+				    
+				    
+			//	    session.close();
+				    fileIn.close();
+			
+				    outp.flush();
+				    outp.close();
+				    d.delete();
+				
 			}
 			else if(action.equals("cambia_stato_segnalazione")) {
 				
@@ -1424,6 +1467,10 @@ public class GestioneParcoAuto extends HttpServlet {
     		     dispatcher.forward(request,response);	
         	}
 			
+		} finally {
+			 if (session != null && session.isOpen()) {
+		            session.close();
+		        }
 		}
 
 	}

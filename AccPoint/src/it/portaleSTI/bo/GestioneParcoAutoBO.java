@@ -81,4 +81,8 @@ public class GestioneParcoAutoBO {
 		
 		return GestioneParcoAutoDAO.getSegnalazione(id_prenotazione, id_tipo, session);
 	}
+	public static PaaSegnalazioneDTO getSegnalazioneById(int id_segnalazione) {
+		
+		return GestioneParcoAutoDAO.getSegnalazioneById(id_segnalazione);
+	}
 }

@@ -3,6 +3,7 @@ package it.portaleSTI.DAO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -238,6 +239,31 @@ public class GestioneParcoAutoDAO {
 	   }
 	   
 	   return res;
+	
+	}
+	
+public static PaaSegnalazioneDTO getSegnalazioneById(int id) {
+	Session session=null;
+	
+	session=SessionFacotryDAO.get().openSession();
+	session.beginTransaction();
+		 
+		PaaSegnalazioneDTO segn = null;
+		
+		
+		Query query = session.createQuery("FROM PaaSegnalazioneDTO WHERE id = :id")
+				.setParameter( "id", id);
+	   
+		
+		        // Esegue la query e restituisce la lista
+		List<PaaSegnalazioneDTO> lista =query.list();
+
+	   if(lista.size()>0) {
+		   segn= lista.get(0);
+	   }
+	   session.getTransaction().commit();
+		session.close();
+	   return segn;
 	
 	}
 }

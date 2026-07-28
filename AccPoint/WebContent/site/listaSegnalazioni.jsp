@@ -141,6 +141,10 @@
 	
 	<a class="btn btn-info customTooltip" onClicK="cambiaStatoSegnalazione('${segnalazione.id}')" title="Click per cambiare lo stato della segnalazione"><i class="glyphicon glyphicon-refresh"></i></a>
  </c:if>
+<a target="_blank" class="btn btn-danger"
+   onclick="downloadReport('${segnalazione.id}',)">
+    <i class="fa fa-file-pdf-o"></i>
+</a>
 	</td>
 	</c:if>
 	</tr>
@@ -283,6 +287,16 @@ function cambiaStatoSegnalazione(id_segnalazione, note_chiusura){
 	callAjax(dataObj, "gestioneParcoAuto.do?action=cambia_stato_segnalazione");
 	
 }
+
+
+function downloadReport(id_segnalazione){
+    var url = "gestioneParcoAuto.do?action=download_report"
+        + "&id_segnalazione=" + encodeURIComponent(id_segnalazione);
+    
+    window.open(url, "_blank");
+}
+
+
 
 function creaRapporto(id_veicolo){
 	

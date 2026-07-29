@@ -21,7 +21,7 @@
  <td>ID</td>
  <th>Nome</th>
  <th>Cognome</th>
-  <td>Azioni</td>
+  <th>Azioni</th>
  </tr></thead>
  
  <tbody>
@@ -33,8 +33,8 @@
 	<td>${utente.id}</td>
 	<td>${utente.nome}</td>
 	<td>${utente.cognome}</td>
-	<td>
-		
+
+		<td data-order="${utente.checkRuolo(ruolo.sigla) ? 1 : 0}">
 			<button id="btnAssociaUtente_${utente.id}" onClick="associaUtente('${utente.id}','${idRuolo}')" class="btn btn-success customTooltip" title="Abilita Utente" <c:if test = "${utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-check"></i></button> 
 			<button id="btnDisAssociaUtente_${utente.id}" onClick="disassociaUtente('${utente.id}','${idRuolo}')" class="btn btn-danger customTooltip" title="Disabilita Utente"  <c:if test = "${!utente.checkRuolo(ruolo.sigla)}">disabled="disabled"</c:if> ><i class="fa fa-remove"> </i></button>
 		
@@ -74,6 +74,9 @@
 	    }
 	    $('#tabUtenti thead th').each( function () {
 	     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+	     	  if($(this).index() === 3){
+	              return;
+	          }
 	        var title = $('#tabUtenti thead th').eq( $(this).index() ).text();
 	        $(this).append( '<div><input class="inputsearchtable" style="width:100%" type="text" value="'+columsDatatables[$(this).index()].search.search+'" /></div>');
 	    } );
@@ -117,13 +120,26 @@
   	    stateSave: true,
   	      columnDefs: [
 						   { responsivePriority: 1, targets: 0 },
-  	                   { responsivePriority: 2, targets: 1 }
+  	                   { responsivePriority: 2, targets: 1 },
+  	                 { //per esportare in aizoni 1 o 0
+  	                     targets: 3,
+  	                     render: function(data, type, row, meta){
+  	                         // Per Excel/Copy/PDF restituisce 1 o 0
+  	                         if(type === 'export'){
+  	                             var cell = meta.settings.aoData[meta.row].anCells[meta.col];
+  	                             return $(cell).attr('data-order');
+  	                         }
+  	                         // Per la visualizzazione normale restituisce l'HTML dei bottoni
+  	                         return data;
+  	                     }
+  	                 }
 
   	               ],
   	     
   	               buttons: [ {
   	                   extend: 'copy',
   	                   text: 'Copia',
+  	                 exportOptions: { orthogonal: 'export' }
   	                   /* exportOptions: {
 	                       modifier: {
 	                           page: 'current'
@@ -132,6 +148,7 @@
   	               },{
   	                   extend: 'excel',
   	                   text: 'Esporta Excel',
+  	                 exportOptions: { orthogonal: 'export' }
   	                   /* exportOptions: {
   	                       modifier: {
   	                           page: 'current'

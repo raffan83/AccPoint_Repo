@@ -9765,10 +9765,12 @@ function submitFormCertificato(){
 	  
 	  var id_certificato = $('#id_cert').val();
 	  var pack = $('#pack_cert').val();
+	  var nota_sostituzione = $('#nota_sostituzione').val();
+	
 	  		
       $.ajax({
     	  type: "POST",
-    	  url: "scaricaCertificato.do?action=upload_certificato&id_certificato="+id_certificato+"&pack_cert="+pack,
+    	  url: "scaricaCertificato.do?action=upload_certificato&id_certificato="+id_certificato+"&pack_cert="+pack +"&nota_sostituzione="+nota_sostituzione,
     	  data: formData,
     	  //dataType: "json",
     	  contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)

@@ -164,7 +164,14 @@
 	
 	<c:set var="ruolo" value="${userObj.checkRuolo('AM') || userObj.checkRuolo('RS')}"></c:set>
 	<c:if test="${certificato.stato.id == 4 || (ruolo==true && certificato.misura.lat == 'S') }">
+	  <c:choose>
+<c:when test="${not empty sessione}">
+<a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="openModalCheckSessioneInviata()"><i class="fa fa-arrow-up"></i></a>
+</c:when>
+<c:otherwise>
 	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="modalCertificato('${certificato.id}','${misura.intervento.nomePack}')"><i class="fa fa-arrow-up"></i></a>
+	</c:otherwise>
+	   </c:choose>
 	</c:if>
 </c:if>
 </c:forEach>
@@ -241,6 +248,9 @@
 		</div>
 	
 	
+
+	
+	
 	
   		<div id="empty" class="testo12"></div>
   		 </div>
@@ -253,6 +263,23 @@
 </div> 
  
  
+ 
+ 	
+  <div class="modal modal-danger" id="myModalCheckSessioneInviata" tabindex="-1" role="dialog"
+         data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header" >
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Attenzione Sessione inviata</h4>
+          </div>
+           <div class="modal-body">         
+                <p>Attenzione! Già presente una sessione di invio. Non è possibile sovrascrivere il certificato!</p>
+            </div>
+        </div>
+      </div>
+    </div>
+ 
  <form id="formCertificato" name="formCertificato">
   <div id="myModalCertificato" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
   
@@ -264,8 +291,15 @@
       </div>
        <div class="modal-body">
        <div class="row">
-       <div class="col-xs-12">
-         
+         <div class="col-xs-12">
+                    <div class="form-group">
+   
+		  <label for="nota_sostituzione">Motivazione sovrascrittura certificato:</label>
+		  <textarea class="form-control" rows="3" name="nota_sostituzione" id="nota_sostituzione"></textarea>
+		</div>
+			</div>
+             <div class="col-xs-12">
+               <div class="form-group">
        <span class="btn btn-primary fileinput-button">
 		        <i class="glyphicon glyphicon-plus"></i>
 		        <span>Seleziona un file...</span>
@@ -279,6 +313,7 @@
        
         <input type="hidden" id="id_cert" name="id_cert">
         <input type="hidden" id="pack_cert" name="pack_cert">
+        <input type="hidden" id="nota_sostituzione" name="nota_sostituzione">
 
   		 </div>
       <div class="modal-footer">
@@ -286,6 +321,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </form>
  
@@ -555,6 +591,10 @@
 
   <script type="text/javascript">
   
+  function openModalCheckSessioneInviata(){
+	  $('#myModalCheckSessioneInviata').modal();
+  }
+  
   
   
 function openModalStampa(idMisura){
@@ -683,6 +723,7 @@ function openModalStampa(idMisura){
   
 	function validateCertificato(){
 		var filename = $('#fileupload_certificato').val();
+		
 		//var filename = $('#fileupload_pdf')[0].files[0].name;
 		if(filename == null || filename == ""){
 			

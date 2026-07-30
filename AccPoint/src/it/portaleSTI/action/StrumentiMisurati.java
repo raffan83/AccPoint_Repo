@@ -26,6 +26,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
+import it.portaleSTI.DTO.SessioneDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -34,7 +35,9 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneCertificatoBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
+import it.portaleSTI.bo.GestioneSessioneBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
+import net.sf.jasperreports.crosstabs.fill.calculation.ArbitraryRankComparator;
 
 /**
  * Servlet implementation class GestioneIntervento
@@ -84,6 +87,7 @@ public class StrumentiMisurati extends HttpServlet {
 				if(action.equals("li")){
 					
 					id=Utility.decryptData(id);
+			
 					
 					listaMisure = GestioneInterventoBO.getListaMirureByInterventoDati(Integer.parseInt(id),session);
 					if(listaMisure.size() > 0){
@@ -101,7 +105,11 @@ public class StrumentiMisurati extends HttpServlet {
 						request.getSession().setAttribute("id_intervento", listaMisure.get(0).getIntervento().getId());
 						request.getSession().setAttribute("arrCartificati", arrCartificati);
 					}
+					//controllo se una sessione è già stata inviata
+					
+					SessioneDTO sessione = GestioneSessioneBO.getSessioneByIdInterventoAndAbilitato(listaMisure.get(0).getIntervento().getId(),1);
  						request.getSession().setAttribute("listaMisure", listaMisure);
+ 						request.getSession().setAttribute("sessione", sessione);
 
 					 
 					request.getSession().setAttribute("actionParent", "li");
@@ -207,6 +215,10 @@ public class StrumentiMisurati extends HttpServlet {
 					
 					id=Utility.decryptData(id);
 					
+					//controllo se una sessione è già stata inviata
+					SessioneDTO sessione = GestioneSessioneBO.getSessioneByIdInterventoAndAbilitato(Integer.parseInt(id),1);
+					
+					
 					listaMisure = GestioneInterventoBO.getListaMirureByIntervento(Integer.parseInt(id), session);
 					if(listaMisure.size() > 0){
 						HashMap<String, CertificatoDTO> arrCartificati = new HashMap<String, CertificatoDTO>();
@@ -226,6 +238,10 @@ public class StrumentiMisurati extends HttpServlet {
  						
  						request.getSession().setAttribute("id_intervento", id);
 					request.getSession().setAttribute("actionParent", "lt");
+					request.getSession().setAttribute("sessione", sessione);
+				
+					
+					
 					dispatcher = getServletContext().getRequestDispatcher("/site/listaMisure.jsp");
 					dispatcher.forward(request,response);
 					

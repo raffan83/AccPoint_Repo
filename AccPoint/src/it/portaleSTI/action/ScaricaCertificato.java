@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -20,9 +22,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.net.ntp.TimeStamp;
 import org.hibernate.Session;
 
 import com.google.gson.JsonObject;
+import com.sun.jmx.snmp.Timestamp;
+import com.sun.net.httpserver.Authenticator.Success;
 
 import it.arubapec.arubasignservice.ArubaSignService;
 import it.portaleSTI.DAO.GestioneCampioneDAO;
@@ -31,8 +36,10 @@ import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.StatoCertificatoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
@@ -411,14 +418,27 @@ public class ScaricaCertificato extends HttpServlet {
 			//	String id_pacco = request.getParameter("id_pacco");
 				String id_certificato = request.getParameter("id_certificato");
 				String pack = request.getParameter("pack_cert");
+				String notaSostituzione = request.getParameter("nota_sostituzione");
+				if(notaSostituzione==null) {
+					notaSostituzione="";
+				}
+				Date today= new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy_HH:mm:ss");
+				String dataOra = sdf.format(today);
+				
+				
+				notaSostituzione = ((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo() + "_" + ""+dataOra + "_" + notaSostituzione;
+			
 				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
+				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(certificato.getMisura().getId(), session);
+				LatMisuraDTO latMisura = misura.getMisuraLAT();
+				latMisura.setNote_sostituzione(notaSostituzione);
 				
 				List<FileItem> items;
 				
 					items = uploadHandler.parseRequest(request);
-					
-			
+
 					
 					for (FileItem item : items) {
 						if (item.isFormField()) {
@@ -440,20 +460,26 @@ public class ScaricaCertificato extends HttpServlet {
 					certificato.setNomeCertificato(filename);
 					
 					//firma certificato solo se LAT
+					boolean success = false;
 					if(certificato.getMisura().getLat().equals("S")) {	
 						JsonObject jsonOP = new JsonObject();
 			    	
 						jsonOP =	ArubaSignService.signCertificatoPadesLat(certificato);
 
-						boolean success = jsonOP.get("success").getAsBoolean();
+						success = jsonOP.get("success").getAsBoolean();
 					}
 				
+					session.update(latMisura);
 					session.update(certificato);
 					session.getTransaction().commit();
 					session.close();			
-					
-					myObj.addProperty("success", true);					
+			     if(success == true) {
+					myObj.addProperty("success", success);					
 					myObj.addProperty("messaggio", "Certificato caricato con successo!");
+			     } else {
+			    	 myObj.addProperty("success",success);	
+		    			myObj.addProperty("messaggio", "Non è stato possibile firmare digitalmente la misura!");
+			     }
 					
 					
 				//	ArrayList<MisuraDTO> listaMisure = GestioneStrumentoBO.getListaMisureByStrumento(misura.getStrumento().get__id());

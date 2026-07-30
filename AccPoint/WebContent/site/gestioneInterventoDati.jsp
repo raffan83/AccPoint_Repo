@@ -1736,11 +1736,12 @@
             <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="1">
             STATO AVANZAMENTO
           </label>
-       
 
       </div>
     </fieldset>	   
-    
+    <div class="form-check">
+       	<input type="checkbox" id="check_allegato"><label style="margin-left:5px">Invio Allegati Misure</label>
+       </div>
     
     
       
@@ -4700,12 +4701,20 @@ function completaModaleCaricamento(successo) {
 	}
 
 function avviaEInvia(idIntervento) {
+	var check_allegato;
+	if ($('#check_allegato').is(':checked')) {
+		check_allegato =1;
+	} else {
+		check_allegato =0;
+	}
 
+	console.log("check allegato "+check_allegato);
 	  var params = 'action=inviaPacchettoCliente'
 	             + '&email=' + encodeURIComponent($('#emailCliente').val())
 	             + '&notaConsegnaCliente=' + encodeURIComponent($('#notaConsegnaCliente').val())
 	             + '&corteseAttenzione=' + encodeURIComponent($('#corteseAttenzione').val())
-	             + '&gridRadios=' + $('input[name="gridRadios"]:checked').val();
+	             + '&gridRadios=' + $('input[name="gridRadios"]:checked').val()
+	             + '&check_allegato=' + check_allegato;
 
 	  $('#myModalInvioPacchetoCliente').modal('hide');
 	  setTimeout(function() {

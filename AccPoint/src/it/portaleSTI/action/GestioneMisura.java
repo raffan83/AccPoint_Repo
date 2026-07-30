@@ -410,6 +410,7 @@ public class GestioneMisura extends HttpServlet {
 			        String notaConsegna = request.getParameter("notaConsegnaCliente");
 			        String corteseAttenzione = request.getParameter("corteseAttenzione");
 			        String stato = request.getParameter("gridRadios");
+			        int check_allegato = Integer.parseInt(request.getParameter("check_allegato"));
 
 			        ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiInt");
 			        if (listaStrumenti == null) {
@@ -441,6 +442,7 @@ public class GestioneMisura extends HttpServlet {
 			            	listaAllegati.add(fAllegato);
 			            }
 			        }
+			        if(check_allegato==1) {
 			        //aggiungo alla scheda di consegna i file allegati dei lat se ci sono
 			        if(listaAllegati.size()>0) {
 			        	File tempMerge = new File(
@@ -467,6 +469,7 @@ public class GestioneMisura extends HttpServlet {
 			        	if (schedaConsegna.delete()) {
 			        	    tempMerge.renameTo(schedaConsegna);
 			        	}
+			        }
 			        }
 
 			        Date today = new Date();

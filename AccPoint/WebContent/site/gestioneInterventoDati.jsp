@@ -1740,7 +1740,7 @@
       </div>
     </fieldset>	   
     <div class="form-check">
-       	<input type="checkbox" id="check_allegato"><label style="margin-left:5px">Invio Allegati Misure</label>
+       	<input type="checkbox" id="check_allegato"><label style="margin-left:5px">Aggiungi Allegati Misure</label>
        </div>
     
     

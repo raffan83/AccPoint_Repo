@@ -52,6 +52,7 @@ import it.portaleSTI.DAO.GestioneMisuraDAO;
 import it.portaleSTI.DAO.GestioneSessioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
@@ -70,6 +71,7 @@ import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateReportAccredia;
 import it.portaleSTI.bo.CreateSchedaConsegnaMetrologia;
 import it.portaleSTI.bo.GestioneCertificatoBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
@@ -477,6 +479,8 @@ public class GestioneMisura extends HttpServlet {
 			        cal.setTime(today);
 			        cal.add(Calendar.DAY_OF_MONTH, 30);
 			        Date scadenza = cal.getTime();
+			        
+			        CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 
 			        out.write("data: {\"progress\":55, \"fase\":3, \"testo\":\"Creazione sessione...\"}\n\n");
 			        out.flush();
@@ -492,10 +496,14 @@ public class GestioneMisura extends HttpServlet {
 			        sessione.setPassword(password);
 			        sessione.setDataCreazione(today);
 			        sessione.setDataScadenza(scadenza);
-			        sessione.setNome_cliente(intervento.getNome_cliente());
-			        sessione.setId_cliente(intervento.getId_cliente());
-			        sessione.setNome_sede(intervento.getNome_sede());
-			        sessione.setId_sede(intervento.getIdSede());
+			        sessione.setNome_cliente(comm.getID_ANAGEN_NOME());
+			        sessione.setId_cliente(comm.getID_ANAGEN());
+			        if (comm.getANAGEN_INDR_INDIRIZZO() != null && !comm.getANAGEN_INDR_INDIRIZZO().trim().isEmpty()) {
+			            sessione.setNome_sede(comm.getANAGEN_INDR_INDIRIZZO());
+			        } else {
+			            sessione.setNome_sede(comm.getINDIRIZZO_PRINCIPALE());
+			        }
+			        sessione.setId_sede(comm.getK2_ANAGEN_INDR());
 			        sessione.setId_intervento(intervento.getId());
 			        sessione.setUser(utente);
 			        sessione.setEmail_cliente(email);

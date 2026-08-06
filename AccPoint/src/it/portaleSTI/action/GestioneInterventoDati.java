@@ -182,17 +182,19 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		ClienteDTO cliente = new ClienteDTO() ;
 		if(comm!=null) {
-		cliente = GestioneAnagraficaRemotaBO.getClienteById(""+comm.getID_ANAGEN_UTIL());
+		cliente = GestioneAnagraficaRemotaBO.getClienteById(""+comm.getID_ANAGEN());
 		}
 		if(cliente.getEmail()==null) {
 			cliente.setEmail("");
 		}
+		cliente.setEmail(""); //per il momento email default vuota
 		
+	
 	//	cliente.setEmail("edoardo.boccitto@ncsnetwork.it");
 		
 		//cliente.setEmail("raffaele.fantini@ncsnetwork.it");
 		
-		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(intervento.getId_cliente());
+		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm.getID_ANAGEN());
 		request.getSession().setAttribute("isPresent", isPresent);
 		
 		

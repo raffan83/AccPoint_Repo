@@ -22,6 +22,7 @@ import java.util.Hashtable;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -467,7 +468,84 @@ public class GestionePrenotazioneCampione extends HttpServlet {
 				    } 
 				
 				
-			}
+			} else if(action.equals("modifica_prenotazione")) {
+				ajax = true;
+				response.setContentType("application/json");
+				
+				PrintWriter out = response.getWriter();
+				try {
+				
+				Hashtable<String, List<String>> ret =Utility.getFormByResponse(request);
+				
+				String id_prenotazione = Utility.getSingleValueFromResponse(ret,"id_prenotazione");
+		        String id_utente = Utility.getSingleValueFromResponse(ret,"id_utente");
+		   
+		        String note = Utility.getSingleValueFromResponse(ret,"note");
+		        String luogo = Utility.getSingleValueFromResponse(ret,"luogo");
+		        
+		        Set<CampioneDTO> campioni = new HashSet<CampioneDTO>();
+		        List<String> raw = ret.get("campioniSelezionati");
+		        List<String> idCampioni = splitCampioni(raw);
+
+		        List<String> rawDesel = ret.get("campioniDeselezionati");
+		        List<String> idCampioniDeselezionati = splitCampioni(rawDesel);
+
+				if (idCampioni != null) {
+				    for (String idStr : idCampioni) {
+				        int idCampione = Integer.parseInt(idStr);
+				        
+				        CampioneDTO campioneRef = (CampioneDTO) session.get(CampioneDTO.class, idCampione);
+				        campioni.add(campioneRef);
+				            
+				    }
+				}
+				
+				
+			        List<String> idCampioniNew = ret.get("campioni");
+
+			        
+					if (idCampioniNew != null) {
+						 if(idCampioniNew.size()>0) {
+					    for (String idStr : idCampioniNew) {
+					        int idCampione = Integer.parseInt(idStr);
+					        
+					        CampioneDTO campioneRef = (CampioneDTO) session.get(CampioneDTO.class, idCampione);
+					        campioni.add(campioneRef);
+					            
+					    }
+					}
+				}
+				
+				
+				CampionePrenotazioneDTO prenotazione = GestionePrenotazioneCampioneBO.getPrenotazioneFromId(Integer.parseInt(id_prenotazione), session);
+				if(idCampioniDeselezionati !=null && idCampioniDeselezionati.size()>0 ) {
+					
+						prenotazione.getListaCampioni().clear();
+																
+				}
+			    prenotazione.setNote(note);
+				prenotazione.setListaCampioni(campioni);
+	
+				
+				session.update(prenotazione);
+				
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Prenotazione modificata con successo!");
+	        	out.print(myObj);
+					}catch(Exception ex) {
+						session.getTransaction().rollback();
+						ex.printStackTrace();
+						
+				        myObj = new JsonObject();
+				        myObj.addProperty("success", false);
+				        myObj.addProperty("messaggio", ex.getMessage());
+				        out.print(myObj.toString());
+				        out.flush();
+					
+					}
+				}
+				
+
 			
 			else if(action.equals("dettaglio_prenotazione")) {
 				
@@ -911,5 +989,19 @@ public class GestionePrenotazioneCampione extends HttpServlet {
 		    }
 
 		    return risultato;
+		}
+		
+		private List<String> splitCampioni(List<String> raw) {
+		    if (raw == null || raw.isEmpty()) {
+		        return new ArrayList<>();
+		    }
+		    String value = raw.get(0); // "12,15" oppure ""
+		    if (value == null || value.trim().isEmpty()) {
+		        return new ArrayList<>();
+		    }
+		    return Arrays.stream(value.split(","))
+		            .map(String::trim)
+		            .filter(s -> !s.isEmpty())
+		            .collect(Collectors.toList());
 		}
 }

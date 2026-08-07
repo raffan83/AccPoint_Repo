@@ -209,18 +209,19 @@
 				    </button>
 				  </div>
 				</div>
-				<!-- BLOCCO: lista campioni prenotati (visibile solo in consultazione) -->
-					<div class="row" id="boxCampioniPrenotati" style="display:none;">
-  						<div class="col-xs-12">
-   					 <label>Campioni prenotati</label>
-
-    					<div id="listaCampioniPrenotati" class="well well-sm" style="margin-bottom:0;">
-     				 <!-- riempito via JS -->
-   						 </div>
-
-   				 <small class="text-muted">Elenco campioni associati alla prenotazione.</small>
+			<!-- BLOCCO: lista campioni prenotati (visibile solo in consultazione) -->
+  <div class="row" id="boxCampioniPrenotati" style="display:none; ">
+  <div class="col-xs-12">
+    <label>Campioni prenotati</label>
+    <div id="listaCampioniPrenotati" class="well well-sm" style="margin-bottom:0; ">
+      <!-- riempito via JS -->
+    </div>
+    <small class="text-muted">Elenco campioni associati alla prenotazione.</small>
   </div>
+		
 </div>
+
+
     	<br>
     	
     	
@@ -247,8 +248,12 @@
       <div class="modal-footer">
       <input type="hidden" id="id_prenotazione" name="id_prenotazione">
       <input type="hidden" id="day" name="day">
+      <input type="hidden" id="campioniSelezionati" name="campioniSelezionati">
+      <input type="hidden" id="campioniDeselezionati" name="campioniDeselezionati">
+      <input type="hidden" id="mode" name="mode">
 		
 		 <button class="btn btn-primary" type="submit"  id="buttonSave">Salva</button>
+		 
 
       </div>
     </div>
@@ -465,9 +470,9 @@ $('#campioni').select2({
 
 	    		      $sel.trigger('change.select2');
 	    		      if (lista.length > 0) {
-	    		    	  lockDateTime(true);   //  BLOCCA data/ora dopo controllo OK
+	    		    	  lockDateTime(true,"new");   //  BLOCCA data/ora dopo controllo OK
 	    		    	} else {
-	    		    	  lockDateTime(false);  // opzionale, ma coerente
+	    		    	  lockDateTime(false,"new" );  // opzionale, ma coerente
 	    		    	}
 
 	    		      if (lista.length === 0) {
@@ -485,6 +490,8 @@ $('#campioni').select2({
 	    		    }
 	    		  }
 	    		);
+	    
+	    
 	  });
 	  $('#btnResetCampioni').on('click', function (e) {
 		    e.preventDefault();
@@ -501,7 +508,7 @@ function resetCampioniSelect() {
     $sel.val(null).trigger('change'); // reset selezione
   }
 
-function lockDateTime(lock) {
+function lockDateTime(lock,mode) {
 	  var $fields = $('#data_inizio, #data_fine, #ora_inizio, #ora_fine');
 
 	  // readonly = non modificabile MA inviato in submit
@@ -516,7 +523,11 @@ function lockDateTime(lock) {
 
 	  // bottoni
 	  $('#btnResetCampioni').prop('disabled', !lock);
+	  if (mode === 'new') {
 	  $('#btnControllaCampioni').prop('disabled', lock);
+	  } else if (mode === 'view') {
+		  $('#btnControllaCampioni').prop('disabled', !lock);
+	  }
 	}
 
 
@@ -533,31 +544,44 @@ function lockDateTime(lock) {
  
 	function setModalMode(mode) {
 		  // mode: 'new' oppure 'view'
-
+      console.log(mode);
+	
 		  if (mode === 'new') {
 		    $('#boxCampioniSelezione').show();
 		    $('#boxCampioniPrenotati').hide();
 		    $('#buttonSave').show();
+
+
 
 		    // select e bottoni
 		    $('#btnControllaCampioni, #btnResetCampioni').show();
 
 		    // in new vogliamo campioni vuoti finché non controlli
 		    resetCampioniSelect();
-		    lockDateTime(false);
+		    lockDateTime(false, mode);
 
 		  } else if (mode === 'view') {
-		    $('#boxCampioniSelezione').hide();
+		
+			  $('#campioni').prop('required', false);
+		    $('#boxCampioniSelezione').show();
 		    $('#boxCampioniPrenotati').show();
-		    $('#buttonSave').hide();
-
+		    $('#buttonSave').show();
+		    
+		    
+		    $('#btnControllaCampioni').show();
 		    // nascondo bottoni
-		    $('#btnControllaCampioni, #btnResetCampioni').hide();
+		    $('#btnResetCampioni').hide();
+		    $('#luogo').prop('readonly', true).addClass('locked-field'); // blocca in view
 
 		    // in view io bloccherei data/ora (se vuoi consultazione pura)
 		    // se invece vuoi permettere modifica date/ora, metti false
-		    lockDateTime(true);
+		       resetCampioniSelect();
+		    lockDateTime(true,mode);
+		    
 		  }
+		  $('#mode').val(mode);
+		  
+
 		}
 
 		function renderCampioniPrenotati(listaCampioni) {
@@ -569,7 +593,7 @@ function lockDateTime(lock) {
 		    return;
 		  }
 
-		  var html = "<ul style='margin:0; padding-left:18px;'>";
+		  var html = "<ul style='margin:0; padding-left:18px; list-style:none; width:100%; box-sizing:border-box;'>";
 		  for (var i = 0; i < listaCampioni.length; i++) {
 		    var c = listaCampioni[i];
 
@@ -578,9 +602,14 @@ function lockDateTime(lock) {
 		    var descr  = c.descrizione ? c.descrizione : "";
 		    var costr  = c.costruttore ? (" - " + c.costruttore) : "";
 
-		    html += "<li><strong>" + escapeHtml(codice) + "</strong>";
+
+
+		    html += "<li class='checkbox campione-item' style='width:100%; box-sizing:border-box; margin:0;'>";
+		    html += "<label style='display:block; width:100%; white-space:normal; word-break:break-word;'>";
+		    html += "<input type='checkbox' class='chk-campione' data-id='" + c.id + "' checked> ";
+		    html += "<strong>" + escapeHtml(codice) + "</strong>";
 		    if (descr || costr) html += " — " + escapeHtml(descr + costr);
-		    html += "</li>";
+		    html += "</label></li>";
 		  }
 		  html += "</ul>";
 
@@ -697,8 +726,15 @@ function toDate(dateStr) {
 
 
 $('#formNuovaPrenotazione').on("submit", function(e){
+	var mode = $('#mode').val();
+	console.log("Modal mode:", mode);
+	
 	e.preventDefault();
+	  if (mode === 'new') {
 	nuovaPrenotazione();
+	  } else   if (mode === 'view') {
+		  modificaPrenotazione();
+	  }
 })
 
 var isPaste = false;
@@ -791,6 +827,74 @@ function nuovaPrenotazione(){
 	
 	
 }
+
+
+
+function modificaPrenotazione(){
+	
+	var campioniSelezionati = [];
+	var campioniDeselezionati = [];
+	
+	
+	$('.chk-campione').each(function () {
+	    var id = $(this).data('id');
+	    if ($(this).is(':checked')) {
+	        campioniSelezionati.push(id);
+	    } else {
+	        campioniDeselezionati.push(id);
+	    }
+	});
+
+	$('#campioniSelezionati').val(campioniSelezionati.join(','));
+	$('#campioniDeselezionati').val(campioniDeselezionati.join(','));
+	
+	
+	if (campioniDeselezionati.length === 0) {
+		console.log("sono dentro");
+	    $('#campioniDeselezionati').val('');
+	    $('#campioniDeselezionati').prop('disabled', true); // i campi disabled NON vengono inviati nel submit/serialize
+	}
+	
+	if(campioniSelezionati.length === 0){
+		$('#myModalErrorContent').html("Attenzione! Non è possibile deselezionare tutti i campioni!");
+	  	$('#myModalError').removeClass();
+		$('#myModalError').addClass("modal modal-danger");
+		//$('#report_button').show();
+		$('#visualizza_report').show();
+			$('#myModalError').modal('show');
+	} else {
+	
+		callAjaxForm('#formNuovaPrenotazione', 'gestionePrenotazioneCampione.do?action=modifica_prenotazione', function(datab){
+			
+			
+			$(document.body).css('padding-right', '0px');
+			if(datab.success){
+				location.reload()
+				//fillTable("${anno}", "${filtro_tipo_pianificazioni}");
+			//	controllaColoreCella(table, "#F7BEF6");
+				
+				$('#modalPrenotazione').modal("hide");
+				
+				 $('.modal-backdrop').hide();
+			}else{
+				$('#myModalErrorContent').html(datab.messaggio);
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-danger");
+				$('#report_button').show();
+				$('#visualizza_report').show();
+					$('#myModalError').modal('show');
+			}
+			isPaste = false;
+		});
+		$(document.body).css('padding-right', '0px');
+	}
+	}
+		
+	
+	
+
+
+
 
 
 

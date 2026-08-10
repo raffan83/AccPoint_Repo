@@ -541,6 +541,7 @@ public class CreaCertificatoLivellaBolla {
 		exporter.exportReport();
 		
 		this.file = new File(path);
+		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		
 		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+11, session);
 		JsonObject jsonOP =  ArubaSignService.signCertificatoPadesLat(certificato);
@@ -551,7 +552,7 @@ public class CreaCertificatoLivellaBolla {
 //			  messaggio_firma = "Non è stato possibile appore la firma digitale dell'operatore";				  
 //		  }
 		
-		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
+	
 		certificato.setDataCreazione(new Date());
 		certificato.setStato(new StatoCertificatoDTO(2));	
 		certificato.setUtenteApprovazione(utente);

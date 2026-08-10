@@ -509,10 +509,12 @@ public class CreaCertificatoLivellaElettronica {
 		
 		this.file = new File(path);
 		
+
+		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
+		
 		UtenteDTO responsabile = GestioneUtenteBO.getUtenteById(""+86, session);
 		JsonObject jsonOP =  ArubaSignService.signCertificatoPadesLat(certificato);
 		
-		certificato.setNomeCertificato(misura.getIntervento().getNomePack()+"_"+misura.getIntervento_dati().getId()+""+misura.getStrumento().get__id()+".pdf");
 		certificato.setDataCreazione(new Date());
 		certificato.setStato(new StatoCertificatoDTO(2));
 		certificato.setUtenteApprovazione(utente);

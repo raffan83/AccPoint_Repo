@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -1527,11 +1529,20 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					//String name=input.getName().replace(".pdf","").replace(".PDF", "");
 					
-					String name= p.getPartecipante().getNome()+"_"+p.getPartecipante().getCognome();
+					String name= p.getPartecipante().getNome()+"_"+p.getPartecipante().getCognome()+".pdf";
 					name = name.replaceAll("'", "");
 					
 					  ZipEntry ze = null;
 					  File input_renamed = null;
+					  
+					  File temp = new File(input.getParent(), name);
+
+					  Files.copy(
+					      input.toPath(),
+					      temp.toPath(),
+					      StandardCopyOption.REPLACE_EXISTING
+					  );
+			/*		  
 					if(!filenames.contains(name)) {
 						input_renamed = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+name+".pdf");
 //						input.renameTo(input_renamed);						
@@ -1541,14 +1552,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 //		                System.out.println("Zipping the file: "+input.getName());
 					}else {
 						 input_renamed = new File(Costanti.PATH_FOLDER+"//Formazione//Attestati//"+id_corso+"//"+p.getPartecipante().getId()+"//"+name+"_"+p.getPartecipante().getId()+".pdf");
-					}				
-					filenames.add(input_renamed.getName());
-					input.renameTo(input_renamed);
-					fis = new FileInputStream(input_renamed);
-					ze = new ZipEntry(input_renamed.getName());
-	                System.out.println("Zipping the file: "+input_renamed.getName());
-	                p.setAttestato(input_renamed.getName());
-	                session.update(p);
+					}		
+					*/
+					  
+				//	filenames.add(input_renamed.getName());
+				//	input.renameTo(input_renamed);
+					fis = new FileInputStream(temp);
+					ze = new ZipEntry(temp.getName());
+	                System.out.println("Zipping the file: "+temp.getName());
+	              //  p.setAttestato(input_renamed.getName());
+	               // session.update(p);
 					
 	                zipOut.putNextEntry(ze);
 	                byte[] tmp = new byte[4*1024];
@@ -1558,9 +1571,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 	                }
 	                zipOut.flush();
 	                fis.close();
+	                temp.delete();
 	            }
 	            zipOut.close();
 	            System.out.println("Done... Zipped the files...");
+	            
+	           
 	            
 	            session.getTransaction().commit();
 				session.close();

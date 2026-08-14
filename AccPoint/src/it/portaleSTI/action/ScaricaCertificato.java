@@ -432,8 +432,7 @@ public class ScaricaCertificato extends HttpServlet {
 				
 				CertificatoDTO certificato = GestioneCertificatoBO.getCertificatoById(id_certificato,session);
 				MisuraDTO misura = GestioneMisuraBO.getMiruraByID(certificato.getMisura().getId(), session);
-				LatMisuraDTO latMisura = misura.getMisuraLAT();
-				latMisura.setNote_sostituzione(notaSostituzione);
+			
 				
 				List<FileItem> items;
 				
@@ -459,17 +458,21 @@ public class ScaricaCertificato extends HttpServlet {
 					certificato.setStato(new StatoCertificatoDTO(2));
 					certificato.setNomeCertificato(filename);
 					
-					//firma certificato solo se LAT
+					//firma certificato e salvo note sostituzione solo se LAT
 					boolean success = false;
 					if(certificato.getMisura().getLat().equals("S")) {	
+						LatMisuraDTO latMisura = misura.getMisuraLAT();
+						latMisura.setNote_sostituzione(notaSostituzione);
+						
 						JsonObject jsonOP = new JsonObject();
 			    	
 						jsonOP =	ArubaSignService.signCertificatoPadesLat(certificato);
 
 						success = jsonOP.get("success").getAsBoolean();
+						session.update(latMisura);
 					}
 				
-					session.update(latMisura);
+				
 					session.update(certificato);
 					session.getTransaction().commit();
 					session.close();			

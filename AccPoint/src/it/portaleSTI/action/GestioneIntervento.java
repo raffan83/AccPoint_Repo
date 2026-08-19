@@ -631,7 +631,7 @@ public class GestioneIntervento extends HttpServlet {
 			    		session.save(certificato);
 			    
 						
-						if (!success && (file_pdf==null || file_pdf.getName().equals("") ) && certificato.getMisura().getLat().equals("S")) {
+						if (!success && (file_pdf==null || file_pdf.getName().equals("") )) {
 			    			myObj.addProperty("success", false);	
 			    			myObj.addProperty("messaggio", "Misura inserita senza certificato");
 			    		} else if (!success && certificato.getMisura().getLat().equals("S")) {

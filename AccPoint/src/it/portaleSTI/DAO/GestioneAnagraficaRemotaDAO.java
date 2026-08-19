@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ComuneDTO;
+import it.portaleSTI.DTO.ContattoDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -913,5 +914,50 @@ public class GestioneAnagraficaRemotaDAO {
 			
 			return map;
 		}	
+		
+		public static ArrayList <ContattoDTO> getContattoByIdCommessa(String id_commessa) throws Exception {
+			
+			Connection con=null;
+			PreparedStatement pst = null;
+			ResultSet rs=null;
+			ContattoDTO contatto=null;
+			List <ContattoDTO> lista = new ArrayList<>();
+			try {
+				con=ManagerSQLServer.getConnectionSQL();
+			
+				pst=con.prepareStatement("	SELECT  cont.EMAIL " + 
+						"FROM [BTOMEN_CRESCO_DATI].[dbo].[BWT_COMMESSA] as c " + 
+						"join [BTOMEN_CRESCO_DATI].[dbo].[BWT_OFFERTA] as o " + 
+						"ON c.GLB_ORIGINE = o.SYS_CHIAVEGLOBALE " + 
+						"join [BTOMEN_CRESCO_DATI].[dbo].[BWT_CONTATTO] as cont " + 
+						"on o.ID_CONTATTO = cont.ID_CONTATTO " + 
+						"where c.ID_COMMESSA = ?" );
+				pst.setString(1, id_commessa);
+				rs=pst.executeQuery();
+				
+				while(rs.next())
+				{
+					contatto= new ContattoDTO();
+
+		            String email = rs.getString("EMAIL");
+		            contatto.setEmail(email);
+		            
+		            lista.add(contatto);
+		
+				}
+			} catch (Exception e) {
+				
+				throw e;
+			//	e.printStackTrace();
+				
+			}finally
+			{
+				pst.close();
+				con.close();
+			}
+			
+			return (ArrayList<ContattoDTO>) lista;
+			
+		}
 
 }

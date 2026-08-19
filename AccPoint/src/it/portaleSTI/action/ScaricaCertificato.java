@@ -459,8 +459,9 @@ public class ScaricaCertificato extends HttpServlet {
 					certificato.setNomeCertificato(filename);
 					
 					//firma certificato e salvo note sostituzione solo se LAT
-					boolean success = false;
+					boolean success = true;
 					if(certificato.getMisura().getLat().equals("S")) {	
+						success =false;
 						LatMisuraDTO latMisura = misura.getMisuraLAT();
 						latMisura.setNote_sostituzione(notaSostituzione);
 						

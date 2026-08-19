@@ -1294,6 +1294,10 @@ public class GestioneInterventoBO {
 		// TODO Auto-generated method stub
 		return DirectMySqlDAO.getListainterventiAperti();
 	}
+	
+	public static ArrayList<InterventoDTO>  getListaInterventiDate(LocalDate inizioBimestre, LocalDate fineBimestre,Session session){
+		return GestioneInterventoDAO.getListainterventiDate(inizioBimestre, fineBimestre, session);
+	}
 
 
 

@@ -6154,6 +6154,10 @@ function eliminaCompany(){
 	  $("#myModalInvalidaSessione").modal();
   }
   
+  function posticipaSessioneModal(){
+	  $("#myModalPosticipaSessione").modal();
+  }
+  
   function stripHtml(html){
 	    // Create a new div element
 	    var temporalDivElement = document.createElement("div");

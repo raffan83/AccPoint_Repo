@@ -83,6 +83,8 @@ import it.portaleSTI.action.ContextListener;
 import it.portaleSTI.action.GestioneUtenti;
 import it.portaleSTI.action.ValoriCampione;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneCommesseBO;
+import it.portaleSTI.bo.GestioneCompanyBO;
 import it.portaleSTI.bo.GestioneConfigurazioneClienteBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
@@ -4654,6 +4656,97 @@ public static HashMap<String, Integer> getHashDecrypt() throws SQLException {
 	}	
 	
 	return listaHash;
+}
+
+public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String dateBefore) throws Exception{
+	
+	ArrayList <InterventoDTO> lista = new ArrayList<>();
+
+	Connection con=null;
+	PreparedStatement pst = null;
+	ResultSet rs=null;
+	
+	 Session session = SessionFacotryDAO.get().openSession();
+	
+	try {
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+	java.sql.Date sql1 = new java.sql.Date(df.parse(today).getTime());
+	java.sql.Date sql2 = new java.sql.Date(df.parse(dateBefore).getTime());
+
+
+		con=getConnection();
+		String query = "SELECT i.id, i.nome_cliente, i.nome_sede, i.id_stato_intervento, i.id_commessa,i.data_creazione,i.id_company,s.email_cliente, s.session_id FROM intervento i "
+				+ "LEFT JOIN sessione s ON i.id=s.id_intervento AND s.abilitato=1 "
+				+ "WHERE i.data_creazione >=?  AND i.data_creazione < ? ";
+		
+		pst=con.prepareStatement(query);
+		pst.setDate(1, sql2);
+		pst.setDate(2, sql1);
+		
+		rs=pst.executeQuery();
+		
+		InterventoDTO intervento = null;
+		while(rs.next())
+		{
+		intervento  = new InterventoDTO();
+		intervento.setId(rs.getInt(1));
+		intervento.setNome_cliente(rs.getString(2));
+		intervento.setNome_sede(rs.getString(3));
+		
+		StatoInterventoDTO stato = new StatoInterventoDTO();
+		stato.setId(rs.getInt(4));
+		if(stato.getId()==1) {
+			stato.setDescrizione("APERTO");
+		} else if(stato.getId()==2) {
+			stato.setDescrizione("CHIUSO");
+		} else if(stato.getId()==3) {
+			stato.setDescrizione("GENERATO");
+		}
+		
+		intervento.setStatoIntervento(stato);
+		intervento.setIdCommessa(rs.getString(5));
+		
+		
+		intervento.setDataCreazione(rs.getDate(6));
+		
+		CompanyDTO company = new CompanyDTO();
+		company = GestioneCompanyBO.getCompanyById(""+rs.getInt(7), session);
+		//company.setId(rs.getInt(7));
+		intervento.setCompany(company);
+		
+		intervento.setEmail_cliente(rs.getString(8));
+		String session_id = rs.getString(9);
+		if(session_id!=null) {
+			intervento.setSessioneInvio(new SessioneDTO());
+		}
+		
+		
+		lista.add(intervento);
+		}
+	} catch (Exception e) {
+		 
+		throw e;
+	//	e.printStackTrace();
+		
+	}finally
+	{
+		 if (rs != null) {
+	            rs.close();
+	        }
+
+	        if (pst != null) {
+	            pst.close();
+	        }
+
+	        if (con != null) {
+	            con.close();
+	        }
+
+	        if (session != null) {
+	            session.close();
+	        }
+	}
+	return lista;
 }
 
 

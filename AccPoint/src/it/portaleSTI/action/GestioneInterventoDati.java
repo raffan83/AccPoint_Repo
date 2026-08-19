@@ -3,6 +3,8 @@ package it.portaleSTI.action;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -26,6 +28,7 @@ import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
+import it.portaleSTI.DTO.ContattoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
@@ -178,33 +181,42 @@ public class GestioneInterventoDati extends HttpServlet {
 		}
 		
 		CommessaDTO comm=GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+	    System.out.println("ID COMMESSA: " + comm.getID_COMMESSA() );
+		ArrayList<ContattoDTO> lista_contatti = GestioneAnagraficaRemotaBO.getContattoByIdCommessa(comm.getID_COMMESSA());
 		
-		
-		ClienteDTO cliente = new ClienteDTO() ;
-		if(comm!=null) {
-		cliente = GestioneAnagraficaRemotaBO.getClienteById(""+comm.getID_ANAGEN());
+			
+		String email_contatto ="";
+		ArrayList<String> lista_email = new ArrayList<>();
+		for(ContattoDTO c : lista_contatti) {
+			if(c != null && c.getEmail() != null && !c.getEmail().equals("")) {
+				lista_email.add(c.getEmail());
+			}
 		}
-		if(cliente.getEmail()==null) {
-			cliente.setEmail("");
+		if(lista_email.size()>0) {
+		email_contatto = String.join(";", lista_email);
 		}
-		cliente.setEmail(""); //per il momento email default vuota
+
 		
-	
-	//	cliente.setEmail("edoardo.boccitto@ncsnetwork.it");
+	//	email_contatto = "edoardo.boccitto@ncsnetwork.it";
 		
-		//cliente.setEmail("raffaele.fantini@ncsnetwork.it");
 		
 		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm.getID_ANAGEN());
 		request.getSession().setAttribute("isPresent", isPresent);
 		
+		Date today = new Date();
+		Date dateSchedulatore =null;
+		if(sessione !=null) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(sessione.getDataScadenza());
+		calendar.add(Calendar.MONTH, 1);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+		dateSchedulatore = calendar.getTime();
+}
 		
 		
-		//Controllo se il cliente ha email in users
-		//UtenteDTO clienteUsers = GestioneUtenteBO.getUtenteByEmail(cliente.getEmail());
-		//request.getSession().setAttribute("clienteUsers", clienteUsers);
-		
-		
-		
+		request.getSession().setAttribute("today", today);
+		request.getSession().setAttribute("dateSchedulatore", dateSchedulatore);
 		
 		request.getSession().setAttribute("commessa", comm);
 		
@@ -217,7 +229,8 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("repartoStrumentiJson", gson.toJsonTree(repartoStrumenti).toString());
 		request.getSession().setAttribute("utilizzatoreStrumentiJson", gson.toJsonTree(utilizzatoreStrumenti).toString());
 		request.getSession().setAttribute("lista_lat_master", lista_lat_master);
-		request.getSession().setAttribute("cliente_invio_pacchetto", cliente);	
+	//	request.getSession().setAttribute("cliente_invio_pacchetto", cliente);	
+		request.getSession().setAttribute("email_contatto", email_contatto);	
 		
 		request.getSession().setAttribute("sessione", sessione);
 		request.getSession().setAttribute("intervento", intervento);

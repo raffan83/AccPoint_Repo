@@ -94,6 +94,7 @@
  <div class="box-body">
               <div class="row">
            <div class="col-xs-12" style="margin-bottom: 25px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
       
 <label>Anno: </label>
 
@@ -110,7 +111,13 @@
       	</c:choose>
       </c:forEach>
 	</select>
+	         <button type="button"
+                        class="btn btn-primary"
+                        onclick="callAction('listaSessioni.do?action=lista_interventi_mensili')">
+                    <i class="fa fa-list"></i> Lista Tutti Interventi 
+                </button>
  </div>
+  </div>
   </div>
 
            <!-- Legenda -->
@@ -197,6 +204,8 @@
   $('#selectAll').on('change', function () {
     $('input[name="selectedFiles"]').prop('checked', $(this).is(':checked'));
   });
+  
+
 
   function formatDate(data) {
     var mydate = new Date(data);

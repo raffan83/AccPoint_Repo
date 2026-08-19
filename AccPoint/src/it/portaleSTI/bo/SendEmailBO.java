@@ -2609,6 +2609,128 @@ public static void sendEmailClienteDocumentalWeb(File schedaConsegna, String mai
 	
 }
 
+
+public static void sendEmailClienteDocumentalWebPosticipaSessione( String mailTo,SessioneDTO sessione,ServletContext ctx) throws EmailException {
+	 boolean rispEmail = false;
+	try {
+
+	  // Create the email message
+	  HtmlEmail email = new HtmlEmail();
+	  email.setHostName("mail.vianova.it");
+		 //email.setDebug(true);
+	//  email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+	//  email.setSmtpPort(587);
+	  email.setAuthentication("delivery@stisrl.com", Costanti.PASS_EMAIL_DOC);
+	  
+	  email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+	  email.getMailSession().getProperties().put("mail.debug", "true");
+	  email.getMailSession().getProperties().put("mail.smtp.port", "587");
+	  email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+	  email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	  email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+	  email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
+
+
+	// timeout in millisecondi
+	  email.getMailSession().getProperties().put("mail.smtp.connectiontimeout", "5000"); // per connettersi
+	  email.getMailSession().getProperties().put("mail.smtp.timeout", "5000");           // per inviare/ricevere dati
+	  email.getMailSession().getProperties().put("mail.smtp.writetimeout", "5000");      // per scrivere sul socket
+
+     String[] destinatari = mailTo.split(";"); 
+
+    List<String> invalidEmails = new ArrayList<>();
+
+    for (String dest : destinatari) {
+        String destTrimmed = dest.trim();
+        if (isValidEmail(destTrimmed)) {
+            email.addTo(destTrimmed);
+        } else {
+            invalidEmails.add(destTrimmed);
+        }
+    }
+
+    if (!invalidEmails.isEmpty()) {
+        throw new EmailException("Indirizzi email non validi: " + String.join(", ", invalidEmails));
+    }
+
+    if (email.getToAddresses().isEmpty()) {
+        throw new EmailException("Nessun destinatario valido trovato.");
+    }
+	  
+    email.setCharset("UTF-8");
+	    email.setFrom("delivery@stisrl.com", "Delivery S.T.I. srl");
+	  email.setSubject("Report taratura strumenti disponibile per il download Posticipata");
+	  
+	  // embed the image and get the content id
+
+	//  String cid = email.embed(new File("images/Documental_email.png"));
+	  File image = new File(ctx.getRealPath("images/Documental_email_2.png"));
+	  String cid = email.embed(image, "Calver logo");
+	  
+	  String lista_doc ="";
+	 
+	  
+	  String tipo_consegna = "CONSEGNA TOTALE";
+	 
+	  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+	  String dataFormattata = sdf.format(sessione.getDataScadenza());
+	 // String URL_DOCUMENTALWEB = "http://192.168.1.100:8082/DocumentalWEB";
+
+		  email.setHtmlMsg("<html><meta charset=\\\"UTF-8\\\">Spett.le Cliente " + sessione.getNome_cliente() +"<br>"
+		  		+ "<br>Le comunichiamo che la sua sessione è stata posticipata.<br>"
+		  		+ "<br>Per consultare e scaricare i documenti, acceda al seguente link: " 
+		  		+ "<br><a href=\"https://delivery.stisrl.com/DocumentalWEB/\">"
+		  		+ "https://delivery.stisrl.com"
+		  		+ "</a>"
+		  		+ "<br>utilizzando le credenziali riservate riportate di seguito:"
+		  		+ "<br><br> Username: "+ sessione.getUsername()
+				+ "<br> Password: " + sessione.getPassword() 
+				+ "<br><br><strong>Scadenza del link di accesso: " + dataFormattata + "</strong>"
+				
+			    
+				+ "<br><strong>Per assistenza, dal lunedì al venerdì dalle ore 8:00 alle ore 17:00, può contattarci ai seguenti recapiti:</strong>"
+				+ "<ul>\n" 
+				+ "  <li>Supporto tecnico/commerciale: : +39 0776 18151 (interno 205, 214 oppure 246)</li>\n"  
+				+ "</ul>"
+				+ "<ul>\n" 
+				+ "  <li>Supporto informatico: +39 0776 18151 (interno 220)</li>\n"
+				+ "</ul>"
+				+ "<br>Restiamo a disposizione per qualsiasi chiarimento."
+				+ "<br><br>Cordiali saluti"
+				+ "<br>S.T.I. Sviluppo Tecnologie Industriali S.r.l."
+				
+				+ "<br><br>Via Tofaro 42/B – 03039 Sora (FR)"
+				+ "<br>Tel. +39 0776 18151"
+				+ "<br>E-mail: <a href=\"mailto:commerciale@stisrl.com\">commerciale@stisrl.com</a>"
+				+ "<br>Sito web: <a href=\"https://www.stisrl.com\" target=\"_blank\">www.stisrl.com</a>"
+				
+				
+				+ "<br><br>"
+				+ "<a href=\"https://delivery.stisrl.com/DocumentalWEB/\" target=\"_blank\">"
+				+ "  <img src=\"cid:" + cid + "\" width=\"60%\" height=\"200\" style=\"display:block;border:0;\">"
+				+ "</a>"
+				
+				+ "<div style=\"font-size:13px;color:#666;line-height:1.3;margin-top:10px;margin-right:10px;\">"
+				+ "Le informazioni trasmesse sono destinate esclusivamente alla persona o alla società in indirizzo e sono da intendersi confidenziali e riservate. "
+				+ "Qualsiasi utilizzo, diffusione, copia o distribuzione non autorizzata è vietato. "
+				+ "Se Lei ha ricevuto questo messaggio per errore, è pregato di avvisarci rispondendo a questa email e cancellare il messaggio dal Suo sistema. "
+				+ "Grazie per la collaborazione."
+				+ "</div>");
+
+		  
+	  email.send();
+
+	
+	  
+	} catch (Exception e) {
+		e.printStackTrace();
+		  throw e;
+		 
+	}
+	
+}
+
 private static boolean isValidEmail(String email) {
     if (email == null || email.trim().isEmpty()) {
         return false;

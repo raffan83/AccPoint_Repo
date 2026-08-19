@@ -100,6 +100,27 @@ public class GestioneSessioneBO {
 	}
 	
 
+	public static void sendEmailClienteDocumentalWebPosticipaSessione(String mailTo ,SessioneDTO sessione,ServletContext ctx) throws Exception {
+	
+
+		try {
+	
+		
+		LocalDate today = LocalDate.now();
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+		String messaggio = "Si comunica che ....";
+	//	String messaggio = "Si comunica che dalla pianificazione corsi emerge che per la commessa "+p.getId_commessa()+" &egrave; presente un item nello stato \"FATTURATO SENZA ATTESTATI\" in data "+df.format(p.getData())+".";
+	SendEmailBO.sendEmailClienteDocumentalWebPosticipaSessione(mailTo, sessione, ctx);
+					
+		
+	}catch(Exception e) {
+		e.printStackTrace();
+		throw new RuntimeException("Errore invio email: " + e.getMessage(), e);
+	}
+		
+	}
+
 
 	
 	public static void sendEmailClienteDocumentalWeb(File d, String mailTo,ServletContext ctx, SessioneDTO sessione  ) throws Exception {

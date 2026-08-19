@@ -27,6 +27,7 @@ public class InterventoDTO {
 	private Set<PRInterventoRisorsaDTO> listaRisorse = new HashSet<PRInterventoRisorsaDTO>(0);
 	//private Set<SchedaConsegnaDTO> schedaConsegnaDTO = new HashSet<SchedaConsegnaDTO>(0);
 	private SessioneDTO sessioneInvio;
+	private String email_cliente;
 	
 	public Set<PRInterventoRisorsaDTO> getListaRisorse() {
 		return listaRisorse;
@@ -198,6 +199,16 @@ public class InterventoDTO {
 
 	public void setSessioneInvio(SessioneDTO sessioneInvio) {
 		this.sessioneInvio = sessioneInvio;
+	}
+
+
+	public String getEmail_cliente() {
+		return email_cliente;
+	}
+
+
+	public void setEmail_cliente(String email_cliente) {
+		this.email_cliente = email_cliente;
 	}
 
 	

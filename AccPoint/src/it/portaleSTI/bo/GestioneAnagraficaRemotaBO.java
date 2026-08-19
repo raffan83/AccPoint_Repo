@@ -16,6 +16,7 @@ import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DTO.ArticoloMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ComuneDTO;
+import it.portaleSTI.DTO.ContattoDTO;
 import it.portaleSTI.DTO.FornitoreDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -169,6 +170,11 @@ public class GestioneAnagraficaRemotaBO {
 	public static Map<String, String> getStatoCommessaOfferte() throws Exception {
 		// TODO Auto-generated method stub
 		return GestioneAnagraficaRemotaDAO.getStatoCommessaOfferte();
+	}
+	
+	public static ArrayList<ContattoDTO> getContattoByIdCommessa(String id_commessa) throws Exception {
+		return GestioneAnagraficaRemotaDAO.getContattoByIdCommessa(id_commessa);
+		
 	}
 	
 }

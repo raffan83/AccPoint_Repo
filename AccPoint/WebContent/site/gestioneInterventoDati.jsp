@@ -538,8 +538,22 @@
             <button class="btn btn-default"  style="width: 200px" title="Click per invalidare la sessione" onClick="openModalInvalidaSessione()">
                 <i class="fa fa-file-text-o"></i> Invalida Sessione
             </button>
+            </c:when>      
+            </c:choose>
+           
+            <c:choose>
+                 <c:when test="${sessione != null  && sessione.abilitato == 1  && today > sessione.dataScadenza  && today < dateSchedulatore}">
+            <button class="btn btn-default"  style="width: 200px" title="Click per posticipare la sessione" onClick="checkPosticipaSessione('${sessione.id}')">
+                <i class="fa fa-file-text-o"></i> Posticipa Sessione
+            </button>
+            </c:when>
+              <c:when test="${sessione != null  && sessione.abilitato == 1  && today > sessione.dataScadenza  && today > dateSchedulatore}">
+            <button class="btn btn-default" disabled title="Certificati eliminati nel Documental! Impossibile posticipare sessione!"   style="width: 200px" title="Click per posticipare la sessione" onClick="checkPosticipaSessione('${sessione.id}')">
+                <i class="fa fa-file-text-o"></i> Posticipa Sessione
+            </button>
             </c:when>
             </c:choose>
+          
             </c:if>
             </c:if>
         </div>
@@ -553,13 +567,13 @@
                 <c:choose>
                    <c:when test="${sessione == null}">
             <button class="btn btn-success" style="flex: none;  width: 200px"
-                onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
+                onClick="checkInvioPacchettoCliente('${intervento.id}', '${email_contatto}', ${isPresent})">
                 <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
             </button>
         </c:when>
        <c:when test= "${sessione != null && sessione.abilitato==0}">
  <button class="btn btn-success" style=" flex: none; width: 200px"
-                onClick="checkInvioPacchettoCliente('${intervento.id}', '${cliente_invio_pacchetto.email}', ${isPresent})">
+                onClick="checkInvioPacchettoCliente('${intervento.id}', '${email_contatto}', ${isPresent})">
                 <i class="glyphicon glyphicon-download"></i> Invia pacchetto al cliente
             </button>
        <div style="display:flex; align-items:center;">
@@ -874,6 +888,42 @@
 
 
 
+<div class="modal fade" id="myModalPosticipaSessione" tabindex="-1" role="dialog"
+     data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id="esitoModalHeader">
+        <h4 class="modal-title">Conferma Posticipa Sessione</h4>
+      </div>
+      <div class="modal-body">
+
+        <p>
+            <!-- valore iniziale ininfluente: verrà sovrascritto da JS -->
+        </p>
+        <br>
+        <p>
+            <!-- valore iniziale ininfluente: verrà sovrascritto da JS -->
+        </p>
+        <br>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" id="chkInviaEmail" checked>
+            Inviare Email
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="btnConfermaInvioPosticipo">
+          <i class="glyphicon glyphicon-ok"></i> Conferma
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" onClick="chiudiModalPosticipaSessione()">
+          <i class="glyphicon glyphicon-remove"></i> Annulla
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -946,7 +996,7 @@
         <label>Numero Certificato:</label>
        </div>
        <div class="col-xs-8">
-       <input type="text" class="form-control" id="nCertificato" name="nCertificato" >
+       <input type="text" class="form-control" id="nCertificato" name="nCertificato" required>
        </div>
        </div><br>
               <div class="row">
@@ -1718,7 +1768,7 @@
     <textarea class="form-control"
               id="emailCliente"
               name="emailCliente"
-              rows="3">${cliente_invio_pacchetto.email}</textarea>
+              rows="3">${email_contatto}</textarea>
 </div>
 
 		
@@ -2170,6 +2220,14 @@ function reloadDrive()   {
 
  $('#formNuovaMisura').on('submit', function (e) {
 	    e.preventDefault();
+	    
+	    if ($('#nCertificato').val() == null || $('#nCertificato').val().trim() === '') {
+	    	$('#nCertificato').closest('.col-xs-8').append(
+	    	        '<span id="erroreCertificato" class="text-danger">Inserire il Numero Certificato</span>'
+	    	    );
+	    	    $('#nCertificato').focus();
+	        return;
+	    }
 	
 		
 	    if ($('#id_strumento').val() != null && $('#id_strumento').val() !== '') {
@@ -2781,6 +2839,50 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		 
 	 }
 	 
+	 
+	 function checkPosticipaSessione(id) {
+		
+			console.log("fuori fuori");
+			
+		    $.ajax({
+		        url: "gestioneMisura.do?action=checkPosticipaSessione",
+		        type: "POST",
+		        data: { id: id},
+		        dataType: "json",
+		        success: function(datab) {
+		            console.log("risposta:", datab);
+		            if (datab.successo) {
+		            	$('#myModalPosticipaSessione .modal-body p:eq(0)').html(
+		            		    'La data di scadenza di questa sessione sarà posticipata al giorno:' +
+		            		    '<br><strong style="font-size: 18px;">' + datab.scadenzaNew + '</strong>'
+		            		);
+
+		            		$('#myModalPosticipaSessione .modal-body p:eq(1)').html(
+		            		    'Inviare una email di notifica ai seguenti indirizzi:' +
+		            		    '<br><strong>' + datab.emailCliente + '</strong>'
+		            		);
+
+		            		$('#btnConfermaInvioPosticipo').attr(
+		            		    'onclick',
+		            		    "confermaPosticipaSessione('" + id + "','" + datab.scadenzaNew + "')"
+		            		);
+
+		                posticipaSessioneModal();
+		                
+		            } else {
+		                $('#myModalErrorContent').html("Errore durante l'invalidazione della sessione!");
+		                $('#myModalError').removeClass();
+		                $('#myModalError').addClass("modal modal-danger");
+		                $('#myModalError').modal('show');
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            console.log("Errore AJAX:", xhr.responseText, status, error);
+		        }
+		    });
+		
+		}
+	 
 	 function checkInvioPacchettoCliente(id_intervento, email, isPresent) {
 		    let dataObj = {};
 		    dataObj.idIntervento = id_intervento;
@@ -2842,7 +2944,39 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 		    location.reload();
 		});
 	 
-	 
+	 function confermaPosticipaSessione(idSessione, scadenzaNew) {
+		 var chkInviaEmail;
+			if ($('#chkInviaEmail').is(':checked')) {
+				chkInviaEmail = 1;
+			} else {
+				chkInviaEmail =0;
+			}
+		    $.ajax({
+		        url: "gestioneMisura.do?action=posticipaSessione",
+		        type: "POST",
+		        data: { idSessione: idSessione,
+		        	scadenzaNew: scadenzaNew,
+		        	chkInviaEmail: chkInviaEmail},
+		        dataType: "json",
+		        success: function(datab) {
+		            
+		            if (datab.successo) {
+		            	console.log("risposta:", datab.successo);
+		            	chiudiModalPosticipaSessione();
+		                $('#myModalInvalidaSessione').modal('show');
+		                
+		            } else {
+		                $('#myModalErrorContent').html("Errore durante l'operazione!");
+		                $('#myModalError').removeClass();
+		                $('#myModalError').addClass("modal modal-danger");
+		                $('#myModalError').modal('show');
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            console.log("Errore AJAX:", xhr.responseText, status, error);
+		        }
+		    });
+		}
 	  
 		function openModalInvalidaSessione(){
 			$('#myModalConfermaInvalidaSessione').modal('show');
@@ -2854,7 +2988,10 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	}
 		
 	 
-	 
+		function chiudiModalPosticipaSessione(){
+			$('#myModalPosticipaSessione').modal('hide');
+	}
+		
 	 
 	 
 	 

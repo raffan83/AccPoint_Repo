@@ -36,6 +36,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.poi.hsmf.exceptions.ChunkNotFoundException;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
@@ -336,7 +337,133 @@ public class GestioneMisura extends HttpServlet {
 				out.print(myObj);
 				
 				
-			}  else if(action.equals("checkInvioPacchettoCliente")){
+			} else if(action.equals("checkPosticipaSessione")){
+				 ajax = true;
+					
+				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+				
+				String id= request.getParameter("id");
+				
+				
+	
+				SessioneDTO sessione = GestioneSessioneDAO.getSessioneById(Integer.parseInt(id), session);
+				CompanyDTO cmp =(CompanyDTO)request.getSession().getAttribute("usrCompany");
+				utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+				
+			//  sessione.setEmail_cliente("edoardo.boccitto@ncsnetwork.it");
+			  
+			  
+			  //SCEGLIERE DA COSA PARTIRE PER POSTICIPARE, DA DATA SCADENZA O DATA ODIERNA
+				Date scadenza = new Date();
+			//	Date scadenza = sessione.getDataScadenza();
+				
+				
+				Calendar cal = Calendar.getInstance();
+		        cal.setTime(scadenza);
+		        cal.add(Calendar.DAY_OF_MONTH, 7);
+		        cal.set(Calendar.HOUR_OF_DAY, 19);
+		        cal.set(Calendar.MINUTE, 0);
+		        cal.set(Calendar.SECOND, 0);
+		        cal.set(Calendar.MILLISECOND, 0);
+		    //    Date scadenzaNew = cal.getTime();
+	
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		        String scadenzaNew = sdf.format(cal.getTime());
+				
+				PrintWriter out = response.getWriter();
+				
+				if(sessione !=null) {				
+				
+		        	myObj.addProperty("successo",true);
+		        	myObj.addProperty("scadenzaNew", scadenzaNew);
+		        	myObj.addProperty("emailCliente", sessione.getEmail_cliente());
+		        	
+				}else {
+					myObj.addProperty("successo", false);
+				}
+
+			//	request.getSession().setAttribute("scadenzaNew", scadenzaNew);
+				request.getSession().setAttribute("sessione", sessione);
+				request.getSession().setAttribute("userObj", utente);
+				session.getTransaction().commit();
+				session.close();
+				
+				out.print(myObj);
+				
+				
+				
+			} else if(action.equals("posticipaSessione")) {
+				 ajax = true;
+				 
+				 response.setContentType("application/json");
+				 response.setCharacterEncoding("UTF-8");
+				    PrintWriter out = response.getWriter();
+				    
+				    boolean rispUpdate =false;
+				    
+				
+				    	String id= request.getParameter("idSessione");
+				    	int chkInviaEmail = Integer.parseInt(request.getParameter("chkInviaEmail"));
+				    	
+				    	
+				    	String scadenzaNewStr = request.getParameter("scadenzaNew");
+				    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				    	Date scadenzaNew = sdf.parse(scadenzaNewStr);
+				    	
+				    	SessioneDTO sessione = GestioneSessioneDAO.getSessioneById(Integer.parseInt(id), session);
+				    	Date scadenzaOld = sessione.getDataScadenza();
+				        try {
+					    	
+				    	if(sessione !=null) {
+				    		sessione.setDataScadenza(scadenzaNew);
+				    		
+				    		//aggiornare documental
+				    		 rispUpdate = updateDataScadenzaService(sessione, Costanti.URL_DELIVERY, scadenzaNew);
+				    	
+							 System.out.println("rsipUpdate: "+rispUpdate  );
+							 if (rispUpdate == true) {
+									
+				    		if(chkInviaEmail==1) {
+				    		//	Integer.parseInt("ciao");
+				    		//	GestioneSessioneBO.sendEmailClienteDocumentalWebPosticipaSessione(sessione.getEmail_cliente(), sessione,getServletContext());
+				    			//Invia email per avvertire cliente
+				    		}
+							 
+				    		session.update(sessione);
+				    		session.getTransaction().commit();
+				    		 myObj.addProperty("successo", rispUpdate);
+							 } else {
+								 myObj.addProperty("successo", rispUpdate);
+							 }
+							
+				    	}
+				    	request.getSession().setAttribute("userObj", utente);
+				    	out.print(myObj.toString());
+				    	
+				    	
+					} catch (Exception e) {
+						  e.printStackTrace();
+					        logger.error(e);
+					        request.getSession().setAttribute("exception", e);
+					        
+					        if(rispUpdate) {
+					        	boolean rispUpdateRollBack = updateDataScadenzaService(sessione, Costanti.URL_DELIVERY, scadenzaOld);
+					        	
+					        	
+					        }
+					      
+					        if (session != null && session.isOpen()
+					                && session.getTransaction() != null
+					                && session.getTransaction().isActive()) {
+					            session.getTransaction().rollback();
+					        }
+					        myObj.addProperty("successo", false);
+					        myObj.addProperty("errore", e.getMessage());
+
+					        out.print(myObj.toString());
+					}
+				
+			} else if(action.equals("checkInvioPacchettoCliente")){
 				 ajax = true;
 				
 				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
@@ -769,6 +896,79 @@ public class GestioneMisura extends HttpServlet {
 		
 	}
 	
+	public static boolean updateDataScadenzaService(SessioneDTO sessione, String urlDestinazione, Date scadenzaNew)  throws Exception  {
+
+		
+	    String token = "TOKEN_SEGRETO_123456";
+	    String boundary = "----Boundary" + System.currentTimeMillis();
+	    
+	    
+	    HttpURLConnection conn = (HttpURLConnection) new URL(urlDestinazione).openConnection();
+	    conn.setDoOutput(true);
+	    conn.setRequestMethod("POST");
+	    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+	    conn.setRequestProperty("Authorization", "Bearer " + token);
+	    conn.setConnectTimeout(30000);
+	    conn.setReadTimeout(120000);
+	    conn.setChunkedStreamingMode(8192);
+	    
+	    
+
+	    
+	    String sessionId = sessione.getSession_id();
+	 
+	    try (OutputStream output = conn.getOutputStream();
+	            PrintWriter writer = new PrintWriter(
+	                    new OutputStreamWriter(output, "UTF-8"), true)) {
+
+	           // comando operazione
+	           addFormField(writer, boundary, "action", "updateDataScadenza");
+
+	           // sessione
+	           addFormField(writer, boundary, "sessioneId", sessionId);
+	           
+	           //data scadenza
+	           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	           addFormField(writer, boundary, "scadenzaNew", sdf.format(scadenzaNew));
+
+
+	           // chiusura multipart
+	           writer.append("--")
+	                   .append(boundary)
+	                   .append("--")
+	                   .append("\r\n");
+
+	           writer.flush();
+
+	       } catch (Exception e) {
+	           throw e;
+	       }
+
+	
+	    int responseCode = conn.getResponseCode();
+
+	    System.out.println("Response Code: " + responseCode);
+
+	    InputStream stream = (responseCode >= 200 && responseCode < 300)
+	            ? conn.getInputStream()
+	            : conn.getErrorStream();
+
+	    try (BufferedReader reader = new BufferedReader(
+	            new InputStreamReader(stream, "UTF-8"))) {
+
+	        String line;
+	        StringBuilder response = new StringBuilder();
+
+	        while ((line = reader.readLine()) != null) {
+	            response.append(line);
+	        }
+
+	        System.out.println("Risposta App B: " + response);
+	    }
+
+	    return responseCode == 200;
+		
+	}
 	
 	
 	

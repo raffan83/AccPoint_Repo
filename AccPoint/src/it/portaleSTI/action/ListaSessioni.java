@@ -1,6 +1,7 @@
 package it.portaleSTI.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -21,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Session;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
@@ -101,12 +105,8 @@ public class ListaSessioni extends HttpServlet {
 			request.getSession().setAttribute("current_year", year);
 			request.getSession().setAttribute("yearList", Utility.getYearList());
 
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSessioni.jsp");
-	     	dispatcher.forward(request,response);
-	     	
-			session.getTransaction().commit();
-			session.close();
-			} else if(action.equals("lista_interventi_mensili")) {
+		
+			
 				
 				 
        		 String date_after = request.getParameter("date_after");
@@ -142,15 +142,62 @@ public class ListaSessioni extends HttpServlet {
 				//lista_interventi = GestioneInterventoBO.getListaInterventiDate(dateBefore,today, session);
 	
 				request.getSession().setAttribute("lista_interventi", lista_interventi);
-				
+				 request.getSession().setAttribute("intervento_attivo","");
 				request.getSession().setAttribute("date_after",df.format(start));
 				 request.getSession().setAttribute("date_before",df.format(before));	
 				 
-				 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaInterventiMensili.jsp");
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSessioni.jsp");
 			     	dispatcher.forward(request,response);
 			     	
 			     	session.getTransaction().commit();
 					session.close();
+				
+			} else if(action.equals("lista_interventi_mensili")) {
+				
+				
+				 String intervento_attivo = request.getParameter("intervento_attivo");
+	       		 String date_after = request.getParameter("date_after");
+					String date_before = request.getParameter("date_before");
+					
+					Date before = null;
+					Date start = null;
+					
+					
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
+					if(date_after == null) {
+						start = new Date();
+						
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(start);
+						calendar.add(Calendar.MONTH, -1);
+						
+						before = calendar.getTime();
+					}else {
+						
+						
+						before = df.parse(date_before);
+						start = df.parse(date_after);	
+						
+					}
+					
+					String startString = df.format(start);
+					String beforeString = df.format(before);
+					
+					List<InterventoDTO> lista_interventi = new ArrayList<>();
+					
+					lista_interventi = DirectMySqlDAO.getInterventoSessioni(startString, beforeString);
+				
+					 request.getSession().setAttribute("intervento_attivo",1);
+					 request.getSession().setAttribute("lista_interventi", lista_interventi);
+						
+						request.getSession().setAttribute("date_after",df.format(start));
+						 request.getSession().setAttribute("date_before",df.format(before));	
+						 
+						 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSessioni.jsp");
+					     	dispatcher.forward(request,response);
+					     	
+					     	session.getTransaction().commit();
+							session.close();
 				
 			}
 		}

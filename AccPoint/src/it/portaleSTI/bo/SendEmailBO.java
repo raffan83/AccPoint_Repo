@@ -2659,7 +2659,7 @@ public static void sendEmailClienteDocumentalWebPosticipaSessione( String mailTo
 	  
     email.setCharset("UTF-8");
 	    email.setFrom("delivery@stisrl.com", "Delivery S.T.I. srl");
-	  email.setSubject("Report taratura strumenti disponibile per il download Posticipata");
+	  email.setSubject("Report taratura strumenti disponibile per il download_PROROGA SCADENZA LINK");
 	  
 	  // embed the image and get the content id
 
@@ -2678,7 +2678,7 @@ public static void sendEmailClienteDocumentalWebPosticipaSessione( String mailTo
 	 // String URL_DOCUMENTALWEB = "http://192.168.1.100:8082/DocumentalWEB";
 
 		  email.setHtmlMsg("<html><meta charset=\\\"UTF-8\\\">Spett.le Cliente " + sessione.getNome_cliente() +"<br>"
-		  		+ "<br>Le comunichiamo che la sua sessione è stata posticipata.<br>"
+		  		+ "<br>Le comunichiamo che la validità del link per consultare e scaricare i report di taratura dei Suoi strumenti di misura è stata prorogata.<br>"
 		  		+ "<br>Per consultare e scaricare i documenti, acceda al seguente link: " 
 		  		+ "<br><a href=\"https://delivery.stisrl.com/DocumentalWEB/\">"
 		  		+ "https://delivery.stisrl.com"
@@ -2686,8 +2686,8 @@ public static void sendEmailClienteDocumentalWebPosticipaSessione( String mailTo
 		  		+ "<br>utilizzando le credenziali riservate riportate di seguito:"
 		  		+ "<br><br> Username: "+ sessione.getUsername()
 				+ "<br> Password: " + sessione.getPassword() 
-				+ "<br><br><strong>Scadenza del link di accesso: " + dataFormattata + "</strong>"
-				
+				+ "<br><br><strong>Nuova scadenza del link di accesso: " + dataFormattata + "</strong>"
+							
 			    
 				+ "<br><strong>Per assistenza, dal lunedì al venerdì dalle ore 8:00 alle ore 17:00, può contattarci ai seguenti recapiti:</strong>"
 				+ "<ul>\n" 

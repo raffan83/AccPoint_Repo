@@ -2,6 +2,7 @@ package it.portaleSTI.DAO;
 
 
 
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 import java.sql.Connection;
@@ -34,7 +35,7 @@ public static UtenteDTO getUtenteById(String id, Session session)throws Hibernat
 
 
 
-public static ArrayList<UtenteDTO> getUtenteByIdCliente(int idCliente)throws HibernateException, Exception {
+public static ArrayList<UtenteDTO> getUtenteByIdCliente(CommessaDTO commessa)throws HibernateException, Exception {
 	
 	Session session=null;
 	UtenteDTO utente = null;
@@ -43,9 +44,11 @@ public static ArrayList<UtenteDTO> getUtenteByIdCliente(int idCliente)throws Hib
 		
 	session.beginTransaction();
 	
-	Query query  = session.createQuery( "from UtenteDTO WHERE idCliente= :_idCliente");
+	Query query  = session.createQuery( "from UtenteDTO WHERE idCliente= :_idCliente  AND idSede= :_idSede");
 	
-	query.setParameter("_idCliente", idCliente);
+	query.setParameter("_idCliente", commessa.getID_ANAGEN());
+	query.setParameter("_idSede",	commessa.getK2_ANAGEN_INDR());
+
 	List<UtenteDTO> result =query.list();
 
 	session.getTransaction().commit();

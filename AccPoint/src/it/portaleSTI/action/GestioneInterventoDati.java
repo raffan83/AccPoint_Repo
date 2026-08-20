@@ -200,7 +200,7 @@ public class GestioneInterventoDati extends HttpServlet {
 	//	email_contatto = "edoardo.boccitto@ncsnetwork.it";
 		
 		
-		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm.getID_ANAGEN());
+		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm);
 		request.getSession().setAttribute("isPresent", isPresent);
 		
 		Date today = new Date();

@@ -4707,7 +4707,7 @@ public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String
 		intervento.setIdCommessa(rs.getString(5));
 		
 		CommessaDTO comm = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
-		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm.getID_ANAGEN());
+		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm);
 		intervento.setPresentCliente(isPresent);
 		
 		intervento.setNome_cliente_commessa(comm.getID_ANAGEN_NOME());

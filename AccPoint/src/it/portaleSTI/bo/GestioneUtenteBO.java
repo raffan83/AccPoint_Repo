@@ -33,6 +33,7 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneUtenteDAO;
 import it.portaleSTI.DTO.CampioneDTO;
 import it.portaleSTI.DTO.CertificatoCampioneDTO;
+import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.DTO.ValoreCampioneDTO;
 import it.portaleSTI.Util.Costanti;
@@ -93,8 +94,8 @@ public class GestioneUtenteBO {
 	}
 	
 	
-	public static boolean getUtenteByIdCliente(int id_cliente) throws HibernateException, Exception {
-		ArrayList<UtenteDTO> listaUtenti = GestioneUtenteDAO.getUtenteByIdCliente(id_cliente);
+	public static boolean getUtenteByIdCliente(CommessaDTO commessa) throws HibernateException, Exception {
+		ArrayList<UtenteDTO> listaUtenti = GestioneUtenteDAO.getUtenteByIdCliente(commessa);
 		
 		if(listaUtenti.size()> 0) {
 			return true;

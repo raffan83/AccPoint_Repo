@@ -1617,7 +1617,7 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
 		}
 	}
  	destinatari+="lisa.lombardozzi@crescosrl.net,";
- 	destinatari+="segreteria@crescosrl.net";
+ 	destinatari+="segreteria@crescosrl.net,krystelf.iodice@crescosrl.net";
  
      MimeMessage message = new MimeMessage(session);
      message.setFrom(new InternetAddress("calver@accpoint.it", "CRESCO - Formazione e consulenza Srl"));

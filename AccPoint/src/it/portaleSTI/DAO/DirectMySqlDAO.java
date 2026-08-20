@@ -4675,7 +4675,7 @@ public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String
 
 
 		con=getConnection();
-		String query = "SELECT i.id, i.nome_cliente, i.nome_sede, i.id_stato_intervento, i.id_commessa,i.data_creazione,i.id_company,s.email_cliente, s.session_id FROM intervento i "
+		String query = "SELECT i.id, i.nome_cliente, i.nome_sede, i.id_stato_intervento, i.id_commessa,i.data_creazione,s.email_cliente, s.session_id FROM intervento i "
 				+ "LEFT JOIN sessione s ON i.id=s.id_intervento AND s.abilitato=1 "
 				+ "WHERE i.data_creazione >=?  AND i.data_creazione < ? ";
 		
@@ -4720,13 +4720,9 @@ public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String
 		
 		intervento.setDataCreazione(rs.getDate(6));
 		
-		CompanyDTO company = new CompanyDTO();
-		company = GestioneCompanyBO.getCompanyById(""+rs.getInt(7), session);
-		//company.setId(rs.getInt(7));
-		intervento.setCompany(company);
-		
-		intervento.setEmail_cliente(rs.getString(8));
-		String session_id = rs.getString(9);
+
+		intervento.setEmail_cliente(rs.getString(7));
+		String session_id = rs.getString(8);
 		if(session_id!=null) {
 			intervento.setSessioneInvio(new SessioneDTO());
 		}

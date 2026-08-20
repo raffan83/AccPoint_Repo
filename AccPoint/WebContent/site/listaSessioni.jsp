@@ -255,7 +255,7 @@
                 <th>Stato</th>
                 <th>Data Creazione</th>
                 <th>Email </th>
-                <th>Company</th>
+             
                
                
                              
@@ -315,7 +315,7 @@
     <fmt:formatDate value="${intervento.dataCreazione}" pattern="dd/MM/yyyy"/>
     </td>
          <td>${intervento.email_cliente}</td>
-                  <td>${intervento.company.denominazione}</td>
+               
         
                 </tr>
               </c:forEach>
@@ -558,7 +558,7 @@
         	    { responsivePriority: 7, targets: 2 }, // Sede
         	    { responsivePriority: 8, targets: 5 }, // Sede Commessa
         	    { responsivePriority: 9, targets: 8 }, // Email
-        	    { responsivePriority: 10, targets: 9 } // Company
+       
         ]
       
       });

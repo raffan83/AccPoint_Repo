@@ -28,6 +28,9 @@ public class InterventoDTO {
 	//private Set<SchedaConsegnaDTO> schedaConsegnaDTO = new HashSet<SchedaConsegnaDTO>(0);
 	private SessioneDTO sessioneInvio;
 	private String email_cliente;
+	private boolean presentCliente;
+	private String nome_cliente_commessa;
+	private String nome_sede_commessa;
 	
 	public Set<PRInterventoRisorsaDTO> getListaRisorse() {
 		return listaRisorse;
@@ -209,6 +212,36 @@ public class InterventoDTO {
 
 	public void setEmail_cliente(String email_cliente) {
 		this.email_cliente = email_cliente;
+	}
+
+
+	public boolean isPresentCliente() {
+		return presentCliente;
+	}
+
+
+	public void setPresentCliente(boolean presentCliente) {
+		this.presentCliente = presentCliente;
+	}
+
+
+	public String getNome_cliente_commessa() {
+		return nome_cliente_commessa;
+	}
+
+
+	public void setNome_cliente_commessa(String nome_cliente_commessa) {
+		this.nome_cliente_commessa = nome_cliente_commessa;
+	}
+
+
+	public String getNome_sede_commessa() {
+		return nome_sede_commessa;
+	}
+
+
+	public void setNome_sede_commessa(String nome_sede_commessa) {
+		this.nome_sede_commessa = nome_sede_commessa;
 	}
 
 	

@@ -4706,6 +4706,17 @@ public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String
 		intervento.setStatoIntervento(stato);
 		intervento.setIdCommessa(rs.getString(5));
 		
+		CommessaDTO comm = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
+		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm.getID_ANAGEN());
+		intervento.setPresentCliente(isPresent);
+		
+		intervento.setNome_cliente_commessa(comm.getNOME_UTILIZZATORE());
+	    if (comm.getANAGEN_INDR_INDIRIZZO() != null && !comm.getANAGEN_INDR_INDIRIZZO().trim().isEmpty()) {
+           intervento.setNome_sede_commessa(comm.getANAGEN_INDR_INDIRIZZO());
+        } else {
+        	intervento.setNome_sede_commessa(comm.getINDIRIZZO_PRINCIPALE());
+        }
+	
 		
 		intervento.setDataCreazione(rs.getDate(6));
 		

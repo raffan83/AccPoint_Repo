@@ -6,6 +6,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
 
 <t:layout title="Dashboard" bodyClass="skin-red-light sidebar-mini wysihtml5-supported">
@@ -36,6 +37,10 @@
 
 .row-inviata td {
     background-color: #dff0d8 !important;
+}
+
+.row-present td {
+    background-color: #f2dede !important;
 }
 .action-icon {
     cursor: pointer;
@@ -171,7 +176,8 @@
                   <td>${s.username}</td>
                    <td>${s.password}</td>
                   <td>${s.session_id}</td>
-                  <td>${s.id_intervento} </td>
+                  <td><a target="_blank" class=" customTooltip customlink" href="gestioneInterventoDati.do?idIntervento=${utl:encryptData(s.id_intervento)}"> ${s.id_intervento}</a></td>
+                  
                   <td>
     <fmt:formatDate value="${s.dataCreazione}" pattern="dd/MM/yyyy"/>
     </td>
@@ -218,15 +224,22 @@
 </div>
 
            <!-- Legenda -->
-    <div style="margin-bottom: 10px;">
+    <div style="margin-bottom: 10px; display:flex; align-items:center; gap:25px;">
       <span style="display:inline-flex; align-items:center; gap:6px;">
         <span style="width:18px; height:18px; background-color:#dff0d8; 
                      border:1px solid #dff0d8; border-radius:3px; display:inline-block;"></span>
         <span style="font-size:17px; color:#555;">Sessione inviata</span>
       </span>
+      
+  <span style="display:inline-flex; align-items:center; gap:8px;">
+    <span style="width:25px; height:4px;  background-color:#d9534f; 
+                 border-radius:3px; display:inline-block;"></span>
+    <span style="font-size:17px; color:#555;">Cliente presente in Calver</span>
+</span>
+
     </div>
         
-          <!-- Tabella sessioni -->
+          <!-- Tabella intervbenti-->
           <table id="tabInterventi"
                  class="table table-primary table-bordered table-hover dataTable table-striped"
                  width="100%">
@@ -235,12 +248,15 @@
              
                 <th>ID</th>
                 <th>Cliente Intervento</th>
-                 <th>Sede</th>
+                 <th>Sede Intervento</th>
                 <th>Commessa</th>
+                   <th>Cliente Commessa</th>
+                 <th>Sede Commessa</th>
                 <th>Stato</th>
                 <th>Data Creazione</th>
                 <th>Email </th>
                 <th>Company</th>
+               
                
                              
     
@@ -249,12 +265,33 @@
             </thead>
             <tbody>
              <c:forEach items="${lista_interventi}" var="intervento">
-    <tr class="${intervento.sessioneInvio != null ? 'row-inviata' : ''}">
-                  <td>${intervento.id}</td>
+        <tr class="
+    <c:choose>
+        <c:when test="${intervento.sessioneInvio != null}">
+            row-inviata
+        </c:when>
+    </c:choose>
+">
+    	<td><a target="_blank" class=" customTooltip customlink" href="gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}"> ${intervento.id }</a></td>
+    	
+     
                   <td>${intervento.nome_cliente}</td>
                    <td>${intervento.nome_sede}</td>
                   <td>${intervento.idCommessa}</td>
-                 <td>
+                   <td>
+    <c:choose>
+        <c:when test="${intervento.presentCliente}">
+            <span style="color: #d9534f; font-weight: bold;">
+                ${intervento.nome_cliente_commessa}
+            </span>
+        </c:when>
+        <c:otherwise>
+            ${intervento.nome_cliente_commessa}
+        </c:otherwise>
+    </c:choose>
+</td>
+                   <td>${intervento.nome_sede_commessa}</td>
+                <td style="vertical-align: middle; text-align: center;">
     <c:choose>
         <c:when test="${intervento.statoIntervento.id == 2}">
             <span class="label label-warning">
@@ -279,7 +316,7 @@
     </td>
          <td>${intervento.email_cliente}</td>
                   <td>${intervento.company.denominazione}</td>
-                 
+        
                 </tr>
               </c:forEach>
             </tbody>
@@ -512,14 +549,16 @@
         stateSave: true,
         autoWidth: false,
         columnDefs: [
-            { responsivePriority: 1, targets: 0 }, // ID
-            { responsivePriority: 2, targets: 4 }, // Stato
-            { responsivePriority: 3, targets: 5 }, // Data
-            { responsivePriority: 4, targets: 3 }, // Commessa
-            { responsivePriority: 5, targets: 1 }, // Cliente
-            { responsivePriority: 6, targets: 2 }, // Sede
-            { responsivePriority: 7, targets: 6 }, // Email
-            { responsivePriority: 8, targets: 7 }  // Company
+        	 { responsivePriority: 1, targets: 0 }, // ID
+        	    { responsivePriority: 2, targets: 6 }, // Stato
+        	    { responsivePriority: 3, targets: 7 }, // Data Creazione
+        	    { responsivePriority: 4, targets: 1 }, // Cliente Intervento
+        	    { responsivePriority: 5, targets: 3 }, // Commessa
+        	    { responsivePriority: 6, targets: 4 }, // Cliente Commessa
+        	    { responsivePriority: 7, targets: 2 }, // Sede
+        	    { responsivePriority: 8, targets: 5 }, // Sede Commessa
+        	    { responsivePriority: 9, targets: 8 }, // Email
+        	    { responsivePriority: 10, targets: 9 } // Company
         ]
       
       });
@@ -559,7 +598,23 @@
   });
 
 
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
+	    var target = $(e.target).attr("href");
+
+	    if (target === '#standard') {
+	        setTimeout(function () {
+	            table.columns.adjust().responsive.recalc();
+	        }, 100);
+	    }
+
+	    if (target === '#interventi') {
+	        setTimeout(function () {
+	            tableInt.columns.adjust().responsive.recalc();
+	        }, 100);
+	    }
+
+	});
 
   
   $("#select1").change(function(){	

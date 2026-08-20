@@ -2686,7 +2686,7 @@ public static void sendEmailClienteDocumentalWebPosticipaSessione( String mailTo
 		  		+ "<br>utilizzando le credenziali riservate riportate di seguito:"
 		  		+ "<br><br> Username: "+ sessione.getUsername()
 				+ "<br> Password: " + sessione.getPassword() 
-				+ "<br><br><strong>Nuova scadenza del link di accesso: " + dataFormattata + "</strong>"
+				+ "<br><br><strong>Nuova scadenza del link di accesso: " + dataFormattata + "</strong><br>"
 							
 			    
 				+ "<br><strong>Per assistenza, dal lunedì al venerdì dalle ore 8:00 alle ore 17:00, può contattarci ai seguenti recapiti:</strong>"

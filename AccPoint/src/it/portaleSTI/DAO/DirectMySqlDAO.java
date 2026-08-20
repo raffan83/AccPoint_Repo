@@ -4710,7 +4710,7 @@ public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String
 		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm.getID_ANAGEN());
 		intervento.setPresentCliente(isPresent);
 		
-		intervento.setNome_cliente_commessa(comm.getNOME_UTILIZZATORE());
+		intervento.setNome_cliente_commessa(comm.getID_ANAGEN_NOME());
 	    if (comm.getANAGEN_INDR_INDIRIZZO() != null && !comm.getANAGEN_INDR_INDIRIZZO().trim().isEmpty()) {
            intervento.setNome_sede_commessa(comm.getANAGEN_INDR_INDIRIZZO());
         } else {

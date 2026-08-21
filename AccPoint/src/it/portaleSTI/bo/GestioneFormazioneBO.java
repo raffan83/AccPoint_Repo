@@ -1712,7 +1712,7 @@ public class GestioneFormazioneBO {
 				}else if(pdftext.contains(keyCf2)) {
 					cf = pdftext.substring(pdftext.indexOf(keyCf2) + keyCf2.length(), pdftext.indexOf(keyCf2)+(keyCf2.length()+16));
 				}else {
-				cf = pdftext.substring(pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 22 , pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 39);
+				cf = pdftext.substring(pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 22 , pdftext.indexOf(keyCfStart)+ keyCfStart.length() + 40);
 				}
 						
 				
@@ -1728,7 +1728,11 @@ public class GestioneFormazioneBO {
 				
 				nominativo = removeSpace(nominativo);
 				luogo_nascita = removeSpace(luogo_nascita);
+				if(cf.contains("-")) {
+				cf = removeTratto(cf);
+				}
 				cf = removeSpace(cf);
+			
 				
 				esito = checkCFPattern(cf);
 				
@@ -1891,6 +1895,18 @@ public class GestioneFormazioneBO {
 		}
 		
 		return str;
+	}
+	static String removeTratto(String str) {
+
+	    if (str.startsWith("-")) {
+	        str = str.replaceFirst("-", "");
+	    }
+
+	    if (str.endsWith("-")) {
+	        str = str.substring(0, str.length() - 1);
+	    }
+
+	    return str;
 	}
 	
 	

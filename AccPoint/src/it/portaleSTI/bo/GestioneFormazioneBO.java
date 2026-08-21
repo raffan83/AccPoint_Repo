@@ -1728,6 +1728,9 @@ public class GestioneFormazioneBO {
 				
 				nominativo = removeSpace(nominativo);
 				luogo_nascita = removeSpace(luogo_nascita);
+				
+				//CF puo essere forma " - "
+				cf = removeSpace(cf);
 				if(cf.contains("-")) {
 				cf = removeTratto(cf);
 				}

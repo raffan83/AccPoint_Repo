@@ -425,7 +425,7 @@ public class GestioneMisura extends HttpServlet {
 									
 				    		if(chkInviaEmail==1) {
 				    		//	Integer.parseInt("ciao");
-				    		//	GestioneSessioneBO.sendEmailClienteDocumentalWebPosticipaSessione(sessione.getEmail_cliente(), sessione,getServletContext());
+				    			GestioneSessioneBO.sendEmailClienteDocumentalWebPosticipaSessione(sessione.getEmail_cliente(), sessione,getServletContext());
 				    			//Invia email per avvertire cliente
 				    		}
 							 

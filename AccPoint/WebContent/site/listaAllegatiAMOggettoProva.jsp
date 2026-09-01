@@ -39,6 +39,14 @@
         <i class="fa fa-eye"></i>
     </a>
   </c:if>      
+ <c:if test="${fn:endsWith(allegato.filename, '.jpeg') || fn:endsWith(allegato.filename, '.JPEG')  || fn:endsWith(allegato.filename, '.jpg')  || fn:endsWith(allegato.filename, '.JPG')  || fn:endsWith(allegato.filename, '.png')  || fn:endsWith(allegato.filename, '.PNG')}">
+    <a class="btn btn-default btn-xs anteprima-allegato"
+       title="Anteprima"
+       data-id-allegato="${allegato.id}"
+       data-id-strumento="${id_strumento}">
+        <i class="fa fa-eye"></i>
+    </a>
+</c:if>
 	                   
 	                  <a class="btn btn-danger btn-xs " title="Clicca per eliminare l'allegato"  onClick="eliminaAllegato('${allegato.id  }','${id_strumento}','0')"><i class="fa fa-trash"></i></a>
 	               
@@ -242,7 +250,70 @@ $('#fileupload').fileupload({
 	     );
 
 	 }
-});		
+});	
+
+$(document).on('mousemove', '.anteprima-allegato', function (e) {
+
+    const idAllegato = $(this).data('id-allegato');
+    const idStrumento = $(this).data('id-strumento');
+    
+  
+
+    if ($('#image-popup_mod').length === 0) {
+        $('body').append(`
+            <div id="image-popup_mod">
+                <img id="popup-img_mod" src="" />
+            </div>
+        `);
+    }
+    
+    const largeSrc =
+        'amGestioneStrumenti.do?action=anteprima_allegato&id_allegato=' + encodeURIComponent(idAllegato) +
+        '&id_strumento=' + encodeURIComponent(idStrumento);
+
+
+    $('#popup-img_mod').attr('src', largeSrc);
+
+    // Posizione dell'occhio
+    const offset = $(this).offset();
+    const width = $(this).outerWidth();
+    const height = $(this).outerHeight();
+
+    const popupWidth = 350;
+    const popupHeight = 250;
+    const margin = 30;
+
+    let leftPosition = offset.left + width + margin;
+    let topPosition = offset.top;
+
+    // Se il popup finisce sotto lo schermo,
+    // lo alzo SOLO della quantità necessaria
+    const windowBottom = $(window).scrollTop() + $(window).height();
+
+    if (topPosition + popupHeight > windowBottom) {
+        topPosition = windowBottom - popupHeight - margin;
+    }
+
+    // Evita che finisca sopra lo schermo
+    const windowTop = $(window).scrollTop();
+
+    if (topPosition < windowTop + margin) {
+        topPosition = windowTop + margin;
+    }
+
+    $('#image-popup_mod').css({
+        top: topPosition,
+        left: leftPosition,
+        display: 'block'
+    });
+});
+
+
+
+$(document).on('mouseleave', '.anteprima-allegato', function () {
+	  $('#image-popup_mod, #image-popup').fadeOut(150);
+ //   $('#image-popup_mod').hide();
+});
 
  </script>
  

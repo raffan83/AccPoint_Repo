@@ -118,7 +118,62 @@ Nessun file allegato allo strumento!
         </div>
     </div>
 </div>
- 
+
+	<style>
+	
+	
+
+
+ #image-popup2{
+  position: fixed;
+  display: none;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+   max-height: calc(100vh - 40px);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+   z-index: 1071;
+}
+
+#image-popup_mod2{
+  position: absolute;
+  display: none;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+   max-height: calc(100vh - 40px);
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+   z-index: 1071;
+}
+
+
+
+#image-popup2 img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+#image-popup_mod2 img{
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+} 
+
+
+	</style>
+
+
+
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-process.js"></script>
 <script src="plugins/jqueryuploadfile/js/jquery.fileupload-validate.js"></script>
@@ -256,23 +311,20 @@ $(document).on('mousemove', '.anteprima-allegato', function (e) {
 
     const idAllegato = $(this).data('id-allegato');
     const idStrumento = $(this).data('id-strumento');
-    
-  
 
-    if ($('#image-popup_mod').length === 0) {
+    if ($('#image-popup_mod2').length === 0) {
         $('body').append(`
-            <div id="image-popup_mod">
-                <img id="popup-img_mod" src="" />
+            <div id="image-popup_mod2">
+                <img id="popup-img_mod2" src="" />
             </div>
         `);
     }
-    
+
     const largeSrc =
         'amGestioneStrumenti.do?action=anteprima_allegato&id_allegato=' + encodeURIComponent(idAllegato) +
         '&id_strumento=' + encodeURIComponent(idStrumento);
 
-
-    $('#popup-img_mod').attr('src', largeSrc);
+    $('#popup-img_mod2').attr('src', largeSrc);
 
     // Posizione dell'occhio
     const offset = $(this).offset();
@@ -301,7 +353,7 @@ $(document).on('mousemove', '.anteprima-allegato', function (e) {
         topPosition = windowTop + margin;
     }
 
-    $('#image-popup_mod').css({
+    $('#image-popup_mod2').css({
         top: topPosition,
         left: leftPosition,
         display: 'block'
@@ -309,10 +361,8 @@ $(document).on('mousemove', '.anteprima-allegato', function (e) {
 });
 
 
-
 $(document).on('mouseleave', '.anteprima-allegato', function () {
-	  $('#image-popup_mod, #image-popup').fadeOut(150);
- //   $('#image-popup_mod').hide();
+    $('#image-popup_mod2, #image-popup2').fadeOut(150);
 });
 
  </script>

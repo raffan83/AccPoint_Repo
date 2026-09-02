@@ -578,7 +578,7 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Scegli una sede dove spostare lo strumento</h4>
+        <h4 class="modal-title" id="myModalLabel">Scegliere una sede dove spostare lo strumento</h4>
       </div>
        <div class="modal-body">       
        <div class="row">
@@ -600,8 +600,11 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
        <select id="sedeS" name="sedeS" class="form-control select2"  data-placeholder="Seleziona Sede..." aria-hidden="true" data-live-search="true" style="width:100%">
        <option value=""></option>
       	<c:forEach items="${listaSediStrumenti}" var="sd">
-      	<option value="${sd.__id}_${sd.id__cliente_}">${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia}) </option>
-      	</c:forEach>
+    <c:set var="descrizioneSede" value="${sd.descrizione} - ${sd.indirizzo} - ${sd.comune} (${sd.siglaProvincia})" />
+    <option value="${sd.__id}_${sd.id__cliente_}" data-descrizione="${descrizioneSede}">
+        ${descrizioneSede}
+    </option>
+</c:forEach>
       
       </select>
       </div>
@@ -612,7 +615,10 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
       	</div>
       <div class="modal-footer">
       <input type="hidden" id="id_str">
-     <a class="btn btn-primary" onClick="spostaStrumento()">Sposta</a>
+       <input type="hidden" id="id_sede_old">
+        <input type="hidden" id="nome_sede_old">
+         <input type="hidden" id="nome_sede">
+     <a class="btn btn-primary" onClick="spostaStrumentoS()">Sposta</a>
 
       </div>
     </div>
@@ -649,42 +655,43 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    $("#sedeS").trigger("chosen:updated");
 	});
  
- function annullaStrumentoModal(id_strumento, id_sede, id_cliente, elimina,id_strumento_plain){
-	 $('#id_strumento').val(id_strumento);	 
-	 $('#id_sede').val(id_sede);	 
-	 $('#id_cliente').val(id_cliente);
-	 $('#elimina').val(elimina);
-	 $('#id_strumento_plain').val(id_strumento_plain)
-	 
-	
-	  if (parseInt(elimina, 10) === 0) {
-		    $('#txtModal').text("Sei sicuro di voler ANNULLARE lo strumento?");
-		  } else {
-		    $('#txtModal').text("Sei sicuro di voler ELIMINARE lo strumento?");
-		  }
-	  
-	$('#modalYesOrNo').modal();
- }
+ $("#sedeS").change(function() {
+
+	    var selected = $(this).find('option:selected');
+	    var descrizione = selected.attr('data-descrizione');
+
+	    $('#nome_sede').val(descrizione);
+	});
  
- function spostaStrumento(id_strumento, id_cliente,  id_sede){
+
+ 
+ function spostaStrumentoS(id_strumento, id_cliente,  id_sede){
 	 var idStrumento = $('#id_str').val();
 	    var idCliente = $('#clienteS').val();
 	    var idSede = $('#sedeS').val();
+	    var idSedeOld = $('#id_sede_old').val();
+	    var nomeSedeOld = $('#nome_sede_old').val();
+	    var nomeSede = $('#nome_sede').val();
+	    if(idSede==0){
+	    	nomeSede= "Non associate";
+	    }
 
-	    console.log("ID Strumento:", idStrumento);
-	    console.log("ID Cliente:", idCliente);
-	    console.log("ID Sede:", idSede);
 	    
 	    $.ajax({
 	        url: "gestioneStrumento.do?action=sposta",
 	        type: "POST",
 	        data: { id_strumento: idStrumento,
 	        	id_cliente: idCliente,
-	        	id_sede : idSede},
+	        	id_sede : idSede,
+	        	nome_sede : nomeSede,
+	        	id_sede_old: idSedeOld,
+	        	nome_sede_old: nomeSedeOld},
 	        dataType: "json",
 	        success: function(datab) {
 	          
 	            if (datab.success) {
+	            	var riga = $('#row_' + idStrumento);
+	            	table.row(riga).remove().draw();
 	            	chiudiModalSpostaStrumento();
 	            	 $('#myModalErrorContent').html(datab.messaggio);
 
@@ -707,45 +714,63 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	    });
  }
  
- 
- function modalSposta(id_strumento, id_sede, id_cliente){
-	 
-	 if(id_cliente!=null){
-		 $('#cliente').val(id_cliente);	 
-		 $('#cliente').change();
-	 }
-	 if(id_sede!=null){
-		 if(id_sede!=0){
-			 $('#sede').val(id_sede +"_"+id_cliente);	 
-		 }else{
-			 $('#sede').val(0);
-		 }
-		 
-		 $('#sede').change();
-	 }
-	 $('#id_str').val(id_strumento);
-	 $('#myModalSposta').modal();
-	 
- }
+
  
  function modalSpostaStrumento(id_strumento, id_sede, id_cliente) {
 
-	    console.log("idStrumento: " + id_strumento);
-	    console.log("idSede: " + id_sede);
-	    console.log("idCliente: " + id_cliente);
+	 
+
+	    // Salvo le option originali di sedeS SOLO la prima volta (prima di ogni filtro)
+	    if ($('#clienteS').data('options') == undefined) {
+	        $('#clienteS').data('options', $('#sedeS option').clone());
+	    }
+
+	    var options = $('#clienteS').data('options');
+	    var valueVecchio = "";
+	    var testoVecchio = "";
+
+	
+	       // Caso speciale: sede vecchia = "Non associate" (value semplice "0", senza underscore)
+    if (id_sede == 0 || id_sede == "0") {
+        valueVecchio = "0";
+        testoVecchio = "Non associate";
+    } else {
+        // Cerco tra le option originali quella che corrisponde alla sede attuale
+        for (var i = 0; i < options.length; i++) {
+            var val = options[i].value;
+          
+            if (val && val.indexOf("_") > -1) {
+                var idSedeOpt = val.substring(0, val.indexOf("_"));
+
+                if (idSedeOpt == id_sede) {
+                  
+                    valueVecchio = val;
+                    testoVecchio = options[i].text;
+                    break;
+                }
+            }
+        }
+    }
+
+	    $('#id_sede_old').val(valueVecchio);
+	    $('#nome_sede_old').val(testoVecchio);
+	
+	    
+	    // reset dei campi "nuova sede" ad ogni apertura del modal
+	    $('#nome_sede').val("");
 
 	    if (id_cliente != null) {
-	        $('#clienteS').val(id_cliente).trigger('change'); // filtra sedeS in base al cliente
+	        $('#clienteS').val(id_cliente).trigger('change');
 	    }
-
-	    if (id_sede != null) {
-	        if (id_sede != 0) {
-	            $('#sedeS').val(id_sede + "_" + id_cliente);
-	        } else {
-	            $('#sedeS').val(0);
-	        }
-	        $('#sedeS').trigger('chosen:updated'); // aggiorna il select2 dopo aver settato il valore
-	    }
+		 if(id_sede!=null){
+			 if(id_sede!=0){
+				 $('#sedeS').val(id_sede +"_"+id_cliente);	 
+			 }else{
+				 $('#sedeS').val(0);
+			 }
+			 
+			 $('#sedeS').change();
+		 }
 
 	    $('#id_str').val(id_strumento);
 
@@ -754,8 +779,29 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
  
 	function chiudiModalSpostaStrumento(){
 		$('#myModalSpostaStrumento').modal('hide');
-	    location.reload();
+
 }
+	
+	 
+	 function modalSposta(id_strumento, id_sede, id_cliente){
+		 
+		 if(id_cliente!=null){
+			 $('#cliente').val(id_cliente);	 
+			 $('#cliente').change();
+		 }
+		 if(id_sede!=null){
+			 if(id_sede!=0){
+				 $('#sede').val(id_sede +"_"+id_cliente);	 
+			 }else{
+				 $('#sede').val(0);
+			 }
+			 
+			 $('#sede').change();
+		 }
+		 $('#id_str').val(id_strumento);
+		 $('#myModalSposta').modal();
+		 
+	 }
 /* function openModal(id, event) {
 	  document.getElementById("modalBody").innerText =
 	    "Hai cliccato sull'indice di prestazione dello strumento con ID: " + id;
@@ -763,6 +809,23 @@ ArrayList<ClassificazioneDTO> listaClassificazione = (ArrayList)session.getAttri
 	
  
  }*/
+ 
+ function annullaStrumentoModal(id_strumento, id_sede, id_cliente, elimina,id_strumento_plain){
+	 $('#id_strumento').val(id_strumento);	 
+	 $('#id_sede').val(id_sede);	 
+	 $('#id_cliente').val(id_cliente);
+	 $('#elimina').val(elimina);
+	 $('#id_strumento_plain').val(id_strumento_plain)
+	 
+	
+	  if (parseInt(elimina, 10) === 0) {
+		    $('#txtModal').text("Sei sicuro di voler ANNULLARE lo strumento?");
+		  } else {
+		    $('#txtModal').text("Sei sicuro di voler ELIMINARE lo strumento?");
+		  }
+	  
+	$('#modalYesOrNo').modal();
+ }
  
  function openModal(id, id_misura,event) {
 

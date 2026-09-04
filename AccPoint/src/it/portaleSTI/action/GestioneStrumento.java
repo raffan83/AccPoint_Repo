@@ -357,7 +357,7 @@ public class GestioneStrumento extends HttpServlet {
 						StrumentoNoteDTO noteStrumento= new StrumentoNoteDTO();
 						
 						String stringaModifica=("Modifica sede strumento|");
-						stringaModifica = stringaModifica + "Da: " + nome_sede_old  +" ( id: "+id_sede_old+" ) " + "    ---   A: " + nome_sede +" ( id: "+ Integer.parseInt(id_sede.split("_")[0]) + " )" ;
+						stringaModifica = stringaModifica + "Da: " + nome_sede_old  +" ( id: "+id_sede_old.split("_")[0]+" ) " + "    ---   A: " + nome_sede +" ( id: "+ Integer.parseInt(id_sede.split("_")[0]) + " )" ;
 						
 						noteStrumento.setId_strumento(strumento.get__id());
 						noteStrumento.setUser(utente);

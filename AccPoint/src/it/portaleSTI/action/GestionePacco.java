@@ -69,6 +69,7 @@ import it.portaleSTI.DTO.RilMisuraRilievoDTO;
 import it.portaleSTI.DTO.RilStatoRilievoDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.StrumentoNoteDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
@@ -1710,6 +1711,8 @@ public class GestionePacco extends HttpServlet {
 		
 			String id_utilizzatore = request.getParameter("id_util");
 			String id_sede_utilizzatore = request.getParameter("id_sede_util");
+			String id_utilizzatore_old = request.getParameter("id_util_old");
+			String id_sede_utilizzatore_old = request.getParameter("id_sede_util_old");
 			String id_pacco = request.getParameter("id_pacco");
 			
 			ArrayList<MagItemDTO> lista_item = GestioneMagazzinoBO.getListaItemByPacco(Integer.parseInt(id_pacco), session);
@@ -1720,7 +1723,21 @@ public class GestionePacco extends HttpServlet {
 					strumento.setId_cliente(Integer.parseInt(id_utilizzatore));
 					strumento.setId__sede_(Integer.parseInt(id_sede_utilizzatore.split("_")[0]));
 					session.update(strumento);
-				}				
+					
+				
+
+				StrumentoNoteDTO noteStrumento= new StrumentoNoteDTO();
+				
+				String stringaModifica=("Strumento Spostato da Modifica Pacco (id cliente_id Sede)|");
+				stringaModifica = stringaModifica + "Da: " + id_utilizzatore_old  +"_"+id_sede_utilizzatore_old.split("_")[0] + "    ---   A: " + id_utilizzatore + "_" +id_sede_utilizzatore.split("_")[0];
+				
+				noteStrumento.setId_strumento(strumento.get__id());
+				noteStrumento.setUser(utente);
+				noteStrumento.setDescrizione(stringaModifica);
+				noteStrumento.setData(new java.util.Date());
+				
+				GestioneStrumentoBO.saveNote(noteStrumento, session);
+				}
 			}
 			
 			session.getTransaction().commit();

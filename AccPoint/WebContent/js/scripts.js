@@ -11592,7 +11592,7 @@ function modificaVerStrumento(){
 
 
 
-function spostaStrumentoPacco(id_util, id_sede_util, id_pacco){
+function spostaStrumentoPacco(id_util, id_sede_util,id_util_old,id_sede_util_old, id_pacco){
 	pleaseWaitDiv = $('#pleaseWaitDialog');
 	pleaseWaitDiv.modal();
 	
@@ -11600,6 +11600,9 @@ function spostaStrumentoPacco(id_util, id_sede_util, id_pacco){
 		dataObj.id_util = id_util;
 		dataObj.id_sede_util = id_sede_util;
 		dataObj.id_pacco = id_pacco;
+		
+		dataObj.id_util_old = id_util_old;
+		dataObj.id_sede_util_old = id_sede_util_old;
 			
 	  $.ajax({
 	type: "POST",

@@ -1400,7 +1400,9 @@ String permesso = "0";
       <div class="modal-footer">
       <input type="hidden" id="id_util">
       <input type="hidden" id="id_sede_util">
-      <a class="btn btn-primary" onclick="spostaStrumentoPacco($('#id_util').val(),$('#id_sede_util').val(),'${pacco.id}')" >SI</a>
+      <input type="hidden" id="id_util_old">
+      <input type="hidden" id="id_sede_util_old">
+      <a class="btn btn-primary" onclick="spostaStrumentoPacco($('#id_util').val(),$('#id_sede_util').val(),$('#id_util_old').val(),$('#id_sede_util_old').val(),'${pacco.id}')" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalSpostaStrumenti').modal('hide')" >NO</a>
       </div>
     </div>
@@ -2039,7 +2041,7 @@ $('#stato_lavorazione').change(function(){
 function chooseSubmit(){	
 	
 	if(id_cliente_utilizzatore!=$('#cliente_utilizzatore').val() || id_sede_utilizzatore!= $('#sede_utilizzatore').val().split("_")[0]){
-		modalSpostaStrumenti($('#cliente_utilizzatore').val(), $('#sede_utilizzatore').val());
+		modalSpostaStrumenti($('#cliente_utilizzatore').val(), $('#sede_utilizzatore').val(),id_cliente_utilizzatore,id_sede_utilizzatore );
 	}else{
 		if($('#tipo_ddt').val()==1){
 			modificaPaccoSubmit(0);
@@ -2049,10 +2051,13 @@ function chooseSubmit(){
 	}
 }
 
-function modalSpostaStrumenti(id_util, id_sede_util){
+function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_old){
 	
 	$('#id_util').val(id_util);
 	$('#id_sede_util').val(id_sede_util);
+	
+	$('#id_util_old').val(id_util_old);
+	$('#id_sede_util_old').val(id_sede_util_old);
 	$('#myModalSpostaStrumenti').modal();
 }
 

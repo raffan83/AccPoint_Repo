@@ -305,7 +305,7 @@ function modalPianificazione(day, commessa, id){
 		dataObj.id = id;
 		
 		callAjax(dataObj, "gestioneFormazione.do?action=dettaglio_pianificazione", function(data){
-			
+
 			var pianificazione = data.pianificazione;
 			var x = []
 			for (var i = 0; i < pianificazione.listaDocenti.length; i++) {
@@ -487,14 +487,8 @@ let savedSearch = localStorage.getItem('lastSearch');
 let indexSearchbox = localStorage.getItem('indexSearch');
 
 $(document).ready(function() {
-	
-	console.log("dentro")
-	
 
-	console.log("test")
 	
-
-
 
          fillTable("${anno}",'${filtro_tipo_pianificazioni}');
 	
@@ -522,6 +516,8 @@ $(document).ready(function() {
 
 
 function modalPianificazione(day, commessa, id){
+	
+
 	
 	var cell = $('#'+commessa.replace("/", "")+"_"+day);
 	
@@ -553,8 +549,9 @@ function modalPianificazione(day, commessa, id){
 		dataObj.id = id;
 		
 		callAjax(dataObj, "gestioneFormazione.do?action=dettaglio_pianificazione", function(data){
-			
+	
 			var pianificazione = data.pianificazione;
+			var corso = data.corso;
 			var x = []
 			for (var i = 0; i < pianificazione.listaDocenti.length; i++) {
 				
@@ -602,18 +599,31 @@ function modalPianificazione(day, commessa, id){
 		
 			$('#anno_data').val(year);	
 			
+			
 			if(pianificazione.id_corso!=null){
 				$('#corso_esistente').iCheck("check");
 				$('#id_corso_esistente').val(pianificazione.id_corso);
 				$('#id_corso_esistente').change();
-			}
-
+				if(corso.email_preavviso!=null){
+				$('#remind_docenti').iCheck("check");//controllare
+				$('#check_remind_docenti').val("1");
+				var mod= "1";
+				$('#mod').val(mod);
+			
+				$('#giorni_preavviso_mod').val(corso.giorni_preavviso);
+				$('#email_preavviso_mod').val(corso.email_preavviso);
+				}
+			} 
 			
 			$('#modalPianificazione').modal()
 		});
 		
 		
 	}else{
+		
+		var mod= "0";
+		$('#mod').val(mod);
+		
 		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
 		$('#day').val(day);
 		$('#commessa').val(commessa);
@@ -644,6 +654,7 @@ function pastePianificazione(day, commessa){
 		
 		
 		var pianificazione = data.pianificazione;
+	
 		var x = []
 		for (var i = 0; i < pianificazione.listaDocenti.length; i++) {
 			
@@ -672,6 +683,7 @@ function pastePianificazione(day, commessa){
 			$('#id_corso_esistente').val(pianificazione.id_corso)
 			$('#id_corso_esistente').change();	
 			$('#corso_esistente').iCheck("check");
+		
 		}
 		
 		
@@ -687,8 +699,6 @@ function pastePianificazione(day, commessa){
 
 function fillTable(anno, filtro, nuova_pianificazione){
 
-
-console.log("dddd")
 
 if(filtro!=3){
     $('#btn_tutte').attr("disabled",true)
@@ -873,9 +883,7 @@ if(filtro!=3){
 		    
 		    
 		
-		     	    
-			console.log("ciao")
-		    
+		     	   
 				
 	  
 			

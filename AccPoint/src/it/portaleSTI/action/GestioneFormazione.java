@@ -3314,6 +3314,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String check_nuovo_corso = ret.get("check_nuovo_corso");
 					String check_corso_esistente = ret.get("check_corso_esistente");
 					String id_corso_esistente = ret.get("id_corso_esistente");
+					String check_remind_docenti = ret.get("check_remind_docenti");
+					String giorni_preavviso_mod = ret.get("giorni_preavviso_mod");
+					String email_preavviso_mod = ret.get("email_preavviso_mod");
+					if(email_preavviso_mod == null ) {
+						email_preavviso_mod = "";
+					}
 					
 					ForPiaPianificazioneDTO pianificazione = null;
 					if(id_pianificazione!=null && !id_pianificazione.equals("")) {
@@ -3460,7 +3466,18 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						if(pianificazione.getTipo().getId()==3) {
 							corso.setE_learning(1);
 						}
-					
+						if(check_remind_docenti.equals("1")) {
+							if(giorni_preavviso_mod!=null && !giorni_preavviso_mod.equals("") && !giorni_preavviso_mod.equals("0")) {
+								corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso_mod));
+								Calendar c = Calendar.getInstance();
+								c.setTime(corso.getData_corso());
+								c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso_mod)* -1);
+								corso.setData_preavviso(c.getTime());
+								corso.setEmail_preavviso(email_preavviso_mod);
+							}		
+						}
+						
+				
 						session.save(corso);
 						pianificazione.setId_corso(corso.getId());
 						
@@ -3474,6 +3491,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso_esistente), session);
 						corso.setDescrizione(pianificazione.getDescrizione());
+						if(check_remind_docenti.equals("1")) {
+							if(giorni_preavviso_mod!=null && !giorni_preavviso_mod.equals("") && !giorni_preavviso_mod.equals("0")) {
+								corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso_mod));
+								Calendar c = Calendar.getInstance();
+								c.setTime(corso.getData_corso());
+								c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso_mod)* -1);
+								corso.setData_preavviso(c.getTime());
+								corso.setEmail_preavviso(email_preavviso_mod);
+							}		
+						}
 						session.update(corso);
 					}
 					
@@ -3501,6 +3528,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String id = request.getParameter("id");
 			
 					ForPiaPianificazioneDTO pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id), session);
+					ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
 					
 					
 					Gson g = new Gson();
@@ -3509,9 +3537,54 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					
 					PrintWriter out = response.getWriter();
 					myObj.addProperty("success", true);
+					myObj.add("corso", g.toJsonTree(corso));
 					myObj.add("pianificazione", g.toJsonTree(pianificazione));
 		        	out.print(myObj);
 					
+				} else if(action.equals("ricerca_docente")) {
+					ajax = true;
+					String email ="";
+					int count =0;
+					int count_senza_email=0;
+					List<String> email_docenti = new ArrayList<>();
+					int risp=0; // se 0 errore, docent enon selezionato, 1 email non presente, 2 successo
+					   String[] id_docenti = request.getParameterValues("id_docente");
+					   for(String id : id_docenti) {
+					if(id!=null && !id.equals("")) {
+					ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session);
+				
+					if(docente != null && docente.getEmail()!=null &&  !docente.getEmail().equals("")) {
+						email = docente.getEmail();		
+						
+						count ++;
+					} else if(docente != null && (docente.getEmail()==null || docente.getEmail().equals(""))) {
+						email = "";
+						count_senza_email++;
+						
+					} 
+					email_docenti.add(email);
+					} 
+					   }
+					
+					   if(count == id_docenti.length) {
+						   risp=2;
+					   } else if(count_senza_email>0){
+						   risp=1;
+					   }else {
+						   risp=0;
+					   }
+					
+					session.getTransaction().commit();
+					session.close();
+					PrintWriter out = response.getWriter();
+					myObj.addProperty("success", true);
+					myObj.addProperty("risp", risp);
+					myObj.addProperty("no_count",count_senza_email);
+					
+					String email_docenti_str = String.join(";", email_docenti);
+					myObj.addProperty("email_docenti", email_docenti_str);
+					
+		        	out.print(myObj);
 				}
 				else if(action.equals("elimina_pianificazione")) {
 				

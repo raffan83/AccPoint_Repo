@@ -282,7 +282,35 @@
 					</c:forEach>
 					</select>
         </div>
-        </div><br>
+        </div>
+                   
+<div class="row" style="margin-top:20px">
+    <div class="col-sm-4">
+        <label>Remind Docenti</label>
+    </div>
+    <div class="col-sm-8">
+        <input type='checkbox' id='remind_docenti' name='remind_docenti'>
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px">
+    <div class="col-sm-4">
+        <label>Giorni Preavviso</label>
+    </div>
+    <div class="col-sm-8">
+        <input id="giorni_preavviso_mod" name="giorni_preavviso_mod" disabled class="form-control" type="number" step="1" min="0">
+    </div>
+</div>
+
+<div class="row" style="margin-top:20px">
+    <div class="col-sm-4">
+        <label>Email Preavviso <br><small class="text-muted">Inserire gli indirizzi separati da ";"</small></label>
+    </div>
+    <div class="col-sm-8">
+        <input id="email_preavviso_mod" name="email_preavviso_mod" disabled class="form-control" type="text">
+    </div>
+</div>
+        
         <div class="row">
         <div class="col-xs-12">
         <label>Testo Note</label>
@@ -304,15 +332,18 @@
       <input type="hidden" id="anno_data" name="anno_data">
       <input type="hidden" id="check_nuovo_corso" name="check_nuovo_corso">
       <input type="hidden" id="check_corso_esistente" name="check_corso_esistente">
-      
+         <input type="hidden" id="check_remind_docenti" name="check_remind_docenti">
+        <input type="hidden" id="mod" name="mod">
       
       
       
       
       <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
         
-	               <button class="btn btn-primary" type="submit"  >Salva</button>
-	                
+	              
+	      <button type="submit" class="btn btn-primary">
+    <i class="glyphicon glyphicon-download"></i> Salva
+</button>
 	   
       
       
@@ -517,7 +548,9 @@ $('#tipo').change(function(){
 
 $('#formNuovaPianificazione').on("submit", function(e){
 	e.preventDefault();
+	if(validaEmailClienti()) {
 	nuovaPianificazione();
+	}
 })
 
 
@@ -625,6 +658,7 @@ $('#docente').on('change', function() {
 
 function nuovaPianificazione(){
 	
+
 	 var values = $('#docente').val();
 	 var ids = "";
 	 if(values!=null){
@@ -798,8 +832,109 @@ $('input:checkbox').on('ifToggled', function() {
 	});
 	
 	
+	$('#remind_docenti').one('ifUnchecked', function(event){	
+		$('#check_remind_docenti').val("0");
+		$('#giorni_preavviso_mod').attr("disabled", true);
+		$('#email_preavviso_mod').attr("disabled", true);
+		$('#email_preavviso_mod').val("");
+		$('#giorni_preavviso_mod').val("");
+	});
+	
+	
+	$('#remind_docenti').off('ifChecked').on('ifChecked', function(event){
+		var mod = $('#mod').val();
+	
+		if(mod!=="1"){
+        $('#check_remind_docenti').val("1");
+        var id_docente = $('#docente').val();
+    
+        riempimentoEmailPreavviso(id_docente);
+		}
+        $('#giorni_preavviso_mod').attr("disabled", false);
+        $('#email_preavviso_mod').attr("disabled", false);
+    });
+	
 })
 
+function riempimentoEmailPreavviso(id_docente) {
+
+   
+
+    $.ajax({
+        type: "POST",
+        url: "gestioneFormazione.do?action=ricerca_docente",
+        data: {
+            id_docente: id_docente
+        },
+        traditional: true,
+        dataType: "json",
+
+        success: function(data) {
+      
+
+            if (data.success) {
+            	var risp = data.risp;
+            	if(risp==2){
+                $('#email_preavviso_mod').val(data.email_docenti);
+             
+            } else if(risp==1){
+            	 $('#email_preavviso_mod').val(data.email_docenti);
+            	var no_count = data.no_count;         	
+            	 $('#myModalErrorContent').html("email docenti non presenti: " + no_count);
+            	 $('#myModalError').addClass("modal modal-warning");	
+                 $('#myModalError').modal('show');
+               
+            } else if(risp==0){
+            	
+           	 $('#myModalErrorContent').html("Docente non selezionato");
+         	$('#myModalError').addClass("modal modal-warning");	  
+             $('#myModalError').modal('show');
+        }
+            } else {
+                $('#myModalErrorContent').html(data.messaggio);
+                $('#myModalError').modal('show');
+            }
+        },
+
+        error: function(xhr, status, error) {
+            console.log("ERRORE AJAX");
+            console.log("status:", status);
+            console.log("error:", error);
+            console.log("response:", xhr.responseText);
+        }
+    });
+}
+
+function validaEmail(email) {
+    var pattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+    return pattern.test(email.trim());
+}
+
+function validaEmailClienti() {
+    var emailField = document.getElementById("email_preavviso_mod");
+    var valore = emailField.value.trim();
+    
+    // Se il campo è vuoto, passa (opzionale: rendilo obbligatorio se vuoi)
+    if (valore === "") return true;
+    
+    var emails = valore.split(";");
+    var nonValide = [];
+    
+    for (var i = 0; i < emails.length; i++) {
+        var email = emails[i].trim();
+        if (email !== "" && !validaEmail(email)) {
+            nonValide.push(email);
+        }
+    }
+    
+    if (nonValide.length > 0) {
+        alert("Le seguenti email non sono valide:\n" + nonValide.join("\n"));
+        emailField.focus();
+        return false;
+    }
+    
+    return true;
+}
 
 
 
@@ -990,8 +1125,6 @@ $('#ora_inizio, #ora_fine').change(function() {
 
 $('#modalPianificazione').on("hidden.bs.modal", function(){
 	
-	
-	
 	$('#docente').prop('selectedIndex', -1);
 	$('#docente').change();	
 
@@ -1018,6 +1151,10 @@ $('#modalPianificazione').on("hidden.bs.modal", function(){
 	 $('#corso_esistente').iCheck('uncheck');
 	 $('#id_corso_esistente').prop('selectedIndex', -1);
 		$('#id_corso_esistente').change();	
+		$('#remind_docenti').iCheck('uncheck');
+		$('#check_remind_docenti').val("0");
+		$('#giorni_preavviso_mod').attr("disabled", true).val("");
+		$('#email_preavviso_mod').attr("disabled", true).val("");
 });
 
 

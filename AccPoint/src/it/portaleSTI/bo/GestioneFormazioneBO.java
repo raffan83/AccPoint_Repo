@@ -2774,6 +2774,34 @@ public class GestioneFormazioneBO {
 	}
 	}
 	
+	public static void sendEmailPianificazionePreavviso(String path) throws Exception {
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		try {
+		
+		ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_preavviso = GestioneFormazioneDAO.getListaPianificazioniPreavviso(new Date(),session);
+
+		for (ForPiaPianificazioneDTO pianificazione : lista_pianificazioni_preavviso) {
+			
+			
+				SendEmailBO.sendEmailPreavvisoPianificazione(pianificazione,  session);
+			
+				
+	
+		}
+
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}catch(Exception e) {
+		
+		throw e;
+		
+	}
+	}
+	
 		public static void main(String[] args) throws Exception{
 		
 		new ContextListener().configCostantApplication();

@@ -604,14 +604,18 @@ function modalPianificazione(day, commessa, id){
 				$('#corso_esistente').iCheck("check");
 				$('#id_corso_esistente').val(pianificazione.id_corso);
 				$('#id_corso_esistente').change();
-				if(corso.email_preavviso!=null){
+				if(pianificazione.email_preavviso!=null){
+					var mod= "1";
+					$('#mod').val(mod);
 				$('#remind_docenti').iCheck("check");//controllare
 				$('#check_remind_docenti').val("1");
-				var mod= "1";
-				$('#mod').val(mod);
 			
-				$('#giorni_preavviso_mod').val(corso.giorni_preavviso);
-				$('#email_preavviso_mod').val(corso.email_preavviso);
+			
+				$('#giorni_preavviso_mod').val(pianificazione.giorni_preavviso);
+				$('#email_preavviso_mod').val(pianificazione.email_preavviso);
+				} else {
+					$('#remind_docenti').iCheck("uncheck");//controllare
+					$('#check_remind_docenti').val("0");
 				}
 			} 
 			

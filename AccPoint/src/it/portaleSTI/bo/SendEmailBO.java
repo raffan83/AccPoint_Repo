@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -2452,6 +2453,74 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 		 // String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
 		  String messaggio = "Gentile Utente,<br>";
 		  messaggio+="Con la presente, vi comunichiamo che in data "+df.format(corso.getData_corso())+ ore+" &egrave; stato pianificato il corso " +corso.getDescrizione()+".<br>";
+		  messaggio +=docenti;
+		  messaggio += "Nel caso in cui siate impossibilitati ad organizzare il corso, vi chiediamo di informaci tempestivamente per evitare inconvenienti.<br>";
+		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
+
+		  messaggio+=FIRMA_CALCE_CRESCO;
+		  
+		  email.setHtmlMsg("<html>"+messaggio+"</html>");
+		  
+		  email.send();
+}
+
+public static void sendEmailPreavvisoPianificazione(ForPiaPianificazioneDTO pianificazione, org.hibernate.Session session) throws EmailException, AddressException {
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	
+	
+	 HtmlEmail email = new HtmlEmail();
+	
+
+email.setHostName("mail.vianova.it");
+
+email.setAuthentication("segreteria@crescosrl.net", Costanti.PASS_EMAIL_CRESCO);
+
+email.getMailSession().getProperties().put("mail.smtp.auth", "true");
+email.getMailSession().getProperties().put("mail.debug", "true");
+email.getMailSession().getProperties().put("mail.smtp.port", "587");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "587");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "true");
+email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
+
+	
+		for (String to : pianificazione.getEmail_preavviso().split(";")) {
+			if(to!=null && !to.equals("")) {
+				email.addTo(to);
+			}
+			
+		}
+		
+
+	  email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
+	 
+	
+//	  ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
+	  HashSet<ForDocenteDTO>  lista_docenti = (HashSet<ForDocenteDTO>) pianificazione.getListaDocenti();
+	  String ore = "";
+	  if(pianificazione!=null && pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
+		  ore =" dalle ore: "+pianificazione.getOra_inizio()+" alle ore: "+pianificazione.getOra_fine();
+	  }
+
+		  email.setSubject("Remind Pianificazione Corso "+pianificazione.getDescrizione());
+		  
+		  String docenti = "";
+		  if(lista_docenti.size()>1) {
+			  docenti += "I docenti del corso saranno: ";
+			  for (ForDocenteDTO d : lista_docenti) {
+				docenti += d.getNome() +" "+d.getCognome()+", ";
+			}
+			  docenti = docenti.substring(0, docenti.length() - 2)+"<br>";
+		  }else if(lista_docenti.size()==1){
+			  docenti += "Il docente del corso sar&agrave;: ";
+			  for (ForDocenteDTO d : lista_docenti) {
+					docenti += d.getNome() +" "+d.getCognome()+"<br>";
+				}
+		  }
+		  
+		 // String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
+		  String messaggio = "Gentile Utente,<br>";
+		  messaggio+="Con la presente, vi comunichiamo che in data "+df.format(pianificazione.getData())+ ore+" &egrave; stato pianificato il corso " +pianificazione.getDescrizione()+".<br>";
 		  messaggio +=docenti;
 		  messaggio += "Nel caso in cui siate impossibilitati ad organizzare il corso, vi chiediamo di informaci tempestivamente per evitare inconvenienti.<br>";
 		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";

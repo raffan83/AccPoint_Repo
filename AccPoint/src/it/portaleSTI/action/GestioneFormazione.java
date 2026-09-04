@@ -3468,12 +3468,12 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						}
 						if(check_remind_docenti.equals("1")) {
 							if(giorni_preavviso_mod!=null && !giorni_preavviso_mod.equals("") && !giorni_preavviso_mod.equals("0")) {
-								corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso_mod));
+								pianificazione.setGiorni_preavviso(Integer.parseInt(giorni_preavviso_mod));
 								Calendar c = Calendar.getInstance();
-								c.setTime(corso.getData_corso());
+								c.setTime(pianificazione.getData());
 								c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso_mod)* -1);
-								corso.setData_preavviso(c.getTime());
-								corso.setEmail_preavviso(email_preavviso_mod);
+								pianificazione.setData_preavviso(c.getTime());
+								pianificazione.setEmail_preavviso(email_preavviso_mod);
 							}		
 						}
 						
@@ -3489,19 +3489,18 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 						pianificazione.setId_corso(Integer.parseInt(id_corso_esistente));
 						
-						ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(Integer.parseInt(id_corso_esistente), session);
-						corso.setDescrizione(pianificazione.getDescrizione());
+						
 						if(check_remind_docenti.equals("1")) {
 							if(giorni_preavviso_mod!=null && !giorni_preavviso_mod.equals("") && !giorni_preavviso_mod.equals("0")) {
-								corso.setGiorni_preavviso(Integer.parseInt(giorni_preavviso_mod));
+								pianificazione.setGiorni_preavviso(Integer.parseInt(giorni_preavviso_mod));
 								Calendar c = Calendar.getInstance();
-								c.setTime(corso.getData_corso());
+								c.setTime(pianificazione.getData());
 								c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(giorni_preavviso_mod)* -1);
-								corso.setData_preavviso(c.getTime());
-								corso.setEmail_preavviso(email_preavviso_mod);
+								pianificazione.setData_preavviso(c.getTime());
+								pianificazione.setEmail_preavviso(email_preavviso_mod);
 							}		
 						}
-						session.update(corso);
+						
 					}
 					
 					

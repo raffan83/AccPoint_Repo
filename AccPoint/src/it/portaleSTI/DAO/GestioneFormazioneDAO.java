@@ -1596,6 +1596,20 @@ ArrayList<ForCorsoDTO> lista = null;
 				
 		return lista;
 	}
+	
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniPreavviso(Date date, Session session) {
+    ArrayList<ForPiaPianificazioneDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from ForPiaPianificazioneDTO where data_preavviso = :_date");
+		query.setParameter("_date", date);	
+		
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+				
+		return lista;
+	}
 
 
 	public static ForPiaPianificazioneDTO getPianificazioneFromCorso(int id, Session session) {

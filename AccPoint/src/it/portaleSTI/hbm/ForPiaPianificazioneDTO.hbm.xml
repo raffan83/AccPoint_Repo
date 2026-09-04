@@ -97,5 +97,17 @@
           <property name="id_corso" type="java.lang.Integer" >
             <column name="id_corso" />
         </property>
+        
+          <property name="giorni_preavviso" type="int" >
+            <column name="giorni_preavviso" />
+        </property>
+        
+        <property name="data_preavviso" type="java.sql.Date" >
+            <column name="data_preavviso" />
+        </property>
+        
+        <property name="email_preavviso" type="java.lang.String" >
+            <column name="email_preavviso" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -653,6 +653,9 @@ $('#docente').on('change', function() {
 	if(selected!=null){
 		previousValues = [...selected];	
 	}
+	if ($('#remind_docenti').prop('checked')) {
+	    riempimentoEmailPreavviso(selected);
+	}
 	
   });
 
@@ -844,12 +847,12 @@ $('input:checkbox').on('ifToggled', function() {
 	$('#remind_docenti').off('ifChecked').on('ifChecked', function(event){
 		var mod = $('#mod').val();
 	
-		if(mod!=="1"){
+		
         $('#check_remind_docenti').val("1");
         var id_docente = $('#docente').val();
     
         riempimentoEmailPreavviso(id_docente);
-		}
+		
         $('#giorni_preavviso_mod').attr("disabled", false);
         $('#email_preavviso_mod').attr("disabled", false);
     });
@@ -1125,6 +1128,12 @@ $('#ora_inizio, #ora_fine').change(function() {
 
 $('#modalPianificazione').on("hidden.bs.modal", function(){
 	
+	// prima disattiva i checkbox che innescano chiamate ajax nel change di #docente
+	$('#remind_docenti').iCheck('uncheck');
+	$('#agenda').iCheck('uncheck');
+	$('#pausa_pranzo').iCheck('uncheck');
+	
+	// poi resetta il docente (ora il change non farà più la chiamata, perché i checkbox sono già unchecked)
 	$('#docente').prop('selectedIndex', -1);
 	$('#docente').change();	
 

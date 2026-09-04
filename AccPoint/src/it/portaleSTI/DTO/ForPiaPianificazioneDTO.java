@@ -31,6 +31,9 @@ public class ForPiaPianificazioneDTO {
 	private int ore_fatturate;
 	private Integer id_corso;
 	private Integer attestati_presenti;
+	private  Integer giorni_preavviso;
+	private Date data_preavviso; 
+	private String email_preavviso; 
 	
 	private Set<ForDocenteDTO> listaDocenti = new HashSet<ForDocenteDTO>(0);
 	
@@ -322,6 +325,44 @@ public class ForPiaPianificazioneDTO {
 
 	public void setAttestati_presenti(Integer attestati_presenti) {
 		this.attestati_presenti = attestati_presenti;
+	}
+
+
+
+
+
+	public Integer getGiorni_preavviso() {
+		return giorni_preavviso;
+	}
+
+
+
+	public void setGiorni_preavviso(Integer giorni_preavviso) {
+		this.giorni_preavviso = giorni_preavviso;
+	}
+
+
+
+	public Date getData_preavviso() {
+		return data_preavviso;
+	}
+
+
+
+	public void setData_preavviso(Date data_preavviso) {
+		this.data_preavviso = data_preavviso;
+	}
+
+
+
+	public String getEmail_preavviso() {
+		return email_preavviso;
+	}
+
+
+
+	public void setEmail_preavviso(String email_preavviso) {
+		this.email_preavviso = email_preavviso;
 	}
 	
 	

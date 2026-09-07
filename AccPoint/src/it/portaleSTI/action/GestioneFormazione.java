@@ -3536,8 +3536,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					String id = request.getParameter("id");
 			
 					ForPiaPianificazioneDTO pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id), session);
-					ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
-					
+					ForCorsoDTO corso = null;
+					if(pianificazione.getId_corso()!=null) {
+					corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
+					}
 					
 					Gson g = new Gson();
 					session.getTransaction().commit();

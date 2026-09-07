@@ -602,62 +602,61 @@ function getListaFasi(ids){
 	
 
 let previousValues = [];
+
 $('#docente').on('change', function() {
 	  
-	var selected = $(this).val();
-	var selected_before = $('#id_docenti').val().split(";");
+	var selected = $(this).val() || [];               // normalizza subito
+	var selected_before = ($('#id_docenti').val() || "").split(";");
 	var deselected = "";
 	
-
-	if(selected!=null && selected.length>0){
-		
-		for(var i = 0; i<selected_before.length;i++){
-			var found = false
-			for(var j = 0; j<selected.length;j++){
+	if(selected.length > 0){
+		for(var i = 0; i < selected_before.length; i++){
+			var found = false;
+			for(var j = 0; j < selected.length; j++){
 				if(selected_before[i] == selected[j]){
 					found = true;
 				}
 			}
-			if(!found && selected_before[i]!=''){
-				deselected = deselected+selected_before[i]+";";
+			if(!found && selected_before[i] != ''){
+				deselected = deselected + selected_before[i] + ";";
 			}
 		}
-	}else{
-		deselected = $('#id_docenti').val();
+	} else {
+		deselected = $('#id_docenti').val() || "";
 	}
-	 
 	
-	$('#id_docenti_dissocia').val(deselected)
+	$('#id_docenti_dissocia').val(deselected);
 	
+	// normalizza SEMPRE previousValues prima di usarlo
+	if (!Array.isArray(previousValues)) {
+		previousValues = [];
+	}
 	
+	var lastAdded = selected.filter(function(v){ return previousValues.indexOf(v) === -1; }).pop();
+	var lastRemoved = previousValues.filter(function(v){ return selected.indexOf(v) === -1; }).pop();
+	
+	// azione = "1" solo se l'ultima modifica è stata PURA rimozione (nessuna aggiunta contestuale)
+	var azione = (lastRemoved != null && lastAdded == null) ? "1" : "0";
+	console.log("azione docente change" + azione);
 	
 	if ($('#agenda').prop('checked')) {
-		let currentValues = $(this).val() || [];		
+		if (lastAdded != null) {
+			getListaFasi(lastAdded);
+		}
+		if (lastRemoved != null) {
+			$('#content_select_fasi_' + lastRemoved).remove();
+		}
+	}
 	
-		if(currentValues!=null){
-			var lastAdded = currentValues.filter(value => !previousValues.includes(value)).pop();	
-		}
-		if(previousValues!=null && selected!=null){
-			var lastRemoved = previousValues.filter(value => !selected.includes(value)).pop();	
-		}
-		
-		
-		if(lastAdded !=null ){
-			getListaFasi(lastAdded);	
-		}
-		if(lastRemoved!=null){
-			$('#content_select_fasi_'+lastRemoved).remove()
-		}
-		
-	}
-	if(selected!=null){
-		previousValues = [...selected];	
-	}
+	previousValues = [...selected];   // selected è già garantito array
+	
 	if ($('#remind_docenti').prop('checked')) {
-	    riempimentoEmailPreavviso(selected);
+		var mod = "1";
+		console.log("mod docente change " + mod);
+	    riempimentoEmailPreavviso(selected,mod, azione);
 	}
 	
-  });
+});
 
 function nuovaPianificazione(){
 	
@@ -846,28 +845,35 @@ $('input:checkbox').on('ifToggled', function() {
 	
 	$('#remind_docenti').off('ifChecked').on('ifChecked', function(event){
 		var mod = $('#mod').val();
-	
+		var azione = $('#azione').val();
+	console.log("azione " + azione);
 		
         $('#check_remind_docenti').val("1");
         var id_docente = $('#docente').val();
-    
-        riempimentoEmailPreavviso(id_docente);
-		
+    if(mod==="0"){
+        riempimentoEmailPreavviso(id_docente,mod);
+    } else{
+    	 if ($(this).prop('checked')) {
+    	        riempimentoEmailPreavviso(id_docente,mod);
+    	    }
+    }
         $('#giorni_preavviso_mod').attr("disabled", false);
         $('#email_preavviso_mod').attr("disabled", false);
     });
 	
 })
 
-function riempimentoEmailPreavviso(id_docente) {
+function riempimentoEmailPreavviso(id_docente,mod,azione) {
 
-   
+   console.log("mod function riempimento" + mod);
 
     $.ajax({
         type: "POST",
         url: "gestioneFormazione.do?action=ricerca_docente",
         data: {
-            id_docente: id_docente
+            id_docente: id_docente,
+            mod: mod,
+            azione: azione
         },
         traditional: true,
         dataType: "json",

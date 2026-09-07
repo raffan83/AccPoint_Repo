@@ -604,9 +604,11 @@ function modalPianificazione(day, commessa, id){
 				$('#corso_esistente').iCheck("check");
 				$('#id_corso_esistente').val(pianificazione.id_corso);
 				$('#id_corso_esistente').change();
+				var mod= "1";
+				$('#mod').val(mod);
+				console.log("mod  tabella bimestre " + mod);
 				if(pianificazione.email_preavviso!=null){
-					var mod= "1";
-					$('#mod').val(mod);
+				
 				$('#remind_docenti').iCheck("check");//controllare
 				$('#check_remind_docenti').val("1");
 			
@@ -687,11 +689,22 @@ function pastePianificazione(day, commessa){
 			$('#id_corso_esistente').val(pianificazione.id_corso)
 			$('#id_corso_esistente').change();	
 			$('#corso_esistente').iCheck("check");
+			var mod= "1";
+			$('#mod').val(mod);
+			console.log("mod  " + mod);
+			if(pianificazione.email_preavviso!=null){
+			
+			$('#remind_docenti').iCheck("check");//controllare
+			$('#check_remind_docenti').val("1");
 		
+		
+			$('#giorni_preavviso_mod').val(pianificazione.giorni_preavviso);
+			$('#email_preavviso_mod').val(pianificazione.email_preavviso);
+			} else {
+				$('#remind_docenti').iCheck("uncheck");//controllare
+				$('#check_remind_docenti').val("0");
+			}		
 		}
-		
-		
-
 
 		nuovaPianificazione();
 	});

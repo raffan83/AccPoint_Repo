@@ -3475,6 +3475,10 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								pianificazione.setData_preavviso(c.getTime());
 								pianificazione.setEmail_preavviso(email_preavviso_mod);
 							}		
+						} else {
+							pianificazione.setGiorni_preavviso(null);
+							pianificazione.setData_preavviso(null);
+							pianificazione.setEmail_preavviso(null);
 						}
 						
 				
@@ -3499,6 +3503,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 								pianificazione.setData_preavviso(c.getTime());
 								pianificazione.setEmail_preavviso(email_preavviso_mod);
 							}		
+						} 	else {
+								pianificazione.setGiorni_preavviso(null);
+								pianificazione.setData_preavviso(null);
+								pianificazione.setEmail_preavviso(null);
+						
 						}
 						
 					}
@@ -3548,6 +3557,13 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					List<String> email_docenti = new ArrayList<>();
 					int risp=0; // se 0 errore, docent enon selezionato, 1 email non presente, 2 successo
 					   String[] id_docenti = request.getParameterValues("id_docente");
+					   String mod = request.getParameter("mod");
+					   String azione = request.getParameter("azione");
+					   
+					   if (id_docenti == null || id_docenti.length == 0) {
+					        // nessun docente selezionato
+					        risp = 0;
+					    } else {
 					   for(String id : id_docenti) {
 					if(id!=null && !id.equals("")) {
 					ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session);
@@ -3564,14 +3580,18 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					email_docenti.add(email);
 					} 
 					   }
-					
+					//mod =1 form di modifica, mod =0 nuova pianificazione
+					   // azione = 0 seleziono docente, azione = 1 deseleziono docente
 					   if(count == id_docenti.length) {
 						   risp=2;
-					   } else if(count_senza_email>0){
-						   risp=1;
-					   }else {
-						   risp=0;
+					   } else if(count_senza_email>0 && (mod.equals("0") || mod.equals("1")) &&  (azione == null || azione.equals("0"))){
+						   risp=1; //restituisce messaggio: docente senza email
+					   }else if(count_senza_email>0 && mod.equals("1")){
+						   risp=2; // nessun messaggio
+					   } else {
+						   risp=0; // docente non selezionato
 					   }
+					    }
 					
 					session.getTransaction().commit();
 					session.close();

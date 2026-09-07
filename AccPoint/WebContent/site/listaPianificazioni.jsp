@@ -135,6 +135,9 @@
 <th>Computo ore</th>
 <th>Fattura/Attestati</th>
 <th>Ore fatturate</th>
+<th>Check remind pianificazione</th>
+<th>Email Preavviso</th>
+<th>Data Preavviso</th>
 <th>Corso</th>
 <th style="min-width:250px">Azioni</th>
 
@@ -239,6 +242,33 @@
 	<input type="checkbox" id="checkPianificazione_${pianificazione.id }" name="checkPianificazione_${pianificazione.id }" checked   class="icheckbox">
 	</td>
 	</c:if>
+	<c:choose>
+    <c:when test="${pianificazione.email_preavviso != null}">
+        <td>SI</td>
+    </c:when>
+    <c:otherwise>
+        <td>NO</td>
+    </c:otherwise>
+</c:choose>
+
+<c:choose>
+    <c:when test="${pianificazione.email_preavviso != null}">
+        <td>${pianificazione.email_preavviso}</td>
+    </c:when>
+    <c:otherwise>
+        <td></td>
+    </c:otherwise>
+</c:choose>
+
+<c:choose>
+    <c:when test="${pianificazione.data_preavviso != null}">
+        <td>${pianificazione.data_preavviso}</td>
+    </c:when>
+    <c:otherwise>
+        <td></td>
+    </c:otherwise>
+</c:choose>
+	
 	
 	<td>
 	<c:if test="${pianificazione.id_corso!=null }">
@@ -867,7 +897,7 @@ $(document).ready(function() {
 		      columnDefs: [
 		    	  
 		    	  { responsivePriority: 1, targets: 1 },
-		    	  { responsivePriority: 2, targets: 11 },
+		    	  { responsivePriority: 2, targets: 14 },
 	
 		    	  
 		               ], 	        

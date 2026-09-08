@@ -2496,34 +2496,34 @@ email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "false");
 	 
 	
 //	  ForCorsoDTO corso = GestioneFormazioneBO.getCorsoFromId(pianificazione.getId_corso(), session);
-	  HashSet<ForDocenteDTO>  lista_docenti = (HashSet<ForDocenteDTO>) pianificazione.getListaDocenti();
+	  Set<ForDocenteDTO> lista_docenti = pianificazione.getListaDocenti();
 	  String ore = "";
 	  if(pianificazione!=null && pianificazione.getOra_inizio()!=null && !pianificazione.getOra_inizio().equals("")) {
-		  ore =" dalle ore: "+pianificazione.getOra_inizio()+" alle ore: "+pianificazione.getOra_fine();
+		  ore =" dalle ore: <strong>"+pianificazione.getOra_inizio()+" alle ore "+pianificazione.getOra_fine() + "</strong>";
 	  }
 
 		  email.setSubject("Remind Pianificazione Corso "+pianificazione.getDescrizione());
 		  
 		  String docenti = "";
-		  if(lista_docenti.size()>1) {
-			  docenti += "I docenti del corso saranno: ";
-			  for (ForDocenteDTO d : lista_docenti) {
-				docenti += d.getNome() +" "+d.getCognome()+", ";
+		  if (lista_docenti.size() >= 1) {
+			    docenti += "<ul>\n";
+			    for (ForDocenteDTO d : lista_docenti) {
+			        docenti += "  <li><strong>" + d.getNome() + " " + d.getCognome() + "</strong></li>\n";
+			    }
+
+			    docenti += "</ul>";
+			} else {
+				docenti += "<br>";
 			}
-			  docenti = docenti.substring(0, docenti.length() - 2)+"<br>";
-		  }else if(lista_docenti.size()==1){
-			  docenti += "Il docente del corso sar&agrave;: ";
-			  for (ForDocenteDTO d : lista_docenti) {
-					docenti += d.getNome() +" "+d.getCognome()+"<br>";
-				}
-		  }
-		  
+		  String descrizione = "<strong>\"" + pianificazione.getDescrizione() + "\"</strong>";
 		 // String messaggio = "Gentile "+referente.getNome()+" "+referente.getCognome()+",<br>";
-		  String messaggio = "Gentile Utente,<br>";
-		  messaggio+="Con la presente, vi comunichiamo che in data "+df.format(pianificazione.getData())+ ore+" &egrave; stato pianificato il corso " +pianificazione.getDescrizione()+".<br>";
-		  messaggio +=docenti;
-		  messaggio += "Nel caso in cui siate impossibilitati ad organizzare il corso, vi chiediamo di informaci tempestivamente per evitare inconvenienti.<br>";
-		  messaggio += "Restiamo a disposizione per eventuali chiarimenti<br><br>";
+		  String messaggio = "<strong>Gentili,</strong><br>";
+		  messaggio+="con la presente, desideriamo comunicare che per la giornata di <strong>"+df.format(pianificazione.getData())+ "</strong>,"+ ore+", &egrave; programmato il corso " +descrizione+".<br>";
+		  messaggio += "I docenti incaricati dello svolgimento del corso saranno: <br>";
+		  messaggio +=docenti; // mettere puntini
+		  messaggio += "Vi chiediamo cortesemente di segnalarci tempestivamente eventuali impedimenti o variazioni rispetto alla programmazione prevista, cos&igrave; da poter intervenire per tempo ed evitare eventuali inconvenienti organizzativi.<br>";
+		  messaggio += "Restiamo a disposizione per qualsiasi chiarimento o necessit&agrave;.<br>";
+		  messaggio += "Cordiali saluti<br><br>";
 
 		  messaggio+=FIRMA_CALCE_CRESCO;
 		  

@@ -475,7 +475,7 @@ var settings ={
 
 $(window).on('load', function() {
 	
-	  pleaseWaitDiv.modal('hide');
+	//  pleaseWaitDiv.modal('hide');
 });
 
 
@@ -488,7 +488,7 @@ let indexSearchbox = localStorage.getItem('indexSearch');
 
 $(document).ready(function() {
 
-	
+	 pleaseWaitDiv.modal('show');
 
          fillTable("${anno}",'${filtro_tipo_pianificazioni}');
 	
@@ -715,7 +715,7 @@ function pastePianificazione(day, commessa){
 
 
 function fillTable(anno, filtro, nuova_pianificazione){
-
+	  pleaseWaitDiv.modal('show');
 
 if(filtro!=3){
     $('#btn_tutte').attr("disabled",true)
@@ -991,16 +991,20 @@ if(filtro!=3){
 		    		  table.columns().draw();
 		    	  }
 		    } */
-	
-		    if(today!=null && nuova_pianificazione ==null){
-				  scrollToColumn(parseInt(today)-3);
-				 
-		          table.order([order, 'desc']).draw()
-			  }else{
-				  table.columns().draw();
-			  }
-		  
-
+		    setTimeout(function() {
+			  //  pleaseWaitDiv.modal('show');
+			    if(today!=null && nuova_pianificazione ==null){
+					  scrollToColumn(parseInt(today)-3);
+					 
+			          table.order([order, 'desc']).draw()
+				  }else{
+					  table.columns().draw();
+				  }
+			    console.log("dentro setTimeOut");
+			    pleaseWaitDiv.modal('hide');
+			    $('.modal-backdrop').hide();
+			    // pleaseWaitDiv.modal('hide');
+			    }, 500);
 
       // Aggiungi eventi per salvare i filtri e la ricerca su localStorage
     
@@ -1020,6 +1024,7 @@ if(filtro!=3){
 		  error: function(xhr, status, error) {
 		    // Gestisci eventuali errori
 		    console.error(error);
+		    pleaseWaitDiv.modal('hide');
 		  }
 		  
 		  
@@ -1094,6 +1099,8 @@ function scrollToColumn(columnIndex) {
     }
     
     scrollBody.animate({ scrollLeft: scrollLeft }, 500);
+    
+    pleaseWaitDiv.modal('hide');
 }
 
 

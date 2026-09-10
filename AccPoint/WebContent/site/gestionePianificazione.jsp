@@ -674,11 +674,11 @@ function nuovaPianificazione(){
 	
 	
 	callAjaxForm('#formNuovaPianificazione', 'gestioneFormazione.do?action=nuova_pianificazione', function(datab){
-		
+		console.log("sono dentro ajax nuova pianificazione");
 		
 		$(document.body).css('padding-right', '0px');
 		if(datab.success){
-			fillTable("${anno}", "${filtro_tipo_pianificazioni}", 1);
+			
 		//	controllaColoreCella(table, "#F7BEF6");
 		
 		
@@ -690,6 +690,7 @@ function nuovaPianificazione(){
 			$('#modalPianificazione').modal("hide");
 			
 			 $('.modal-backdrop').hide();
+			 fillTable("${anno}", "${filtro_tipo_pianificazioni}", 1);
 		}else{
 			$('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();

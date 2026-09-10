@@ -425,7 +425,18 @@
 		<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 <style>
+#tabInterventi td.select-checkbox-real input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+}
 
+#tabInterventi td.idInt,
+#tabInterventi th.idInt {
+    width: 30px !important;
+    min-width: 30px !important;
+}
 
 .table th {
     background-color: #3c8dbc !important;
@@ -475,6 +486,30 @@
 
 <script type="text/javascript">  
 
+var columsDatatables = [];
+
+$("#tabInterventi").on( 'init.dt', function ( e, settings ) {
+    var api = new $.fn.dataTable.Api( settings );
+    var state = api.state.loaded();
+ 
+    if(state != null && state.columns!=null){
+    		console.log(state.columns);
+    
+    columsDatatables = state.columns;
+    }
+    $('#tabInterventi thead th').each( function () {
+        
+        if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
+          var title = $('#tabInterventi thead th').eq( $(this).index() ).text();
+        
+        if($(this).index() !== 0){
+            $(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');  
+        }
+        
+        } );
+    
+
+} );
 
  
 
@@ -516,8 +551,8 @@ callAction('gestioneRisorse.do?action=pianificazione_risorse&anno='+$('#anno').v
 $('#anno').change(function(){
 	var value = $('#anno').val();
 	var commesse = $('#commesse').val();
+	callAction('gestioneRisorse.do?action=pianificazione_risorse&anno='+$('#anno').val());
 	
-	callAction('gestioneParcoAuto.do?action=gestione_prenotazioni&anno='+value,null,true)
 });
 
 
@@ -824,9 +859,9 @@ $(document).ready(function($) {
 			  stateSave: true,
 
 			  select: {
-			    style: 'multi-shift',
-			    selector: 'td:first-child' // attenzione: meglio usare 'first-child' che 'nth-child(1)'
-			  },
+				  style: 'multi-shift',
+				  selector: 'td:first-child input.row-checkbox'
+				},
 
 			  columns: [
 			    { data: null }, // <- questo va così se non c'è "check" nel JSON
@@ -842,12 +877,24 @@ $(document).ready(function($) {
 
 			  columnDefs: [
 			    {
-			      targets: 0,
-			      className: 'select-checkbox',
-			      orderable: false,
-			      defaultContent: ''
+			    	 targets: 0,
+			    	    className: 'select-checkbox-real text-center',
+			    	    orderable: false,
+			    	    defaultContent: '',
+			    	    width: '20px',
+			    	    responsivePriority: 1,
+			    	    render: function (data, type, row) {
+			    	      return '<input type="checkbox" class="row-checkbox">';
+			    	    }
+			    	
 			    },
-			    { responsivePriority: 1, targets: 1 }
+			    {
+			        targets: 1,
+			        className: 'idInt',
+			        width: '30px',
+			        	 responsivePriority: 2
+			      },
+			    
 			  ],
 
 			  buttons: [{
@@ -855,11 +902,37 @@ $(document).ready(function($) {
 			    text: 'Nascondi Colonne'
 			  }]
 			});
-
-		//	table.columns.adjust().draw();
 		 
-			
+			table.buttons().container().appendTo( '#tabInterventi_wrapper .col-sm-6:eq(1)');
+	 	    $('.inputsearchtable').on('click', function(e){
+	 	       e.stopPropagation();    
+	 	    });
+
+	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
+	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
+	      table
+	          .column( colIdx )
+	          .search( this.value )
+	          .draw();
+	  } );
+	} );  
+
+		// Sincronizza checkbox visiva con selezione DataTables
+		table.on('select deselect', function () {
+		    table.rows().every(function () {
+		        var isSelected = $(this.node()).hasClass('selected');
+		        $(this.node()).find('input.row-checkbox').prop('checked', isSelected);
+		    });
+		});
+
+		$('.inputsearchtable').on('click', function(e){
+		    e.stopPropagation();    
+		});
+	
+
 });
+
+
 
 
 /* $('#tabPianificazioneRisorse tbody td').on('contextmenu', 'div',  function(e) {

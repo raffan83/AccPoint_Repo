@@ -789,12 +789,15 @@ zoom_level  = parseFloat(Cookies.get('page_zoom'));
 	            $('#tabPianificazioneRisorse td').removeClass('prenotato_multi');
 
 	            if (table == null) {
+	            	console.log("table null");
+	            
 	                table = $('#tabPianificazioneRisorse').DataTable(settings);
 	            } else {
-	                $('#tabPianificazioneRisorse').DataTable().destroy();
+	            	$('#tabPianificazioneRisorse').DataTable().destroy();
 	                table = $('#tabPianificazioneRisorse').DataTable(settings);
+	              
 	            }
-
+	            table.search('').columns().search('').draw();
 	      
 	          //  const larghezza = 95;
 

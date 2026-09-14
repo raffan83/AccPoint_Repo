@@ -53,13 +53,20 @@
     color: #1d6fa5;
 }
 
+#tabMisuraUtente th:nth-child(5),
+#tabMisuraUtente td:nth-child(5) {
+
+     text-align: center;
+    white-space: nowrap;
+}
+
 #tabMisuraUtente th:nth-child(10),
 #tabMisuraUtente td:nth-child(10) {
-    width: 180px !important;
-    max-width: 180px;
-    white-space: normal;
-    word-break: normal;
-    overflow-wrap: normal;
+    width: 150px !important;
+    max-width: 150px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 </style>
 
@@ -105,10 +112,26 @@
  
      <div class="nav-tabs-custom">
             <ul id="mainTabs" class="nav nav-tabs">
-              <li class="active" id="tab1"><a href="#standard" data-toggle="tab" aria-expanded="true"   id="standardTab">Lista Sessioni</a></li>
-              		<li class="" id="tab2"><a href="#interventi" data-toggle="tab" aria-expanded="false"   id="interventiTab">Lista Tutti Interventi</a></li>
-              		
-            </ul>
+
+    <li class="active" id="tab1">
+        <a href="#standard"
+           data-toggle="tab"
+           aria-expanded="true"
+           id="standardTab">
+            Lista Sessioni
+        </a>
+    </li>
+
+    <li id="tab2">
+        <a href="#interventi"
+           data-toggle="tab"
+           aria-expanded="false"
+           id="interventiTab">
+            Lista Tutti Interventi
+        </a>
+    </li>
+
+</ul>
             <div class="tab-content">
               <div class="tab-pane active" id="standard">
  
@@ -168,7 +191,7 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach items="${listaSessioni}" var="s">
+              <c:forEach items="${listaSessioniYear}" var="s">
   <tr class="${s.abilitato == 0 ? 'row-invalidato' : ''}"
       title="<c:if test='${s.abilitato == 0}'>Sessione invalidata!&#10;Motivo: <c:if test='${not empty s.note_disab}'>${s.note_disab}</c:if></c:if>">
         
@@ -264,7 +287,7 @@
               </tr>
             </thead>
             <tbody>
-             <c:forEach items="${lista_interventi}" var="intervento">
+             <c:forEach items="${lista_interventi_date}" var="intervento">
         <tr class="
     <c:choose>
         <c:when test="${intervento.sessioneInvio != null}">
@@ -419,15 +442,27 @@
   });
 
   $(document).ready(function() {
-	  
-	var intervento_attivo = "${intervento_attivo}";
-		
-		
-	if (intervento_attivo != null && intervento_attivo != '') {
-	    $('#interventiTab').tab('show');
-	} else {
-	    $('#standardTab').tab('show');
-	}
+
+	  var intervento_attivo = "${intervento_attivo}";
+	 
+
+	  var tabSalvato = sessionStorage.getItem('listaSessioni_activeTab');
+	 
+
+	  if (tabSalvato === '#interventi') {
+		 
+	      $('#interventiTab').tab('show');
+	  } else if (tabSalvato === '#standard') {
+	      $('#standardTab').tab('show');
+	    
+	  } else if (intervento_attivo == '1') {
+	      $('#interventiTab').tab('show');
+	     
+	  } else {
+	      $('#standardTab').tab('show');
+	    
+	  }
+	 // sessionStorage.removeItem('listaSessioni_activeTab');
 	  
 	  var date_before = "${date_before}";
 	    var date_after   = "${date_after}";
@@ -496,7 +531,7 @@
       responsive: true,
       scrollX: false,
       stateSave: true,
-      autoWidth: false,
+      autoWidth: true,
       columnDefs: [
       
         { responsivePriority: 1, targets: 9 },
@@ -506,7 +541,7 @@
         { responsivePriority: 4, targets: 6 },
         { responsivePriority: 5, targets: 7 },
         { responsivePriority: 6, targets: 8 },
-        { width: "100px", targets: 9 }   
+        { width: "150px", targets: 9 },
      
         
       ],
@@ -597,25 +632,45 @@
     table.buttons().container().appendTo('#tabInterventi_wrapper .col-sm-6:eq(1)');
   });
 
-
+ 
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
 	    var target = $(e.target).attr("href");
+	    console.log("target "+ target);
+
 
 	    if (target === '#standard') {
+	        intervento_attivo = "0";
+	        $("#action").val('');
+	        
+	        sessionStorage.setItem('listaSessioni_activeTab', '#standard');
+	        sessionStorage.setItem('action', '');
+	        
 	        setTimeout(function () {
 	            table.columns.adjust().responsive.recalc();
 	        }, 100);
-	    }
 
-	    if (target === '#interventi') {
-	        setTimeout(function () {
-	            tableInt.columns.adjust().responsive.recalc();
-	        }, 100);
+	    } else if (target === '#interventi') {
+	    	 $("#action").val('lista_interventi_mensili');
+	    	  sessionStorage.setItem('listaSessioni_activeTab', '#interventi');
+	          sessionStorage.setItem('action', 'lista_interventi_mensili');
+	    	
+	    	var interventiCaricati = ${empty lista_interventi_date ? 'false' : 'true'};
+	    	
+	    	if(!interventiCaricati){
+	    	
+	    		interventiCaricati = true; 
+	    		resetDate();
+	    	}else {
+	          
+	            setTimeout(function () {
+	                tableInt.columns.adjust().responsive.recalc();
+	            }, 100);
+	        }
+	        
 	    }
-
+	    sessionStorage.setItem('listaSessioni_activeTab', target);
 	});
-
   
   $("#select1").change(function(){	
   	
@@ -629,14 +684,18 @@
     var picker = $("#datarange").data('daterangepicker');
     var dataString = "&date_before=" + picker.startDate.format('YYYY-MM-DD')
                    + "&date_after="   + picker.endDate.format('YYYY-MM-DD');
+    var stringCerca = "C";
     $('#pleaseWaitDialog').modal();
-    callAction("listaSessioni.do?action=lista_interventi_mensili" + dataString, false, true);
+    callAction("listaSessioni.do?action=lista_interventi_mensili" + dataString + "&stringCerca="+stringCerca, false, true);
   }
 
   function resetDate() {
+	  var stringCerca = "C";
     $('#pleaseWaitDialog').modal();
-    callAction("listaSessioni.do?action=lista_interventi_mensili");
+    callAction("listaSessioni.do?action=lista_interventi_mensili&stringCerca="+stringCerca);
   }
+
+
 
 </script>
 </jsp:attribute>

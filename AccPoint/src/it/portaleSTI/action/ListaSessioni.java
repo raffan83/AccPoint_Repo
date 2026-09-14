@@ -87,6 +87,7 @@ public class ListaSessioni extends HttpServlet {
 			if(action == null || action.equals("")) {
 			
 			List<SessioneDTO> listaSessioni= new ArrayList<>();
+			listaSessioni =(List<SessioneDTO>) request.getSession().getAttribute("listaSessioniYear");
 			
 			String anno=request.getParameter("year");
 			int year=0;
@@ -101,50 +102,16 @@ public class ListaSessioni extends HttpServlet {
 			
 			listaSessioni = GestioneSessioneBO.getSessioni(year);
 			
-			request.getSession().setAttribute("listaSessioni",listaSessioni);
+			request.getSession().setAttribute("listaSessioniYear",listaSessioni);
 			request.getSession().setAttribute("current_year", year);
 			request.getSession().setAttribute("yearList", Utility.getYearList());
 
 		
 			
-				
-				 
-       		 String date_after = request.getParameter("date_after");
-				String date_before = request.getParameter("date_before");
-				
-				Date before = null;
-				Date start = null;
-				
-				
-				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");	
-				if(date_after == null) {
-					start = new Date();
-					
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(start);
-					calendar.add(Calendar.MONTH, -1);
-					
-					before = calendar.getTime();
-				}else {
-					
-					
-					before = df.parse(date_before);
-					start = df.parse(date_after);	
-					
-				}
-				
-				String startString = df.format(start);
-				String beforeString = df.format(before);
-
-				List<InterventoDTO> lista_interventi = new ArrayList<>();
-				
-				lista_interventi = DirectMySqlDAO.getInterventoSessioni(startString, beforeString);
-				//lista_interventi = GestioneInterventoBO.getListaInterventiDate(dateBefore,today, session);
-	
-				request.getSession().setAttribute("lista_interventi", lista_interventi);
-				 request.getSession().setAttribute("intervento_attivo","");
-				request.getSession().setAttribute("date_after",df.format(start));
-				 request.getSession().setAttribute("date_before",df.format(before));	
+			
+		
+				 request.getSession().setAttribute("intervento_attivo","0");
+			
 				 
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSessioni.jsp");
 			     	dispatcher.forward(request,response);
@@ -158,7 +125,13 @@ public class ListaSessioni extends HttpServlet {
 				 String intervento_attivo = request.getParameter("intervento_attivo");
 	       		 String date_after = request.getParameter("date_after");
 					String date_before = request.getParameter("date_before");
+					String stringCerca = request.getParameter("stringCerca");
 					
+					List<InterventoDTO> lista_interventi = new ArrayList<>();
+					lista_interventi =(List<InterventoDTO>) request.getSession().getAttribute("lista_interventi_date");
+					
+					if(lista_interventi==null ||stringCerca !=null) {
+
 					Date before = null;
 					Date start = null;
 					
@@ -183,15 +156,17 @@ public class ListaSessioni extends HttpServlet {
 					String startString = df.format(start);
 					String beforeString = df.format(before);
 					
-					List<InterventoDTO> lista_interventi = new ArrayList<>();
 					
 					lista_interventi = DirectMySqlDAO.getInterventoSessioni(startString, beforeString);
 				
-					 request.getSession().setAttribute("intervento_attivo",1);
-					 request.getSession().setAttribute("lista_interventi", lista_interventi);
-						
+			
+					
+
 						request.getSession().setAttribute("date_after",df.format(start));
 						 request.getSession().setAttribute("date_before",df.format(before));	
+					} 
+					 request.getSession().setAttribute("lista_interventi_date", lista_interventi);
+						 request.getSession().setAttribute("intervento_attivo",1);
 						 
 						 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaSessioni.jsp");
 					     	dispatcher.forward(request,response);

@@ -169,7 +169,7 @@
 <a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="openModalCheckSessioneInviata()"><i class="fa fa-arrow-up"></i></a>
 </c:when>
 <c:otherwise>
-	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="modalCertificato('${certificato.id}','${misura.intervento.nomePack}')"><i class="fa fa-arrow-up"></i></a>
+	<a  target="_blank" class="btn btn-danger customTooltip" title="Click per aggiungere il Certificato" onClick="modalCertificato('${certificato.id}','${misura.intervento.nomePack}', '${certificato.nomeCertificato}')"><i class="fa fa-arrow-up"></i></a>
 	</c:otherwise>
 	   </c:choose>
 	</c:if>
@@ -291,13 +291,18 @@
       </div>
        <div class="modal-body">
        <div class="row">
-         <div class="col-xs-12">
-                    <div class="form-group">
-   
-		  <label for="nota_sostituzione">Motivazione sovrascrittura certificato:</label>
-		  <textarea class="form-control" rows="3" name="nota_sostituzione" id="nota_sostituzione"></textarea>
-		</div>
-			</div>
+     <div class="col-xs-12" id="divNotaSostituzione">
+    <div class="form-group">
+        <label for="nota_sostituzione">
+            Motivazione sovrascrittura certificato:
+        </label>
+
+        <textarea class="form-control"
+                  rows="3"
+                  name="nota_sostituzione"
+                  id="nota_sostituzione"></textarea>
+    </div>
+</div>
              <div class="col-xs-12">
                <div class="form-group">
        <span class="btn btn-primary fileinput-button">
@@ -313,7 +318,6 @@
        
         <input type="hidden" id="id_cert" name="id_cert">
         <input type="hidden" id="pack_cert" name="pack_cert">
-        <input type="hidden" id="nota_sostituzione" name="nota_sostituzione">
 
   		 </div>
       <div class="modal-footer">
@@ -324,6 +328,9 @@
 </div>
 </div>
 </form>
+
+
+
  
 
 <form id="formAllegati" name="formAllegati">
@@ -633,11 +640,27 @@ function openModalStampa(idMisura){
 	  $('#note_allegato').html(note);
   }
   
-  function modalCertificato(id_certificato, pack){
-	  $('#myModalCertificato').modal();
-	  $('#id_cert').val(id_certificato);
-	  $('#pack_cert').val(pack);
-  }
+  function modalCertificato(id_certificato, pack, nomeCertificato) {
+
+	    // Imposta i valori del certificato
+	    $('#id_cert').val(id_certificato);
+	    $('#pack_cert').val(pack);
+
+	    if (!nomeCertificato || nomeCertificato.trim() === "") {
+
+	        // Nuovo certificato: nasconde la motivazione
+	        $('#divNotaSostituzione').hide();
+	        $('#nota_sostituzione').val("");
+
+	    } else {
+
+	        // Sovrascrittura: mostra la motivazione
+	        $('#divNotaSostituzione').show();
+	    }
+
+	    // Apre sempre lo stesso modal
+	    $('#myModalCertificato').modal();
+	}
   
   function modalExcel(id_misura){
 	  $('#myModalExcel').modal();

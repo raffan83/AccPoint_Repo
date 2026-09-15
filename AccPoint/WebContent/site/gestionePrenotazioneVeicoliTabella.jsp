@@ -61,33 +61,35 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         ArrayList<LocalDate> festivitaItaliane = (ArrayList<LocalDate>) request.getSession().getAttribute("festivitaItaliane");
         String dayOfWeekString = localDate.getDayOfWeek().getDisplayName(
-                java.time.format.TextStyle.FULL,
+                java.time.format.TextStyle.SHORT,
                 Locale.ITALIAN
             ).toUpperCase();
         
         if(localDate.getDayOfWeek().getValue() == 6 || localDate.getDayOfWeek().getValue() == 7){
       %>
-       <th class="weekend" style="text-align:center">
-       <c:out value="<%=dayOfWeekString %>"></c:out>
-                <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
-               <!--  <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div> -->
-            </th>
+     <!-- Weekend -->
+<th class="weekend" style="text-align:center">
+  <div class="day-header-pill">
+    <span class="day-name"><c:out value="<%=dayOfWeekString %>"></c:out></span>
+    <span class="day-date"><fmt:formatDate value="<%= date %>" pattern="dd/MM" /></span>
+  </div>
+</th>
             
             <%}else if(festivitaItaliane.contains(localDate)){ %>
-              <th class="weekend" style="text-align:center">
-               <c:out value="<%=dayOfWeekString %>"></c:out>
-                <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
-                
-                <!-- <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div> -->
-            </th>
+             <th class="weekend" style="text-align:center">
+  <div class="day-header-pill">
+    <span class="day-name"><c:out value="<%=dayOfWeekString %>"></c:out></span>
+    <span class="day-date"><fmt:formatDate value="<%= date %>" pattern="dd/MM" /></span>
+  </div>
+</th>
             <%}else{ %>
       
-      <th style="text-align:center">
-       <c:out value="<%=dayOfWeekString %>"></c:out>
-                <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
-                <!-- 
-                <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div> -->
-            </th>
+     <th style="text-align:center">
+  <div class="day-header-pill">
+    <span class="day-name"><c:out value="<%=dayOfWeekString %>"></c:out></span>
+    <span class="day-date"><fmt:formatDate value="<%= date %>" pattern="dd/MM" /></span>
+  </div>
+</th>
          <%} %>
       
 
@@ -221,66 +223,6 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
-<style>
-<!--
-
-
-
-
-
-
-
-        .prenotato {
-        
-    }
-
-     .riquadro {
-      border: 1px solid red;
-      padding: 5px;
-      position:absolute;
- 
-} 
-
-#tabPrenotazione tbody tr {
-    width: auto !important;
- 
-}
-
- .tooltip {
-    position: absolute;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  
-
-
-}
-
-
- .legend {
-  display: flex;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-}
-
-.legend-color {
-  width: 20px;
-  height: 20px;
-}
-
-.legend-label {
-  margin-left: 5px;
-}
-
-
-
-</style>
 
 
  

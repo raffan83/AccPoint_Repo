@@ -22,34 +22,36 @@
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1 class="pull-left">
-        Gestione Prenotazione Veicoli
-
-      </h1>
-       <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
-    </section>
+  <section class="content-header vpr-content-header">
+  <div class="vpr-title-wrap pull-left">
+    <span class="vpr-title-icon"><i class="fa fa-calendar"></i></span>
+    <div class="vpr-title-text">
+      <h1>Gestione Prenotazione Veicoli</h1>
+    </div>
+  </div>
+  <a class="btn btn-default pull-right vpr-btn-home" href="/"><i class="fa fa-home"></i> Home</a>
+</section>
     <div style="clear: both;"></div>    
   <!-- Main content -->
     <section class="content">
 
 <!-- <div class="row">
         <div class="col-xs-12"> -->
-          <div class="box">
+     <div class="box vpr-toolbar-box">
 <!--           <div class="box-header">
           
           </div> -->
-            <div class="box-body">
-              <div class="row">
+                   <div class="box-body">
+              <div class="row vpr-toolbar-row vpr-section-divider">
 
 <div class="col-xs-1">
  <a class="btn btn-primary pull-left btn-xs customTooltip" title="vai al trimestre precedente" style="margin-top:35px" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a> 
 </div>
               
-            <div class="col-xs-3"> 
-            <label>Anno</label><br>
-           
-         <select class="form-control select2" id="anno" name="anno" style="width:100%" >
+           <!-- Anno -->
+<div class="col-xs-3 vpr-anno-block"> 
+<label class="vpr-anno-inline-label"><strong>Anno</strong></label>
+<select class="form-control select2" id="anno" name="anno" style="width:100%" >
 
 		
 			  <c:set var="startYear" value="${currentYear - 5}" />
@@ -67,7 +69,9 @@
 			</select>
              </div>
              <div class="col-xs-3">
-             <a class="btn btn-primary" onclick="vaiAOggi('${currentYear}')" style="margin-top:25px" >Vai a Oggi</a>
+             <a class="btn btn-primary vpr-btn-today" onclick="vaiAOggi('${currentYear}')" style="margin-top:0px">
+  <i class="fa fa-calendar-check-o"></i> Vai a Oggi
+</a>
              
              </div>
              
@@ -78,9 +82,9 @@
 <!-- Reset -->
 
 <a class="btn btn-primary pull-right btn-xs customTooltip"  title="vai al trimestre successivo"style="margin-top:35px"  onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
-<a href="#" class="btn btn-primary zoom_reset pull-right  btn-xs">Reset Zoom</a>
-<a href="#" class="btn btn-primary zoom_out pull-right  btn-xs" style="margin-right:5px">Zoom Out</a>
-<a href="#" class="btn btn-primary zoom_in pull-right  btn-xs"  style="margin-right:5px">Zoom In</a>
+<a href="#" class="btn btn-primary zoom_reset pull-right btn-xs vpr-btn-zoom"><i class="fa fa-refresh"></i> Reset Zoom</a>
+<a href="#" class="btn btn-primary zoom_out pull-right btn-xs vpr-btn-zoom" style="margin-right:5px"><i class="fa fa-search-minus"></i> Zoom Out</a>
+<a href="#" class="btn btn-primary zoom_in pull-right btn-xs vpr-btn-zoom" style="margin-right:5px"><i class="fa fa-search-plus"></i> Zoom In</a>
 
 
              </div>
@@ -99,15 +103,11 @@
                </div>
             
             <br> -->
-            <div class="row">
-            <div class="col-xs-12">
-          
-            <jsp:include page="gestionePrenotazioneVeicoliTabella.jsp" ></jsp:include> 
-             <%--  <jsp:include page="gestionePrenotazioneiTabellaTest.jsp" ></jsp:include> --%>
-             
-            </div>
-            
-            </div>
+            <div class="row vpr-table-row">
+<div class="col-xs-12">
+<jsp:include page="gestionePrenotazioneVeicoliTabella.jsp" ></jsp:include> 
+</div>
+</div>
             
 
 
@@ -132,204 +132,231 @@
   </div>
   <!-- /.content-wrapper -->
 
-<form id="formNuovaPrenotazione" name="formNuovaPrenotazione" >
-       <div id="modalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
-   
+
+
+<form id="formNuovaPrenotazione" name="formNuovaPrenotazione">
+  <div id="modalPrenotazione" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
+
     <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_prenotazione">Prenotazione Veicolo</h4>
-      </div>
-       <div class="modal-body"> 
-             <div class="row">
-        <div class="col-xs-9">
-        <label>Utente</label>
-          <select class="form-control select2" id="utente" name="utente" style="width:100%" data-placeholder="Seleziona Utente..." required>
-       <option value=""></option>
+      <div class="modal-content">
 
-       <c:forEach items="${lista_utenti }" var="utente">
-       <option value="${utente.id }">${utente.nominativo }</option>
-       </c:forEach>
-       </select>
-        </div>
-		 <div class="col-xs-3">
-		   <label>Manutenzione</label><br>
-          <input class="form-control"  type="checkbox" id="manutenzione" name="manutenzione" style="width:100%">
-		 
-		 </div>
-        </div><br>
-        
-        
-            <div class="row" id="content_stato" style="display:none">
-        <div class="col-xs-9">
-        <label>Stato</label>
-          <select class="form-control select2" id="stato" name="stato" style="width:100%" data-placeholder="Seleziona Stato..." >
-       <option value=""></option>
-     
-       <option value="1">IN PRENOTAZIONE</option>
-       <option value="2">PRENOTATO</option>
-       <option value="3">RIENTRATO</option>
-
-       </select>
-        </div>
- 		<div class="col-xs-3" id="rifornimento_content" style="display:none">
-		   <label>Rif. effettuato</label><br>
-          <input class="form-control"  type="checkbox" id="rifornimento" name="rifornimento" style="width:100%">
-		 
-		 </div>
-        </div><br>
-        
-        <div class="row" >
-        <div class="col-xs-5">
-        <label>Data inizio prenotazione</label>
-
-           <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
-        </div>
-        
-       
-        
-        		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
-					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
-          <div id="content_giornaliero">
-		             		<div class='col-xs-3' ><label>A/R giornaliero</label><br>
-					<input type='checkbox' id='giornaliero' name='giornaliero' class='form-control' style='width:100%'>
-					
-					</div></div>
-        </div><br>
-        
-        
-        <div class="row">
-        <div class="col-xs-5">
-        <label>Data fine prenotazione</label>
-           <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
+        <div class="modal-header">
+          <span class="mpv-header-icon"><i class="fa fa-calendar"></i></span>
+          <h4 class="modal-title" id="title_prenotazione">Prenotazione Veicolo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
 
+        <div class="modal-body">
 
-			<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
-					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
+          <div class="row">
+            <div class="col-xs-9">
+              <div class="mpv-field">
+                <label for="utente"><i class="fa fa-user"></i> Utente</label>
+                <select class="form-control select2" id="utente" name="utente" style="width:100%"
+                        data-placeholder="Seleziona Utente..." required>
+                  <option value=""></option>
+                  <c:forEach items="${lista_utenti}" var="utente">
+                    <option value="${utente.id}">${utente.nominativo}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="mpv-field">
+                <p class="mpv-check-title"><i class="fa fa-wrench"></i> Manutenzione</p>
+                <label class="mpv-check-row" for="manutenzione">
+                  <input class="form-control" type="checkbox" id="manutenzione" name="manutenzione">
+   
+                </label>
+              </div>
+            </div>
+          </div>
 
-        </div><br>
-            
-  
-
-    
-		                <div class="row">
-       <div class="col-sm-12">  
-       		<label>Luogo</label>
-      
-       	    
-       	  	
-        <input id="luogo" name="luogo" class="form-control"  style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
+          <div class="row" id="content_stato" style="display:none">
+            <div class="col-xs-9">
+              <div class="mpv-field">
+                <label for="stato"><i class="fa fa-info-circle"></i> Stato</label>
+                <select class="form-control select2" id="stato" name="stato" style="width:100%"
+                        data-placeholder="Seleziona Stato...">
+                  <option value=""></option>
+                  <option value="1">IN PRENOTAZIONE</option>
+                  <option value="2">PRENOTATO</option>
+                  <option value="3">RIENTRATO</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-3" id="rifornimento_content" style="display:none">
+              <div class="mpv-field">
+                <p class="mpv-check-title"><i class="fa fa-tint"></i> Rif. effettuato</p>
+                <label class="mpv-check-row" for="rifornimento">
+                  <input class="form-control" type="checkbox" id="rifornimento" name="rifornimento">
         
-        <div class="row">
-        <div class="col-xs-12">
-        <label>Testo Note</label>
-          <textarea rows="5" style="width:100%" id="note" name="note" class="form-control"></textarea>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="mpv-field">
+                <label for="data_inizio"><i class="fa fa-calendar"></i> Data inizio prenotazione</label>
+                <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="mpv-field">
+                <label for="ora_inizio"><i class="fa fa-clock-o"></i> Ora inizio</label>
+                <div class="input-group">
+                  <input type="text" id="ora_inizio" name="ora_inizio" class="form-control timepicker" style="width:100%" required>
+                  <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-3" id="content_giornaliero">
+              <div class="mpv-field">
+                <p class="mpv-check-title"><i class="fa fa-refresh"></i> A/R giornaliero</p>
+                <label class="mpv-check-row" for="giornaliero">
+                  <input type="checkbox" id="giornaliero" name="giornaliero" class="form-control">
+               
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="mpv-field">
+                <label for="data_fine"><i class="fa fa-calendar"></i> Data fine prenotazione</label>
+                <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="mpv-field">
+                <label for="ora_fine"><i class="fa fa-clock-o"></i> Ora fine</label>
+                <div class="input-group">
+                  <input type="text" id="ora_fine" name="ora_fine" class="form-control timepicker" style="width:100%" required>
+                  <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="mpv-field">
+                <label for="luogo"><i class="fa fa-map-marker"></i> Luogo</label>
+                <input id="luogo" name="luogo" class="form-control" style="width:100%" placeholder="Inserisci il luogo...">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+                <label for="note"><i class="fa fa-file-text-o"></i> Testo Note</label>
+                <textarea rows="5" style="width:100%" id="note" name="note" class="form-control" placeholder="Inserisci eventuali note..."></textarea>
+              </div>
+            </div>
+          </div>
+
         </div>
-        </div><br>
-       
-      
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_prenotazione" name="id_prenotazione">
-      <input type="hidden" id="day" name="day">
-      <input type="hidden" id="id_veicolo" name="id_veicolo">
-    <input type="hidden" id="check_giornaliero" name="check_giornaliero">
-      
-      <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
-        
-	               <button class="btn btn-primary" type="submit"  >Salva</button>
-	                
-	   
-      
-      
+
+        <div class="modal-footer">
+          <input type="hidden" id="id_prenotazione" name="id_prenotazione">
+          <input type="hidden" id="day" name="day">
+          <input type="hidden" id="id_veicolo" name="id_veicolo">
+          <input type="hidden" id="check_giornaliero" name="check_giornaliero">
+
+          <a class="btn btn-danger mpv-btn-delete" onclick="$('#myModalYesOrNo').modal()" id="btn_elimina" style="display:none">
+            <i class="fa fa-trash"></i> Elimina
+          </a>
+
+          <div class="mpv-footer-right">
+            <button type="button" class="btn btn-default mpv-btn-cancel" data-dismiss="modal">Annulla</button>
+            <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o"></i> Salva</button>
+          </div>
+        </div>
 
       </div>
     </div>
-  </div>
 
-</div>
+  </div>
 </form>
+
 	
 	
 	
-	<form id="formNuovaSegnalazione" name="formNuovaSegnalazione" >
-		  <div id="modalSegnalazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
+<form id="formNuovaSegnalazione" name="formNuovaSegnalazione">
+  <div id="modalSegnalazione" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
     <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Aggiungi segnalazione</h4>
-      </div>
-       <div class="modal-body">       
+      <div class="modal-content">
 
-       
-       <div class="row"> 
-       <div class="col-xs-12">
-       <label>Tipo segnalazione</label>
-       <select class="form-control select2" id="tipo_segnalazione" name="tipo_segnalazione" multiple data-placeholder="Seleziona tipo segnalazione" style="width:100%" >
-       <option value=""></option>
-       <c:forEach items="${lista_tipi_segnalazione }" var="tipo">
-       <option value="${tipo.id}">${tipo.descrizione }</option>
-       </c:forEach>
-       </select>
-        
-      </div> 
-      </div> <br>
-       <div class="row"> 
-       <div class="col-xs-12">
-       <label>Note</label>
-       <textarea rows="3" style="width:100%" id="note_segnalazione" name="note_segnalazione"  class="form-control"></textarea>
-       </div>
-       </div>
-	      </div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_prenotazione_segnalazione" name="id_prenotazione_segnalazione">
-      <input type="hidden" id="cella_segnalazione" name="cella_segnalazione">
-      <input type="hidden" id="tipo_segnalazione_precedente" name="tipo_segnalazione_precedente" value="">
-      <input type="hidden" id="tipo_segnalazione_str" name="tipo_segnalazione_str">
-      <input type="hidden" id="tipo_segnalazione_da_rimuovere" name="tipo_segnalazione_da_rimuovere" value="">
-      
-      
+        <div class="modal-header">
+          <span class="mpv-header-icon"><i class="fa fa-calendar"></i></span>
+          <h4 class="modal-title" id="myModalLabel">Aggiungi segnalazione</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
 
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+                <label for="stato"><i class="fa fa-info-circle"></i> Tipo segnalazione</label>
+                <select class="form-control select2" id="tipo_segnalazione" name="tipo_segnalazione" multiple data-placeholder="Seleziona tipo segnalazione" style="width:100%">
+                  <option value=""></option>
+                  <c:forEach items="${lista_tipi_segnalazione }" var="tipo">
+                    <option value="${tipo.id}">${tipo.descrizione }</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+                <label for="note"><i class="fa fa-file-text-o"></i> Testo Note</label>
+                <textarea rows="5" style="width:100%" id="note" name="note" class="form-control" placeholder="Inserisci eventuali note..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="id_prenotazione_segnalazione" name="id_prenotazione_segnalazione">
+          <input type="hidden" id="cella_segnalazione" name="cella_segnalazione">
+          <input type="hidden" id="tipo_segnalazione_precedente" name="tipo_segnalazione_precedente" value="">
+          <input type="hidden" id="tipo_segnalazione_str" name="tipo_segnalazione_str">
+          <input type="hidden" id="tipo_segnalazione_da_rimuovere" name="tipo_segnalazione_da_rimuovere" value="">
 
-   <button type="submit" class="btn btn-primary">Salva</button>
+          <button type="submit" class="btn btn-primary">Salva</button>
+        </div>
       </div>
     </div>
   </div>
+</form>
 
-</div>
-	</form>
-	
-	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-md" role="document">
+<div id="myModalYesOrNo" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
+  <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-header">
+        <span class="mpv-header-icon"><i class="fa fa-exclamation-triangle"></i></span>
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
-       <div class="modal-body">       
-       <div id="label_elimina_richiesta" style="display:none">Eliminare questa prenotazione annullerà la relativa richiesta.<br></div>
-      	Sei sicuro di voler eliminare la pianificazione selezionata?
-      	</div>
+      <div class="modal-body">
+        <div id="label_elimina_richiesta" style="display:none">Eliminare questa prenotazione annullerà la relativa richiesta.<br></div>
+        Sei sicuro di voler eliminare la pianificazione selezionata?
+      </div>
       <div class="modal-footer">
-      <input type="hidden" id="elimina_prenotazione_id">
+        <input type="hidden" id="elimina_prenotazione_id">
 
-
-      <a class="btn btn-primary" onclick="eliminaPrenotazione()" >SI</a>
-		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+        <button type="button" class="btn btn-primary" onclick="eliminaPrenotazione()">SI</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">NO</button>
       </div>
     </div>
   </div>
-
 </div>
   <t:dash-footer />
   
@@ -347,62 +374,8 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
-<style>
+	   <link rel="stylesheet" href="css/prenotazioni.css">
 
-
-.table th {
-    background-color: #3c8dbc !important;
-  }
-  
-.table th.weekend {
-  background-color: #FA8989 !important;
-}
-
-.table th.festivita {
-  background-color: #FA8989 !important;
-}
-
-
-/*  .tooltip {
-    position: fixed;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  
-
-
-} */
-
-
-.custom-menu {
-    display: none;
-    z-index: 1000;
-    position: absolute;
-    overflow: hidden;
-    white-space: nowrap;
-    font-family: sans-serif;     
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    
-}
-
-.custom-menu li {
-    padding: 8px 12px;
-    cursor: pointer;
-}
-
-.custom-menu li:hover {
-    background-color: #DEF;
-}
-
-
-  </style>
 </jsp:attribute>
 
 

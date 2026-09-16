@@ -72,10 +72,24 @@
   margin-top: 8px;
 
 }
+
+.vpr-toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.vpr-toolbar-row > [class*="col-"] {
+  float: none;      /* disattiva il float di Bootstrap: gestisce tutto il flex */
+  width: auto;
+  flex: 1 1 190px;  /* cresce/si restringe, ma va a capo sotto i 190px */
+  min-width: 0;     /* permette ai figli (select2) di restringersi davvero */
+}
+
 .vpr-anno-block {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 }
 .vpr-anno-inline-label {
   margin: 0;
@@ -83,12 +97,10 @@
   color: #5b6472;
   font-weight: 500;
   font-size: 15px !important;
-  margin-left: -30px !important;
 }
 .vpr-anno-block .select2-container {
-  flex: 1;
-  margin-left: 20px !important;
-
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .vpr-anno-block label {
   color: #5b6472;

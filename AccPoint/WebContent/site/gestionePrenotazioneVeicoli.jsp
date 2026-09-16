@@ -44,12 +44,10 @@
                    <div class="box-body">
               <div class="row vpr-toolbar-row vpr-section-divider">
 
-<div class="col-xs-1">
- <a class="btn btn-primary pull-left btn-xs customTooltip" title="vai al trimestre precedente" style="margin-top:35px" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a> 
-</div>
+
               
            <!-- Anno -->
-<div class="col-xs-3 vpr-anno-block"> 
+<div class="col-xs-2 vpr-anno-block"> 
 <label class="vpr-anno-inline-label"><strong>Anno</strong></label>
 <select class="form-control select2" id="anno" name="anno" style="width:100%" >
 
@@ -81,14 +79,25 @@
 
 <!-- Reset -->
 
-<a class="btn btn-primary pull-right btn-xs customTooltip"  title="vai al trimestre successivo"style="margin-top:35px"  onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
 <a href="#" class="btn btn-primary zoom_reset pull-right btn-xs vpr-btn-zoom"><i class="fa fa-refresh"></i> Reset Zoom</a>
 <a href="#" class="btn btn-primary zoom_out pull-right btn-xs vpr-btn-zoom" style="margin-right:5px"><i class="fa fa-search-minus"></i> Zoom Out</a>
 <a href="#" class="btn btn-primary zoom_in pull-right btn-xs vpr-btn-zoom" style="margin-right:5px"><i class="fa fa-search-plus"></i> Zoom In</a>
 
 
              </div>
-            </div><br>
+            </div>
+            <div class="row vpr-toolbar-row" style="margin-top:10px;">
+  <div class="col-xs-12" style="display:flex; align-items:center; justify-content:space-between;">
+    <a class="btn btn-primary btn-xs customTooltip" title="vai al trimestre precedente" onclick="subTrimestre('${start_date }', '${anno}')">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary btn-xs customTooltip" title="vai al trimestre successivo" onclick="addTrimestre('${end_date }', '${anno}')">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
+            
+            <br>
             
 
 <!--                <div class="row">

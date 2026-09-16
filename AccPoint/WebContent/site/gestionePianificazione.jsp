@@ -44,67 +44,55 @@
           
           </div> -->
                <div class="box-body">
-              <div class="row vpr-toolbar-row vpr-section-divider">
+ <div class="row vpr-toolbar-row vpr-section-divider">
 
-                    <div class="col-xs-1">
- <a class="btn btn-primary pull-left btn-xs customTooltip" title="vai al trimestre precedente" style="margin-top:35px" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a> 
-</div>        
-              
-                <div class="col-xs-3 vpr-anno-block" style="display: flex; align-items: center; margin-left: -20px;">
-            <label class="vpr-anno-inline-label"><strong>Commesse</strong></label>
-         <select class="form-control select2" id="commesse" name="commesse" style="width:100%" >
-			
-						
-			  <option value="0" ${commesse == 0  ? "selected" : ""}>APERTE</option>
-			  <option value="1" ${commesse == 1  ? "selected" : ""}>CHIUSE</option>
-			  <option value="2" ${commesse == 2  ? "selected" : ""}>TUTTE</option>
-			
-			</select>
-             </div>
+  <div class="col-xs-2 vpr-anno-block">
+    <label class="vpr-anno-inline-label"><strong>Commesse</strong></label>
+    <select class="form-control select2" id="commesse" name="commesse" style="width:100%;">
+      <option value="0" ${commesse == 0 ? "selected" : ""}>APERTE</option>
+      <option value="1" ${commesse == 1 ? "selected" : ""}>CHIUSE</option>
+      <option value="2" ${commesse == 2 ? "selected" : ""}>TUTTE</option>
+    </select>
+  </div>
 
-         <!-- Anno -->
-<div class="col-xs-3 vpr-anno-block" style="display: flex; align-items: center; margin-left: 30px;">
+  <div class="col-xs-2 vpr-anno-block">
     <label class="vpr-anno-inline-label"><strong>Anno</strong></label>
-
     <select class="form-control select2" id="anno" name="anno" style="width:100%">
+      <c:set var="startYear" value="${currentYear - 5}" />
+      <c:set var="endYear" value="${currentYear + 5}" />
+      <c:forEach var="year" begin="${startYear}" end="${endYear}">
+        <c:if test="${year == anno}"><option value="${year}" selected>${year}</option></c:if>
+        <c:if test="${year != anno}"><option value="${year}">${year}</option></c:if>
+      </c:forEach>
+    </select>
+  </div>
 
-		
-			  <c:set var="startYear" value="${currentYear - 5}" />
-			  <c:set var="endYear" value="${currentYear + 5}" />
-			
-			  <c:forEach var="year" begin="${startYear}" end="${endYear}">
-			  <c:if test="${year == anno }">
-			  	    <option value="${year}" selected>${year}</option>
-			  </c:if>
-			   <c:if test="${year != anno }">
-			  	    <option value="${year}" >${year}</option>
-			  </c:if>
-		
-			  </c:forEach>
-			</select>
-             </div>
-             <div class="col-xs-2"  style="display:flex; align-items:center; padding-left:5px; padding-right:5px;">
-              <a class="btn btn-primary vpr-btn-today" onclick="vaiAOggi('${currentYear}')" style="margin-top:0px">
-  <i class="fa fa-calendar-check-o"></i> Vai a Oggi
-</a>
-             </div>
-             
-             <div class="col-xs-2" style="display:flex; align-items:center; justify-content:flex-end; gap:5px; padding-left:5px; padding-right:5px;">
-                           <!-- Zoom In -->
+  <div class="col-xs-2" style="display:flex; align-items:center;">
+    <a class="btn btn-primary vpr-btn-today" onclick="vaiAOggi('${currentYear}')">
+      <i class="fa fa-calendar-check-o"></i> Vai a Oggi
+    </a>
+  </div>
 
-<!-- Reset -->
+  <div class="col-xs-5" style="display:flex; align-items:center; justify-content:flex-end; gap:5px;">
+    <a href="#" class="btn btn-primary zoom_in btn-xs vpr-btn-zoom"><i class="fa fa-search-plus"></i> Zoom In</a>
+    <a href="#" class="btn btn-primary zoom_out btn-xs vpr-btn-zoom"><i class="fa fa-search-minus"></i> Zoom Out</a>
+    <a href="#" class="btn btn-primary zoom_reset btn-xs vpr-btn-zoom"><i class="fa fa-refresh"></i> Reset Zoom</a>
+  </div>
 
-<a href="#" class="btn btn-primary zoom_reset pull-right btn-xs vpr-btn-zoom"><i class="fa fa-refresh" ></i> Reset Zoom</a>
-<a href="#" class="btn btn-primary zoom_out pull-right btn-xs vpr-btn-zoom" ><i class="fa fa-search-minus"></i> Zoom Out</a>
-<a href="#" class="btn btn-primary zoom_in pull-right btn-xs vpr-btn-zoom" ><i class="fa fa-search-plus"></i> Zoom In</a>
 </div>
-<div class="col-xs-3">
-<a class="btn btn-primary pull-right btn-xs customTooltip"  title="vai al trimestre successivo" onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
-   </div>
-
+<div class="row vpr-toolbar-row" style="margin-top:10px;">
+  <div class="col-xs-12" style="display:flex; align-items:center; justify-content:space-between;">
+    <a class="btn btn-primary btn-xs customTooltip" title="vai al trimestre precedente" onclick="subTrimestre('${start_date }', '${anno}')">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary btn-xs customTooltip" title="vai al trimestre successivo" onclick="addTrimestre('${end_date }', '${anno}')">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
 
           
-            </div><br>
+            <br>
             
 <div class="row">
 <div class="col-xs-12">
@@ -153,225 +141,591 @@
   <!-- /.content-wrapper -->
 
 <form id="formNuovaPianificazione" name="formaNuovaPianificazione">
-       <div id="modalPianificazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
-   
+
+  <div id="modalPianificazione" class="modal fade mpv-modal"
+       role="dialog" aria-labelledby="myLargeModalsaveStato">
+
     <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_pianificazione"></h4>
-      </div>
-       <div class="modal-body"> 
-             <div class="row">
-        <div class="col-xs-12">
-        <label>Tipo</label>
-          <select class="form-control select2" id="tipo" name="tipo" style="width:100%" data-placeholder="Seleziona Tipo Commessa..." required>
-       <option value=""></option>
-       <c:forEach items="${lista_tipi }" var="tipo">
-       <option value="${tipo.id }">${tipo.descrizione }</option>
-       </c:forEach>
-       </select>
+      <div class="modal-content">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+          <span class="mpv-header-icon">
+            <i class="fa fa-calendar"></i>
+          </span>
+
+          <h4 class="modal-title" id="title_pianificazione">
+            Pianificazione
+          </h4>
+
+          <button type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
 
-        </div><br>
-        
-        <div class="row" >
-        <div class="col-xs-12">
-        <label>Descrizione</label>
 
-         <textarea rows="4" style="width:100%" id="descrizione" name="descrizione" class="form-control" required></textarea>
-        </div>
+        <!-- BODY -->
+        <div class="modal-body">
 
-        </div><br>
-        
-        
-        <div class="row" style="display:none" id="n_utenti_content">
-        <div class="col-xs-12">
-        <label>N. Utenti</label>
-         <input type="number" min="0" step="1" id="n_utenti" name="n_utenti" class="form-control" >
-        </div>
-
-        </div><br>
-            
-       <div class="row">
-       <div class="col-xs-12">
-       <label>Docenti</label>
-       <select class="form-control select2" id="docente" name="docente" style="width:100%" multiple  data-placeholder="Seleziona Docenti...">
-       <option value=""></option>
-       <c:forEach items="${lista_docenti }" var="docente">
-       <option value="${docente.id }">${docente.nome } ${docente.cognome }</option>
-       </c:forEach>
-       </select>
-       </div>
-        </div><br>
+          <!-- TIPO -->
           <div class="row">
-        <div class="col-xs-6">
-           <label>Stato</label>
-          <select class="form-control select2" id="stato" name="stato" style="width:100%" data-placeholder="Seleziona Stato Pianificazione..." required>
-       <option value=""></option>
-       <c:forEach items="${lista_stati }" var="stato">
-       <option value="${stato.id }">${stato.descrizione }</option>
-       </c:forEach>
-       </select>
-        </div>
-                <div class="col-xs-6" style="margin-top:25px">
-        <label>Invia Email</label>
-          <input class="form-control"  type="checkbox" id="email" name="email" style="width:100%">
-               <label id="label_email" class="pull-right" style="font-size: 70%;display:none">Email inviata</label>
-       </div>
- 
-        </div><br>
-              <div class="row">
-              <div class="col-xs-3 ">
-              
-              
-              
+            <div class="col-xs-12">
+              <div class="mpv-field">
+
+                <label for="tipo">
+                  <i class="fa fa-tag"></i> Tipo
+                </label>
+
+                <select class="form-control select2"
+                        id="tipo"
+                        name="tipo"
+                        style="width:100%"
+                        data-placeholder="Seleziona Tipo Commessa..."
+                        required>
+
+                  <option value=""></option>
+
+                  <c:forEach items="${lista_tipi}" var="tipo">
+                    <option value="${tipo.id}">
+                      ${tipo.descrizione}
+                    </option>
+                  </c:forEach>
+
+                </select>
+
               </div>
-           <div class="col-xs-6 "  id = "content_agenda">
-        <label >Aggiungi evento ad agenda Milestone</label>
-          <input class="form-control "   type="checkbox" id="agenda" name="agenda" style="width:100%">
-      
-       </div>
-       <div class="col-xs-3 pull-right" style="margin-top:25px;display:none" id = "label_agenda" >
-        <label class="pull-right" style="font-size: 70%"  > Evento aggiunto agenda docente</label>
-       </div>
-         </div><br>
-         <div class="row">
-          <div class="col-xs-12 ">
-                <div id="content_fasi" style="display:none">
-              
-              
-      
+            </div>
+          </div>
+
+
+          <!-- DESCRIZIONE -->
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+
+                <label for="descrizione">
+                  <i class="fa fa-file-text-o"></i> Descrizione
+                </label>
+
+                <textarea rows="4"
+                          id="descrizione"
+                          name="descrizione"
+                          class="form-control"
+                          style="width:100%"
+                          required></textarea>
+
               </div>
+            </div>
           </div>
-         </div><br>
-   
-        
-		<div class="row">
-		<div class='col-xs-3'><label>Ora inzio</label><div class='input-group'>
-					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
 
-<div class='col-xs-3'><label>Ora fine</label><div class='input-group'>
-					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%'><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
 
-		<div class='col-xs-3' ><label>Pausa pranzo</label><br>
-					<input type='checkbox' id='pausa_pranzo' name='pausa_pranzo' class='form-control' style='width:100%'>
-					</div>
-			<div class='col-xs-3'> 	
-					 <label>Durata (min.)</label> 
-					<select id="durata_pausa_pranzo" name="durata_pausa_pranzo" disabled class='form-control select2' data-placeholder="Durata pausa pranzo...">
-					<option value=""></option>
-					<option value="15">15</option>
-					<option value="30">30</option>
-					<option value="45">45</option>
-					<option value="60">60</option>
-					</select>
-					</div>
-		
-		</div><br>
-         <div class="row">
-        <div class="col-xs-3"><label>Crea nuovo corso</label> <br>
-          <input type='checkbox' id='nuovo_corso' name='nuovo_corso' class='form-control' style='width:100%'>
+          <!-- NUMERO UTENTI -->
+          <div class="row" id="n_utenti_content" style="display:none">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+
+                <label for="n_utenti">
+                  <i class="fa fa-users"></i> N. Utenti
+                </label>
+
+                <input type="number"
+                       min="0"
+                       step="1"
+                       id="n_utenti"
+                       name="n_utenti"
+                       class="form-control">
+
+              </div>
+            </div>
           </div>
-          <div class="col-xs-3">
-         <label>Corso esistente</label><br>
-        <input type='checkbox' id='corso_esistente' name='corso_esistente' class='form-control' style='width:100%'>
-        </div>
-        <div class="col-xs-6">
-         <label>Corsi esistenti</label> 
-					<select id="id_corso_esistente" name="id_corso_esistente" disabled class='form-control select2' style="width:100%" data-placeholder="Seleziona corso esistente...">
-					<option value=""></option>
-					<c:forEach items="${lista_corsi }" var="corso">
-					<option value="${corso.id }">${corso.descrizione } - ${corso.commessa } - <fmt:formatDate pattern="dd/MM/yyyy" value="${corso.data_corso}" /></option>
-					</c:forEach>
-					</select>
-        </div>
-        </div>
-                   
-<div class="row" style="margin-top:20px">
-    <div class="col-sm-4">
-        <label>Remind Docenti</label>
-    </div>
-    <div class="col-sm-8">
-        <input type='checkbox' id='remind_docenti' name='remind_docenti'>
-    </div>
-</div>
 
-<div class="row" style="margin-top:20px">
-    <div class="col-sm-4">
-        <label>Giorni Preavviso</label>
-    </div>
-    <div class="col-sm-8">
-        <input id="giorni_preavviso_mod" name="giorni_preavviso_mod" disabled class="form-control" type="number" step="1" min="0">
-    </div>
-</div>
 
-<div class="row" style="margin-top:20px">
-    <div class="col-sm-4">
-        <label>Email Preavviso <br><small class="text-muted">Inserire gli indirizzi separati da ";"</small></label>
-    </div>
-    <div class="col-sm-8">
-        <input id="email_preavviso_mod" name="email_preavviso_mod" disabled class="form-control" type="text">
-    </div>
-</div>
-        
-        <div class="row">
-        <div class="col-xs-12">
-        <label>Testo Note</label>
-          <textarea rows="5" style="width:100%" id="nota" name="nota" class="form-control"></textarea>
+          <!-- DOCENTI -->
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+
+                <label for="docente">
+                  <i class="fa fa-user"></i> Docenti
+                </label>
+
+                <select class="form-control select2"
+                        id="docente"
+                        name="docente"
+                        style="width:100%"
+                        multiple
+                        data-placeholder="Seleziona Docenti...">
+
+                  <option value=""></option>
+
+                  <c:forEach items="${lista_docenti}" var="docente">
+                    <option value="${docente.id}">
+                      ${docente.nome} ${docente.cognome}
+                    </option>
+                  </c:forEach>
+
+                </select>
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- STATO + EMAIL -->
+          <div class="row">
+
+            <div class="col-xs-6">
+              <div class="mpv-field">
+
+                <label for="stato">
+                  <i class="fa fa-info-circle"></i> Stato
+                </label>
+
+                <select class="form-control select2"
+                        id="stato"
+                        name="stato"
+                        style="width:100%"
+                        data-placeholder="Seleziona Stato Pianificazione..."
+                        required>
+
+                  <option value=""></option>
+
+                  <c:forEach items="${lista_stati}" var="stato">
+                    <option value="${stato.id}">
+                      ${stato.descrizione}
+                    </option>
+                  </c:forEach>
+
+                </select>
+
+              </div>
+            </div>
+
+
+            <div class="col-xs-3 pull-right">
+              <div class="mpv-field">
+
+                <p class="mpv-check-title" style="font-size: 80%;">
+                  <i class="fa fa-envelope"></i> Invia Email
+                </p>
+
+                <label class="mpv-check-row" for="email">
+
+                  <input class="form-control"
+                         type="checkbox"
+                         id="email"
+                         name="email">
+
+                </label>
+
+                <label id="label_email"
+                       style="font-size:70%;display:none">
+                  Email inviata
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- AGENDA -->
+          <div class="row">
+
+            <div class="col-xs-3 pull-right">
+              <div class="mpv-field">
+
+                <label for="agenda" style="font-size: 80%;">
+                  <i class="fa fa-calendar-plus-o"></i>
+                  Aggiungi evento ad agenda Milestone
+                </label>
+
+                <label class="mpv-check-row" for="agenda">
+
+                  <input class="form-control"
+                         type="checkbox"
+                         id="agenda"
+                         name="agenda">
+
+                </label>
+
+              </div>
+            </div>
+
+            <div class="col-xs-3" id="label_agenda" style="display:none">
+
+              <div class="mpv-field">
+
+                <label style="font-size:70%">
+                  Evento aggiunto agenda docente
+                </label>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- FASI -->
+          <div class="row">
+            <div class="col-xs-12">
+
+              <div id="content_fasi" style="display:none"></div>
+
+            </div>
+          </div>
+
+
+          <!-- ORARI -->
+          <div class="row">
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <label for="ora_inizio">
+                  <i class="fa fa-clock-o"></i> Ora inizio
+                </label>
+
+                <div class="input-group">
+
+                  <input type="text"
+                         id="ora_inizio"
+                         name="ora_inizio"
+                         class="form-control timepicker"
+                         style="width:100%">
+
+                  <span class="input-group-addon">
+                    <span class="fa fa-clock-o"></span>
+                  </span>
+
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <label for="ora_fine">
+                  <i class="fa fa-clock-o"></i> Ora fine
+                </label>
+
+                <div class="input-group">
+
+                  <input type="text"
+                         id="ora_fine"
+                         name="ora_fine"
+                         class="form-control timepicker"
+                         style="width:100%">
+
+                  <span class="input-group-addon">
+                    <span class="fa fa-clock-o"></span>
+                  </span>
+
+                </div>
+
+              </div>
+            </div>
+
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <p class="mpv-check-title">
+                  <i class="fa fa-cutlery"></i> Pausa pranzo
+                </p>
+
+                <label class="mpv-check-row" for="pausa_pranzo">
+
+                  <input type="checkbox"
+                         id="pausa_pranzo"
+                         name="pausa_pranzo"
+                         class="form-control">
+
+                </label>
+
+              </div>
+            </div>
+
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <label for="durata_pausa_pranzo">
+                  Durata (min.)
+                </label>
+
+                <select id="durata_pausa_pranzo"
+                        name="durata_pausa_pranzo"
+                        disabled
+                        class="form-control select2"
+                        style="width:100%"
+                        data-placeholder="Durata pausa pranzo...">
+
+                  <option value=""></option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                  <option value="60">60</option>
+
+                </select>
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- CORSO -->
+          <div class="row">
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <p class="mpv-check-title">
+                  Crea nuovo corso
+                </p>
+
+                <label class="mpv-check-row" for="nuovo_corso">
+
+                  <input type="checkbox"
+                         id="nuovo_corso"
+                         name="nuovo_corso"
+                         class="form-control">
+
+                </label>
+
+              </div>
+            </div>
+
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <p class="mpv-check-title">
+                  Corso esistente
+                </p>
+
+                <label class="mpv-check-row" for="corso_esistente">
+
+                  <input type="checkbox"
+                         id="corso_esistente"
+                         name="corso_esistente"
+                         class="form-control">
+
+                </label>
+
+              </div>
+            </div>
+
+
+            <div class="col-xs-6">
+              <div class="mpv-field">
+
+                <label for="id_corso_esistente">
+                  Corsi esistenti
+                </label>
+
+                <select id="id_corso_esistente"
+                        name="id_corso_esistente"
+                        disabled
+                        class="form-control select2"
+                        style="width:100%"
+                        data-placeholder="Seleziona corso esistente...">
+
+                  <option value=""></option>
+
+                  <c:forEach items="${lista_corsi}" var="corso">
+
+                    <option value="${corso.id}">
+                      ${corso.descrizione}
+                      -
+                      ${corso.commessa}
+                      -
+                      <fmt:formatDate
+                        pattern="dd/MM/yyyy"
+                        value="${corso.data_corso}" />
+                    </option>
+
+                  </c:forEach>
+
+                </select>
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- REMIND DOCENTI -->
+          <div class="row">
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+
+                <label for="remind_docenti">
+                  <i class="fa fa-bell"></i> Remind Docenti
+                </label>
+
+                <label class="mpv-check-row" for="remind_docenti">
+
+                  <input type="checkbox"
+                         id="remind_docenti"
+                         name="remind_docenti"
+                         class="form-control">
+
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- GIORNI PREAVVISO -->
+          <div class="row">
+
+            <div class="col-xs-6">
+              <div class="mpv-field">
+
+                <label for="giorni_preavviso_mod">
+                  <i class="fa fa-calendar-minus-o"></i>
+                  Giorni Preavviso
+                </label>
+
+                <input id="giorni_preavviso_mod"
+                       name="giorni_preavviso_mod"
+                       disabled
+                       class="form-control"
+                       type="number"
+                       step="1"
+                       min="0">
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- EMAIL PREAVVISO -->
+          <div class="row">
+
+            <div class="col-xs-12">
+              <div class="mpv-field">
+
+                <label for="email_preavviso_mod">
+                  <i class="fa fa-envelope"></i>
+                  Email Preavviso
+                  <small class="text-muted">
+                    Inserire gli indirizzi separati da ";"
+                  </small>
+                </label>
+
+                <input id="email_preavviso_mod"
+                       name="email_preavviso_mod"
+                       disabled
+                       class="form-control"
+                       type="text">
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <!-- NOTE -->
+          <div class="row">
+
+            <div class="col-xs-12">
+              <div class="mpv-field">
+
+                <label for="nota">
+                  <i class="fa fa-file-text-o"></i>
+                  Testo Note
+                </label>
+
+                <textarea rows="5"
+                          id="nota"
+                          name="nota"
+                          class="form-control"
+                          style="width:100%"></textarea>
+
+              </div>
+            </div>
+
+          </div>
+
         </div>
-        </div><br>
-       
-      
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_pianificazione" name="id_pianificazione">
-      <input type="hidden" id="day" name="day">
-      <input type="hidden" id="commessa" name="commessa">
-      <input type="hidden" id="id_docenti" name="id_docenti">
-      <input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
-      <input type="hidden" id="check_mail" name="check_mail">
-      <input type="hidden" id="check_agenda" name="check_agenda">
-      <input type="hidden" id="check_pausa_pranzo" name="check_pausa_pranzo">
-      <input type="hidden" id="anno_data" name="anno_data">
-      <input type="hidden" id="check_nuovo_corso" name="check_nuovo_corso">
-      <input type="hidden" id="check_corso_esistente" name="check_corso_esistente">
-         <input type="hidden" id="check_remind_docenti" name="check_remind_docenti">
-        <input type="hidden" id="mod" name="mod">
-      
-      
-      
-      
-      <a class="btn btn-danger pull-left" onclick="$('#myModalYesOrNo').modal()"  id="btn_elimina" style="display:none">Elimina</a>
-        
-	              
-	      <button type="submit" class="btn btn-primary">
-    <i class="glyphicon glyphicon-download"></i> Salva
-</button>
-	   
-      
-      
+
+
+        <!-- FOOTER -->
+        <div class="modal-footer">
+
+          <input type="hidden" id="id_pianificazione" name="id_pianificazione">
+          <input type="hidden" id="day" name="day">
+          <input type="hidden" id="commessa" name="commessa">
+          <input type="hidden" id="id_docenti" name="id_docenti">
+          <input type="hidden" id="id_docenti_dissocia" name="id_docenti_dissocia">
+          <input type="hidden" id="check_mail" name="check_mail">
+          <input type="hidden" id="check_agenda" name="check_agenda">
+          <input type="hidden" id="check_pausa_pranzo" name="check_pausa_pranzo">
+          <input type="hidden" id="anno_data" name="anno_data">
+          <input type="hidden" id="check_nuovo_corso" name="check_nuovo_corso">
+          <input type="hidden" id="check_corso_esistente" name="check_corso_esistente">
+          <input type="hidden" id="check_remind_docenti" name="check_remind_docenti">
+          <input type="hidden" id="mod" name="mod">
+
+          <a class="btn btn-danger mpv-btn-delete"
+             onclick="$('#myModalYesOrNo').modal()"
+             id="btn_elimina"
+             style="display:none">
+
+            <i class="fa fa-trash"></i> Elimina
+
+          </a>
+
+          <div class="mpv-footer-right">
+
+            <button type="button"
+                    class="btn btn-default mpv-btn-cancel"
+                    data-dismiss="modal">
+              Annulla
+            </button>
+
+            <button class="btn btn-primary" type="submit">
+              <i class="fa fa-floppy-o"></i> Salva
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
     </div>
+
   </div>
 
-</div>
 </form>
 	
 
        <input type="hidden" id="cellCopy" name="cellCopy" value="${cellCopy }">
 
 	
-	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+	  <div id="myModalYesOrNo" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-header">
+       
+        
+         <span class="mpv-header-icon"><i class="fa fa-exclamation-triangle"></i></span>
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
        <div class="modal-body">       
       	Sei sicuro di voler eliminare la pianificazione selezionata?
@@ -400,6 +754,9 @@
   </div>
 
 </div>
+
+
+
   <t:dash-footer />
   
 

@@ -328,11 +328,6 @@ public class Utility extends HttpServlet {
 		{
 			return "";
 		}
-		else
-		{
-			string=string.replaceAll("\"", "");
-			string=string.replaceAll("\'", "");
-		}
 		return string;
 	}	
 	

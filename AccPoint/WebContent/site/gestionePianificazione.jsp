@@ -22,30 +22,36 @@
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1 class="pull-left">
-        Gestione Pianificazione
-
-      </h1>
-       <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
-    </section>
+   <section class="content-header vpr-content-header">
+  <div class="vpr-title-wrap pull-left">
+    <span class="vpr-title-icon"><i class="fa fa-calendar"></i></span>
+    <div class="vpr-title-text">
+      <h1>Gestione Pianificazione</h1>
+    </div>
+  </div>
+  <a class="btn btn-default pull-right vpr-btn-home" href="/"><i class="fa fa-home"></i> Home</a>
+</section>
+ 
     <div style="clear: both;"></div>    
   <!-- Main content -->
     <section class="content">
 
 <!-- <div class="row">
         <div class="col-xs-12"> -->
-          <div class="box">
+     <div class="box vpr-toolbar-box">
 <!--           <div class="box-header">
           
+          
           </div> -->
-            <div class="box-body">
-              <div class="row">
+               <div class="box-body">
+              <div class="row vpr-toolbar-row vpr-section-divider">
 
+                    <div class="col-xs-1">
+ <a class="btn btn-primary pull-left btn-xs customTooltip" title="vai al trimestre precedente" style="margin-top:35px" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a> 
+</div>        
               
-              
-                <div class="col-xs-3"> 
-            <label>Commesse</label>
+                <div class="col-xs-3 vpr-anno-block" style="display: flex; align-items: center; margin-left: -20px;">
+            <label class="vpr-anno-inline-label"><strong>Commesse</strong></label>
          <select class="form-control select2" id="commesse" name="commesse" style="width:100%" >
 			
 						
@@ -55,10 +61,12 @@
 			
 			</select>
              </div>
-              
-            <div class="col-xs-3"> 
-            <label>Anno</label>
-         <select class="form-control select2" id="anno" name="anno" style="width:100%" >
+
+         <!-- Anno -->
+<div class="col-xs-3 vpr-anno-block" style="display: flex; align-items: center; margin-left: 30px;">
+    <label class="vpr-anno-inline-label"><strong>Anno</strong></label>
+
+    <select class="form-control select2" id="anno" name="anno" style="width:100%">
 
 		
 			  <c:set var="startYear" value="${currentYear - 5}" />
@@ -75,25 +83,34 @@
 			  </c:forEach>
 			</select>
              </div>
-             <div class="col-xs-3">
-             <a class="btn btn-primary" style="margin-top:25px" onclick="vaiAOggi('${currentYear}')">Vai a Oggi</a>
+             <div class="col-xs-2"  style="display:flex; align-items:center; padding-left:5px; padding-right:5px;">
+              <a class="btn btn-primary vpr-btn-today" onclick="vaiAOggi('${currentYear}')" style="margin-top:0px">
+  <i class="fa fa-calendar-check-o"></i> Vai a Oggi
+</a>
              </div>
              
-             <div class="col-xs-3">
+             <div class="col-xs-2" style="display:flex; align-items:center; justify-content:flex-end; gap:5px; padding-left:5px; padding-right:5px;">
                            <!-- Zoom In -->
 
 <!-- Reset -->
-<a href="#" class="btn btn-primary zoom_reset pull-right">Reset Zoom</a>
-<a href="#" class="btn btn-primary zoom_out pull-right" style="margin-right:5px">Zoom Out</a>
-<a href="#" class="btn btn-primary zoom_in pull-right"  style="margin-right:5px">Zoom In</a>
-             </div>
+
+<a href="#" class="btn btn-primary zoom_reset pull-right btn-xs vpr-btn-zoom"><i class="fa fa-refresh" ></i> Reset Zoom</a>
+<a href="#" class="btn btn-primary zoom_out pull-right btn-xs vpr-btn-zoom" ><i class="fa fa-search-minus"></i> Zoom Out</a>
+<a href="#" class="btn btn-primary zoom_in pull-right btn-xs vpr-btn-zoom" ><i class="fa fa-search-plus"></i> Zoom In</a>
+</div>
+<div class="col-xs-3">
+<a class="btn btn-primary pull-right btn-xs customTooltip"  title="vai al trimestre successivo" onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
+   </div>
+
+
+          
             </div><br>
             
 <div class="row">
 <div class="col-xs-12">
-<button class="btn btn-primary" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le classi</button>
-<button class="btn btn-primary" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='fillTable("${anno}",3)' id="btn_elearning">E-Learning</button>
-<button class="btn btn-primary pull-right"  onclick='rimuoviFiltri()'>Rimuovi Filtri</button>
+<button class="btn btn-primary vpr-btn-today" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le classi</button>
+<button class="btn btn-primary vpr-btn-today" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='fillTable("${anno}",3)' id="btn_elearning">E-Learning</button>
+<button class="btn btn-primary vpr-btn-today pull-right"  onclick='rimuoviFiltri()'>Rimuovi Filtri</button>
 <!-- <button class="btn btn-primary"  onclick='filterTable()' id="">Filtra</button> -->
 
 </div>
@@ -101,20 +118,9 @@
 
 
 
-<br><br>
-               <div class="row">
-				 <div class="col-xs-12">
-				 <a class="btn btn-primary pull-left" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a>
-				 
-				 <a class="btn btn-primary pull-right" onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
-				 </div>
-               
-               
-               
-               </div>
             
             <br>
-            <div class="row">
+             <div class="row vpr-table-row">
             <div class="col-xs-12">
            <%--  <jsp:include page="gestionePianificazioneTabella.jsp" ></jsp:include> --%>
             <jsp:include page="gestionePianificazioneTabellaBimestre.jsp" ></jsp:include>
@@ -459,7 +465,7 @@
 <jsp:attribute name="extra_js_footer">
 
 
-
+ <link rel="stylesheet" href="css/prenotazioni.css">
 <script src="plugins/zoom-in-out-entire-page/jquery.page_zoom.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js"></script> 
 
@@ -960,7 +966,7 @@ function eliminaPianificazione(){
 }
 
 
-$('#tabForPianificazione tbody td').on('contextmenu', 'div',  function(e) {
+$('#tabForPianificazione  tbody td').on('contextmenu', 'div',  function(e) {
 	if($(this).hasClass("riquadro")){
 	    selectedDiv = $(this);
 	    e.preventDefault(); // Prevent default context menu
@@ -972,7 +978,7 @@ $('#tabForPianificazione tbody td').on('contextmenu', 'div',  function(e) {
 var cellIndex;
 function initContextMenu(){
 	
-	$("#tabForPianificazione tbody td").bind("contextmenu", function (event) {
+	$("#tabForPianificazione  tbody td").bind("contextmenu", function (event) {
 		
 	     
 	     // Avoid the real one

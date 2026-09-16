@@ -11,6 +11,7 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.ZoneId" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="java.util.Locale" %>
 
 <%
 
@@ -22,7 +23,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 %>
 
 				
-<div class="legend">
+<div class="legend" id="legenda_pianificazione">
     <div class="legend-item">
         <div class="legend-color" style="background-color:#DCDCDC;"></div>
         <div class="legend-label">NON CONFERMATO</div>
@@ -94,27 +95,41 @@ int anno = (Integer) request.getSession().getAttribute("anno");
         LocalDateTime localDateTime = localDate.atStartOfDay();
         Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         ArrayList<LocalDate> festivitaItaliane = (ArrayList<LocalDate>) request.getSession().getAttribute("festivitaItaliane");
+        String dayOfWeekString = localDate.getDayOfWeek().getDisplayName(
+                java.time.format.TextStyle.SHORT,
+                Locale.ITALIAN
+            ).toUpperCase();
         
         if(localDate.getDayOfWeek().getValue() == 6 || localDate.getDayOfWeek().getValue() == 7){
       %>
-       <th class="weekend">
-                <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
-                <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
-            </th>
+       <th class="weekend" style="text-align:center">
+  <div class="day-header-pill">
+    <span class="day-name"><c:out value="<%=dayOfWeekString %>"></c:out></span>
+    <span class="day-date"><fmt:formatDate value="<%= date %>" pattern="dd/MM" /></span>
+    <span class="day-year"> <fmt:formatDate value="<%= date %>" pattern="yyyy" /></span>
+  </div>
+  <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
+</th>
             
             <%}else if(festivitaItaliane.contains(localDate)){ %>
-              <th class="weekend">
-                <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
-                
-                <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
-            </th>
+              <th class="weekend" style="text-align:center">
+  <div class="day-header-pill">
+    <span class="day-name"><c:out value="<%=dayOfWeekString %>"></c:out></span>
+    <span class="day-date"><fmt:formatDate value="<%= date %>" pattern="dd/MM" /></span>
+    <span class="day-year"> <fmt:formatDate value="<%= date %>" pattern="yyyy" /></span>
+  </div>
+  <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
+</th>
             <%}else{ %>
       
-      <th >
-                <fmt:formatDate value="<%= date %>" pattern="dd/MM/yyyy" />
-                
-                <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
-            </th>
+      <th style="text-align:center">
+  <div class="day-header-pill">
+    <span class="day-name"><c:out value="<%=dayOfWeekString %>"></c:out></span>
+    <span class="day-date"><fmt:formatDate value="<%= date %>" pattern="dd/MM" /></span>
+    <span class="day-year"> <fmt:formatDate value="<%= date %>" pattern="yyyy" /></span>
+  </div>
+  <div><input class="inputsearchtable" style="min-width:80px;width=100%" type="text"  /></div>
+</th>
          <%} %>
       
 
@@ -192,87 +207,6 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 	<link rel="stylesheet" href="https://datatables.net/release-datatables/media/css/dataTables.bootstrap4.css">
 	<link rel="stylesheet" href="https://datatables.net/release-datatables/extensions/FixedColumns/css/fixedColumns.bootstrap4.css">
  
-<style>
-<!--
-/* .DTFC_RightBodyLiner {
-top: -13px !important;
-overflow-x: hidden;
-}
-
-
-.dataTables_wrapper .dataTables_scrollHead {
-  overflow: hidden;
-  position: relative;
-}
-
-.dataTables_wrapper .dataTables_scrollHead table {
-  table-layout: fixed;
-}
-
-.dataTables_wrapper .dataTable {
-  table-layout: fixed;
-}
-
-.dataTables_wrapper .dataTable td,
-.dataTables_wrapper .dataTable th {
-  padding-right: 10px;  
-} */
-
-
- .tooltip {
-    position: absolute;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  
-
-
-}
-
-
- .legend {
-  display: flex;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-}
-
-.legend-color {
-  width: 20px;
-  height: 20px;
-}
-
-.legend-label {
-  margin-left: 5px;
-}
-
-
-    .riquadro {
-      border: 1px solid red;
-      padding: 5px;
-}
-
-
-/*   .button_add {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: #337ab7;
-      text-align: center;
-      line-height: 10px;
-      font-size: 3px;
-      cursor: pointer;
-    }
- */
-
-</style>
-
 
  
  
@@ -511,6 +445,7 @@ $(document).ready(function() {
 		
           //table.column(indexSearchbox).search(savedSearch).draw();
       }
+
 });
 
 
@@ -803,12 +738,10 @@ if(filtro!=3){
 					if(lista_pianificazioni[i].descrizione.length>20){
 					
 							//cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro'  style='margin-top:5px' ondblclick='modalPianificazione('"+lista_pianificazioni[i].nCella+"', '"+lista_pianificazioni[i].id_commessa+"','"+lista_pianificazioni[i].id+"')'>"+lista_pianificazioni[i].note.substring(0,20)+"...</div>");	
-							cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione.substring(0,20)+"..."+str_docenti + "</div>");	
-						
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:10px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione.substring(0,20)+"..."+str_docenti + "</div>");
 					}else{
 						
-							cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:5px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione+str_docenti + "</div>");	
-							 
+						cell.append("<div id='riquadro_"+lista_pianificazioni[i].id+"' class='riquadro' style='margin-top:10px' ondblclick=\"modalPianificazione(\'"+lista_pianificazioni[i].nCella+"\', \'"+lista_pianificazioni[i].id_commessa+"\',\'"+lista_pianificazioni[i].id+"\')\">"+icon + orario + lista_pianificazioni[i].descrizione+str_docenti + "</div>");
 						
 						
 					}
@@ -867,7 +800,7 @@ if(filtro!=3){
 				
 		    }
 		    
-		   
+		    recalcolaAltezzeRighe();
 	
 		    
 		     for (var i = 0; i < array.length; i++) {
@@ -1115,4 +1048,22 @@ function rgbToHex(rgb) {
 	}
 
 
+function recalcolaAltezzeRighe() {
+    $('#tabForPianificazione tbody tr').each(function() {
+        var row = $(this);
+        var rowTop = row[0].getBoundingClientRect().top;
+        var maxBottom = 0;
+
+        row.find('.riquadro').each(function() {
+            var rect = this.getBoundingClientRect();
+            var relativeBottom = (rect.top - rowTop) + rect.height;
+            if (relativeBottom > maxBottom) {
+                maxBottom = relativeBottom;
+            }
+        });
+
+        var newHeight = maxBottom > 0 ? maxBottom : 42;
+        row.children('td').height(newHeight);
+    });
+}
 </script>

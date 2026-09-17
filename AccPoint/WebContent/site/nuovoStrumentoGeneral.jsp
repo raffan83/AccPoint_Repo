@@ -240,7 +240,7 @@ String idCliente = (String)session.getAttribute("id_Cliente");
          <div class="form-group">
         <label for="inputName" class="col-sm-2 control-label">Freq verifica:</label>
         <div class="col-sm-10">
-                      <input class="form-control" id="freq_mesi" type="number" max="120" name="freq_mesi"  disabled="disabled" value=""/>
+                      <input class="form-control" id="freq_mesi" type="number" max="240" name="freq_mesi"  disabled="disabled" value=""/>
     </div>
        </div> 
        

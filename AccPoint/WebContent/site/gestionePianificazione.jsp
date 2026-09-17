@@ -272,102 +272,66 @@
               </div>
             </div>
           </div>
+<br>
+  <br>
+
+       <!-- STATO + EMAIL + milestone -->
+<div class="row">
+
+  <div class="col-xs-6">
+    <div class="mpv-field">
+      <label for="stato" style="min-height:32px; display:block;">
+        <i class="fa fa-info-circle"></i> Stato
+      </label>
+      <select class="form-control select2"
+              id="stato"
+              name="stato"
+              style="width:100%"
+              data-placeholder="Seleziona Stato Pianificazione..."
+              required>
+        <option value=""></option>
+        <c:forEach items="${lista_stati}" var="stato">
+          <option value="${stato.id}">${stato.descrizione}</option>
+        </c:forEach>
+      </select>
+    </div>
+  </div>
+
+  <div class="col-xs-3">
+    <div class="mpv-field">
+      <p class="mpv-check-title" style="font-size: 80%; min-height:32px; display:block;">
+        <i class="fa fa-envelope"></i> Invia Email
+      </p>
+      <label class="mpv-check-row" for="email">
+        <input class="form-control" type="checkbox" id="email" name="email">
+      </label>
+      <label id="label_email" style="font-size:70%;display:none">
+        Email inviata
+      </label>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="col-xs-3">
+    <div class="mpv-field">
+      <p class="mpv-check-title" style="font-size: 80%; min-height:32px; display:block;">
+        <i class="fa fa-calendar-plus-o"></i>
+        Aggiungi evento ad agenda Milestone
+      </p>
+      <label class="mpv-check-row" for="agenda">
+        <input class="form-control" type="checkbox" id="agenda" name="agenda">
+      </label>
+      <label id="label_agenda" style="font-size:70%">
+        Evento aggiunto agenda docente
+      </label>
+    </div>
+  </div>
+
+</div>
 
 
-          <!-- STATO + EMAIL -->
-          <div class="row">
-
-            <div class="col-xs-6">
-              <div class="mpv-field">
-
-                <label for="stato">
-                  <i class="fa fa-info-circle"></i> Stato
-                </label>
-
-                <select class="form-control select2"
-                        id="stato"
-                        name="stato"
-                        style="width:100%"
-                        data-placeholder="Seleziona Stato Pianificazione..."
-                        required>
-
-                  <option value=""></option>
-
-                  <c:forEach items="${lista_stati}" var="stato">
-                    <option value="${stato.id}">
-                      ${stato.descrizione}
-                    </option>
-                  </c:forEach>
-
-                </select>
-
-              </div>
-            </div>
-
-
-            <div class="col-xs-3 pull-right">
-              <div class="mpv-field">
-
-                <p class="mpv-check-title" style="font-size: 80%;">
-                  <i class="fa fa-envelope"></i> Invia Email
-                </p>
-
-                <label class="mpv-check-row" for="email">
-
-                  <input class="form-control"
-                         type="checkbox"
-                         id="email"
-                         name="email">
-
-                </label>
-
-                <label id="label_email"
-                       style="font-size:70%;display:none">
-                  Email inviata
-                </label>
-
-              </div>
-            </div>
-
-          </div>
-
-
-          <!-- AGENDA -->
-          <div class="row">
-
-            <div class="col-xs-3 pull-right">
-              <div class="mpv-field">
-
-                <label for="agenda" style="font-size: 80%;">
-                  <i class="fa fa-calendar-plus-o"></i>
-                  Aggiungi evento ad agenda Milestone
-                </label>
-
-                <label class="mpv-check-row" for="agenda">
-
-                  <input class="form-control"
-                         type="checkbox"
-                         id="agenda"
-                         name="agenda">
-
-                </label>
-
-              </div>
-            </div>
-
-            <div class="col-xs-3" id="label_agenda" style="display:none">
-
-              <div class="mpv-field">
-
-                <label style="font-size:70%">
-                  Evento aggiunto agenda docente
-                </label>
-
-              </div>
-
-            </div>
-
-          </div>
+<br>
+  <br>
 
 
           <!-- FASI -->

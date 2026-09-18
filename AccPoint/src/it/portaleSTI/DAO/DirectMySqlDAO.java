@@ -4708,8 +4708,14 @@ public static ArrayList<InterventoDTO> getInterventoSessioni(String today,String
 		
 		CommessaDTO comm = GestioneCommesseBO.getCommessaById(intervento.getIdCommessa());
 		boolean isPresent = GestioneUtenteBO.getUtenteByIdCliente(comm);
-		intervento.setPresentCliente(isPresent);
 		
+		boolean isPresentAllSedi = GestioneUtenteBO.getUtenteByIdClienteAllSedi(comm);
+		if(isPresent || isPresentAllSedi) {
+		intervento.setPresentCliente(true);
+		
+		} else {
+			intervento.setPresentCliente(false);
+		}
 		intervento.setNome_cliente_commessa(comm.getID_ANAGEN_NOME());
 	    if (comm.getANAGEN_INDR_INDIRIZZO() != null && !comm.getANAGEN_INDR_INDIRIZZO().trim().isEmpty()) {
            intervento.setNome_sede_commessa(comm.getANAGEN_INDR_INDIRIZZO());
@@ -4827,6 +4833,48 @@ public static ArrayList<SessioneDTO> getAllSessioni(int year) throws Exception {
 	
 
 	return lista;
+}
+
+public static ArrayList<String> getListaOriginePacchiApertiByCommessa(String commessa, Session session) throws Exception {
+
+	ArrayList<String> lista = new ArrayList<String>();
+	
+	Connection con=null;
+	PreparedStatement pst = null;
+	 ResultSet rs = null;
+	
+	try {
+		con=getConnection();
+
+		String query = "SELECT DISTINCT m.origine FROM mag_pacco m WHERE m.commessa = ? AND m.chiuso=0";
+	
+		  pst = con.prepareStatement(query);
+		  pst.setString(1, commessa);
+	        rs = pst.executeQuery();
+	       
+
+			MagPaccoDTO pacco_res= null;
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			 while (rs.next()) {
+		            lista.add(rs.getString("origine"));
+		        }
+	  } catch (Exception e) {
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+
+	        if (con != null)
+	            con.close();
+	    }
+
+	    return lista;
+	
 }
 
 

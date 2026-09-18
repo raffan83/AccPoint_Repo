@@ -56,6 +56,28 @@ public static ArrayList<UtenteDTO> getUtenteByIdCliente(CommessaDTO commessa)thr
 	
 	return (ArrayList<UtenteDTO>) result;
 	
+}
+
+public static ArrayList<UtenteDTO> getUtenteByIdClienteAllSedi(CommessaDTO commessa)throws HibernateException, Exception {
+	
+	Session session=null;
+	UtenteDTO utente = null;
+	
+	session=SessionFacotryDAO.get().openSession();
+		
+	session.beginTransaction();
+	
+	Query query  = session.createQuery( "from UtenteDTO WHERE idCliente= :_idCliente  AND idSede= :_idSede");
+	
+	query.setParameter("_idCliente", commessa.getID_ANAGEN());
+	query.setParameter("_idSede",0);
+
+	List<UtenteDTO> result =query.list();
+
+	session.getTransaction().commit();
+	session.close();
+	
+	return (ArrayList<UtenteDTO>) result;
 	
 }
 

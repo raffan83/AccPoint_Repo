@@ -104,6 +104,16 @@ public class GestioneUtenteBO {
 		}
 		
 	}
+	public static boolean getUtenteByIdClienteAllSedi(CommessaDTO commessa) throws HibernateException, Exception {
+		ArrayList<UtenteDTO> listaUtenti = GestioneUtenteDAO.getUtenteByIdClienteAllSedi(commessa);
+		
+		if(listaUtenti.size()> 0) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
 
 
 	public static JsonObject sendEmail(String username, Session sessionH, String url) throws Exception {

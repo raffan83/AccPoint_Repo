@@ -32,13 +32,6 @@
 				<reportElement x="280" y="80" width="1" height="157" uuid="2233014b-f153-4579-88c4-991d9f4e70a7"/>
 			</line>
 			<staticText>
-				<reportElement x="10" y="85" width="84" height="20" uuid="c292d01b-866e-453c-8a77-7c19a239dee3"/>
-				<textElement>
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[CODICE PACCO: ]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="288" y="85" width="102" height="21" uuid="7caa081b-d76e-4060-b9a1-b8e70f11b643"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -102,16 +95,6 @@
 				<text><![CDATA[NOTE COMMESSA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="100" y="85" width="92" height="20" uuid="2455af92-99a1-4dd1-a705-6639aedf9da5"/>
-				<textFieldExpression><![CDATA[$P{codice_pacco}]]></textFieldExpression>
-			</textField>
-			<componentElement>
-				<reportElement x="100" y="106" width="100" height="21" uuid="16232793-74ee-485f-8f92-28f936882c08"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false" barHeight="23">
-					<jr:codeExpression><![CDATA[$P{barcode}]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
-			<textField>
 				<reportElement x="390" y="106" width="156" height="21" uuid="102f0c5e-b48f-4611-a623-fd6c7232a1ad"/>
 				<textFieldExpression><![CDATA[$P{data_arrivo}]]></textFieldExpression>
 			</textField>
@@ -156,6 +139,34 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{note_commessa}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="8" y="85" width="84" height="20" uuid="3ab5e9bc-3579-4985-b8a7-2d674ff01402"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CODICE PACCO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="106" width="132" height="20" uuid="bdc9b805-ed07-4ff7-8382-afe0af6af5e7"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CODICE PACCO ORIGINE: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="95" y="85" width="92" height="20" uuid="450bd54d-75ca-4ed0-ad93-10ba57c0ee6d"/>
+				<textFieldExpression><![CDATA[$P{codice_pacco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="106" width="134" height="20" uuid="a2fc4848-2295-4784-8889-6d525737cee2"/>
+				<textFieldExpression><![CDATA[$P{codice_pacco_origine}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="179" y="90" width="90" height="19" uuid="7b91ea35-e02b-4d98-8d26-23ad679dc92f"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false" barHeight="23">
+					<jr:codeExpression><![CDATA[$P{barcode}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
 		</band>
 	</title>
 	<pageHeader>

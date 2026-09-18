@@ -82,6 +82,7 @@ public class CreateTestaPacco {
 				report.setTemplate(Templates.reportTemplate);
 				
 				report.addParameter("codice_pacco", pacco.getCodice_pacco());
+				report.addParameter("codice_pacco_origine", pacco.getOrigine());
 				Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
 				report.addParameter("barcode", barcode);
 			

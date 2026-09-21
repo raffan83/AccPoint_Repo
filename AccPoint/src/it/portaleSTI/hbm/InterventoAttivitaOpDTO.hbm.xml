@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 13-apr-2017 11.24.04 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.InterventoAttivitaOpDTO" table="intervento_attivita_op">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="native" />
+        </id>
+        
+                
+        <property name="id_intervento" type="int">
+            <column name="ID_INTERVENTO" />
+        </property>
+        
+        <property name="date" type="java.util.Date">
+            <column name="DATE" />
+        </property>
+
+        
+  
+        <property name="descrizione" type="java.lang.String">
+            <column name="DESCRIZIONE" />
+        </property>
+        
+        <many-to-one name="user" class="it.portaleSTI.DTO.UtenteDTO" access="field" fetch="join" lazy="false">
+            <column name="id__user_creation" />
+        </many-to-one>
+        
+        
+        
+    </class>
+</hibernate-mapping>

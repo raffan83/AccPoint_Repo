@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -31,6 +32,7 @@ import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ContattoDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
+import it.portaleSTI.DTO.InterventoAttivitaOpDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
@@ -311,6 +313,13 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		request.getSession().setAttribute("userModificaInvalidaSessione", userModificaInvalidaSessione);
 
+		
+		//log attivita operatore
+		List<InterventoAttivitaOpDTO> lista_attivita_op = new ArrayList<>();
+		lista_attivita_op = GestioneInterventoBO.getListaAttivitaOpByIdIntervento(intervento.getId(), session);
+		
+		request.getSession().setAttribute("lista_attivita_op", lista_attivita_op);
+		
 		
 		/*Controllo Numero strumenti misurati*/
 		

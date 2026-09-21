@@ -144,36 +144,44 @@
                 <li class="list-group-item">
                   <b>Stato</b> <div class="pull-right">
                   
-					<%-- <c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+			
+<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
+	 
+	  <c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 2}">
-					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',0,0)" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
-					
-					</c:if> --%>
-    
-    
- <c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
-						
-					</c:if>
-					
-					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
-						
-					</c:if>
-					
-					<c:if test="${intervento.statoIntervento.id == 2}">
-					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
 					
 					</c:if> 
+	 
+
+	</c:if>
+	
+	 <c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
+	 	 
+	  <c:if test="${intervento.statoIntervento.id == 0}">
+						<a> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a>  <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+					 <a> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					
+					</c:if> 
+	</c:if>
 				</div>
                 </li>
                 <li class="list-group-item">
@@ -444,8 +452,8 @@
         </div>       
 
 
-
-      
+      		
+      	
       <c:if test="${userCliente == '0'}">
       
       <div class="row">
@@ -644,9 +652,45 @@
 	</div>
 </div>
 </div>
-      
-            
-            
+   <c:if test="${intervento.statoIntervento.id == 1}"> 
+   <div class="row">
+<div class="col-xs-12">
+<div class="box box-danger box-solid">
+<div class="box-header with-border">
+Log Attivit&agrave; Operatore
+<div class="box-tools pull-right">
+      	<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+      	
+      		</div>
+</div>
+      	<div class="box-body">
+      	
+<a class="btn btn-primary pull-right" onClick="modalConcludiAttivita()"><i class="fa fa-plus"></i> Attivit&agrave; conclusa</a><br><br>
+
+              <table id="tabLogAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+ <thead><tr class="active">
+   <th> User</th>
+    <th>Data</th>
+     <th>Descrizione</th>
+     </tr></thead>
+ 
+ <tbody>
+    <c:forEach items="${lista_attivita_op}" var="attivita" varStatus="loop">
+        <tr>
+            <td>${attivita.user.nominativo}</td>
+            <td>
+                <fmt:formatDate value="${attivita.date}" pattern="dd/MM/yyyy HH:mm"/>
+            </td>
+            <td>${attivita.descrizione}</td>
+        </tr>
+    </c:forEach>
+</tbody>
+      	</table>
+      	</div>
+      	</div>
+      		</div>
+      	</div>            
+            </c:if>   
             
               <div class="row">
         <div class="col-xs-12">
@@ -926,6 +970,32 @@
 </div>
 
 
+
+
+  
+    <div class="modal fade" id="myModalConcludiAttivita" tabindex="-1" role="dialog"
+         data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header" id="esitoModalHeader">
+            <h4 class="modal-title">Conferma Attivit Conclusa</h4>
+          </div>
+           <div class="modal-body">
+
+                <p>Concludere attivita?</p>
+            </div>
+	
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btnConfermaInvio"  onClick="concludiAttivita()">
+                    <i class="glyphicon glyphicon-ok"></i> Sì
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"   onClick="chiudiModalConcludiAttivita()" >
+                    <i class="glyphicon glyphicon-remove"></i> No
+                </button>
+            </div>
+        </div>
+      </div>
+    </div>
 
   <div id="modalComunicazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
@@ -2619,6 +2689,23 @@ function reloadDrive()   {
 	} );
 	
 	
+	$("#tabLogAttivita").on( 'init.dt', function ( e, settings ) {
+	    var api = new $.fn.dataTable.Api( settings );
+	    var state = api.state.loaded();
+	 
+	    if(state != null && state.columns!=null){
+	    		console.log(state.columns);
+	    
+	    columsDatatables = state.columns;
+	    }
+	    
+
+	} );
+	
+	
+	
+	
+	
 /*  	$('#tabAttivita tbody').on( 'click', 'tr', function () {
 	     
         if ( $(this).hasClass('selected') ) {
@@ -3340,7 +3427,69 @@ function parseData(data) {
 	    		  } );
 	     	    
 	     	 
+	        var tableLogAttivita = $('#tabLogAttivita').DataTable({
+	            language: {
+	                emptyTable: "Nessun dato presente nella tabella",
+	                info: "Vista da _START_ a _END_ di _TOTAL_ elementi",
+	                infoEmpty: "Vista da 0 a 0 di 0 elementi",
+	                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+	                infoPostFix: "",
+	                infoThousands: ".",
+	                lengthMenu: "Visualizza _MENU_ elementi",
+	                loadingRecords: "Caricamento...",
+	                processing: "Elaborazione...",
+	                search: "Cerca:",
+	                zeroRecords: "La ricerca non ha portato alcun risultato.",
+	                paginate: {
+	                    first: "Inizio",
+	                    previous: "Precedente",
+	                    next: "Successivo",
+	                    last: "Fine"
+	                },
+	                aria: {
+	                    srtAscending: ": attiva per ordinare la colonna in ordine crescente",
+	                    sortDescending: ": attiva per ordinare la colonna in ordine decrescente"
+	                }
+	            },
 
+	            paging: true,
+	            pageLength: 5,
+	            ordering: true,
+	            info: true,
+	            searchable: false,
+	            responsive: true,
+	            scrollX: false,
+	            stateSave: true,
+
+	            // Ordina per Id decrescente
+	            order: [[0, "desc"]],
+
+	            columnDefs: [
+	                { responsivePriority: 1, targets: 0 }, // Id
+	                { width: "50px", targets: 0 },
+	                { responsivePriority: 2, targets: 1 }, // Id Intervento
+	                { responsivePriority: 3, targets: 2 }, // User
+	                { responsivePriority: 4, targets: 3 }, // Data
+	                { responsivePriority: 5, targets: 4 }, // Descrizione
+	                { orderable: false, targets: 4 }       // Descrizione non ordinabile
+	            ],
+
+
+	            rowCallback: function(row, data, index) {
+	                $('td:eq(0)', row).addClass("centered"); // Id
+	                $('td:eq(1)', row).addClass("centered"); // Id Intervento
+	                $('td:eq(3)', row).addClass("centered"); // Data
+	            }
+	        });
+
+	        tableLogAttivita.buttons().container()
+	            .appendTo('#tabLogAttivita_wrapper .col-sm-6:eq(1)');
+
+	        $('#tabLogAttivita').on('page.dt', function() {
+	            $('.customTooltip').tooltipster({
+	                theme: 'tooltipster-light'
+	            });
+	        });
 	        
 	        
 	        var t_req_doc = $('#tabRequisitiDocumentali').DataTable({
@@ -4939,6 +5088,81 @@ function validaEmailClienti() {
     }
     
     return true;
+}
+
+function concludiAttivita(){
+	
+	  var id_intervento = ${intervento.id};
+	console.log("id intervento " + id_intervento);
+
+
+	 $.ajax({
+	        type: "POST",
+	        url: "gestioneIntervento.do?action=concludi_attivita",
+	     data: {  id_intervento: id_intervento},
+	        dataType: "json",
+
+	        success: function (data, textStatus) {
+	            if (data.success) {
+	            	chiudiModalConcludiAttivita();
+	            	$('#report_button').hide();
+    				$('#visualizza_report').hide();
+    				$("#modalModificaDocente").modal("hide");
+    			  $('#myModalErrorContent').html("Attivita Conclusa!");
+    			  	$('#myModalError').removeClass();
+    				$('#myModalError').addClass("modal modal-success");
+    				$('#myModalError').modal('show');
+    				
+    			$('#myModalError').on('hidden.bs.modal', function(){	         			
+    				
+    				 location.reload()
+    			});
+
+	            } else {
+	            	
+	                pleaseWaitDiv.modal('hide');
+
+	                $('#myModalErrorContent').html(
+	                        "Attenzione! Errore Generico."
+	                    );
+	                $('#myModalError').removeClass();
+	                $('#myModalError').addClass("modal modal-danger");
+	                $('#report_button').hide();
+	                $('#visualizza_report').hide();
+	                $('#myModalError').modal('show');
+	            }
+	        },
+
+	     error: function (jqXHR, textStatus, errorThrown) {
+	      pleaseWaitDiv.modal('hide');
+	      $('#myModalYesOrNo').modal('hide');
+
+	      var msg = "Si è verificato un errore imprevisto.";
+	      try {
+	          var resp = JSON.parse(jqXHR.responseText);
+	          if (resp && resp.messaggio) msg = resp.messaggio;
+	      } catch (e) { /* risposta non JSON, tengo il default */ }
+
+	      $('#myModalErrorContent').html(msg);
+	      $('#myModalError').removeClass();
+	      $('#myModalError').addClass("modal modal-danger");
+	      $('#report_button').show();
+	      $('#visualizza_report').show();
+	      $('#myModalError').modal('show');
+	  }
+	    });
+}
+
+
+
+function modalConcludiAttivita(){
+	console.log("id intervento " + ${intervento.id});
+	$('#myModalConcludiAttivita').modal('show');
+}
+
+
+function chiudiModalConcludiAttivita(){
+	$('#myModalConcludiAttivita').modal('hide');
 }
 
   </script>

@@ -27,6 +27,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ContatoreUtenteDTO;
 import it.portaleSTI.DTO.ControlloAttivitaDTO;
+import it.portaleSTI.DTO.InterventoAttivitaOpDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
@@ -1300,9 +1301,13 @@ public class GestioneInterventoBO {
 	}
 
 
-
+	public static ArrayList<InterventoAttivitaOpDTO> getListaAttivitaOpByIdIntervento(int id_intervento,Session session){
+		return GestioneInterventoDAO.getListaAttivitaOpByIdIntervento(id_intervento,session);
+	}
 	
-	
+	public static void saveAttivita(InterventoAttivitaOpDTO attivita,Session session) {
+		session.save(attivita);
+	}
 
 
 }

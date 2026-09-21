@@ -15,6 +15,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.portaleSTI.DTO.ControlloAttivitaDTO;
+import it.portaleSTI.DTO.InterventoAttivitaOpDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.MisuraDTO;
@@ -609,6 +610,19 @@ public class GestioneInterventoDAO {
 	}
 
 
+	public static ArrayList<InterventoAttivitaOpDTO> getListaAttivitaOpByIdIntervento(int id_intervento,Session session){
+		ArrayList<InterventoAttivitaOpDTO> lista=null;
+
+		Query query = session.createQuery("FROM InterventoAttivitaOpDTO WHERE id_intervento = :id_intervento" );
+
+		    query.setParameter("id_intervento", id_intervento);
+
+		    List<InterventoAttivitaOpDTO> results = query.list();
+
+		    return new ArrayList<InterventoAttivitaOpDTO>(results);
+		
+	}
+	
 
 
 }

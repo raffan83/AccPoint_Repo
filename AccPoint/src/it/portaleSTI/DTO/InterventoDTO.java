@@ -31,6 +31,7 @@ public class InterventoDTO {
 	private boolean presentCliente;
 	private String nome_cliente_commessa;
 	private String nome_sede_commessa;
+	private String codice_pacco_origine="";
 	
 	public Set<PRInterventoRisorsaDTO> getListaRisorse() {
 		return listaRisorse;
@@ -242,6 +243,16 @@ public class InterventoDTO {
 
 	public void setNome_sede_commessa(String nome_sede_commessa) {
 		this.nome_sede_commessa = nome_sede_commessa;
+	}
+
+
+	public String getCodice_pacco_origine() {
+		return codice_pacco_origine;
+	}
+
+
+	public void setCodice_pacco_origine(String codice_pacco_origine) {
+		this.codice_pacco_origine = codice_pacco_origine;
 	}
 
 	

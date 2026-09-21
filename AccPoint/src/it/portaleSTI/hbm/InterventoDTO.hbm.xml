@@ -81,6 +81,10 @@
             </key>
             <one-to-many class="it.portaleSTI.DTO.PRInterventoRisorsaDTO" />
    </set>
+          <property name="codice_pacco_origine" type="java.lang.String">
+            <column name="codice_pacco_origine" />
+        </property>
+        
         
     </class>
 </hibernate-mapping>

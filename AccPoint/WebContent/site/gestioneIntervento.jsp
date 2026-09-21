@@ -23,7 +23,7 @@
          
         <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
       
-      <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA') && commessa.SYS_STATO=='1APERTA'}">  <button class="btn btn-default pull-right" onClick="nuovoInterventoFromModal()" style="margin-right:5px"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if>
+      <c:if test="${userObj.checkPermesso('NUOVO_INTERVENTO_METROLOGIA') && commessa.SYS_STATO=='1APERTA'}">  <button class="btn btn-default pull-right" onClick="nuovoIntervento('${commessa.ID_COMMESSA}')" style="margin-right:5px"><i class="glyphicon glyphicon-edit"></i> Nuovo Intervento</button></c:if>
     </section>
 <div style="clear: both;"></div>
     <!-- Main content -->
@@ -260,6 +260,7 @@
  <th>Company</th>
  <th>Responsabile</th>
  <th>Nome Pack</th>
+ <th>Codice Pacco Origine</th>
  <td></td>
  </tr></thead>
  
@@ -324,26 +325,40 @@
 					
 					</c:if> 
 	 
-<%-- 		<c:if test="${intervento.statoIntervento.id == 0}">
-			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
-		</c:if>
-		
-		<c:if test="${intervento.statoIntervento.id == 1}">
-			<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="chiudiIntervento('${utl:encryptData(intervento.id)}',1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
-		</c:if>
-		
-		<c:if test="${intervento.statoIntervento.id == 2}">
-			<a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="apriIntervento('${utl:encryptData(intervento.id)}',1,'${loop.index}')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
-		</c:if> --%>
+
 	</c:if>
 	
 	 <c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
-	 	<a href="#" id="stato_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a>
+	 	 
+	  <c:if test="${intervento.statoIntervento.id == 0}">
+						<a> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a>  <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+					 <a> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					
+					</c:if> 
 	</c:if>
 	</td>
 	<td>${intervento.company.denominazione }</td>
 		<td>${intervento.user.nominativo}</td>
 		<td>${intervento.nomePack}</td>
+			<td>
+    <c:choose>
+        <c:when test="${ntervento.codice_pacco_origine!='' && intervento.codice_pacco_origine !=null}">
+        <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')"> ${intervento.codice_pacco_origine}</a>
+        </c:when>
+        <c:otherwise>
+        </c:otherwise>
+    </c:choose>
+
+</td>
 		<td>
 			<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=${utl:encryptData(intervento.id)}');">
                 <i class="fa fa-arrow-right"></i>
@@ -435,7 +450,10 @@
 
                 </div>
                 </c:if>
-        
+                
+   <div class="form-group">
+    <select id="origine" class="form-control select2" style="width:100%"></select>
+</div>
         
   		<div id="empty" class="testo12"></div>
   		 </div>
@@ -739,6 +757,7 @@
     	                   { responsivePriority: 3, targets: 2 },
     	                   { responsivePriority: 4, targets: 3 },
     	                   { responsivePriority: 2, targets: 6 },
+    	                   { responsivePriority: 2, targets: 9 },
     	                   { orderable: false, targets: 6 },
     	                   { width: "50px", targets: 0 },
     	                   { width: "70px", targets: 1 },
@@ -956,8 +975,68 @@ tableAttiìvita.columns.adjust().draw();
       });
       
       
+      function nuovoIntervento(commessa){
+    	 
+    	   $.ajax({
+   	        type: "POST",
+   	        url: "gestioneIntervento.do?action=ricerca_intervento_pacco",
+   	     data: {commessa: commessa},
+   	        dataType: "json",
+
+   	        success: function (data, textStatus) {
+   	            if (data.success) {
+   	             popolaSelectOrigine(data.lista_origine || []);
+   	            nuovoInterventoFromModal();
+   	         
+
+   	            } else {
+   	            	
+   	                pleaseWaitDiv.modal('hide');
+
+   	                $('#myModalErrorContent').html(
+   	                        "Attenzione! Errore Generico."
+   	                    );
+   	                $('#myModalError').removeClass();
+   	                $('#myModalError').addClass("modal modal-danger");
+   	                $('#report_button').hide();
+   	                $('#visualizza_report').hide();
+   	                $('#myModalError').modal('show');
+   	            }
+   	        },
+
+   	     error: function (jqXHR, textStatus, errorThrown) {
+   	      pleaseWaitDiv.modal('hide');
+   	      $('#myModalYesOrNo').modal('hide');
+
+   	      var msg = "Si è verificato un errore imprevisto.";
+   	      try {
+   	          var resp = JSON.parse(jqXHR.responseText);
+   	          if (resp && resp.messaggio) msg = resp.messaggio;
+   	      } catch (e) { /* risposta non JSON, tengo il default */ }
+
+   	      $('#myModalErrorContent').html(msg);
+   	      $('#myModalError').removeClass();
+   	      $('#myModalError').addClass("modal modal-danger");
+   	      $('#report_button').show();
+   	      $('#visualizza_report').show();
+   	      $('#myModalError').modal('show');
+   	  }
+   	    });
+      }
       
-      
+      function popolaSelectOrigine(lista){
+    	    var $sel = $('#origine');
+    	    $sel.empty();
+
+    	    $.each(lista, function(i, val){
+    	        $sel.append($('<option>', { value: val, text: val }));
+    	    });
+    	    $sel.append($('<option>', { value: '0', text: 'Nessun Pacco' }));
+
+    	    // fondamentale se il select è inizializzato con select2:
+    	    // le option vanno rigenerate anche a livello del widget
+    	    $sel.trigger('change');
+    	}
       
   </script>
   

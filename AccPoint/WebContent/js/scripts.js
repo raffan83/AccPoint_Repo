@@ -779,11 +779,12 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
 	   var str=$('#sede').val();
 	   var company=$('#company').val();
+	   var pacco_origine = $('#origine').val();
  
 	 	   
 	  	  if(str.length != 0){
 	  		  $('#myModal').modal('hide')
-	  		  var dataArr={"sede":str,"company":company};
+	  		  var dataArr={"sede":str,"company":company, "pacco_origine": pacco_origine};
 	            
 	  		   pleaseWaitDiv = $('#pleaseWaitDialog');
 	  		   pleaseWaitDiv.modal();
@@ -798,49 +799,22 @@ function changePasswordPrimoAccesso(id_utente, old_pwd){
 
 	          		  if(data.success)
 	          		  { 
-	          			  	$('#errorMsg').html("<h3 class='label label-primary' style=\"color:green\">"+textStatus+"</h3>");
+	          			$('#report_button').hide();
+	    				$('#visualizza_report').hide();
+	    				$("#modalModificaDocente").modal("hide");
+	    			  $('#myModalErrorContent').html("Inserimento Riuscito!");
+	    			  	$('#myModalError').removeClass();
+	    				$('#myModalError').addClass("modal modal-success");
+	    				$('#myModalError').modal('show');
+	    				
+	    			$('#myModalError').on('hidden.bs.modal', function(){	         			
+	    				
+	    				 location.reload()
+	    			});
 	          			  	//callAction("gestioneIntervento.do?idCommessa="+idCommessa);
- 	          			  table = $('#tabPM').DataTable();
-	          			  $('#tabPM').on( 'page.dt', function () {
-	          				$('.customTooltip').tooltipster({
-	          			        theme: 'tooltipster-light'
-	          			    });
-	          			  } );
-
-	          	//"{"id":19,"dataCreazione":"mag 3, 2017","idSede":1,"id_cliente":7011,"nome_sede":"SEDE OPERATIVA","user":{"id":1,"user":"admin","passw":"*F28AA01DCF16C082DC04B36CB2F245431FA0CFED","nominativo":"Amministratore","nome":"Admin - Name","cognome":"Admin - Surname","indirizzo":"Via Tofaro 42/c","comune":"Sora","cap":"03039","EMail":"info@stisrl.com","telefono":"0776181501","idCompany":4132,"tipoutente":"AM"},"idCommessa":"201700001","statoIntervento":{"id":1},"pressoDestinatario":0,"company":{"id":4132,"denominazione":"STI - Sviluppo e Tecnologie Industriali S.r.l","pIva":"01862150602","indirizzo":"Via Tofaro 42/b","comune":"Sora","cap":"03039","mail":"info@stisrl.com","telefono":"0776181501","codAffiliato":"001"},"nomePack":"CM413203052017044229","nStrumentiGenerati":0,"nStrumentiMisurati":0,"nStrumentiNuovi":0,"listaInterventoDatiDTO":[]}"	
-	          			intervento = JSON.parse(data.intervento);
-	          			  
-	          			if(intervento.pressoDestinatario == 0){
-	          				presso = "IN SEDE";
-	          				pressoclass = "label-success";
-	          			}else if(intervento.pressoDestinatario == 1){
-	          				presso = "PRESSO CLIENTE";
-	          				pressoclass = "label-info";
-	          			}else if(intervento.pressoDestinatario == 2){
-	          				presso = "MISTO CLIENTE - SEDE";
-	          				pressoclass = "label-warning";
-	          			}else{
-	          				presso = "-";
-	          			}
-	          			
-	          			  var user = intervento.user;
-	          			var dataCreazione = moment(intervento.dataCreazione,"MMM DD, YYYY",'it');
-	          			var rowNode =  table.row.add( [
-	          			       // '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');">'+intervento.id+'</a>',
-	          				 '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+data.encrypted+'\');">'+intervento.id+'</a>',
-	          			        '<span class="label '+pressoclass+'">'+presso+'</span>',
-	          			        intervento.nome_sede,dataCreazione.format('DD/MM/YYYY'),
-	          			        '<span class="label label-success">APERTO</span>',
-	          			      intervento.company.denominazione,
-	          			        user.nominativo,
-	          			      intervento.nomePack,
-	          			    '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+data.encrypted+'\');"><i class="fa fa-arrow-right"></i></a>',
-	          			     // '<a class="btn" onclick="callAction(\'gestioneInterventoDati.do?idIntervento='+intervento.id+'\');"> <i class="fa fa-arrow-right"></i> </a>'
-	          			    ] ).draw();
-	          			  	
-	          		
+		
 	          		  }else{
-	          			$('#myModalErrorContent').html(data.messaggio);
+	          			$('#myModalErrorContent').html("Attenzione! Inserimento NON riuscito.");
 						$('#myModalError').removeClass();
 						$('#myModalError').addClass("modal modal-danger");
 						$('#report_button').show();

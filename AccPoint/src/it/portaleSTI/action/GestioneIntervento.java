@@ -27,24 +27,30 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.mysql.jdbc.Util;
 
 import it.arubapec.arubasignservice.ArubaSignService;
+import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
+import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SQLLiteDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.CertificatoDTO;
 import it.portaleSTI.DTO.ClassificazioneDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.InterventoAttivitaOpDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.LatMisuraDTO;
 import it.portaleSTI.DTO.LuogoVerificaDTO;
+import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.NoteSicurezzaCommessaDTO;
 import it.portaleSTI.DTO.PuntoMisuraDTO;
@@ -110,6 +116,7 @@ public class GestioneIntervento extends HttpServlet {
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
 		String action=request.getParameter("action");
+		boolean ajax = false;
 		try 
 		{
 			logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
@@ -167,6 +174,14 @@ public class GestioneIntervento extends HttpServlet {
 			if(jelement.getAsJsonObject().get("company")!=null) {
 				company = jelement.getAsJsonObject().get("company").toString().replaceAll("\"", "");
 			}
+			
+			String pacco_origine = null;
+			if(jelement.getAsJsonObject().get("pacco_origine")!=null) {
+				pacco_origine = jelement.getAsJsonObject().get("pacco_origine").toString().replaceAll("\"", "");
+			}
+			if(pacco_origine.equals("0")) {
+				pacco_origine = "";
+			}
 
 		    CommessaDTO comm=(CommessaDTO)request.getSession().getAttribute("commessa");
 			InterventoDTO intervento= new InterventoDTO();
@@ -180,6 +195,7 @@ public class GestioneIntervento extends HttpServlet {
 			intervento.setNome_sede(comm.getINDIRIZZO_UTILIZZATORE());
 			intervento.setIdCommessa(""+comm.getID_COMMESSA());
 			intervento.setStatoIntervento(new StatoInterventoDTO());
+			intervento.setCodice_pacco_origine(pacco_origine);
 			
 			CompanyDTO cmp = null;
 			if(company!=null && !company.equals("")) {
@@ -920,6 +936,50 @@ public class GestioneIntervento extends HttpServlet {
 			out.print(myObj);
 			
 			
+		} else if(action!= null && action.equals("ricerca_intervento_pacco")) {
+			ajax =true;
+			 response.setContentType("application/json");
+			 response.setCharacterEncoding("UTF-8");
+			    
+		
+			String id_commessa= request.getParameter("commessa");
+			List<String> lista_origine =new ArrayList<>();
+			boolean risp = true;
+			if(id_commessa!=null && !id_commessa.equals("")) {
+			lista_origine = DirectMySqlDAO.getListaOriginePacchiApertiByCommessa(id_commessa,session);
+		
+			
+			}
+			 
+			request.getSession().setAttribute("lista_origine",  lista_origine);
+			myObj.addProperty("success", risp);		
+			
+			JsonArray arr = new JsonArray();
+			for (String s : lista_origine) {
+			    arr.add(new JsonPrimitive(s));
+			}
+			myObj.add("lista_origine", arr);
+		
+			out.print(myObj);
+
+		}else if(action!= null && action.equals("concludi_attivita")) {
+			ajax =true;
+			 response.setContentType("application/json");
+			 response.setCharacterEncoding("UTF-8");
+			
+			String id_intervento= request.getParameter("id_intervento");
+			
+			
+			InterventoAttivitaOpDTO attivita = new InterventoAttivitaOpDTO();
+			attivita.setId_intervento(Integer.parseInt(id_intervento));
+			UtenteDTO userOP = ((UtenteDTO)request.getSession().getAttribute("userObj"));
+			attivita.setUser(userOP);
+			attivita.setDate(new Date());
+			attivita.setDescrizione("Attivita conclusa");
+			GestioneInterventoBO.saveAttivita(attivita,session);
+			
+			myObj.addProperty("success", true);
+			out.print(myObj);
 		}
 	
 			session.getTransaction().commit();

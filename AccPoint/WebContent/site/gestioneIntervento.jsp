@@ -370,11 +370,14 @@
 	<td>${intervento.company.denominazione }</td>
 		<td>${intervento.user.nominativo}</td>
 				<td>${intervento.nomePack}</td>
-		<td>${intervento.nStrumentiMisurati}</td>
+					
+		<td style="text-align: center; vertical-align: middle;">
+			<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}">${intervento.nStrumentiMisurati}</a>
+</td>
 
 			<td>
     <c:choose>
-        <c:when test="${ntervento.codice_pacco_origine!='' && intervento.codice_pacco_origine !=null}">
+        <c:when test="${intervento.codice_pacco_origine!='' && intervento.codice_pacco_origine !=null}">
         <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')"> ${intervento.codice_pacco_origine}</a>
         </c:when>
         <c:otherwise>

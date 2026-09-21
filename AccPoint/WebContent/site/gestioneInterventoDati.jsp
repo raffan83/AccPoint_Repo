@@ -207,7 +207,15 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
-              
+              <li class="list-group-item">
+    <b>Codice Pacco Origine</b>
+    <a href="#"
+       class="btn customTooltip customlink pull-right"
+       title="Click per aprire il dettaglio del pacco"
+       onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')">
+        ${intervento.codice_pacco_origine}
+    </a>
+</li>
         </ul>
         
    

@@ -103,7 +103,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
 	 								 <td><%=intervento.getId()%></td>
 	 								 <td><%=intervento.getIdCommessa()%></td>
-	 							<td><%
+	 								<td style="text-align: center; vertical-align: middle;"><%
 
                     	            if(intervento.getPressoDestinatario() == 0){
                     	         	%>
@@ -153,7 +153,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                     	             
 
 	 							
-	 							<td id="stato_<%=intervento.getId() %>">
+	 							<td style="text-align: center; vertical-align: middle;"  id="stato_<%=intervento.getId() %>">
 	 							 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
 	 							
@@ -238,12 +238,40 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
 </c:if>
 	 							</td>
-	 							<td><%=intervento.getnStrumentiMisurati() %></td>
+	 			<td style="text-align: center; vertical-align: middle;">
+    <a href="#"
+       class="customTooltip customlink"
+       onClick="callAction('strumentiMisurati.do?action=lt&id=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>')"
+       title="Click per aprire la lista delle Misure dell'Intervento">
+        <%=intervento.getnStrumentiMisurati()%>
+    </a>
+</td>
+	 							
 	 							<td><%out.println(intervento.getCompany().getDenominazione()); %></td>
 	 							
                     	             <td><%=intervento.getUser().getNominativo() %></td>
                     	             <td><%=intervento.getNomePack()%></td>
-                    	             <td><%= intervento.getCodice_pacco_origine() != null ? intervento.getCodice_pacco_origine() : "" %></td>
+                    	             
+                    	   <td>
+    <% if (intervento.getCodice_pacco_origine() != null 
+           && intervento.getCodice_pacco_origine().contains("_")) { %>
+
+        <a href="#"
+           class="customTooltip customlink"
+           onclick="dettaglioPacco('<%=Utility.encryptData(intervento.getCodice_pacco_origine().split("_")[1])%>')"
+           title="Click per aprire il dettaglio del pacco">
+            <%=intervento.getCodice_pacco_origine()%>
+        </a>
+
+    <% } else { %>
+
+        <%=intervento.getCodice_pacco_origine() != null 
+            ? intervento.getCodice_pacco_origine() 
+            : ""%>
+
+    <% } %>
+</td>
+                    	          
                     	             <td>
 										<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>');">
 							                <i class="fa fa-arrow-right"></i>

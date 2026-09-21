@@ -105,12 +105,10 @@
 				<reportElement x="95" y="85" width="92" height="20" uuid="be7c24e1-6bf8-4230-b387-7ec671ddd52a"/>
 				<textFieldExpression><![CDATA[$P{codice_pacco}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="170" y="90" width="90" height="19" uuid="377d5dbb-50e6-4c07-a47e-18529f749bc0"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false" barHeight="23">
-					<jr:codeExpression><![CDATA[$P{barcode}]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
+			<image>
+				<reportElement x="187" y="80" width="73" height="51" uuid="aa92e241-5ec8-4c5b-ba8b-25639bd7f086"/>
+				<imageExpression><![CDATA[$P{qrCode}]]></imageExpression>
+			</image>
 			<textField>
 				<reportElement x="390" y="106" width="156" height="21" uuid="00f3b503-e96c-4e94-9bbe-55da290adc3a"/>
 				<textFieldExpression><![CDATA[$P{data_arrivo}]]></textFieldExpression>
@@ -157,14 +155,14 @@
 				<textFieldExpression><![CDATA[$P{note_commessa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="8" y="106" width="132" height="20" uuid="fd954886-0b4d-41dc-99ef-3711f9104aec"/>
+				<reportElement x="8" y="106" width="92" height="20" uuid="fd954886-0b4d-41dc-99ef-3711f9104aec"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[CODICE PACCO ORIGINE: ]]></text>
+				<text><![CDATA[PACCO ORIGINE: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="140" y="106" width="134" height="20" uuid="5765c729-56b2-4ef4-9eab-0325b68d0ba2"/>
+				<reportElement x="100" y="106" width="86" height="20" uuid="5765c729-56b2-4ef4-9eab-0325b68d0ba2"/>
 				<textFieldExpression><![CDATA[$P{codice_pacco_origine}]]></textFieldExpression>
 			</textField>
 		</band>

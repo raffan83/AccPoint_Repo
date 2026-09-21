@@ -6,6 +6,7 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,6 +26,9 @@ import javax.servlet.ServletContext;
 
 import org.hibernate.Session;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
 import com.lowagie.text.Image;
 import com.lowagie.text.pdf.BarcodeEAN;
 
@@ -83,8 +87,9 @@ public class CreateTestaPacco {
 				
 				report.addParameter("codice_pacco", pacco.getCodice_pacco());
 				report.addParameter("codice_pacco_origine", pacco.getOrigine());
-				Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
-				report.addParameter("barcode", barcode);
+			//	Barcode barcode = BarcodeFactory.createCode128B(pacco.getCodice_pacco());
+				BufferedImage qrCode = creaQRCode(pacco.getCodice_pacco());
+				report.addParameter("qrCode", qrCode);
 			
 				//report.addParameter("cliente", pacco.getNome_cliente());
 				//report.addParameter("sede", pacco.getNome_sede());
@@ -370,6 +375,39 @@ private JRDataSource createDataSourceRil(List<MagItemPaccoDTO> lista_item_pacco)
 		this.esito = esito;
 	}
 	
+	private BufferedImage creaQRCode(String testo) throws Exception {
+
+	    int width = 200;
+	    int height = 200;
+
+	    BitMatrix matrix = new MultiFormatWriter().encode(
+	        testo,
+	        BarcodeFormat.QR_CODE,
+	        width,
+	        height
+	    );
+
+	    BufferedImage image = new BufferedImage(
+	        width,
+	        height,
+	        BufferedImage.TYPE_INT_ARGB
+	    );
+
+	    for (int x = 0; x < width; x++) {
+	        for (int y = 0; y < height; y++) {
+
+	            image.setRGB(
+	                x,
+	                y,
+	                matrix.get(x, y)
+	                    ? 0xFF000000   // nero
+	                    : 0x00000000   // trasparente
+	            );
+	        }
+	    }
+
+	    return image;
+	}
 }
 
 

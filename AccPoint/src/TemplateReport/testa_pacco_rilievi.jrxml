@@ -147,26 +147,24 @@
 				<text><![CDATA[CODICE PACCO: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="8" y="106" width="132" height="20" uuid="bdc9b805-ed07-4ff7-8382-afe0af6af5e7"/>
+				<reportElement x="8" y="106" width="92" height="20" uuid="bdc9b805-ed07-4ff7-8382-afe0af6af5e7"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[CODICE PACCO ORIGINE: ]]></text>
+				<text><![CDATA[PACCO ORIGINE: ]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="95" y="85" width="92" height="20" uuid="450bd54d-75ca-4ed0-ad93-10ba57c0ee6d"/>
 				<textFieldExpression><![CDATA[$P{codice_pacco}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="140" y="106" width="134" height="20" uuid="a2fc4848-2295-4784-8889-6d525737cee2"/>
+				<reportElement x="100" y="106" width="90" height="20" uuid="a2fc4848-2295-4784-8889-6d525737cee2"/>
 				<textFieldExpression><![CDATA[$P{codice_pacco_origine}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement x="179" y="90" width="90" height="19" uuid="7b91ea35-e02b-4d98-8d26-23ad679dc92f"/>
-				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="SCC14ShippingCode" drawText="false" checksumRequired="false" barHeight="23">
-					<jr:codeExpression><![CDATA[$P{barcode}]]></jr:codeExpression>
-				</jr:barbecue>
-			</componentElement>
+			<image>
+				<reportElement x="187" y="80" width="73" height="51" uuid="aa92e241-5ec8-4c5b-ba8b-25639bd7f086"/>
+				<imageExpression><![CDATA[$P{qrCode}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

@@ -144,9 +144,6 @@
 
 
 <form id="formNuovaPrenotazione" name="formNuovaPrenotazione">
-
-  <input type="hidden" id="id_utente" name="id_utente">
-
   <div id="modalPrenotazione" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
 
     <div class="modal-dialog modal-md" role="document">
@@ -154,13 +151,61 @@
 
         <div class="modal-header">
           <span class="mpv-header-icon"><i class="fa fa-calendar"></i></span>
-          <h4 class="modal-title" id="title_prenotazione">Prenotazione Campioni</h4>
+          <h4 class="modal-title" id="title_prenotazione">Prenotazione Veicolo</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
 
         <div class="modal-body">
+
+          <div class="row">
+            <div class="col-xs-9">
+              <div class="mpv-field">
+                <label for="utente"><i class="fa fa-user"></i> Utente</label>
+                <select class="form-control select2" id="utente" name="utente" style="width:100%"
+                        data-placeholder="Seleziona Utente..." required>
+                  <option value=""></option>
+                  <c:forEach items="${lista_utenti}" var="utente">
+                    <option value="${utente.id}">${utente.nominativo}</option>
+                  </c:forEach>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="mpv-field">
+                <p class="mpv-check-title"><i class="fa fa-wrench"></i> Manutenzione</p>
+                <label class="mpv-check-row" for="manutenzione">
+                  <input class="form-control" type="checkbox" id="manutenzione" name="manutenzione">
+   
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" id="content_stato" style="display:none">
+            <div class="col-xs-9">
+              <div class="mpv-field">
+                <label for="stato"><i class="fa fa-info-circle"></i> Stato</label>
+                <select class="form-control select2" id="stato" name="stato" style="width:100%"
+                        data-placeholder="Seleziona Stato...">
+                  <option value=""></option>
+                  <option value="1">IN PRENOTAZIONE</option>
+                  <option value="2">PRENOTATO</option>
+                  <option value="3">RIENTRATO</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-xs-3" id="rifornimento_content" style="display:none">
+              <div class="mpv-field">
+                <p class="mpv-check-title"><i class="fa fa-tint"></i> Rif. effettuato</p>
+                <label class="mpv-check-row" for="rifornimento">
+                  <input class="form-control" type="checkbox" id="rifornimento" name="rifornimento">
+        
+                </label>
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <div class="col-xs-5">
@@ -178,6 +223,15 @@
                 </div>
               </div>
             </div>
+            <div class="col-xs-3" id="content_giornaliero">
+              <div class="mpv-field">
+                <p class="mpv-check-title"><i class="fa fa-refresh"></i> A/R giornaliero</p>
+                <label class="mpv-check-row" for="giornaliero">
+                  <input type="checkbox" id="giornaliero" name="giornaliero" class="form-control">
+               
+                </label>
+              </div>
+            </div>
           </div>
 
           <div class="row">
@@ -187,62 +241,13 @@
                 <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
               </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-3">
               <div class="mpv-field">
                 <label for="ora_fine"><i class="fa fa-clock-o"></i> Ora fine</label>
                 <div class="input-group">
                   <input type="text" id="ora_fine" name="ora_fine" class="form-control timepicker" style="width:100%" required>
                   <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row" id="boxCampioniSelezione">
-            <div class="col-xs-6">
-              <div class="mpv-field">
-                <label for="campioni"><i class="fa fa-flask"></i> Campioni disponibili</label>
-                <select class="form-control select2"
-                        id="campioni"
-                        name="campioni"
-                        multiple="multiple"
-                        style="width:100%"
-                        data-placeholder="Premi Controlla..."
-                        required>
-                  <%-- vuota all'inizio, la riempi via ajax --%>
-                </select>
-                <small class="text-muted">Seleziona uno o più campioni.</small>
-              </div>
-            </div>
-
-            <div class="col-xs-3">
-              <div class="mpv-field">
-                <label>&nbsp;</label>
-                <button type="button" id="btnControllaCampioni" class="btn btn-primary btn-block">
-                  <i class="fa fa-search"></i> Controlla
-                </button>
-              </div>
-            </div>
-
-            <div class="col-xs-3">
-              <div class="mpv-field">
-                <label>&nbsp;</label>
-                <button type="button" id="btnResetCampioni" class="btn btn-default mpv-btn-cancel btn-block">
-                  <i class="fa fa-refresh"></i> Reset
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- BLOCCO: lista campioni prenotati (visibile solo in consultazione) -->
-          <div class="row" id="boxCampioniPrenotati" style="display:none;">
-            <div class="col-xs-12">
-              <div class="mpv-field">
-                <label for="listaCampioniPrenotati"><i class="fa fa-list-alt"></i> Campioni prenotati</label>
-                <div id="listaCampioniPrenotati" class="well well-sm" style="margin-bottom:0;">
-                  <!-- riempito via JS -->
-                </div>
-                <small class="text-muted">Elenco campioni associati alla prenotazione.</small>
               </div>
             </div>
           </div>
@@ -270,13 +275,16 @@
         <div class="modal-footer">
           <input type="hidden" id="id_prenotazione" name="id_prenotazione">
           <input type="hidden" id="day" name="day">
-          <input type="hidden" id="campioniSelezionati" name="campioniSelezionati">
-          <input type="hidden" id="campioniDeselezionati" name="campioniDeselezionati">
-          <input type="hidden" id="mode" name="mode">
+          <input type="hidden" id="id_veicolo" name="id_veicolo">
+          <input type="hidden" id="check_giornaliero" name="check_giornaliero">
+
+          <a class="btn btn-danger mpv-btn-delete" onclick="$('#myModalYesOrNo').modal()" id="btn_elimina" style="display:none">
+            <i class="fa fa-trash"></i> Elimina
+          </a>
 
           <div class="mpv-footer-right">
             <button type="button" class="btn btn-default mpv-btn-cancel" data-dismiss="modal">Annulla</button>
-            <button class="btn btn-primary" type="submit" id="buttonSave"><i class="fa fa-floppy-o"></i> Salva</button>
+            <button class="btn btn-primary" type="submit"><i class="fa fa-floppy-o"></i> Salva</button>
           </div>
         </div>
 

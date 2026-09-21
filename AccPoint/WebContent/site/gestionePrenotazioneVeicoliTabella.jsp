@@ -236,7 +236,7 @@ int anno = (Integer) request.getSession().getAttribute("anno");
 
 function modalPrenotazione(day, id_veicolo, id_prenotazione){
 	
-	
+	console.log("dentro modal veicoili");
 
 	if(permesso == "true"){
 		

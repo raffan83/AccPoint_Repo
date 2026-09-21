@@ -321,9 +321,9 @@
       <label class="mpv-check-row" for="agenda">
         <input class="form-control" type="checkbox" id="agenda" name="agenda">
       </label>
-      <label id="label_agenda" style="font-size:70%">
-        Evento aggiunto agenda docente
-      </label>
+      <label id="label_agenda" style="font-size:70%;display:none">
+    Evento aggiunto agenda docente
+</label>
     </div>
   </div>
 

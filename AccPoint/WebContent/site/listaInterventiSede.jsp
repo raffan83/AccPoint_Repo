@@ -77,6 +77,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
  <th>Company</th>
  <th>Responsabile</th>
  <th>Nome Pack</th>
+  <th>Codice Pacco Origine</th>
  <td></td>
 
  </tr></thead>
@@ -242,6 +243,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							
                     	             <td><%=intervento.getUser().getNominativo() %></td>
                     	             <td><%=intervento.getNomePack()%></td>
+                    	             <td><%= intervento.getCodice_pacco_origine() != null ? intervento.getCodice_pacco_origine() : "" %></td>
                     	             <td>
 										<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>');">
 							                <i class="fa fa-arrow-right"></i>
@@ -362,7 +364,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	                   { responsivePriority: 3, targets: 2 },
 	                   { responsivePriority: 4, targets: 3 },
 	                   { responsivePriority: 2, targets: 8 },
-	                   { responsivePriority: 5, targets: 10 },
+	                   { responsivePriority: 5, targets: 11 },
 	                   { orderable: false, targets: 8 },
 	               ],
         

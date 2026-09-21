@@ -259,7 +259,8 @@
  <th>Stato</th>
  <th>Company</th>
  <th>Responsabile</th>
- <th>Nome Pack</th>
+  <th>Nome Pack</th>
+   <th>Strumenti Misurati</th>
  <th>Codice Pacco Origine</th>
  <td></td>
  </tr></thead>
@@ -368,7 +369,9 @@
 	</td>
 	<td>${intervento.company.denominazione }</td>
 		<td>${intervento.user.nominativo}</td>
-		<td>${intervento.nomePack}</td>
+				<td>${intervento.nomePack}</td>
+		<td>${intervento.nStrumentiMisurati}</td>
+
 			<td>
     <c:choose>
         <c:when test="${ntervento.codice_pacco_origine!='' && intervento.codice_pacco_origine !=null}">
@@ -777,7 +780,7 @@
     	                   { responsivePriority: 3, targets: 2 },
     	                   { responsivePriority: 4, targets: 3 },
     	                   { responsivePriority: 2, targets: 6 },
-    	                   { responsivePriority: 2, targets: 9 },
+    	                   { responsivePriority: 2, targets: 10 },
     	                   { orderable: false, targets: 6 },
     	                   { width: "50px", targets: 0 },
     	                   { width: "70px", targets: 1 },

@@ -158,48 +158,84 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 							
 	 								<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')" > <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
 									
-									<%-- <a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
-	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a>  --%>
+									
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
 	 							<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')"  > <span class="label label-success"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
 	 							
-								<%-- 	<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
-	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a>  --%>
+								
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
 									
 	 							  <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','apertura', '<%=intervento.getId()%>')"  > <span class="label label-warning"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-	 							<%-- <a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId()))  %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
-									 <span class="label label-warning"> 
-	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a>  --%>
+	 							
 	 							<%  } %>
 	 								</c:if>
-	 								<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
-	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
-	 							
-	 								<a> <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-									
-									
-	 							<%  } %>
-	 							
-	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
-	 							<a> <span class="label label-success"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-	 							
-							
-	 							<%  } %>
-	 							
-	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
-									
-	 							  <a> <span class="label label-warning"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-	 						
-	 							<%  } %>
-	 				</c:if>
+
+	 								<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">
+
+    <% if (intervento.getPressoDestinatario() == 0) { %>
+
+        <!-- NON CLICCABILE -->
+        <% if(intervento.getStatoIntervento().getId() == 0){ %>
+            <span class="label label-info">
+                <%=intervento.getStatoIntervento().getDescrizione()%>
+            </span>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 1){ %>
+            <span class="label label-success">
+                <%=intervento.getStatoIntervento().getDescrizione()%>
+            </span>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 2){ %>
+            <span class="label label-warning">
+                <%=intervento.getStatoIntervento().getDescrizione()%>
+            </span>
+        <% } %>
+
+    <% } else { %>
+
+        <!-- CLICCABILE -->
+        <% if(intervento.getStatoIntervento().getId() == 0){ %>
+            <a href="#"
+               class="customTooltip"
+               title="Click per chiudere l'Intervento"
+               onclick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura','<%=intervento.getId()%>')">
+                <span class="label label-info">
+                    <%=intervento.getStatoIntervento().getDescrizione()%>
+                </span>
+            </a>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 1){ %>
+            <a href="#"
+               class="customTooltip"
+               title="Click per chiudere l'Intervento"
+               onclick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura','<%=intervento.getId()%>')">
+                <span class="label label-success">
+                    <%=intervento.getStatoIntervento().getDescrizione()%>
+                </span>
+            </a>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 2){ %>
+            <a href="#"
+               class="customTooltip"
+               title="Click per aprire l'Intervento"
+               onclick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','apertura','<%=intervento.getId()%>')">
+                <span class="label label-warning">
+                    <%=intervento.getStatoIntervento().getDescrizione()%>
+                </span>
+            </a>
+        <% } %>
+
+    <% } %>
+
+</c:if>
 	 							</td>
 	 							<td><%=intervento.getnStrumentiMisurati() %></td>
 	 							<td><%out.println(intervento.getCompany().getDenominazione()); %></td>

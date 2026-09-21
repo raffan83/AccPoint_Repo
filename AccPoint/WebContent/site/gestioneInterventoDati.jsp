@@ -148,17 +148,17 @@
 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
 	 
 	  <c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 2}">
-					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
 					
 					</c:if> 
 	 
@@ -652,7 +652,7 @@
 	</div>
 </div>
 </div>
-   <c:if test="${intervento.statoIntervento.id == 1}"> 
+   
    <div class="row">
 <div class="col-xs-12">
 <div class="box box-danger box-solid">
@@ -664,8 +664,9 @@ Log Attivit&agrave; Operatore
       		</div>
 </div>
       	<div class="box-body">
-      	
+ <c:if test="${intervento.statoIntervento.id == 1}">      	
 <a class="btn btn-primary pull-right" onClick="modalConcludiAttivita()"><i class="fa fa-plus"></i> Attivit&agrave; conclusa</a><br><br>
+    </c:if>   
 
               <table id="tabLogAttivita" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
@@ -690,7 +691,7 @@ Log Attivit&agrave; Operatore
       	</div>
       		</div>
       	</div>            
-            </c:if>   
+        
             
               <div class="row">
         <div class="col-xs-12">
@@ -978,11 +979,11 @@ Log Attivit&agrave; Operatore
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header" id="esitoModalHeader">
-            <h4 class="modal-title">Conferma Attivit Conclusa</h4>
+            <h4 class="modal-title">Conferma Attivit&agrave; Conclusa</h4>
           </div>
            <div class="modal-body">
 
-                <p>Concludere attivita?</p>
+                <p>Concludere attivit&agrave;?</p>
             </div>
 	
             <div class="modal-footer">
@@ -2809,6 +2810,7 @@ $('#non_sovrascrivere').on('ifClicked',function(e){
 	
 	
 	function openModalComunicazione(id_intervento, apertura_chiusura){
+		
 		
 		$('#id_int').val(id_intervento);
 		

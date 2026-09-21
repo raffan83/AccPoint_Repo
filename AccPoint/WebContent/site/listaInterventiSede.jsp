@@ -153,6 +153,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
 	 							
 	 							<td id="stato_<%=intervento.getId() %>">
+	 							 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
 	 							
 	 								<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')" > <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
@@ -178,7 +179,27 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
 	 								</span></a>  --%>
 	 							<%  } %>
+	 								</c:if>
+	 								<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
+	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
+	 							
+	 								<a> <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
+									
+									
+	 							<%  } %>
+	 							
+	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
+	 							<a> <span class="label label-success"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
+	 							
+							
+	 							<%  } %>
+	 							
+	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
+									
+	 							  <a> <span class="label label-warning"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
 	 						
+	 							<%  } %>
+	 				</c:if>
 	 							</td>
 	 							<td><%=intervento.getnStrumentiMisurati() %></td>
 	 							<td><%out.println(intervento.getCompany().getDenominazione()); %></td>

@@ -3458,6 +3458,8 @@ function parseData(data) {
 	            pageLength: 5,
 	            ordering: true,
 	            info: true,
+	            searching: false,     // nasconde "Cerca"
+	            lengthChange: false,  // nasconde "Visualizza X elementi"
 	            searchable: false,
 	            responsive: true,
 	            scrollX: false,

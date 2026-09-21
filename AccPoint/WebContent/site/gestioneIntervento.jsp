@@ -1028,13 +1028,20 @@ tableAttiìvita.columns.adjust().draw();
     	    var $sel = $('#origine');
     	    $sel.empty();
 
-    	    $.each(lista, function(i, val){
-    	        $sel.append($('<option>', { value: val, text: val }));
-    	    });
-    	    $sel.append($('<option>', { value: '0', text: 'Nessun Pacco' }));
+    	    // Prima opzione
+    	    $sel.append($('<option>', {
+    	        value: '0',
+    	        text: 'Nessun Pacco'
+    	    }));
 
-    	    // fondamentale se il select è inizializzato con select2:
-    	    // le option vanno rigenerate anche a livello del widget
+    	    // Poi le altre
+    	    $.each(lista, function(i, val){
+    	        $sel.append($('<option>', {
+    	            value: val,
+    	            text: val
+    	        }));
+    	    });
+
     	    $sel.trigger('change');
     	}
       

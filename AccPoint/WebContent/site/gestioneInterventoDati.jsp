@@ -3494,16 +3494,13 @@ function parseData(data) {
 	            stateSave: true,
 
 	            // Ordina per Id decrescente
-	            order: [[0, "desc"]],
+	            order: [[1, "desc"]],
 
 	            columnDefs: [
-	                { responsivePriority: 1, targets: 0 }, // Id
-	                { width: "50px", targets: 0 },
-	                { responsivePriority: 2, targets: 1 }, // Id Intervento
-	                { responsivePriority: 3, targets: 2 }, // User
-	                { responsivePriority: 4, targets: 3 }, // Data
-	                { responsivePriority: 5, targets: 4 }, // Descrizione
-	                { orderable: false, targets: 4 }       // Descrizione non ordinabile
+	                { responsivePriority: 1, targets: 0 }, // User
+	                { responsivePriority: 2, targets: 1 }, //data
+	                { responsivePriority: 3, targets: 2 }, // descrzione
+
 	            ],
 
 

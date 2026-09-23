@@ -120,6 +120,7 @@ public class SendEmailBO {
 	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	        email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	        email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	        email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 		  
 
@@ -272,6 +273,8 @@ public static void sendEmailCertificatoVerificazione(VerCertificatoDTO certifica
 
 			properties.put("mail.transport.protocol", "smtp");
 			properties.put("mail.smtp.from", "calver@accpoint.it");
+			 properties.put("mail.smtp.ssl.protocols","TLSv1.2");
+			
 			// creating Session instance referenced to 
 			// Authenticator object to pass in 
 			// Session.getInstance argument 
@@ -611,6 +614,8 @@ public static void sendEmailPaccoInRitardo(ArrayList<String> lista_string_origin
         email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
         email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+        
+        email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 	  String[] to = mailTo.split(";");
 	  for(int i = 0; i<to.length;i++) {
@@ -769,7 +774,7 @@ public static void sendEmailDocumento(DocumTLDocumentoDTO documento, String mail
         email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
         email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
-
+        email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
         String[] destinatari = mailTo.split(";"); 
         
@@ -839,6 +844,7 @@ public static void sendEmailSchedaConsegnaDocumentale(ArrayList<DocumTLDocumento
       email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
       email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
       email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+      email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 
       String[] destinatari = mailTo.split(";"); 
@@ -960,6 +966,7 @@ public static void sendEmailAccettazioneConsegna(ConsegnaDpiDTO consegna, Servle
     email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
     email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+    email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 
     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -1003,6 +1010,7 @@ public static void sendEmailRiconsegnaDPI(ConsegnaDpiDTO consegna, ServletContex
   email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
   email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
   email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+  email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
   DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -1047,6 +1055,7 @@ public static void sendEmailAperturaChiusuraIntevento(String apertura_chiusura,S
  email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
  email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
  email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+ email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
  DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
@@ -1170,6 +1179,7 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465"
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -1226,6 +1236,7 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465"
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 DateFormat df_dataNascita = new SimpleDateFormat("dd/MM/yyyy");
@@ -1279,6 +1290,7 @@ public static void sendEmailDocumentiInScadenza() throws EmailException {
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 
 
@@ -1332,6 +1344,7 @@ public static void sendEmailDPIInScadenza(ArrayList<DpiDTO> lista_dpi) throws Em
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 
 
@@ -1374,6 +1387,7 @@ public static void sendEmailControlli(String messaggio) throws EmailException {
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 
 	email.addTo("giuseppe.gabriele@stisrl.com");
@@ -1791,6 +1805,7 @@ public static void sendEmailReminderPianificazione(String messaggio, String path
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 
 
@@ -1847,6 +1862,7 @@ public static void sendEmailEliminaPianificazione(ForPiaPianificazioneDTO pianif
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 	email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+	email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 	
 	
@@ -2025,6 +2041,7 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465"
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 Date today = new Date();
@@ -2082,6 +2099,7 @@ public static void sendEmailRemindServizi(ItServizioItDTO servizio) throws Excep
 		email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 		email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+		email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 		
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		Date today = new Date();
@@ -2150,6 +2168,7 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465"
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 Date today = new Date();
@@ -2345,6 +2364,7 @@ email.getMailSession().getProperties().put("mail.smtp.socketFactory.port", "465"
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 email.getMailSession().getProperties().put("mail.smtp.socketFactory.fallback", "false");
 email.getMailSession().getProperties().put("mail.smtp.ssl.enable", "true");
+email.getMailSession().getProperties().put("mail.smtp.ssl.protocols","TLSv1.2");
 
 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 Date today = new Date();

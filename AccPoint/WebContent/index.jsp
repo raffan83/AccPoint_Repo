@@ -145,12 +145,13 @@
 	  	    slides: [
 	  	        { src: "images/bg1.png" },
 	  	        { src: "images/bg2.png" },
-	  	        { src: "images/bg3.png" },
+	  	        { src: "images/bg7.png" },
 	  	        { src: "images/bg4.png" },
-	  	      	{ src: "images/bg5.png" }
+	  	      	{ src: "images/bg5.png" },	  	   
+	  	    	{ src: "images/bg8.png" }
 	  	    ],
 	  		timer:false,
-	  		transitionDuration:3000,
+	  		transitionDuration:2500,
 	  		animation: 'random'
 	  	  
 	  	});

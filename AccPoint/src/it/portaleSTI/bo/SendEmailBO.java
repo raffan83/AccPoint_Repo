@@ -1602,7 +1602,9 @@ public static void sendEmailPianificazione(ForPiaPianificazioneDTO pianificazion
      props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
      props.put("mail.smtp.socketFactory.fallback", "false");
      props.put("mail.smtp.ssl.enable", "true");
-
+     props.put("mail.smtp.ssl.protocols","TLSv1.2");
+     
+     
 
      Session session = Session.getInstance(props, new Authenticator() {
          protected PasswordAuthentication getPasswordAuthentication() {

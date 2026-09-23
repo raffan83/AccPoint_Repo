@@ -388,11 +388,15 @@
 }
 
 /* Colonne fisse sopra i riquadri delle prenotazioni */
+
 .DTFC_LeftWrapper,
-.DTFC_LeftHeadWrapper,
 .DTFC_LeftBodyWrapper {
     position: relative;
-    z-index: 200 !important;
+    z-index: 210 !important;   /* sopra ai riquadri (55/60) */
+}
+.DTFC_LeftHeadWrapper {
+    position: relative;
+    z-index: 250 !important;   /* deve stare sopra al body */
 }
 
 /* Sfondo opaco delle colonne fisse */

@@ -77,6 +77,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
  <th>Company</th>
  <th>Responsabile</th>
  <th>Nome Pack</th>
+  <th>Codice Pacco Origine</th>
  <td></td>
 
  </tr></thead>
@@ -102,7 +103,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 
 	 								 <td><%=intervento.getId()%></td>
 	 								 <td><%=intervento.getIdCommessa()%></td>
-	 							<td><%
+	 								<td style="text-align: center; vertical-align: middle;"><%
 
                     	            if(intervento.getPressoDestinatario() == 0){
                     	         	%>
@@ -152,60 +153,125 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
                     	             
 
 	 							
-	 							<td id="stato_<%=intervento.getId() %>">
+	 							<td style="text-align: center; vertical-align: middle;"  id="stato_<%=intervento.getId() %>">
 	 							 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
 	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
 	 							
 	 								<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')" > <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
 									
-									<%-- <a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-info">
-	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a>  --%>
+									
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
 	 							<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura', '<%=intervento.getId()%>')"  > <span class="label label-success"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
 	 							
-								<%-- 	<a class="customTooltip" title="Click per chiudere l'Intervento"  href="#" onClick="chiudiIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>"> <span class="label label-success"> 
-	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a>  --%>
+								
 	 							<%  } %>
 	 							
 	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
 									
 	 							  <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','apertura', '<%=intervento.getId()%>')"  > <span class="label label-warning"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-	 							<%-- <a class="customTooltip" title="Click per aprire l'Intervento"  href="#" onClick="apriIntervento('<%=Utility.encryptData(String.valueOf(intervento.getId()))  %>',2,<%=listaInterventi.indexOf(intervento) %>)" id="statoa_<%=intervento.getId() %>">
-									 <span class="label label-warning"> 
-	 										<% out.println(intervento.getStatoIntervento().getDescrizione());%>
-	 								</span></a>  --%>
+	 							
 	 							<%  } %>
 	 								</c:if>
-	 								<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
-	 							<% if(intervento.getStatoIntervento().getId() == 0){ %>
-	 							
-	 								<a> <span class="label label-info"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-									
-									
-	 							<%  } %>
-	 							
-	 							<% if(intervento.getStatoIntervento().getId() == 1){ %>
-	 							<a> <span class="label label-success"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-	 							
-							
-	 							<%  } %>
-	 							
-	 							<% if(intervento.getStatoIntervento().getId() == 2){ %>
-									
-	 							  <a> <span class="label label-warning"><% out.println(intervento.getStatoIntervento().getDescrizione());%></span></a>
-	 						
-	 							<%  } %>
-	 				</c:if>
+
+	 								<c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}">
+
+    <% if (intervento.getPressoDestinatario() == 0) { %>
+
+        <!-- NON CLICCABILE -->
+        <% if(intervento.getStatoIntervento().getId() == 0){ %>
+            <span class="label label-info">
+                <%=intervento.getStatoIntervento().getDescrizione()%>
+            </span>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 1){ %>
+            <span class="label label-success">
+                <%=intervento.getStatoIntervento().getDescrizione()%>
+            </span>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 2){ %>
+            <span class="label label-warning">
+                <%=intervento.getStatoIntervento().getDescrizione()%>
+            </span>
+        <% } %>
+
+    <% } else { %>
+
+        <!-- CLICCABILE -->
+        <% if(intervento.getStatoIntervento().getId() == 0){ %>
+            <a href="#"
+               class="customTooltip"
+               title="Click per chiudere l'Intervento"
+               onclick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura','<%=intervento.getId()%>')">
+                <span class="label label-info">
+                    <%=intervento.getStatoIntervento().getDescrizione()%>
+                </span>
+            </a>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 1){ %>
+            <a href="#"
+               class="customTooltip"
+               title="Click per chiudere l'Intervento"
+               onclick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','chiusura','<%=intervento.getId()%>')">
+                <span class="label label-success">
+                    <%=intervento.getStatoIntervento().getDescrizione()%>
+                </span>
+            </a>
+        <% } %>
+
+        <% if(intervento.getStatoIntervento().getId() == 2){ %>
+            <a href="#"
+               class="customTooltip"
+               title="Click per aprire l'Intervento"
+               onclick="openModalComunicazione('<%=Utility.encryptData(String.valueOf(intervento.getId())) %>','apertura','<%=intervento.getId()%>')">
+                <span class="label label-warning">
+                    <%=intervento.getStatoIntervento().getDescrizione()%>
+                </span>
+            </a>
+        <% } %>
+
+    <% } %>
+
+</c:if>
 	 							</td>
-	 							<td><%=intervento.getnStrumentiMisurati() %></td>
+	 			<td style="text-align: center; vertical-align: middle;">
+    <a href="#"
+       class="customTooltip customlink"
+       onClick="callAction('strumentiMisurati.do?action=lt&id=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>')"
+       title="Click per aprire la lista delle Misure dell'Intervento">
+        <%=intervento.getnStrumentiMisurati()%>
+    </a>
+</td>
+	 							
 	 							<td><%out.println(intervento.getCompany().getDenominazione()); %></td>
 	 							
                     	             <td><%=intervento.getUser().getNominativo() %></td>
                     	             <td><%=intervento.getNomePack()%></td>
+                    	             
+                    	   <td>
+    <% if (intervento.getCodice_pacco_origine() != null 
+           && intervento.getCodice_pacco_origine().contains("_")) { %>
+
+        <a href="#"
+           class="customTooltip customlink"
+           onclick="dettaglioPacco('<%=Utility.encryptData(intervento.getCodice_pacco_origine().split("_")[1])%>')"
+           title="Click per aprire il dettaglio del pacco">
+            <%=intervento.getCodice_pacco_origine()%>
+        </a>
+
+    <% } else { %>
+
+        <%=intervento.getCodice_pacco_origine() != null 
+            ? intervento.getCodice_pacco_origine() 
+            : ""%>
+
+    <% } %>
+</td>
+                    	          
                     	             <td>
 										<a class="btn customTooltip" title="Click per aprire il dettaglio dell'Intervento" onclick="callAction('gestioneInterventoDati.do?idIntervento=<%=Utility.encryptData(String.valueOf(intervento.getId()))%>');">
 							                <i class="fa fa-arrow-right"></i>
@@ -326,7 +392,7 @@ ArrayList<InterventoDTO> listaInterventi = (ArrayList)session.getAttribute("list
 	                   { responsivePriority: 3, targets: 2 },
 	                   { responsivePriority: 4, targets: 3 },
 	                   { responsivePriority: 2, targets: 8 },
-	                   { responsivePriority: 5, targets: 10 },
+	                   { responsivePriority: 5, targets: 11 },
 	                   { orderable: false, targets: 8 },
 	               ],
         

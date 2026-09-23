@@ -259,7 +259,8 @@
  <th>Stato</th>
  <th>Company</th>
  <th>Responsabile</th>
- <th>Nome Pack</th>
+  <th>Nome Pack</th>
+   <th>Strumenti Misurati</th>
  <th>Codice Pacco Origine</th>
  <td></td>
  </tr></thead>
@@ -307,30 +308,30 @@
 	</c:if>
 	</td>
 	<td class="centered">
-
-	 <c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
+<c:choose>		
+ <c:when test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
 	 
 	  <c:if test="${intervento.statoIntervento.id == 0}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 1}">
-						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
 					
 					<c:if test="${intervento.statoIntervento.id == 2}">
-					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','${loop.index}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
 					
 					</c:if> 
 	 
 
-	</c:if>
-	
-	 <c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
-	 	 
-	  <c:if test="${intervento.statoIntervento.id == 0}">
+</c:when>
+<c:otherwise>
+ <c:choose>
+	 <c:when test="${intervento.pressoDestinatario == 0}">
+	 <c:if test="${intervento.statoIntervento.id == 0}">
 						<a> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
@@ -344,14 +345,39 @@
 					 <a> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
 					
 					</c:if> 
-	</c:if>
+	 </c:when>
+	 <c:otherwise>
+	  <c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					
+					</c:if> 
+	 </c:otherwise>
+		</c:choose>
+</c:otherwise>
+	
+	</c:choose>
 	</td>
 	<td>${intervento.company.denominazione }</td>
 		<td>${intervento.user.nominativo}</td>
-		<td>${intervento.nomePack}</td>
+				<td>${intervento.nomePack}</td>
+					
+		<td style="text-align: center; vertical-align: middle;">
+			<a href="#" onClick="callAction('strumentiMisurati.do?action=lt&id=${utl:encryptData(intervento.id)}')" class="customTooltip customlink" title="Click per aprire la lista delle Misure dell'Intervento ${intervento.id}">${intervento.nStrumentiMisurati}</a>
+</td>
+
 			<td>
     <c:choose>
-        <c:when test="${ntervento.codice_pacco_origine!='' && intervento.codice_pacco_origine !=null}">
+        <c:when test="${intervento.codice_pacco_origine!='' && intervento.codice_pacco_origine !=null}">
         <a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del pacco" onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')"> ${intervento.codice_pacco_origine}</a>
         </c:when>
         <c:otherwise>
@@ -757,7 +783,7 @@
     	                   { responsivePriority: 3, targets: 2 },
     	                   { responsivePriority: 4, targets: 3 },
     	                   { responsivePriority: 2, targets: 6 },
-    	                   { responsivePriority: 2, targets: 9 },
+    	                   { responsivePriority: 2, targets: 10 },
     	                   { orderable: false, targets: 6 },
     	                   { width: "50px", targets: 0 },
     	                   { width: "70px", targets: 1 },

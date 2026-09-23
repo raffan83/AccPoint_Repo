@@ -22,11 +22,16 @@
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header vpr-content-header">
+     <div class="vpr-title-wrap pull-left">
+    <span class="vpr-title-icon"><i class="fa fa-calendar"></i></span>
+    <div class="vpr-title-text">
       <h1 class="pull-left">
         Gestione Prenotazione Campioni
 
       </h1>
+        </div>
+  </div>
        <a class="btn btn-default pull-right" href="/"><i class="fa fa-dashboard"></i> Home</a>
     </section>
     <div style="clear: both;"></div>    
@@ -35,20 +40,17 @@
 
 <!-- <div class="row">
         <div class="col-xs-12"> -->
-          <div class="box">
+               <div class="box vpr-toolbar-box">
 <!--           <div class="box-header">
           
           </div> -->
             <div class="box-body">
-              <div class="row">
+               <div class="row vpr-toolbar-row vpr-section-divider">
 
-<div class="col-xs-1">
- <a class="btn btn-primary pull-left btn-xs customTooltip" title="vai al trimestre precedente" style="margin-top:35px" onclick="subTrimestre('${start_date }', '${anno}')" ><i class="fa fa-arrow-left"></i></a> 
-</div>
+
               
-            <div class="col-xs-3"> 
-            <label>Anno</label><br>
-           
+           <div class="col-xs-2 vpr-anno-block"> 
+   <label class="vpr-anno-inline-label"><strong>Anno</strong></label>
          <select class="form-control select2" id="anno" name="anno" style="width:100%" >
 
 		
@@ -66,8 +68,10 @@
 			  </c:forEach>
 			</select>
              </div>
-             <div class="col-xs-3">
-             <a class="btn btn-primary" onclick="vaiAOggi('${currentYear}')" style="margin-top:25px" >Vai a Oggi</a>
+           <div class="col-xs-3">
+             <a class="btn btn-primary vpr-btn-today" onclick="vaiAOggi('${currentYear}')" style="margin-top:0px">
+  <i class="fa fa-calendar-check-o"></i> Vai a Oggi
+</a>
              
              </div>
              
@@ -77,14 +81,25 @@
 
 <!-- Reset -->
 
-<a class="btn btn-primary pull-right btn-xs customTooltip"  title="vai al trimestre successivo"style="margin-top:35px"  onclick="addTrimestre('${end_date }', '${anno}')" ><i class="fa fa-arrow-right"></i></a>
-<a href="#" class="btn btn-primary zoom_reset pull-right  btn-xs">Reset Zoom</a>
-<a href="#" class="btn btn-primary zoom_out pull-right  btn-xs" style="margin-right:5px">Zoom Out</a>
-<a href="#" class="btn btn-primary zoom_in pull-right  btn-xs"  style="margin-right:5px">Zoom In</a>
+<a href="#" class="btn btn-primary zoom_reset pull-right btn-xs vpr-btn-zoom"><i class="fa fa-refresh"></i> Reset Zoom</a>
+<a href="#" class="btn btn-primary zoom_out pull-right btn-xs vpr-btn-zoom" style="margin-right:5px"><i class="fa fa-search-minus"></i> Zoom Out</a>
+<a href="#" class="btn btn-primary zoom_in pull-right btn-xs vpr-btn-zoom" style="margin-right:5px"><i class="fa fa-search-plus"></i> Zoom In</a>
 
 
+             
              </div>
-            </div><br>
+            </div>
+            <div class="row vpr-toolbar-row" style="margin-top:10px;">
+  <div class="col-xs-12" style="display:flex; align-items:center; justify-content:space-between;">
+    <a class="btn btn-primary btn-xs customTooltip" title="vai al trimestre precedente" onclick="subTrimestre('${start_date }', '${anno}')">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary btn-xs customTooltip" title="vai al trimestre successivo" onclick="addTrimestre('${end_date }', '${anno}')">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
+            <br>
             
 
 <!--                <div class="row">
@@ -132,143 +147,157 @@
   </div>
   <!-- /.content-wrapper -->
 
-<form id="formNuovaPrenotazione" name="formNuovaPrenotazione" >
+<form id="formNuovaPrenotazione" name="formNuovaPrenotazione">
 
-		<input type="hidden" id="id_utente" name="id_utente">
-       
-       <div id="modalPrenotazione" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato" >
-   
+  <input type="hidden" id="id_utente" name="id_utente">
+
+  <div id="modalPrenotazione" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
+
     <div class="modal-dialog modal-md" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_prenotazione">Prenotazione Campioni</h4>
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <span class="mpv-header-icon"><i class="fa fa-calendar"></i></span>
+          <h4 class="modal-title" id="title_prenotazione">Prenotazione Campioni</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="mpv-field">
+                <label for="data_inizio"><i class="fa fa-calendar"></i> Data inizio prenotazione</label>
+                <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="mpv-field">
+                <label for="ora_inizio"><i class="fa fa-clock-o"></i> Ora inizio</label>
+                <div class="input-group">
+                  <input type="text" id="ora_inizio" name="ora_inizio" class="form-control timepicker" style="width:100%" required>
+                  <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-5">
+              <div class="mpv-field">
+                <label for="data_fine"><i class="fa fa-calendar"></i> Data fine prenotazione</label>
+                <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
+              </div>
+            </div>
+            <div class="col-xs-4">
+              <div class="mpv-field">
+                <label for="ora_fine"><i class="fa fa-clock-o"></i> Ora fine</label>
+                <div class="input-group">
+                  <input type="text" id="ora_fine" name="ora_fine" class="form-control timepicker" style="width:100%" required>
+                  <span class="input-group-addon"><span class="fa fa-clock-o"></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" id="boxCampioniSelezione">
+            <div class="col-xs-6">
+              <div class="mpv-field">
+                <label for="campioni"><i class="fa fa-flask"></i> Campioni disponibili</label>
+                <select class="form-control select2"
+                        id="campioni"
+                        name="campioni"
+                        multiple="multiple"
+                        style="width:100%"
+                        data-placeholder="Premi Controlla..."
+                        required>
+                  <%-- vuota all'inizio, la riempi via ajax --%>
+                </select>
+                <small class="text-muted">Seleziona uno o più campioni.</small>
+              </div>
+            </div>
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+                <label>&nbsp;</label>
+                <button type="button" id="btnControllaCampioni" class="btn btn-primary btn-block">
+                  <i class="fa fa-search"></i> Controlla
+                </button>
+              </div>
+            </div>
+
+            <div class="col-xs-3">
+              <div class="mpv-field">
+                <label>&nbsp;</label>
+                <button type="button" id="btnResetCampioni" class="btn btn-default mpv-btn-cancel btn-block">
+                  <i class="fa fa-refresh"></i> Reset
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOCCO: lista campioni prenotati (visibile solo in consultazione) -->
+          <div class="row" id="boxCampioniPrenotati" style="display:none;">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+                <label for="listaCampioniPrenotati"><i class="fa fa-list-alt"></i> Campioni prenotati</label>
+                <div id="listaCampioniPrenotati" class="well well-sm" style="margin-bottom:0;">
+                  <!-- riempito via JS -->
+                </div>
+                <small class="text-muted">Elenco campioni associati alla prenotazione.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="mpv-field">
+                <label for="luogo"><i class="fa fa-map-marker"></i> Luogo</label>
+                <input id="luogo" name="luogo" class="form-control" style="width:100%" placeholder="Inserisci il luogo...">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="mpv-field">
+                <label for="note"><i class="fa fa-file-text-o"></i> Testo Note</label>
+                <textarea rows="5" style="width:100%" id="note" name="note" class="form-control" placeholder="Inserisci eventuali note..."></textarea>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <input type="hidden" id="id_prenotazione" name="id_prenotazione">
+          <input type="hidden" id="day" name="day">
+          <input type="hidden" id="campioniSelezionati" name="campioniSelezionati">
+          <input type="hidden" id="campioniDeselezionati" name="campioniDeselezionati">
+          <input type="hidden" id="mode" name="mode">
+
+          <div class="mpv-footer-right">
+            <button type="button" class="btn btn-default mpv-btn-cancel" data-dismiss="modal">Annulla</button>
+            <button class="btn btn-primary" type="submit" id="buttonSave"><i class="fa fa-floppy-o"></i> Salva</button>
+          </div>
+        </div>
+
       </div>
-       <div class="modal-body"> 
-             <div class="row">
-
-        </div><br>
-        
-        <div class="row" >
-        <div class="col-xs-5">
-        <label>Data inizio prenotazione</label>
-
-           <input id="data_inizio" name="data_inizio" class="form-control datepicker" type="text" style="width:100%" required>
-        </div>
-        
-       
-        
-        		<div class='col-xs-4'><label>Ora inzio</label><div class='input-group'>
-					<input type='text' id='ora_inizio' name='ora_inizio'  class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
-
-        </div><br>
-        
-        
-        <div class="row">
-        <div class="col-xs-5">
-        <label>Data fine prenotazione</label>
-           <input id="data_fine" name="data_fine" class="form-control datepicker" type="text" style="width:100%" required>
-        </div>
-
-
-			<div class='col-xs-4'><label>Ora fine</label><div class='input-group'>
-					<input type='text' id='ora_fine' name='ora_fine'   class='form-control timepicker' style='width:100%' required><span class='input-group-addon'>
-		            <span class='fa fa-clock-o'></span></span></div></div>
-
-        </div><br>
-            
-  		
-				<div class="row" id="boxCampioniSelezione">
-				  <div class="col-xs-6">
-				    <label>Campioni disponibili</label>
-				
-				    <select class="form-control select2"
-				            id="campioni"
-				            name="campioni" 
-				            multiple="multiple"
-				            style="width:100%"
-				            data-placeholder="Premi Controlla..."
-				            required>
-				      <%-- vuota all'inizio, la riempi via ajax --%>
-				    </select>
-				
-				    <small class="text-muted">Seleziona uno o più campioni.</small>
-				  </div>
-				
-				  <div class="col-xs-3">
-				    <label>&nbsp;</label>
-				    <button type="button" id="btnControllaCampioni" class="btn btn-primary btn-block">
-				      Controlla
-				    </button>
-				  </div>
-				  				  <div class="col-xs-3">
-				    <label>&nbsp;</label>
-				    <button type="button" id="btnResetCampioni" class="btn btn-primary btn-block">
-				      Reset
-				    </button>
-				  </div>
-				</div>
-			<!-- BLOCCO: lista campioni prenotati (visibile solo in consultazione) -->
-  <div class="row" id="boxCampioniPrenotati" style="display:none; ">
-  <div class="col-xs-12">
-    <label>Campioni prenotati</label>
-    <div id="listaCampioniPrenotati" class="well well-sm" style="margin-bottom:0; ">
-      <!-- riempito via JS -->
     </div>
-    <small class="text-muted">Elenco campioni associati alla prenotazione.</small>
+
   </div>
-		
-</div>
-
-
-    	<br>
-    	
-    	
-		<div class="row">
-       <div class="col-sm-12">  
-       		<label>Luogo</label>
-      
-       	    
-       	  	
-        <input id="luogo" name="luogo" class="form-control"  style="width:100%" >
-       			
-       	</div>       	
-       </div><br>
-        
-        <div class="row">
-        <div class="col-xs-12">
-        <label>Testo Note</label>
-          <textarea rows="5" style="width:100%" id="note" name="note" class="form-control"></textarea>
-        </div>
-        </div><br>
-       
-      
-      	</div>
-      <div class="modal-footer">
-      <input type="hidden" id="id_prenotazione" name="id_prenotazione">
-      <input type="hidden" id="day" name="day">
-      <input type="hidden" id="campioniSelezionati" name="campioniSelezionati">
-      <input type="hidden" id="campioniDeselezionati" name="campioniDeselezionati">
-      <input type="hidden" id="mode" name="mode">
-		
-		 <button class="btn btn-primary" type="submit"  id="buttonSave">Salva</button>
-		 
-
-      </div>
-    </div>
-  </div>
-
-</div>
 </form>
 	
-	  <div id="myModalYesOrNo" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+	  <div id="myModalYesOrNo" class="modal fade mpv-modal" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
     <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+           <span class="mpv-header-icon"><i class="fa fa-exclamation-triangle"></i></span>
         <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
        <div class="modal-body">       
        <div id="label_elimina_richiesta" style="display:none">Eliminare questa prenotazione annullerà la relativa richiesta.<br></div>
@@ -285,6 +314,10 @@
   </div>
 
 </div>
+
+ 
+
+
   <t:dash-footer />
   
 
@@ -301,74 +334,12 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.8.0/jquery.contextMenu.min.css">
-<style>
-
-
-.table th {
-    background-color: #3c8dbc !important;
+		   <link rel="stylesheet" href="css/prenotazioni.css">
+	   <style>
+	   .riquadro {
+  position: absolute !important;
   }
-  
-.table th.weekend {
-  background-color: #FA8989 !important;
-}
-
-.table th.festivita {
-  background-color: #FA8989 !important;
-}
-
-
-/*  .tooltip {
-    position: fixed;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  
-
-
-} */
-
-
-.custom-menu {
-    display: none;
-    z-index: 1000;
-    position: absolute;
-    overflow: hidden;
-    white-space: nowrap;
-    font-family: sans-serif;     
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    
-}
-
-.custom-menu li {
-    padding: 8px 12px;
-    cursor: pointer;
-}
-
-.custom-menu li:hover {
-    background-color: #DEF;
-}
-
-/* aspetto da campo bloccato */
-.locked-field {
-  background-color: #f5f5f5 !important;
-  cursor: not-allowed !important;
-}
-
-/* blocca click su addon / widget (orologio) ecc. */
-.locked-group {
-  pointer-events: none;   /* impedisce apertura picker */
-  opacity: 0.85;
-}
-
-
-  </style>
+	   </style>
 </jsp:attribute>
 
 

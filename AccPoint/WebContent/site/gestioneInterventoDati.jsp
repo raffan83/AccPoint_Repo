@@ -144,8 +144,8 @@
                 <li class="list-group-item">
                   <b>Stato</b> <div class="pull-right">
                   
-			
-<c:if test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
+	<c:choose>		
+ <c:when test="${userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	 
 	 
 	  <c:if test="${intervento.statoIntervento.id == 0}">
 						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
@@ -163,11 +163,11 @@
 					</c:if> 
 	 
 
-	</c:if>
-	
-	 <c:if test="${!userObj.checkPermesso('CAMBIO_STATO_INTERVENTO_METROLOGIA')}"> 	
-	 	 
-	  <c:if test="${intervento.statoIntervento.id == 0}">
+</c:when>
+<c:otherwise>
+ <c:choose>
+	 <c:when test="${intervento.pressoDestinatario == 0}">
+	 <c:if test="${intervento.statoIntervento.id == 0}">
 						<a> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
 						
 					</c:if>
@@ -181,13 +181,41 @@
 					 <a> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
 					
 					</c:if> 
-	</c:if>
+	 </c:when>
+	 <c:otherwise>
+	  <c:if test="${intervento.statoIntervento.id == 0}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-info">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 1}">
+						<a href="#" class="customTooltip" title="Click per chiudere l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','chiusura')" id="statoa_${intervento.id}"> <span class="label label-success">${intervento.statoIntervento.descrizione}</span></a>
+						
+					</c:if>
+					
+					<c:if test="${intervento.statoIntervento.id == 2}">
+					 <a href="#" class="customTooltip" title="Click per aprire l'Intervento"  onClick="openModalComunicazione('${utl:encryptData(intervento.id)}','apertura')" id="statoa_${intervento.id}"> <span class="label label-warning">${intervento.statoIntervento.descrizione}</span></a> 
+					
+					</c:if> 
+	 </c:otherwise>
+		</c:choose>
+</c:otherwise>
+	
+	</c:choose>
 				</div>
                 </li>
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
-              
+              <li class="list-group-item">
+    <b>Codice Pacco Origine</b>
+    <a href="#"
+       class="btn customTooltip customlink pull-right"
+       title="Click per aprire il dettaglio del pacco"
+       onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')">
+        ${intervento.codice_pacco_origine}
+    </a>
+</li>
         </ul>
         
    
@@ -3466,16 +3494,13 @@ function parseData(data) {
 	            stateSave: true,
 
 	            // Ordina per Id decrescente
-	            order: [[0, "desc"]],
+	            order: [[1, "desc"]],
 
 	            columnDefs: [
-	                { responsivePriority: 1, targets: 0 }, // Id
-	                { width: "50px", targets: 0 },
-	                { responsivePriority: 2, targets: 1 }, // Id Intervento
-	                { responsivePriority: 3, targets: 2 }, // User
-	                { responsivePriority: 4, targets: 3 }, // Data
-	                { responsivePriority: 5, targets: 4 }, // Descrizione
-	                { orderable: false, targets: 4 }       // Descrizione non ordinabile
+	                { responsivePriority: 1, targets: 0 }, // User
+	                { responsivePriority: 2, targets: 1 }, //data
+	                { responsivePriority: 3, targets: 2 }, // descrzione
+
 	            ],
 
 

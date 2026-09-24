@@ -1139,13 +1139,21 @@ public class SendEmailBO {
 	public static void sendEmailCorsiInScadenza(String messaggio, ForCorsoDTO corso,String path) throws EmailException {
 
 		HtmlEmail email = getHtmlEmailVianovaCresco();
+	
+		
 		for(ForReferenteDTO referente : corso.getListaReferenti()) {
+
 			if(referente.getEmail()!=null && !referente.getEmail().equals("")) {
-				email.addTo(referente.getEmail());
+				String destTrimmed =referente.getEmail().trim();
+				if (isValidEmail(destTrimmed)) {
+					email.addTo(destTrimmed);
+				} 
+			
 			}
 		}
 		email.addTo("lisa.lombardozzi@crescosrl.net");
 		email.addTo("segreteria@crescosrl.net");
+		email.addTo("edoardo.boccitto@ncsnetwork.it");
 
 
 		email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");

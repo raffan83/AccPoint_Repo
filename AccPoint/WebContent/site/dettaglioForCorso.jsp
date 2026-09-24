@@ -317,7 +317,7 @@
        <div class="row">
       	<div class="col-xs-12">
       	
-      	<a class="btn btn-primary pull-right" onClick="$('#modalAssociaReferenti').modal()"><i class="fa fa-plus"></i> Associa Referente</a>
+      	<a class="btn btn-primary pull-right" onClick="$('#modalAssociaReferenti').modal()"><i class="fa fa-plus"></i> Dissocia/Associa Referente</a>
       	
       	</div>
       	</div><br>

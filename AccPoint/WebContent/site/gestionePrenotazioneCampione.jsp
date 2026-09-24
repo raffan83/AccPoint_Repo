@@ -114,15 +114,17 @@
                </div>
             
             <br> -->
-            <div class="row">
-            <div class="col-xs-12">
-          
-            <jsp:include page="gestionePrenotazioneCampioneTabella.jsp" ></jsp:include> 
-             <%--  <jsp:include page="gestionePrenotazioneiTabellaTest.jsp" ></jsp:include> --%>
-             
-            </div>
-            
-            </div>
+          <div class="row">
+  <div class="col-xs-12">
+
+    <!-- visibility:hidden (NON display:none!) cosi' DataTables/fixedColumns/scrollX
+         riescono comunque a calcolare le larghezze reali mentre e' "nascosta" -->
+    <div id="tabellaWrapperInit" style="visibility:hidden;">
+      <jsp:include page="gestionePrenotazioneCampioneTabella.jsp"></jsp:include>
+    </div>
+
+  </div>
+</div>
             
 
 

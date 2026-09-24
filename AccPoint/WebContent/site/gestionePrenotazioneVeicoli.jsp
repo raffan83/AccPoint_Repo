@@ -113,9 +113,15 @@
             
             <br> -->
             <div class="row vpr-table-row">
-<div class="col-xs-12">
-<jsp:include page="gestionePrenotazioneVeicoliTabella.jsp" ></jsp:include> 
-</div>
+  <div class="col-xs-12">
+
+    <!-- visibility:hidden (NON display:none!) cosi' DataTables/fixedColumns/scrollX
+         riescono comunque a calcolare le larghezze reali mentre e' "nascosta" -->
+    <div id="tabellaWrapperInit" style="visibility:hidden;">
+      <jsp:include page="gestionePrenotazioneVeicoliTabella.jsp"></jsp:include>
+    </div>
+
+  </div>
 </div>
             
 

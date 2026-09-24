@@ -421,33 +421,47 @@ let savedSearch = localStorage.getItem('lastSearch');
 let indexSearchbox = localStorage.getItem('indexSearch');
 
 $(document).ready(function() {
-
-	 pleaseWaitDiv.modal('show');
-
-         fillTable("${anno}",'${filtro_tipo_pianificazioni}');
 	
+	pleaseWaitDiv.modal('show');
 	
-  
-	    
-	    $('[data-toggle="tooltip"]').tooltip();
+    if (savedSearch && indexSearchbox != null) {
+        indexSearchbox = parseInt(indexSearchbox, 10);
 
-	    $(document.body).css('padding-right', '0px');
+        $('thead .inputsearchtable')
+            .eq(indexSearchbox)
+            .val(savedSearch);
+    }
 
-	    
-	    initContextMenu()
-	    
-	    
-	     if (savedSearch && indexSearchbox!=null) {
-		    indexSearchbox = parseInt(indexSearchbox);
+    initTable("${anno}", '${filtro_tipo_pianificazioni}');
 
-		    // Imposta il valore di ricerca nella colonna corrispondente
-		    $('thead .inputsearchtable').eq(indexSearchbox).val(savedSearch);
-		
-          //table.column(indexSearchbox).search(savedSearch).draw();
-      }
+    $('[data-toggle="tooltip"]').tooltip();
 
+    $(document.body).css('padding-right', '0px');
+
+    initContextMenu();
 });
 
+function initTable(anno, filtro, nuova_pianificazione){
+
+    settings.initComplete = function(settingsObj, json) {
+
+        var api = new $.fn.dataTable.Api(settingsObj);
+
+        // La JSP madre parte con visibility:hidden
+        // Qui rendiamo visibile la tabella solo quando DataTable è pronta
+        $('#tabellaWrapperInit').css('visibility', 'visible');
+
+        api.columns.adjust();
+
+        caricaDatiPianificazioni(
+            anno,
+            filtro,
+            nuova_pianificazione
+        );
+    };
+
+    table = $('#tabForPianificazione').DataTable(settings);
+}
 
 
 function modalPianificazione(day, commessa, id){
@@ -649,7 +663,7 @@ function pastePianificazione(day, commessa){
 
 
 
-function fillTable(anno, filtro, nuova_pianificazione){
+function caricaDatiPianificazioni(anno, filtro, nuova_pianificazione){
 	  pleaseWaitDiv.modal('show');
 
 if(filtro!=3){
@@ -801,6 +815,7 @@ if(filtro!=3){
 		    }
 		    
 		    recalcolaAltezzeRighe();
+		    table.rows().invalidate('dom');
 	
 		    
 		     for (var i = 0; i < array.length; i++) {
@@ -844,20 +859,11 @@ if(filtro!=3){
 			}else{
 				order = parseInt(today) +3
 			}
-		
-			var columsDatatables = [];
-			
-				if(table == null){
-				    table = $('#tabForPianificazione').DataTable(settings)
-				    
-				  
-			     
-				 
-				}else{
-					table = $('#tabForPianificazione').DataTable();
-				}
-			
-			    if (savedSearch && indexSearchbox!=null) {
+			/*
+			 * DataTable e' gia' stata inizializzata da initTable().
+			 * Qui ci limitiamo ad utilizzare l'istanza globale "table".
+			 */
+if (savedSearch && indexSearchbox!=null) {
 				    indexSearchbox = parseInt(indexSearchbox);
 
 				    // Imposta il valore di ricerca nella colonna corrispondente
@@ -904,9 +910,11 @@ if(filtro!=3){
 							
 							
 	  
-	  $('.inputsearchtable').on('click', function(e){
- 	       e.stopPropagation();    
- 	    });
+	  $('.inputsearchtable')
+	      .off('click.pianificazione')
+	      .on('click.pianificazione', function(e){
+ 	          e.stopPropagation();
+ 	      });
 			
 	  
 	  
@@ -942,13 +950,17 @@ if(filtro!=3){
       // Aggiungi eventi per salvare i filtri e la ricerca su localStorage
     
      
-      $('.inputsearchtable').on('input', function() {
-          var searchValue = $(this).val();
-          var columnIndex = $(this).closest('th').index();
-          localStorage.setItem('lastSearch', searchValue);
-          localStorage.setItem('indexSearch', columnIndex);
-          table.column(columnIndex).search(searchValue).draw();
-      });
+      $('.inputsearchtable')
+          .off('input.pianificazione')
+          .on('input.pianificazione', function() {
+              var searchValue = $(this).val();
+              var columnIndex = $(this).closest('th').index();
+
+              localStorage.setItem('lastSearch', searchValue);
+              localStorage.setItem('indexSearch', columnIndex);
+
+              table.column(columnIndex).search(searchValue).draw();
+          });
 	  
 			  
 	  

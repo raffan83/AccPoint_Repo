@@ -96,8 +96,8 @@
             
 <div class="row">
 <div class="col-xs-12">
-<button class="btn btn-primary vpr-btn-today" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='fillTable("${anno}",0)' id="btn_tutte">Tutte le classi</button>
-<button class="btn btn-primary vpr-btn-today" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='fillTable("${anno}",3)' id="btn_elearning">E-Learning</button>
+<button class="btn btn-primary vpr-btn-today" ${filtro_tipo_pianificazioni == 0  ? "disabled" : ""} onclick='caricaDatiPianificazioni("${anno}",0)' id="btn_tutte">Tutte le classi</button>
+<button class="btn btn-primary vpr-btn-today" ${filtro_tipo_pianificazioni == 3  ? "disabled" : ""} onclick='caricaDatiPianificazioni("${anno}",3)' id="btn_elearning">E-Learning</button>
 <button class="btn btn-primary vpr-btn-today pull-right"  onclick='rimuoviFiltri()'>Rimuovi Filtri</button>
 <!-- <button class="btn btn-primary"  onclick='filterTable()' id="">Filtra</button> -->
 
@@ -110,9 +110,11 @@
             <br>
              <div class="row vpr-table-row">
             <div class="col-xs-12">
-           <%--  <jsp:include page="gestionePianificazioneTabella.jsp" ></jsp:include> --%>
+            <!-- visibility:hidden (NON display:none!) cosi' DataTables/fixedColumns/scrollX
+         riescono comunque a calcolare le larghezze reali mentre e' "nascosta" -->
+    <div id="tabellaWrapperInit" style="visibility:hidden;">
             <jsp:include page="gestionePianificazioneTabellaBimestre.jsp" ></jsp:include>
-            
+               </div>
             </div>
             
             </div>
@@ -1017,7 +1019,7 @@ function nuovaPianificazione(){
 			$('#modalPianificazione').modal("hide");
 			
 			 $('.modal-backdrop').hide();
-			 fillTable("${anno}", "${filtro_tipo_pianificazioni}", 1);
+			 caricaDatiPianificazioni("${anno}", "${filtro_tipo_pianificazioni}", 1);
 		}else{
 			$('#myModalErrorContent').html(data.messaggio);
 		  	$('#myModalError').removeClass();

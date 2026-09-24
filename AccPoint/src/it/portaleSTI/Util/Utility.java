@@ -79,6 +79,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -91,7 +93,7 @@ import com.sun.mail.smtp.SMTPTransport;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
-
+import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.LatPuntoLivellaDTO;
 import it.portaleSTI.DTO.MagItemPaccoDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
@@ -102,9 +104,12 @@ import it.portaleSTI.DTO.RilQuotaDTO;
 import it.portaleSTI.DTO.RilSimboloDTO;
 import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
+import it.portaleSTI.DTO.VerCertificatoDTO;
 import it.portaleSTI.DTO.VerStrumentoDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Sec.AsymmetricCryptography;
+import it.portaleSTI.action.ContextListener;
+import it.portaleSTI.bo.GestioneVerCertificatoBO;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
@@ -528,9 +533,16 @@ public class Utility extends HttpServlet {
 		 
 		try {
 			//StampaJasper();
-			BigDecimal incertezza= new BigDecimal("0.00615");
-			incertezza = incertezza.round(new MathContext(2, RoundingMode.HALF_UP));
-			System.out.println(incertezza.toPlainString());
+			new ContextListener().configCostantApplication();
+			org.hibernate.classic.Session session=SessionFacotryDAO.get().openSession();
+			session.beginTransaction();
+	
+			sendEmail("raffan83@gmail.com", "Test", "Test body");
+			
+			
+			session.getTransaction().commit();
+			session.close();
+			System.out.println("FINITO");
 		} catch (Exception  e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -624,180 +636,50 @@ public class Utility extends HttpServlet {
 		
 	}
 
+	private static HtmlEmail getHtmlEmailAruba() throws EmailException {
+
+		HtmlEmail email = new HtmlEmail();
+
+		email.setHostName("smtps.aruba.it");
+		email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
+
+		Properties props = email.getMailSession().getProperties();
+
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.debug", "true");
+		props.put("mail.smtp.port", "465");
+		props.put("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.socketFactory.fallback", "false");
+		props.put("mail.smtp.ssl.enable", "true");
+		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+		return email;
+	}
+	
 	public static void sendEmail(String to, String subject, String msgHtml) throws Exception {
 
 			      
-			      // Get system properties
-			      Properties properties = System.getProperties();
+		// Create the email message
+		HtmlEmail email = getHtmlEmailAruba();
 
-			      // Setup mail server
-			      properties.setProperty("mail.smtp.host", Costanti.HOST_MAIL_SYSTEM);
-			      properties.setProperty("mail.smtp.port", Costanti.HOST_MAIL_SYSTEM_PORT);
-			      properties.setProperty("mail.smtp.auth", "true");
-			      properties.setProperty("mail.transport.protocol", "smtps");
-			      properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-			      
-			      // Get the default Session object.
-			      javax.mail.Session session = javax.mail.Session.getDefaultInstance(properties);
-				
-				  MimeMessage message = new MimeMessage(session);
+		String[] destinatari = to.split(";"); 
 
-		         // Set From: header field of the header.
-		         message.setFrom(new InternetAddress(Costanti.HOST_MAIL_SYSTEM_SENDER));
+		for (String dest : destinatari) {
+			email.addTo(dest);
+		}
 
-		         // Set To: header field of the header.
-		         
 
-		 		InternetAddress[] address = InternetAddress.parse(to.trim().replace(";", ","));
-		         
-		         message.addRecipients(Message.RecipientType.TO, address);
 
-		         // Set Subject: header field
-		         message.setSubject(subject);
-		         
-		         message.setText(msgHtml, "utf-8", "html");
+		email.setFrom("calver@accpoint.it", "Calver");
+		email.setSubject("Report Eccezione ");
 
-		         // Send message
-		     	 SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
-	  		    
-		        try {
-	  			    t.connect(Costanti.HOST_MAIL_SYSTEM, Costanti.HOST_MAIL_SYSTEM_SENDER, Costanti.HOST_MAIL_SYSTEM_PWD);
-	  			    t.sendMessage(message, message.getAllRecipients());
-	  		    } finally {
-
-	      			t.close();  
-	  		    }
-	
+		email.setHtmlMsg(msgHtml);
+		
+		email.send();
 	}
 	
 	
-	public static void sendEmailAllegato(String to, String subject, String msgHtml, File file) throws Exception {
-
-	      
-	      // Get system properties
-	      Properties properties = System.getProperties();
-
-	      // Setup mail server
-	      properties.setProperty("mail.smtp.host", Costanti.HOST_MAIL_SYSTEM);
-	      properties.setProperty("mail.smtp.port", Costanti.HOST_MAIL_SYSTEM_PORT);
-	      properties.setProperty("mail.smtp.auth", "true");
-	      properties.setProperty("mail.transport.protocol", "smtps");
-	      properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-	      
-	      // Get the default Session object.
-	      javax.mail.Session session = javax.mail.Session.getDefaultInstance(properties);
-		
-		  MimeMessage message = new MimeMessage(session);
-
-       // Set From: header field of the header.
-       message.setFrom(new InternetAddress(Costanti.HOST_MAIL_SYSTEM_SENDER));
-
-       // Set To: header field of the header.
-       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-       
-       
-
-       // Set Subject: header field
-       message.setSubject(subject);
-       
-	  BodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setContent(msgHtml,"text/html");
-	
-		BodyPart allegato = new MimeBodyPart();
-		
-		DataSource source = new FileDataSource(file);
-		allegato.setDataHandler(new DataHandler(source));
-		allegato.setFileName(file.getName());
-		
-		
-		 Multipart multipart = new MimeMultipart();
-		 
-		 multipart.addBodyPart(messageBodyPart);
-		 multipart.addBodyPart(allegato);
-       
-		 
-		 message.setContent(multipart);
-     //  message.setText(msgHtml, "utf-8", "html");
-
-       // Send message
-   	 SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
-	    
-      try {
-		    t.connect(Costanti.HOST_MAIL_SYSTEM, Costanti.HOST_MAIL_SYSTEM_SENDER, Costanti.HOST_MAIL_SYSTEM_PWD);
-		    t.sendMessage(message, message.getAllRecipients());
-	    } finally {
-
-			t.close();  
-	    }
-      
-      
-}
-	
-	
-	public static void sendEmailPEC(String username, String password, String host, String port, String to, String subject, String msgHtml, String filename) throws Exception {
-		
-		String protocollo = "smtps";
-
-
-		Properties props = new Properties();
-		 
-		props.put("mail.transport.protocol", protocollo);
-		props.put("mail.smtps.host", host);
-		props.setProperty("mail.smtp.port", port);
-		props.put("mail.smtps.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		
-		Session session = Session.getDefaultInstance(props);
-
-		MimeMessage messaggio = new MimeMessage( session );
-		
-		Multipart multipart = new MimeMultipart();
-		 
-		// creates body part for the message
-		MimeBodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setContent(messaggio, "text/html");
-		messageBodyPart.setText(msgHtml, "utf-8", "html");
-		// creates body part for the attachment
-		MimeBodyPart attachPart = new MimeBodyPart();
-		 
-		// code to add attachment...will be revealed later
-		 
-		// adds parts to the multipart
-		multipart.addBodyPart(messageBodyPart);
-	
-		 
-		
-	
-	//	String attachFile = "C:\\Users\\antonio.dicivita\\Desktop\\test.pdf";
-		String attachFile = filename;
-		attachPart.attachFile(attachFile);
-		multipart.addBodyPart(attachPart);
-		
-		// sets the multipart as message's content
-		messaggio.setContent(multipart);
-		
-		
-        // Set From: header field of the header.
-		messaggio.setFrom(new InternetAddress(username));
-
-        // Set To: header field of the header.
-		messaggio.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-
-        // Set Subject: header field
-		messaggio.setSubject(subject);
-		//messaggio.setText(msgHtml, "utf-8", "html");
-		
-		messaggio.saveChanges();
-		messaggio.removeHeader("Message-Id");
-		com.sun.mail.smtp.SMTPMessage mex = new SMTPMessage(messaggio);
-		com.sun.mail.smtp.SMTPSSLTransport t =(com.sun.mail.smtp.SMTPSSLTransport)session.getTransport(protocollo); // <--SMTPS
-		t.setStartTLS(true); //<-- impostiamo il flag per iniziare la comunicazione sicura
-		t.connect(host, username ,password);
-		 
-		t.sendMessage( mex, mex.getAllRecipients());
-		t.close();
-
-	}
 	
 	public static String encrypt(String strClearText,String strKey) throws Exception{
 		String strData="";

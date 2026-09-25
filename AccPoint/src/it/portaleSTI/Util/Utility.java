@@ -536,8 +536,10 @@ public class Utility extends HttpServlet {
 			new ContextListener().configCostantApplication();
 			org.hibernate.classic.Session session=SessionFacotryDAO.get().openSession();
 			session.beginTransaction();
-	
-			sendEmail("raffan83@gmail.com", "Test", "Test body");
+			/*
+			 * Inserire eventuale metodo da testare
+			 * 
+			 * */
 			
 			
 			session.getTransaction().commit();
@@ -636,48 +638,7 @@ public class Utility extends HttpServlet {
 		
 	}
 
-	private static HtmlEmail getHtmlEmailAruba() throws EmailException {
 
-		HtmlEmail email = new HtmlEmail();
-
-		email.setHostName("smtps.aruba.it");
-		email.setAuthentication("calver@accpoint.it", Costanti.PASS_EMAIL_ACC);
-
-		Properties props = email.getMailSession().getProperties();
-
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.debug", "true");
-		props.put("mail.smtp.port", "465");
-		props.put("mail.smtp.socketFactory.port", "465");
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.socketFactory.fallback", "false");
-		props.put("mail.smtp.ssl.enable", "true");
-		props.put("mail.smtp.ssl.protocols", "TLSv1.2");
-
-		return email;
-	}
-	
-	public static void sendEmail(String to, String subject, String msgHtml) throws Exception {
-
-			      
-		// Create the email message
-		HtmlEmail email = getHtmlEmailAruba();
-
-		String[] destinatari = to.split(";"); 
-
-		for (String dest : destinatari) {
-			email.addTo(dest);
-		}
-
-
-
-		email.setFrom("calver@accpoint.it", "Calver");
-		email.setSubject("Report Eccezione ");
-
-		email.setHtmlMsg(msgHtml);
-		
-		email.send();
-	}
 	
 	
 	

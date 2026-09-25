@@ -648,7 +648,7 @@ public static void sendEmailAttivitaScaduteSollecito() throws ParseException, Ex
 				}
 				
 			
-					Utility.sendEmail("edoardo.boccitto@ncsnetwork.it","Errore invio Remind scadenza Software",messaggio);
+				SendEmailBO.sendEmail("edoardo.boccitto@ncsnetwork.it","Errore invio Remind scadenza Software",messaggio);
 			}
 			
 		

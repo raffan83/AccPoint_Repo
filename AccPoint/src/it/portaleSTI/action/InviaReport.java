@@ -20,6 +20,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
+import it.portaleSTI.bo.SendEmailBO;
 
 /**
  * Servlet implementation class InviaReport
@@ -83,7 +84,7 @@ public class InviaReport extends HttpServlet {
 		    stackTrace +
 		    "</pre>";
 		
-			Utility.sendEmail(to,subject,hmtlMex);
+			SendEmailBO.sendEmail(to,subject,hmtlMex);
 			
 		//	Utility.sendEmail("antonio.dicivita@ncsnetwork.it",subject,hmtlMex);
 			myObj.addProperty("success", true);

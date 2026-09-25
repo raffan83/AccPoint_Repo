@@ -132,7 +132,7 @@ public class GestioneUtenteBO {
 		        
 		      String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> Per recuperare la tua password fare click sul link seguente<br /><a href='"+url+"?action=resetPass&token="+token+"'>Reset Password</a></h3><br />Se hai ricevuto per sbaglio questa mail ignora il contenuto.<br />Grazie<br /><br />Calver.it";
 
-			  Utility.sendEmail(to,subject,hmtlMex);
+		      SendEmailBO.sendEmail(to,subject,hmtlMex);
 
 			  utente.setResetToken(token);
 			  sessionH.save(utente);
@@ -156,7 +156,7 @@ public class GestioneUtenteBO {
 			  String subject = "Calver.it Conferma Reset Password";
 			  String hmtlMex = "<h3>Salve "+utente.getNominativo()+", <br /> La tua password è stata cambiata con successo<br /></h3><br />Se hai ricevuto per sbaglio questa mail ignora il suo contenuto.<br />Grazie<br /><br />Calver.it";
 
-			  Utility.sendEmail(to,subject,hmtlMex);
+			  SendEmailBO.sendEmail(to,subject,hmtlMex);
 			  
 			  utente.setResetToken(null);
 			 // utente.setPassw(DirectMySqlDAO.getPassword(passwordUser));
@@ -185,7 +185,7 @@ public class GestioneUtenteBO {
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />Calver.it";
 		      	      
-			  Utility.sendEmail(to,subject,hmtlMex);
+		      SendEmailBO.sendEmail(to,subject,hmtlMex);
 
 			  sessionH.save(utente);
 
@@ -223,7 +223,7 @@ public class GestioneUtenteBO {
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />Calver.it";
 		      	      
-			  Utility.sendEmail(to2,subject2,hmtlMex2);
+		      SendEmailBO.sendEmail(to2,subject2,hmtlMex2);
 			  
 			  String to = "raffaele.fantini@ncsnetwork.it,luigi.laposta@stisrl.com,edoardo.boccitto@ncsnetwork.it";
 			  String subject = "Calver.it Nuovo Utente";
@@ -232,7 +232,7 @@ public class GestioneUtenteBO {
 		      		"Grazie e buon lavoro.\r\n" + 
 		      		"<br/><br/><br />Calver.it";
 		      	      
-			  Utility.sendEmail(to,subject,hmtlMex);
+		      SendEmailBO.sendEmail(to,subject,hmtlMex);
 
 			  
 			  
@@ -268,7 +268,7 @@ public class GestioneUtenteBO {
 	      /*Allegato*/
 	    //  File file = new File(Costanti.PATH_FOLDER_CALVER+"\\Guida_Calver.pdf");
 	      
-		  Utility.sendEmail(to2,subject2,hmtlMex2);
+	      SendEmailBO.sendEmail(to2,subject2,hmtlMex2);
 		  
 		  
 			myObj.addProperty("success", true);

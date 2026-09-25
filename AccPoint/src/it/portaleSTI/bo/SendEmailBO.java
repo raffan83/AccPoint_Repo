@@ -165,6 +165,25 @@ public class SendEmailBO {
 		return properties;
 	}
 
+	public static void sendEmail(String to, String subject, String msgHtml) throws Exception {
+
+	      
+		// Create the email message
+		HtmlEmail email = getHtmlEmailAruba();
+
+		String[] destinatari = to.split(";"); 
+
+		for (String dest : destinatari) {
+			email.addTo(dest);
+		}
+
+		email.setFrom("calver@accpoint.it", "Calver");
+		email.setSubject(subject);
+
+		email.setHtmlMsg(msgHtml);
+		
+		email.send();
+	}
 
 	public static void sendEmailCertificato(CertificatoDTO certificato, String mailTo, ServletContext ctx) throws Exception {
 

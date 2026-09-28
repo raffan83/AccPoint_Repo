@@ -485,7 +485,27 @@
   		 </div>
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-danger"onclick="saveInterventoFromModal('${commessa.ID_COMMESSA}')"  >Salva</button>
+        <button type="button" class="btn btn-danger"onclick="controlloPresenzaPacco('${commessa.ID_COMMESSA}')"  >Salva</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="myModalControllo" class="modal fade" role="dialog" aria-labelledby="myModalControlloLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalControlloLabel">Attenzione</h4>
+      </div>
+      <div class="modal-body">
+        <p>Hai selezionato <b>nessun pacco</b> nonostante siano presenti pacchi di origine disponibili.</p>
+        <p>Vuoi procedere comunque?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" id="btnContinuaSenzaPacco">Si</button>
       </div>
     </div>
   </div>
@@ -1051,6 +1071,7 @@ tableAttiìvita.columns.adjust().draw();
       }
       
       function popolaSelectOrigine(lista){
+    	   listaPacchi = lista;   
     	    var $sel = $('#origine');
     	    $sel.empty();
 
@@ -1070,6 +1091,23 @@ tableAttiìvita.columns.adjust().draw();
 
     	    $sel.trigger('change');
     	}
+      
+      function controlloPresenzaPacco(idCommessa){
+    	  
+   	   var pacco_origine = $('#origine').val();
+   	   
+   	   if (pacco_origine === '0' && listaPacchi.length > 0) {
+   		  // rimuovo eventuali handler precedenti per evitare click multipli
+           $('#btnContinuaSenzaPacco').off('click').on('click', function(){
+               $('#myModalControllo').modal('hide');
+               saveInterventoFromModal(idCommessa);
+           });
+
+           $('#myModalControllo').modal('show');
+   		} else {
+   			saveInterventoFromModal(idCommessa);
+   		}
+      }
       
   </script>
   

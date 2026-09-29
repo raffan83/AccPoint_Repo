@@ -1763,12 +1763,12 @@ public class GestioneFormazioneBO {
 							partecipante.setNominativo_irregolare(1);
 						}else if(nomeCognome.length>3){
 							partecipante.setNome(nomeCognome[0]);								
-							partecipante.setNominativo_irregolare(0);
-							int j = 2;
+							partecipante.setNominativo_irregolare(1);
+							int j = 3;
 							String cognome = nomeCognome[1] +" "+ nomeCognome[2];
 							
 							while(j<nomeCognome.length) {
-								cognome += nomeCognome[j];
+								cognome += " " + nomeCognome[j];
 								
 								j++;
 							}

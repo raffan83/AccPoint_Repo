@@ -51,7 +51,7 @@ public class InviaReport extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
-		if(Utility.validateSession(request,response,getServletContext()))return;
+		//if(Utility.validateSession(request,response,getServletContext()))return;
 		
 		JsonObject myObj = new JsonObject();
 		PrintWriter  out = response.getWriter();
@@ -59,6 +59,11 @@ public class InviaReport extends HttpServlet {
 		Exception e = (Exception)request.getSession().getAttribute("exception");
 		
 		UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
+		if(utente==null) {
+		  utente = new UtenteDTO();
+		 utente.setNominativo("Registrazione");
+		}
+		
 		
 		Date data = new Date();
 		SimpleDateFormat dt = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -84,12 +89,14 @@ public class InviaReport extends HttpServlet {
 		    stackTrace +
 		    "</pre>";
 		
+		
 			SendEmailBO.sendEmail(to,subject,hmtlMex);
 			
 		//	Utility.sendEmail("antonio.dicivita@ncsnetwork.it",subject,hmtlMex);
 			myObj.addProperty("success", true);
 
 			out.print(myObj);
+			
 			
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block

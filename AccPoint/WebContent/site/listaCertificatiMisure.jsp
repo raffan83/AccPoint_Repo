@@ -75,7 +75,8 @@
  <th>Id Cetificato</th>
    <th>Commessa</th>
   <th>Strumento</th>
-  <th>Matricola | Cod</th>
+  <th>Matricola</th>
+    <th>Cod</th>
  <th>Cliente</th>
  <th>Presso</th>
 
@@ -97,7 +98,8 @@
 		<td>${certificato.id}</td>
  		<td>${certificato.misura.intervento.idCommessa}</td>
 		<td>${certificato.misura.strumento.denominazione}</td>
-		<td>${certificato.misura.strumento.matricola} | ${certificato.misura.strumento.codice_interno}</td>
+		<td>${certificato.misura.strumento.matricola}</td>
+		<td>${certificato.misura.strumento.codice_interno}</td>
 		
 		<td>${certificato.misura.intervento.nome_cliente} - ${certificato.misura.intervento.nome_sede}</td>
 		<td> 
@@ -459,11 +461,12 @@
   	                   { responsivePriority: 3, targets: 1 },
   	                   { responsivePriority: 4, targets: 2 },
   	                 { responsivePriority: 5, targets: 3 },
-  	                 { responsivePriority: 2, targets: 12 },
-  	               { responsivePriority: 6, targets: 4 },
-  	             { responsivePriority: 7, targets: 5 },
-  	           { responsivePriority: 8, targets: 8 },
-  	         { responsivePriority: 9, targets: 10 }
+  	               { responsivePriority: 5, targets: 4 },
+  	                 { responsivePriority: 2, targets: 13 },
+  	               { responsivePriority: 6, targets: 5 },
+  	             { responsivePriority: 7, targets: 6 },
+  	           { responsivePriority: 8, targets: 9 },
+  	         { responsivePriority: 9, targets: 11 }
   	       
   	               ],
   	     

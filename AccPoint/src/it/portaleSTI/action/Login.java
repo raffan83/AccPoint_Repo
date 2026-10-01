@@ -221,15 +221,19 @@ public class Login extends HttpServlet {
 					Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 					String trendJson = gson.toJson(trend);
 					
-					
-					GraficoDashboardDTO graficoDash = GestioneGraficiDashboardBO.getGraficiDash();
-					
 	        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 	        		request.getSession().setAttribute("trend", trend);
 	        		request.getSession().setAttribute("trendJson", trendJson);
 	        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 	        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
-	        	
+	        		
+	        		/*
+	        		 * In caso di ripristino alla Dash precedente commentare tutto quello che
+	        		 * segue fino al dispatcher e utilizzare come jsp dashboard_old.jsp
+	        		 */
+	        		GraficoDashboardDTO graficoDash = GestioneGraficiDashboardBO.getGraficiDash();
+	        		
+	        		
 	        		Gson gsonCertificati = new Gson();
 
 	        		request.getSession().setAttribute(

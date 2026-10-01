@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -773,6 +774,21 @@ public class GestioneMisura extends HttpServlet {
 				 response.getWriter().write("{\"successo\": " + rispUpdate + "}");
 				
 				return;
+			} else if (action.equals("directDocumental")) {
+			   
+				String username = request.getParameter("username");
+				String password = request.getParameter("password");
+				 
+
+				    // TODO: verifica che l'utente loggato possa vedere questa sessione
+
+				//https://delivery.stisrl.com/DocumentalWEB/
+				//http://localhost:8082/DocumentalWEB/
+				    request.setAttribute("targetUrl", "https://delivery.stisrl.com/DocumentalWEB/");
+				    request.setAttribute("uid", username);
+				    request.setAttribute("pwd", password);
+
+				    request.getRequestDispatcher("/site/redirectDocumentale.jsp").forward(request, response);
 			}
 					
 		}catch(Exception e) {

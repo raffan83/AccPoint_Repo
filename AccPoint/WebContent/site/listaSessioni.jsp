@@ -198,7 +198,17 @@
                   <td>${s.id}</td>
                   <td>${s.username}</td>
                    <td>${s.password}</td>
-                  <td>${s.session_id}</td>
+                 <td>
+    <c:url var="linkDocumentale" value="/gestioneMisura.do">
+        <c:param name="action" value="directDocumental"/>
+        <c:param name="username" value="${s.username}"/>
+        <c:param name="password" value="${s.password}"/>
+    </c:url>
+
+    <a href="${linkDocumentale}" target="_blank" rel="noopener" title="Vai al documentale">
+        ${s.session_id}
+    </a>
+</td>
                   <td><a target="_blank" class=" customTooltip customlink" href="gestioneInterventoDati.do?idIntervento=${utl:encryptData(s.id_intervento)}"> ${s.id_intervento}</a></td>
                   
                   <td>

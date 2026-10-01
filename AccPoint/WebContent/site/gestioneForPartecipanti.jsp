@@ -819,6 +819,14 @@
     </div>
 </div>
 
+<div id="boxVecchiaAzienda" style="display:none;">
+  <div class="box-vecchia-header">Vecchia azienda</div>
+  <div class="box-vecchia-body">
+    <p><strong>Azienda:</strong> <span id="vecchia_azienda"></span></p>
+    <p><strong>Sede:</strong> <span id="vecchia_sede"></span></p>
+  </div>
+</div>
+
 </div>
 
 </div>
@@ -839,6 +847,28 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <style>
+
+#boxVecchiaAzienda {
+    position: fixed;
+    top: 90px;
+    right: 30px;
+    width: 300px;
+    z-index: 20000;
+    background: #fff;
+    border: 1px solid #999;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    pointer-events: none; /* non intercetta il mouse */
+}
+.box-vecchia-header {
+    padding: 10px 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #e5e5e5;
+}
+.box-vecchia-body {
+    padding: 15px;
+}
+.box-vecchia-body p { margin: 0 0 5px 0; }
 
 .progress {
     display: block;
@@ -1361,7 +1391,21 @@ $(document).ready(function() {
 		      stateSave: false,	
 		     fixedColumns : true,
 		      columns : [
-		      	{"data" : "nome", createdCell: editableCell},
+		    	  {"data" : "nome", createdCell: function(td, cellData, rowData, row, col) {
+		    		    // comportamento esistente: cella modificabile
+		    		    editableCell(td, cellData, rowData, row, col);
+
+		    		    // hover solo se esiste una vecchia azienda
+		    		    if (rowData.nome_azienda_old && rowData.nome_azienda_old.trim() !== '') {
+		    		        $(td).on('mouseenter', function() {
+		    		            mostraVecchiaAzienda(rowData);
+		    		        });
+		    		        // chiude anche quando inizi a scrivere nella cella
+		    		        $(td).on('mouseleave focus', function() {
+		    		            nascondiVecchiaAzienda();
+		    		        });
+		    		    }
+		    		}},
 		      	{"data" : "cognome", createdCell: editableCell},
 		      	{"data" : "cf"},
 		      	{"data" : "data_nascita", createdCell: editableCell},
@@ -1854,6 +1898,7 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			    
 			  }
 			  dati.nome_azienda_old = lista_partecipanti_import[i].nome_azienda_old;
+			  dati.nome_sede_old    = lista_partecipanti_import[i].nome_sede_old;
 			  if( tipo==="pdf"){
 			  dati.azioni = '<a class="btn btn-primary" onClick="modalAssocia(\''+lista_partecipanti_import[i].cf+'\')">Associa al corso</a>';
 			  } else {
@@ -2548,7 +2593,15 @@ function changeSedeTab(cf, value){
  	
  }
 
- 
+ function mostraVecchiaAzienda(row) {
+	    $('#vecchia_azienda').text(row.nome_azienda_old);
+	    $('#vecchia_sede').text(row.nome_sede_old ? row.nome_sede_old : '-');
+	    $('#boxVecchiaAzienda').show();
+	}
+
+	function nascondiVecchiaAzienda() {
+	    $('#boxVecchiaAzienda').hide();
+	}
  $('#myModalErrorContent').on('hidden.bs.modal', function(){
 	$(document).css("padding-right", "0px"); 
  });

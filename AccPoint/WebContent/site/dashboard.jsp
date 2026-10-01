@@ -329,32 +329,65 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
  <style>
-.dashboard-col .dashboard-box {
-    height: 380px;
+.dashboard-row { display: flex; flex-wrap: wrap; }
+.dashboard-row:before, .dashboard-row:after { display: none; }
+
+.dashboard-col { display: flex; margin-bottom: 15px; }
+
+/* Colonna con box collassato: non si allunga all'altezza della riga */
+.dashboard-col.col-collapsed {
+    align-self: flex-start;
 }
 
-.dashboard-col .box-body {
-    height: 300px;
+.dashboard-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
 }
 
-.dashboard-col .chart {
-    height: 330px;
+.dashboard-box .box-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
+/* L'area grafico prende tutto lo spazio rimasto nel box */
+.dashboard-box .chart {
+    position: relative;
+    flex: 1;
+    min-height: 260px;   /* altezza minima, poi cresce col box */
+    width: 100%;
+}
+
+/* Il wrapper interno riempie l'area grafico */
 .chart-item-small,
 .chart-certificati-small {
-    width: 100%;
-    height: 230px;
-    margin: 0 auto;
-    position: relative;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
 }
-        .chart-item-small {
-            width: 430px;
-            height: 230px;
-            margin: 0 auto;
-            position: relative;
-        }
 
+/* Il canvas diretto dei grafici dinamici */
+.dashboard-box .chart > canvas {
+    position: absolute;
+    top: 0; left: 0;
+}
+
+/* Messaggio "nessun dato" centrato sull'area grafico */
+#noDatiItem, #noDatiCertificati {
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+.dashboard-box .mailbox-messages { flex: 1; overflow-y: auto; }
+
+@media (max-width: 767px) {
+    .dashboard-col { display: block; }
+    .dashboard-box .chart { min-height: 280px; }
+}
     </style>
 
 <c:if test="${userObj.checkRuolo('F1')|| userObj.checkRuolo('F2') }">
@@ -434,6 +467,21 @@
 	
     $(document).ready(function() {
     	
+    	$(document).on('click', '.dashboard-box [data-widget="collapse"]', function () {
+    	    var box = $(this).closest('.dashboard-box');
+    	    var col = box.closest('.dashboard-col');
+
+    	    // aspetta la fine dell'animazione di AdminLTE (default 500ms)
+    	    setTimeout(function () {
+    	        if (box.hasClass('collapsed-box')) {
+    	            col.addClass('col-collapsed');
+    	        } else {
+    	            col.removeClass('col-collapsed');
+    	            $(window).trigger('resize');   // Chart.js ricalcola il canvas
+    	        }
+    	    }, 500);
+    	});
+    	
     	/* INVERSIONE POSIZIONE:
     	   MISURE EFFETTUATE <-> CERTIFICATI */
 
@@ -462,6 +510,7 @@
     	    parent.removeChild(placeholder);
     	}
     	
+    
     	$.fn.dataTable.moment( 'dd/MM/yyyy HH:mm:ss' );
     	
     	table = $('#tabBacheca').DataTable({
@@ -703,7 +752,7 @@ if(trendJson!=null){
         		     data: grafico1,
         		     options: {
         		    	 responsive: true, 
-        		    	 maintainAspectRatio: true,
+        		    	 maintainAspectRatio: false,
         		         scales: {
         		             yAxes: [{
         		                 ticks: {
@@ -797,7 +846,12 @@ var myChartItem = new Chart(ctxItem, {
 
      responsive: true,
 
-     maintainAspectRatio: false,
+     maintainAspectRatio:false,
+     onResize: function(chart, size) {
+         var fs = Math.max(9, Math.min(14, size.height / 25));
+         chart.options.legend.labels.fontSize = fs;
+         chart.update();
+     },
 
      animation: {
          duration: 800

@@ -2,8 +2,12 @@ package it.portaleSTI.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +29,7 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.BachecaDTO;
+import it.portaleSTI.DTO.GraficoDashboardDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoTrendDTO;
 import it.portaleSTI.DTO.TrendDTO;
@@ -32,6 +37,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneBachecaBO;
+import it.portaleSTI.bo.GestioneGraficiDashboardBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneTrendBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -215,15 +221,49 @@ public class Login extends HttpServlet {
 					Gson gson = new GsonBuilder().setDateFormat("M/yyyy").create();
 					String trendJson = gson.toJson(trend);
 					
-					//ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(hsession);
-	
 					
-					request.getSession().setAttribute("tipoTrend", tipoTrend);
-					request.getSession().setAttribute("trend", trend);
-					request.getSession().setAttribute("trendJson", trendJson);
-					request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
-					//request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+					GraficoDashboardDTO graficoDash = GestioneGraficiDashboardBO.getGraficiDash();
 					
+	        		request.getSession().setAttribute("tipoTrend", tipoTrend);
+	        		request.getSession().setAttribute("trend", trend);
+	        		request.getSession().setAttribute("trendJson", trendJson);
+	        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+	        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
+	        	
+	        		Gson gsonCertificati = new Gson();
+
+	        		request.getSession().setAttribute(
+	        		    "certificatiLATJson",
+	        		    gsonCertificati.toJson(graficoDash.getListaCertificatiLAT())
+	        		);
+
+	        		request.getSession().setAttribute(
+	        		    "certificatiSVTJson",
+	        		    gsonCertificati.toJson(graficoDash.getListaCertificatiSVT())
+	        		);
+
+	        		request.getSession().setAttribute(
+	        		    "certificatiRDTJson",
+	        		    gsonCertificati.toJson(graficoDash.getListaCertificatiRDT())
+	        		);
+
+	        		request.getSession().setAttribute(
+	        		    "certificatiRDPJson",
+	        		    gsonCertificati.toJson(graficoDash.getListaCertificatiRDP())
+	        		);
+
+	        		request.getSession().setAttribute(
+	        		    "certificatiSEJson",
+	        		    gsonCertificati.toJson(graficoDash.getListaCertificatiSE())
+	        		);
+	        	
+	        		
+	        		
+	        		request.getSession().setAttribute("itemInLavorazione", graficoDash.getItemInLavorazione());
+	        		request.getSession().setAttribute("itemFornitori", graficoDash.getItemFornitori());
+	        		request.getSession().setAttribute("itemLavoratiInIngresso", graficoDash.getItemLavoratiInIngresso());
+	        		request.getSession().setAttribute("itemLavoratiInSpedizione", graficoDash.getItemLavoratiInSpedizione());
+	      
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 				}
@@ -258,7 +298,7 @@ public class Login extends HttpServlet {
 		
 	//	if(Utility.validateSession(request,response,getServletContext()))return;
 		Session session = SessionFacotryDAO.get().openSession();
-
+		SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss:sss");
 		try{
 			
 		    response.setContentType("text/html");
@@ -457,21 +497,58 @@ public class Login extends HttpServlet {
 			        		ArrayList<BachecaDTO> lista_messaggi = GestioneBachecaBO.getMessaggiPerUtente(utente.getId(), session);
 							request.getSession().setAttribute("lista_messaggi", lista_messaggi);
 							
-							//ArrayList<String> lista_pacchi1 = GestioneMagazzinoDAO.getItemInRitardo(true, session);
-							//ArrayList<String> lista_pacchi = DirectMySqlDAO.getItemInRitardoDashboard(session);
+						
+							GraficoDashboardDTO graficoDash = GestioneGraficiDashboardBO.getGraficiDash();
 							
 			        		request.getSession().setAttribute("tipoTrend", tipoTrend);
 			        		request.getSession().setAttribute("trend", trend);
 			        		request.getSession().setAttribute("trendJson", trendJson);
 			        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
 			        		request.getSession().setAttribute("tipoTrendJson", tipoTrendJson);
-			        		//request.getSession().setAttribute("lista_pacchi_grafico", lista_pacchi);
+			        	
+			        		Gson gsonCertificati = new Gson();
+
+			        		request.getSession().setAttribute(
+			        		    "certificatiLATJson",
+			        		    gsonCertificati.toJson(graficoDash.getListaCertificatiLAT())
+			        		);
+
+			        		request.getSession().setAttribute(
+			        		    "certificatiSVTJson",
+			        		    gsonCertificati.toJson(graficoDash.getListaCertificatiSVT())
+			        		);
+
+			        		request.getSession().setAttribute(
+			        		    "certificatiRDTJson",
+			        		    gsonCertificati.toJson(graficoDash.getListaCertificatiRDT())
+			        		);
+
+			        		request.getSession().setAttribute(
+			        		    "certificatiRDPJson",
+			        		    gsonCertificati.toJson(graficoDash.getListaCertificatiRDP())
+			        		);
+
+			        		request.getSession().setAttribute(
+			        		    "certificatiSEJson",
+			        		    gsonCertificati.toJson(graficoDash.getListaCertificatiSE())
+			        		);
+			        	
 			        		
+			        		
+			        		request.getSession().setAttribute("itemInLavorazione", graficoDash.getItemInLavorazione());
+			        		request.getSession().setAttribute("itemFornitori", graficoDash.getItemFornitori());
+			        		request.getSession().setAttribute("itemLavoratiInIngresso", graficoDash.getItemLavoratiInIngresso());
+			        		request.getSession().setAttribute("itemLavoratiInSpedizione", graficoDash.getItemLavoratiInSpedizione());
+			        
 			        		
 			        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+			        		
+			        		
 					}
 	        	}
 	        	dispatcher.forward(request,response);
+	        	
+	        
 	        }
 	        }
 	        else if(utente != null && utente.getAbilitato()==0)

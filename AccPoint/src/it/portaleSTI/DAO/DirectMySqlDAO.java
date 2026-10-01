@@ -4878,6 +4878,295 @@ public static ArrayList<String> getListaOriginePacchiApertiByCommessa(String com
 }
 
 
+
+
+public static int getListaCertificatiLATSE(String rap, int month,Connection con) throws Exception {
+
+    int certificatiLAT = 0;
+
+    PreparedStatement pst = null;
+	 ResultSet rs = null;
+	 
+	 try {
+    
+    String query =
+        "SELECT COUNT(*) AS cert " +
+        "FROM misura m " +
+        "WHERE m.lat = ? " +
+        "AND YEAR(m.dataMisura) = YEAR(DATE_ADD(CURDATE(), INTERVAL ? MONTH)) " +
+        "AND MONTH(m.dataMisura) = MONTH(DATE_ADD(CURDATE(), INTERVAL ? MONTH))";
+
+
+    pst = con.prepareStatement(query);
+
+        pst.setString(1, rap);
+        pst.setInt(2, month);
+        pst.setInt(3, month);
+
+        rs = pst.executeQuery();
+        while (rs.next()) {
+        certificatiLAT = rs.getInt("cert");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }finally {
+
+        if (rs != null)
+            rs.close();
+
+        if (pst != null)
+            pst.close();
+      
+    }
+
+    return certificatiLAT;
+}
+
+public static int getListaCertificatiRap(String rap, int month,Connection con) throws Exception {
+
+    int certificati = 0;
+    PreparedStatement pst = null;
+	 ResultSet rs = null;
+   try {
+    String query =
+        "SELECT COUNT(*) AS cert " +
+        "FROM misura m " +
+        "WHERE m.nCertificato LIKE ? " +
+        "AND YEAR(m.dataMisura) = YEAR(DATE_ADD(CURDATE(), INTERVAL ? MONTH)) " +
+        "AND MONTH(m.dataMisura) = MONTH(DATE_ADD(CURDATE(), INTERVAL ? MONTH))";
+
+     pst = con.prepareStatement(query);
+        pst.setString(1, "%" + rap + "%");
+        pst.setInt(2, month);
+        pst.setInt(3, month);
+
+        rs = pst.executeQuery();
+        while (rs.next()) {
+        certificati = rs.getInt("cert");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }finally {
+
+        if (rs != null)
+            rs.close();
+
+        if (pst != null)
+            pst.close();
+      
+    }
+
+    return certificati;
+}
+
+public static int getListaItemInLavorazioneMag(int stato_item,Connection con) throws Exception {
+	int item = 0;
+	
+	PreparedStatement pst = null;
+	 ResultSet rs = null;
+	 
+	 try {
+		 
+    String query =
+        "SELECT COUNT(*) AS item" +
+        " FROM mag_item_pacco ip" + 
+        " JOIN mag_pacco m " + 
+        "    ON ip.id_pacco = m.id" + 
+        " JOIN mag_item i " + 
+        "    ON ip.id_item = i.id" + 
+        " WHERE m.chiuso=0" + 
+        "  AND i.stato = ?" +
+         " AND (m.id_stato_lavorazione = 1 OR m.id_stato_lavorazione = 2) " +
+        "AND ip.id_pacco = ( " +
+	    "    SELECT MAX(ip2.id_pacco) " +
+	    "    FROM mag_item_pacco ip2 " +
+	    "    WHERE ip2.id_item = ip.id_item " +
+	    ")";
+    
+
+         pst = con.prepareStatement(query); 
+    	 pst.setInt(1, stato_item);  // 1 in lavorazione;  2 lavorato
+    	 rs = pst.executeQuery();
+    	 while (rs.next()) {
+    	 item = rs.getInt("item");
+    	 }
+
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw e;
+    }finally {
+
+        if (rs != null)
+            rs.close();
+
+        if (pst != null)
+            pst.close();
+      
+    }
+
+    return item;
+}
+
+public static int getListaItemFornitori(Connection con) throws Exception {
+	int item = 0;
+
+	
+	PreparedStatement pst = null;
+	 ResultSet rs = null;
+	 
+	 try {
+    String query =
+        "SELECT COUNT(*) AS item" +
+        " FROM mag_item_pacco ip" + 
+        " JOIN mag_pacco m " + 
+        "    ON ip.id_pacco = m.id" + 
+        " JOIN mag_item i " + 
+        "    ON ip.id_item = i.id" + 
+        " WHERE m.chiuso=0" + 
+        "  AND (i.stato = 1 OR i.stato =2)" +
+         " AND m.id_stato_lavorazione = 4 " +
+        "AND ip.id_pacco = ( " +
+	    "    SELECT MAX(ip2.id_pacco) " +
+	    "    FROM mag_item_pacco ip2 " +
+	    "    WHERE ip2.id_item = ip.id_item " +
+	    ")";
+    
+ 
+    pst = con.prepareStatement(query);
+       
+       rs = pst.executeQuery();
+       while (rs.next()) {
+       item = rs.getInt("item");
+       }
+
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw e;
+    }finally {
+
+        if (rs != null)
+            rs.close();
+
+        if (pst != null)
+            pst.close();
+      
+    }
+
+    return item;
+}
+
+public static int getListaItemLavorati(int stato_item,Connection con) throws Exception {
+	int item = 0;
+
+
+	PreparedStatement pst = null;
+	 ResultSet rs = null;	 
+	 
+	 try {
+	
+    String query =
+        "SELECT COUNT(*) AS item, m.id_stato_lavorazione " +
+        " FROM mag_item_pacco ip" + 
+        " JOIN mag_pacco m " + 
+        "    ON ip.id_pacco = m.id" + 
+        " JOIN mag_item i " + 
+        "    ON ip.id_item = i.id" + 
+        " WHERE m.chiuso=0" + 
+        "  AND i.stato = ? " +
+        " AND (m.id_stato_lavorazione = 1 OR m.id_stato_lavorazione = 2 OR m.id_stato_lavorazione = 4 OR m.id_stato_lavorazione = 5) " +
+         "AND ip.id_pacco = ( " +
+	    "    SELECT MAX(ip2.id_pacco) " +
+	    "    FROM mag_item_pacco ip2 " +
+	    "    WHERE ip2.id_item = ip.id_item " +
+	    ")";
+
+   pst = con.prepareStatement(query);
+
+    	 pst.setInt(1, stato_item);  // 1 in lavorazione;  2 lavorato
+    	
+        rs = pst.executeQuery();
+        
+        while (rs.next()) {
+        item = rs.getInt("item");
+        }
+
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw e;
+    }finally {
+
+        if (rs != null)
+            rs.close();
+
+        if (pst != null)
+            pst.close();
+      
+    }
+
+    return item;
+}
+
+public static int getListaItemLavoratiInSpedizione(int stato_item, Connection con) throws Exception {
+	int item = 0;
+
+	PreparedStatement pst = null;
+	 ResultSet rs = null;	 
+	 try {
+		 
+	 
+    String query =
+        "SELECT COUNT(*) AS item, m.id_stato_lavorazione " +
+        " FROM mag_item_pacco ip" + 
+        " JOIN mag_pacco m " + 
+        "    ON ip.id_pacco = m.id" + 
+        " JOIN mag_item i " + 
+        "    ON ip.id_item = i.id" + 
+        " WHERE m.chiuso=0" + 
+        "  AND i.stato = ? " +
+        " AND m.id_stato_lavorazione = 3 " +
+         "AND ip.id_pacco = ( " +
+	    "    SELECT MAX(ip2.id_pacco) " +
+	    "    FROM mag_item_pacco ip2 " +
+	    "    WHERE ip2.id_item = ip.id_item " +
+	    ")";
+
+
+      pst = con.prepareStatement(query);
+
+    	 pst.setInt(1, stato_item);  // 1 in lavorazione;  2 lavorato
+    	
+    	
+       rs = pst.executeQuery();
+       while (rs.next()) {
+       item = rs.getInt("item");
+       }
+
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw e;
+    }finally {
+
+        if (rs != null)
+            rs.close();
+
+        if (pst != null)
+            pst.close();
+      
+    }
+
+    return item;
+}
+
+
+
+
+
 }
 
 

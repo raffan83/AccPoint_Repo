@@ -1407,7 +1407,47 @@ $(document).ready(function() {
 		    		    }
 		    		}},
 		      	{"data" : "cognome", createdCell: editableCell},
-		      	{"data" : "cf"},
+		      	{
+		      	    "data": "cf",
+
+		      	    createdCell: function (td, cellData, rowData, row, col) {
+
+		      	        // comportamento esistente: cella modificabile
+		      	        editableCell(td, cellData, rowData, row, col);
+
+		      	        function controllaCf() {
+
+		      	            var dataNascitaMoment = rowData.data_nascita
+		      	                ? moment(rowData.data_nascita, [
+		      	                    "MMM DD, YYYY",
+		      	                    "DD/MM/YYYY"
+		      	                  ], true)
+		      	                : null;
+
+		      	            var cfValido = codiceFiscaleFormalmenteValido(
+		      	                $(td).text(),
+		      	                dataNascitaMoment && dataNascitaMoment.isValid()
+		      	                    ? { dataNascita: dataNascitaMoment }
+		      	                    : null
+		      	            );
+
+		      	            if (cfValido) {
+		      	                $(td).css('color', '');
+		      	            } else {
+		      	                $(td).css('color', '#e57373');
+		      	            }
+		      	        }
+
+		      	        // controllo iniziale
+		      	        controllaCf();
+
+		      	        // controllo mentre viene modificato il CF
+		      	        td.addEventListener('input', controllaCf);
+
+		      	        // controllo quando si esce dalla cella
+		      	        td.addEventListener('blur', controllaCf);
+		      	    }
+		      	},
 		      	{"data" : "data_nascita", createdCell: editableCell},
 		      	{"data" : "luogo_nascita", createdCell: editableCell},
 		      	{"data" : "azienda"},
@@ -1544,52 +1584,57 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 var checkForm = 1;
 	 var checkAzienda = 1;
 	 
+	 console.log("prima fro");
 	 for (var i = 0; i < data_table.length; i++) {
 		 var partecipante ={};
-		 
-		 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+		 var cf = data_table[i].cf;   // <-- CF pulito
+		 var x = $('#content_corsi_'+data_table[i].cf_originale)[0].parentNode.parentNode;
 			$(x).css("background-color","#F9F9F9")
 		 
 		partecipante.nome = data_table[i].nome_originale 
     ? data_table[i].nome_originale 
     : data_table[i].nome;
 		 partecipante.cognome = data_table[i].cognome;
-		 partecipante.cf = data_table[i].cf;
+	
+		 console.log("cf  "+ $('#ruolo_table_'+cf).val());
+		 console.log("cf originale"+ $('#ruolo_table_'+data_table[i].cf_originale).val());
+		 
+		 partecipante.cf = cf;
 		 partecipante.data_nascita = data_table[i].data_nascita;
 		 partecipante.luogo_nascita = data_table[i].luogo_nascita;
-		 partecipante.azienda = $('#azienda_table_'+data_table[i].cf).val();
-		 partecipante.sede =  $('#sede_table_'+data_table[i].cf).val();
-		 partecipante.id_corso =  $('#corso_table_'+data_table[i].cf).val();
-		 partecipante.id_ruolo = $('#ruolo_table_'+data_table[i].cf).val();
-		 partecipante.ore =  $('#ore_table_'+data_table[i].cf).val();
-		 partecipante.firma_responsabile = $('#firma_responsabile_'+data_table[i].cf).val();
-		 partecipante.firma_legale_rappresentante = $('#firma_legale_rappresentante_'+data_table[i].cf).val();
-		 partecipante.firma_centro_formazione = $('#firma_centro_formazione_'+data_table[i].cf).val();
+		 partecipante.azienda = $('#azienda_table_'+ data_table[i].cf_originale).val();
+		 partecipante.sede =  $('#sede_table_'+ data_table[i].cf_originale).val();
+		 partecipante.id_corso =  $('#corso_table_'+ data_table[i].cf_originale).val();
+		 partecipante.id_ruolo = $('#ruolo_table_'+data_table[i].cf_originale).val();
+		 partecipante.ore =  $('#ore_table_'+data_table[i].cf_originale).val();
+		 partecipante.firma_responsabile = $('#firma_responsabile_'+data_table[i].cf_originale).val();
+		 partecipante.firma_legale_rappresentante = $('#firma_legale_rappresentante_'+data_table[i].cf_originale).val();
+		 partecipante.firma_centro_formazione = $('#firma_centro_formazione_'+data_table[i].cf_originale).val();
 		 
 		 if(data_table[i].nome == ''){
 			 checkForm = 0;
-			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+			 var x = $('#content_corsi_'+data_table[i].cf_originale)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
 		 }
 		 if(data_table[i].cognome == ''){
 			 checkForm = 0;
-			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+			 var x = $('#content_corsi_'+data_table[i].cf_originale)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
 		 }
 		 if(data_table[i].data_nascita == ''){
 			 checkForm = 0;
-			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+			 var x = $('#content_corsi_'+data_table[i].cf_originale)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
 		 }
 		 if(data_table[i].luogo_nascita == ''){
 			 checkForm = 0;
-			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
+			 var x = $('#content_corsi_'+data_table[i].cf_originale)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
 		 }
 		 
 
 		 
- 		 if($('#azienda_table_'+data_table[i].cf).val() == null || $('#azienda_table_'+data_table[i].cf).val() == ''){
+ 		 if($('#azienda_table_'+data_table[i].cf_originale).val() == null || $('#azienda_table_'+data_table[i].cf_originale).val() == ''){
  			checkAzienda = 0;
 			 //var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
 			//	$(x).css("background-color","#F8F26D")
@@ -1599,7 +1644,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 			 var x = $('#content_corsi_'+data_table[i].cf)[0].parentNode.parentNode;
 				$(x).css("background-color","#F8F26D")
 		 }  */
-		 
+		 console.log("azienda " +$('#azienda_table').val());
 		 data.push(partecipante);
 	}
 	 
@@ -1868,7 +1913,8 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 	 
 	 var nomi_irregolari = [];
 	 var duplicati = [];
-	  var col_cf = [];
+	 var cf_non_validi = [];   // <-- nuovo
+	 var col_cf = [];
 	  
 	  if(lista_partecipanti_import!=null){
 		  const tipoImport = tipo; 
@@ -1880,6 +1926,8 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			  dati.nome = lista_partecipanti_import[i].nome;
 			  dati.cognome = lista_partecipanti_import[i].cognome;
 			  dati.cf = lista_partecipanti_import[i].cf;
+	
+			  dati.cf_originale = lista_partecipanti_import[i].cf;
 			  
 			  dati.data_nascita = formatDate(moment(lista_partecipanti_import[i].data_nascita, "MMM DD, YYYY"));
 			  dati.luogo_nascita = lista_partecipanti_import[i].luogo_nascita;
@@ -1919,6 +1967,19 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 			            + '\')" style="margin-top:5px;">Reset azienda/sede</a>';
 			  }
 			  
+			// --- Controllo formale del CF ---
+			  const dataNascitaMoment = lista_partecipanti_import[i].data_nascita
+			      ? moment(lista_partecipanti_import[i].data_nascita, "MMM DD, YYYY")
+			      : null;
+
+			  const cfValido = codiceFiscaleFormalmenteValido(
+			      lista_partecipanti_import[i].cf,
+			      dataNascitaMoment ? { dataNascita: dataNascitaMoment } : null
+			  );
+
+			  if (!cfValido) {
+				    cf_non_validi.push(lista_partecipanti_import[i].cf);
+				}
 			
 			  
 			  if(lista_partecipanti_import[i].nominativo_irregolare == 1){
@@ -1944,6 +2005,7 @@ function associaPartecipanteCorsiFromExcel(cf,corso,ruolo,ore){
 				$('#label_duplicati').show();
 				
 				  for(var j = 0; j < col_cf.length; j++){
+				
 					  if(col_cf[j] == duplicati[d]){
 						  table_data[j].nome_originale = lista_partecipanti_import[j].nome; // nome pulito per il DB
 				            
@@ -2605,6 +2667,73 @@ function changeSedeTab(cf, value){
  $('#myModalErrorContent').on('hidden.bs.modal', function(){
 	$(document).css("padding-right", "0px"); 
  });
+ 
+ 
+ const CF_MESI = "ABCDEHLMPRST";                 // lettera -> mese (A=1 ... T=12)
+ const CF_OMOCODIA = "LMNPQRSTUV";               // lettera -> cifra (L=0 ... V=9)
+ const CF_DISPARI = [1,0,5,7,9,13,15,17,19,21,2,4,18,20,11,3,6,8,12,14,16,10,22,25,24,23];
+
+ function codiceFiscaleFormalmenteValido(cf, opzioni) {
+     if (!cf || typeof cf !== "string") return false;
+
+     cf = cf.replace(/\s+/g, "").toUpperCase();
+
+     // Formato: ammette lettere di omocodia (LMNPQRSTUV) al posto delle cifre
+     const regex = /^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/;
+     if (!regex.test(cf)) return false;
+
+     // --- Carattere di controllo (calcolato sui primi 15 caratteri originali) ---
+     let somma = 0;
+     for (let i = 0; i < 15; i++) {
+         const c = cf.charAt(i);
+         const isDigit = c >= "0" && c <= "9";
+         const idx = isDigit ? c.charCodeAt(0) - 48 : c.charCodeAt(0) - 65;
+         // posizioni 1,3,5... (indice 0,2,4...) => tabella dispari
+         somma += (i % 2 === 0) ? CF_DISPARI[idx] : idx;
+     }
+     if (String.fromCharCode(65 + (somma % 26)) !== cf.charAt(15)) return false;
+
+     // --- Decodifica omocodia nelle posizioni 6,7,9,10,12,13,14 ---
+     const chars = cf.split("");
+     [6, 7, 9, 10, 12, 13, 14].forEach(function (p) {
+         const pos = CF_OMOCODIA.indexOf(chars[p]);
+         if (pos !== -1) chars[p] = String(pos);
+     });
+
+     // --- Data di nascita ---
+     const yy = parseInt(chars[6] + chars[7], 10);
+     const mese = CF_MESI.indexOf(chars[8]) + 1;
+     let giorno = parseInt(chars[9] + chars[10], 10);
+     const sesso = giorno > 40 ? "F" : "M";
+     if (giorno > 40) giorno -= 40;
+
+     // Secolo: si sceglie il più recente che non sia nel futuro
+     const annoCorrente = new Date().getFullYear();
+     let anno = 2000 + yy;
+     if (anno > annoCorrente) anno = 1900 + yy;
+
+     const bisestile = (anno % 4 === 0 && anno % 100 !== 0) || anno % 400 === 0;
+     const giorniMese = [31, bisestile ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+     if (giorno < 1 || giorno > giorniMese[mese - 1]) return false;
+
+     // La data non deve essere futura
+     if (new Date(anno, mese - 1, giorno) > new Date()) return false;
+
+     // --- Controlli incrociati opzionali con i dati importati ---
+     if (opzioni) {
+         if (opzioni.sesso && opzioni.sesso.toUpperCase() !== sesso) return false;
+
+         if (opzioni.dataNascita) {
+             const d = moment(opzioni.dataNascita);
+             if (d.isValid()) {
+                 if (d.date() !== giorno || (d.month() + 1) !== mese ||
+                     (d.year() % 100) !== yy) return false;
+             }
+         }
+     }
+
+     return true;
+ }
  
   </script>
   

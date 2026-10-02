@@ -762,11 +762,18 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		
 		
 		for(int i = 0; i<lista.size();i++) {
+			
+			if(lista.get(i).getCf()==null)
+			{
+				lista.get(i).setCf("");
+			}
+			
 			if(!lista.get(i).getCf().equals(cf)) {
 				result =  true;
 				break;
 			}
-		}
+			}
+		
 			
 		return result;
 		

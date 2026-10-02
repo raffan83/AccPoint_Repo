@@ -468,6 +468,39 @@
 
 	
     $(document).ready(function() {
+
+    	/* PALETTE COLORI DASHBOARD */
+    	var coloriDashboard = [
+    'rgba(99, 102, 241, 0.62)',
+    'rgba(34, 211, 238, 0.62)',
+    'rgba(52, 211, 153, 0.62)',
+    'rgba(251, 191, 36, 0.62)',
+    'rgba(251, 113, 133, 0.62)',
+    'rgba(167, 139, 250, 0.62)',
+    'rgba(45, 212, 191, 0.62)',
+    'rgba(96, 165, 250, 0.62)',
+    'rgba(244, 114, 182, 0.62)',
+    'rgba(163, 230, 53, 0.62)',
+    'rgba(251, 146, 60, 0.62)',
+    'rgba(129, 140, 248, 0.62)',
+    'rgba(56, 189, 248, 0.62)'
+   ];
+    	var bordiDashboard = [
+    	    'rgba(79, 70, 229, 1)',
+    	    'rgba(6, 182, 212, 1)',
+    	    'rgba(16, 185, 129, 1)',
+    	    'rgba(245, 158, 11, 1)',
+    	    'rgba(244, 63, 94, 1)',
+    	    'rgba(139, 92, 246, 1)',
+    	    'rgba(20, 184, 166, 1)',
+    	    'rgba(59, 130, 246, 1)',
+    	    'rgba(236, 72, 153, 1)',
+    	    'rgba(132, 204, 22, 1)',
+    	    'rgba(249, 115, 22, 1)',
+    	    'rgba(99, 102, 241, 1)',
+    	    'rgba(14, 165, 233, 1)'
+    	];
+
     	
     	$(document).on('click', '.dashboard-box [data-widget="collapse"]', function () {
     	    var box = $(this).closest('.dashboard-box');
@@ -608,37 +641,38 @@
     	
 if(trendJson!=null){
     	tipoTrendJson.forEach(function(item, index) {
+    		
+    		var coloriTrend = coloriDashboard;
+            var bordiTrend = bordiDashboard;
 
-    		newArrColor = [
-		         'rgba(255, 99, 132, 0.2)',
-		         'rgba(54, 162, 235, 0.2)',
-		         'rgba(255, 206, 86, 0.2)',
-		         'rgba(75, 192, 192, 0.2)',
-		         'rgba(153, 102, 255, 0.2)',
-		         'rgba(255, 159, 64, 0.2)',
-		         'rgba(255,0,0,0.2)',
-		         'rgba(46,46,255,0.2)',
-		         'rgba(255,102,143,0.2)',
-		         'rgba(255,240,36,0.2)',
-		         'rgba(255,54,255,0.2)',
-		         'rgba(107,255,235,0.2)',
-		         'rgba(255,83,64,0.2)'
-		     ];
-     		newArrColorBorder = [
-		         'rgba(255, 99, 132, 1)',
-		         'rgba(54, 162, 235, 1)',
-		         'rgba(255, 206, 86, 1)',
-		         'rgba(75, 192, 192, 1)',
-		         'rgba(153, 102, 255, 1)',
-		         'rgba(255, 159, 64, 1)',
-		         'rgba(255,0,0,1)',
-		         'rgba(46,46,255,1)',
-		         'rgba(255,102,143,1)',
-		         'rgba(255,240,36,1)',
-		         'rgba(255,54,255,1)',
-		         'rgba(107,255,235,1)',
-		         'rgba(255,83,64,1)'
-		     ];
+            if (item.descrizione &&
+                item.descrizione.toLowerCase().indexOf("certificat") !== -1) {
+
+            	coloriTrend = [
+            	    'rgba(96, 165, 250, 0.58)',    // azzurro soft
+            	    'rgba(110, 231, 183, 0.58)',   // verde soft
+            	    'rgba(253, 224, 71, 0.58)',    // giallo soft
+            	    'rgba(251, 146, 60, 0.58)',    // arancio soft
+            	    'rgba(251, 113, 133, 0.58)',   // corallo soft
+            	    'rgba(196, 181, 253, 0.58)',   // viola soft
+            	    'rgba(94, 234, 212, 0.58)'     // teal soft
+            	];
+
+            	bordiTrend = [
+            	    'rgba(96, 165, 250, 0.90)',
+            	    'rgba(110, 231, 183, 0.90)',
+            	    'rgba(253, 224, 71, 0.90)',
+            	    'rgba(251, 146, 60, 0.90)',
+            	    'rgba(251, 113, 133, 0.90)',
+            	    'rgba(196, 181, 253, 0.90)',
+            	    'rgba(94, 234, 212, 0.90)'
+            	];
+            }
+
+            newArrColor = coloriTrend;
+            newArrColorBorder = bordiTrend;
+
+		
 
 
     	numberBack1 = Math.ceil(Object.keys(trendJson).length/6);
@@ -702,6 +736,7 @@ if(trendJson!=null){
     			totalElement += val.val;
     			itemHeight1 += 12;
     			dataset1.backgroundColor = dataset1.backgroundColor.concat(newArrColor);
+				dataset1.borderColor = dataset1.borderColor.concat(newArrColorBorder);
     			
 		}
     		});
@@ -807,22 +842,20 @@ var graficoItem = {
 
      label: "# Item",
 
-     data: [0, 0, 0, 0, 0, 0, 0],
+     data: [0, 0, 0, 0],
 
      backgroundColor: [
-         'rgba(255, 99, 132, 0.5)',      
-         'rgba(255, 206, 86, 0.5)',      
-         'rgba(54, 162, 235, 0.5)',
-         'rgba(153, 102, 255, 0.5)'
-      
+    	 'rgba(248, 113, 113, 0.68)',    // In lavorazione
+         'rgba(245, 158, 11, 0.82)',    // Presso fornitori
+         'rgba(16, 185, 129, 0.82)',    // Lavorati in magazzino
+         'rgba(6, 182, 212, 0.82)'      // Lavorati in spedizione
      ],
 
      borderColor: [
-         'rgba(255, 99, 132, 1)',      
-         'rgba(255, 206, 86, 1)',
-         'rgba(54, 162, 235, 1)',
-         'rgba(153, 102, 255, 1)'
-         
+    	 'rgba(239, 68, 68, 0.90)', 
+         'rgba(245, 158, 11, 0.90)',
+         'rgba(16, 185, 129, 0.90)',
+         'rgba(6, 182, 212, 0.90)'
      ],
 
      borderWidth: 1
@@ -999,24 +1032,24 @@ var graficoCertificati = {
 		 data: [0, 0, 0, 0, 0, 0],
 
 		 backgroundColor: [
-		     'rgba(54, 162, 235, 0.5)',
-		     'rgba(75, 192, 192, 0.5)',
-		     'rgba(255, 206, 86, 0.5)',
-		     'rgba(153, 102, 255, 0.5)',
-		     'rgba(255, 99, 132, 0.5)',
-		     'rgba(100, 100, 100, 0.5)'
-		 ],
+			 'rgba(16, 185, 129, 0.82)',	// LAT
+			 'rgba(245, 158, 11, 0.82)',     // SVT
+             'rgba(59, 130, 246, 0.82)',    // RDT             
+             'rgba(6, 182, 212, 0.82)',// RDP
+             'rgba(244, 63, 94, 0.82)',     // SE
+             'rgba(148, 163, 184, 0.82)'     // ALTRO
+         ],
 
-		 borderColor: [
-		     'rgba(54, 162, 235, 1)',
-		     'rgba(75, 192, 192, 1)',
-		     'rgba(255, 206, 86, 1)',
-		     'rgba(153, 102, 255, 1)',
-		     'rgba(255, 99, 132, 1)',
-		     'rgba(100, 100, 100, 1)'
-		 ],
+         borderColor: [
+        	 'rgba(16, 185, 129, 1)',        	 
+        	  'rgba(245, 158, 11, 1)',
+             'rgba(37, 99, 235, 1)',          
+             'rgba(6, 182, 212, 1)',
+             'rgba(244, 63, 94, 1)',
+             'rgba(100, 116, 139, 1)'
+         ],
 
-		 borderWidth: 1
+         borderWidth: 2
 		}]
 
 };

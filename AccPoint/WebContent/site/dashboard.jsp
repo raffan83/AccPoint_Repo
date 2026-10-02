@@ -215,7 +215,8 @@
         SVT: <strong id="numeroSVT">0</strong> &nbsp; | &nbsp;
         RDT: <strong id="numeroRDT">0</strong> &nbsp; | &nbsp;
         RDP: <strong id="numeroRDP">0</strong> &nbsp; | &nbsp;
-        SE: <strong id="numeroSE">0</strong>
+        SE: <strong id="numeroSE">0</strong> &nbsp; | &nbsp;
+        ALTRO: <strong id="numeroAltro">0</strong>
 
     </div>
 
@@ -429,6 +430,7 @@
 	var certificatiRDT = ${empty certificatiRDTJson ? '[0,0,0,0,0,0]' : certificatiRDTJson};
 	var certificatiRDP = ${empty certificatiRDPJson ? '[0,0,0,0,0,0]' : certificatiRDPJson};
 	var certificatiSE  = ${empty certificatiSEJson ? '[0,0,0,0,0,0]' : certificatiSEJson};
+	var certificatiAltro = ${empty certificatiAltroJson ? '[0,0,0,0,0,0]' : certificatiAltroJson};
 	
 	var itemInLavorazione = ${empty itemInLavorazione ? 0 : itemInLavorazione};
 	var itemFornitori = ${empty itemFornitori ? 0 : itemFornitori};
@@ -482,6 +484,7 @@
     	    }, 500);
     	});
     	
+    	
     	/* INVERSIONE POSIZIONE:
     	   MISURE EFFETTUATE <-> CERTIFICATI */
 
@@ -509,7 +512,6 @@
     	    // Elimina il segnaposto
     	    parent.removeChild(placeholder);
     	}
-    	
     
     	$.fn.dataTable.moment( 'dd/MM/yyyy HH:mm:ss' );
     	
@@ -983,45 +985,39 @@ var numeroMesi = Math.min(
  certificatiSVT.length,
  certificatiRDT.length,
  certificatiRDP.length,
- certificatiSE.length
+ certificatiSE.length,
+ certificatiAltro.length
 );
 
 //Configurazione iniziale del grafico
 var graficoCertificati = {
 
- labels: [
-     "LAT",
-     "SVT",
-     "RDT",
-     "RDP",
-     "SE"
- ],
+		labels: ["LAT", "SVT", "RDT", "RDP", "SE", "ALTRO"],
 
- datasets: [{
+		datasets: [{
+		 label: "# Certificati",
+		 data: [0, 0, 0, 0, 0, 0],
 
-     label: "# Certificati",
+		 backgroundColor: [
+		     'rgba(54, 162, 235, 0.5)',
+		     'rgba(75, 192, 192, 0.5)',
+		     'rgba(255, 206, 86, 0.5)',
+		     'rgba(153, 102, 255, 0.5)',
+		     'rgba(255, 99, 132, 0.5)',
+		     'rgba(100, 100, 100, 0.5)'
+		 ],
 
-     data: [0, 0, 0, 0, 0],
+		 borderColor: [
+		     'rgba(54, 162, 235, 1)',
+		     'rgba(75, 192, 192, 1)',
+		     'rgba(255, 206, 86, 1)',
+		     'rgba(153, 102, 255, 1)',
+		     'rgba(255, 99, 132, 1)',
+		     'rgba(100, 100, 100, 1)'
+		 ],
 
-     backgroundColor: [
-         'rgba(54, 162, 235, 0.5)',
-         'rgba(75, 192, 192, 0.5)',
-         'rgba(255, 206, 86, 0.5)',
-         'rgba(153, 102, 255, 0.5)',
-         'rgba(255, 99, 132, 0.5)'
-     ],
-
-     borderColor: [
-         'rgba(54, 162, 235, 1)',
-         'rgba(75, 192, 192, 1)',
-         'rgba(255, 206, 86, 1)',
-         'rgba(153, 102, 255, 1)',
-         'rgba(255, 99, 132, 1)'
-     ],
-
-     borderWidth: 1
-
- }]
+		 borderWidth: 1
+		}]
 
 };
 
@@ -1105,11 +1101,12 @@ function aggiornaGraficoCertificati() {
  var rdt = certificatiRDT[indiceMese];
  var rdp = certificatiRDP[indiceMese];
  var se  = certificatiSE[indiceMese];
- 
+ var altro = certificatiAltro[indiceMese];
+
 
 
  // Totale del mese
- var totale = lat + svt + rdt + rdp + se;
+var totale = lat + svt + rdt + rdp + se + altro;
  
 //Aggiornamento dei numeri visualizzati nel box
 
@@ -1120,6 +1117,7 @@ function aggiornaGraficoCertificati() {
  $("#numeroRDT").text(rdt);
  $("#numeroRDP").text(rdp);
  $("#numeroSE").text(se);
+ $("#numeroAltro").text(altro);
 
  // Calcolo del mese da visualizzare
  var dataMese = new Date(dataRiferimento);
@@ -1137,13 +1135,7 @@ function aggiornaGraficoCertificati() {
  );
 
  // Aggiornamento dei valori del grafico
- myChartCertificati.data.datasets[0].data = [
-     lat,
-     svt,
-     rdt,
-     rdp,
-     se
- ];
+myChartCertificati.data.datasets[0].data = [lat, svt, rdt, rdp, se, altro];
 
 //Gestione dei mesi senza certificati
 

@@ -11,6 +11,7 @@ public class GraficoDashboardDTO  implements Cloneable {
 	private List<Integer> listaCertificatiRDT = new ArrayList<>();
 	private List<Integer> listaCertificatiRDP = new ArrayList<>();
 	private List<Integer> listaCertificatiSE = new ArrayList<>();
+	private List<Integer> listaCertificatiAltro = new ArrayList<>();
 	private int itemInLavorazione =0;
 	private int itemFornitori=0;
 	private int itemLavoratiInIngresso=0;
@@ -127,6 +128,16 @@ public class GraficoDashboardDTO  implements Cloneable {
 
 	public void setItemLavoratiInSpedizione(int itemLavoratiInSpedizione) {
 		this.itemLavoratiInSpedizione = itemLavoratiInSpedizione;
+	}
+
+
+	public List<Integer> getListaCertificatiAltro() {
+		return listaCertificatiAltro;
+	}
+
+
+	public void setListaCertificatiAltro(List<Integer> listaCertificatiAltro) {
+		this.listaCertificatiAltro = listaCertificatiAltro;
 	}
 	
 	

@@ -536,6 +536,12 @@ public class Login extends HttpServlet {
 			        		    "certificatiSEJson",
 			        		    gsonCertificati.toJson(graficoDash.getListaCertificatiSE())
 			        		);
+			        		
+			        		request.getSession().setAttribute(
+				        		    "certificatiAltroJson",
+				        		    gsonCertificati.toJson(graficoDash.getListaCertificatiAltro())
+				        		);
+				        	
 			        	
 			        		
 			        		

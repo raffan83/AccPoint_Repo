@@ -4877,7 +4877,51 @@ public static ArrayList<String> getListaOriginePacchiApertiByCommessa(String com
 	
 }
 
+public static ArrayList<String> getListaCertificatiString(int month,Connection con) throws Exception {
+	
+	 List<String> lista_certificati = new ArrayList<>();
 
+	    PreparedStatement pst = null;
+		 ResultSet rs = null;
+		 
+		 try {
+
+	    String query =
+	        "SELECT m.nCertificato " +
+	        "FROM misura m " +
+	        "WHERE YEAR(m.dataMisura) = YEAR(DATE_ADD(CURDATE(), INTERVAL ? MONTH)) " +
+	        "AND MONTH(m.dataMisura) = MONTH(DATE_ADD(CURDATE(), INTERVAL ? MONTH))";
+
+
+	       pst = con.prepareStatement(query);
+
+	        pst.setInt(1, month);
+	        pst.setInt(2, month);
+
+	        rs = pst.executeQuery();
+	        
+	        while (rs.next()) {
+	        	  String nCertificato = rs.getString("nCertificato");
+	        	  if (nCertificato != null) {
+	        		  lista_certificati.add(nCertificato);
+	              }
+	        	 
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	      
+	    }
+
+	    return (ArrayList<String>) lista_certificati;
+}
 
 
 public static int getListaCertificatiLATSE(String rap, int month,Connection con) throws Exception {

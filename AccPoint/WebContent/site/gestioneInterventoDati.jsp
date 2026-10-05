@@ -5256,7 +5256,9 @@ function nuovoIntervento(commessa,codicePaccoOrigine){
             if (data.success) {
              popolaSelectOrigine(data.lista_origine || []);
              
-             $('#origine').val(codicePaccoOrigine).trigger('change');
+             if (codicePaccoOrigine !== null && codicePaccoOrigine !== undefined && codicePaccoOrigine !== '') {
+            	    $('#origine').val(codicePaccoOrigine).trigger('change');
+            	}
              
              $('#myModalCambiaPaccoOrigine').modal('show');
            

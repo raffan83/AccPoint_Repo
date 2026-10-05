@@ -1375,6 +1375,95 @@ public class GestioneRisorse extends HttpServlet {
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Salvato con successo!");
 				out.print(myObj);
+			}else if(action.equals("get_dati_requisiti_intervento")) {
+
+			    ajax = true;
+
+			    response.setContentType("application/json; charset=UTF-8");
+			    response.setCharacterEncoding("UTF-8");
+
+			    myObj = new JsonObject();
+
+			    PrintWriter out = response.getWriter();
+
+			    try {
+
+			        String idIntervento =
+			                request.getParameter("id_intervento");
+
+			        InterventoDTO intervento =
+			                GestioneInterventoBO.getIntervento(
+			                        idIntervento,
+			                        session
+			                );
+
+			        ArrayList<PRRequisitoDocumentaleDTO> lista_documentale =
+			                GestioneRisorseBO
+			                        .getListaRequisitiDocumentali(session);
+
+			        ArrayList<PRRequisitoSanitarioDTO> lista_sanitari =
+			                GestioneRisorseBO
+			                        .getListaRequisitiSanitari(session);
+
+			        Map<Integer, Integer> map_relazioni =
+			                DirectMySqlDAO.getListaRelazioni();
+
+
+			        Gson gson = new GsonBuilder()
+			                .setDateFormat("dd/MM/yyyy")
+			                .create();
+
+
+			        myObj.addProperty(
+			                "success",
+			                true
+			        );
+
+			        myObj.add(
+			                "lista_documentale",
+			                gson.toJsonTree(lista_documentale)
+			        );
+
+			        myObj.add(
+			                "lista_sanitari",
+			                gson.toJsonTree(lista_sanitari)
+			        );
+
+			        myObj.add(
+			                "lista_requisiti",
+			                gson.toJsonTree(
+			                        intervento.getListaRequisiti()
+			                )
+			        );
+
+			        myObj.add(
+			                "map_relazioni",
+			                gson.toJsonTree(map_relazioni)
+			        );
+
+
+			    } catch(Exception e) {
+
+			        myObj = new JsonObject();
+
+			        myObj.addProperty(
+			                "success",
+			                false
+			        );
+
+			        myObj.addProperty(
+			                "messaggio",
+			                "Errore durante il caricamento dei requisiti: "
+			                + e.getMessage()
+			        );
+
+			        e.printStackTrace();
+			    }
+
+
+			    // QUESTA PARTE TI MANCAVA
+			    out.print(myObj);
+			    out.flush();
 			}
 			
 			session.getTransaction().commit();

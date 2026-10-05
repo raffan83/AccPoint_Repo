@@ -1507,18 +1507,7 @@ Log Attivit&agrave; Operatore
  
  <tbody>
 
- 	<c:forEach items="${lista_documentale}" var="requisito" varStatus="loop">
-
-	<tr id="row_doc_${requisito.id }">
-	<td></td>
-	<td>${requisito.id }</td>	
-	<td>${requisito.categoria.codice }</td>
-	<td>${requisito.categoria.descrizione }</td>
-	</tr>
-	</c:forEach>
-	 
-
- </tbody>
+</tbody>
  </table>  
 </div>
 </div>
@@ -1541,18 +1530,8 @@ Log Attivit&agrave; Operatore
  </tr></thead>
  
  <tbody>
- 
- 	<c:forEach items="${lista_sanitari}" var="requisito" varStatus="loop">
- 	
-	<tr id="row_san_${requisito.id }">
-	<td></td>
-	<td>${requisito.id }</td>	
-	<td>${requisito.descrizione }</td>
-	</tr>
-	</c:forEach>
-	 
 
- </tbody>
+</tbody>
  </table>  
 </div>
 </div>
@@ -4592,309 +4571,625 @@ var config4 = {
 	    return table;
 	}
     
-    function aggiungiRequisito(){
-     	 
-    	var t_doc = $("#tabRequisitiDocumentaliModal").DataTable();
-    	var t_san = $("#tabRequisitiSanitariModal").DataTable();
-    	
-     	 var  listaRequisitiJson = ${listaRequisitiJson};
-     	 
-     	 for (var i = 0; i < listaRequisitiJson.length; i++) {
-     			var r = listaRequisitiJson[i];
-     			
-     			if(r.requisito_documentale!=null){
-     			
-     				t_doc.row( "#row_doc_"+ r.requisito_documentale.id, { page:   'all'}).select();
-     				
-     				
-     			}
+    function aggiungiRequisito() {
 
-     			if(r.requisito_sanitario!=null){
-     				
-     				t_san.row( "#row_san_"+ r.requisito_sanitario.id, { page:   'all'}).select();
-     				
-     				
-     			            
-     			}
-     				   
-     		}
-     
-     	 
-     	 
-     	 $('#modalNuovoRequisito').modal()
-     	 
-     	let isSyncing = false;
+        pleaseWaitDiv = $('#pleaseWaitDialog');
+        pleaseWaitDiv.modal();
 
-     	t_doc.on('select', function (e, dt, type, indexes) {
-     	    if (isSyncing) return;
+        $.ajax({
 
-     	    if (type === 'row') {
-     	        const data = t_doc.row(indexes[0]).data();
+            url: "gestioneRisorse.do",
 
-     	        if (map_relazioni.hasOwnProperty(data[1])) {
-     	            const valore = map_relazioni[data[1]];
+            type: "POST",  
 
-     	            isSyncing = true;
-     	            t_san.row("#row_san_" + valore, { page: 'all' }).select();
-     	            isSyncing = false;
-     	        }
-     	    }
-     	});
+            dataType: "json",
 
-     	t_san.on('select', function (e, dt, type, indexes) {
-     	    if (isSyncing) return;
+            data: {
+                action: "get_dati_requisiti_intervento",
+                id_intervento: '${intervento.id}'
+            },
 
-     	    if (type === 'row') {
-     	        const data = t_san.row(indexes[0]).data();
+            success: function(data) {
 
-     	        if (Object.values(map_relazioni).includes(Number(data[1]))) {
-     	            const chiave = Object.entries(map_relazioni).find(([k, v]) => v == data[1])?.[0];
+                console.log("RISPOSTA get_dati_requisiti_intervento:", data);
 
-     	            if (chiave !== undefined) {
-     	                isSyncing = true;
-     	                t_doc.row("#row_doc_" + chiave, { page: 'all' }).select();
-     	                isSyncing = false;
-     	            }
-     	        }
-     	    }
-     	});
+                if(data.success) {
 
-      }
-    
-    var map_relazioni = ${map_relazioni};
-	
- 	 
-    function assegnaRisorsa(id_intervento ,risorse_all){
-    	
-      	pleaseWaitDiv = $('#pleaseWaitDialog');
-		pleaseWaitDiv.modal();
-    	dataObj ={};
-    	dataObj.id_intervento = id_intervento;
-    	   var t = $('#tabRisorse').DataTable()
-			t.clear().draw();
-    	
-    	   if(risorse_all == null){
-    		   var forzato = ${isPresentForzato};
-    	   }else{
-    		   var forzato = 0;
-    	   }
-    	   
+                    var listaDocumentale = data.lista_documentale || [];
+                    var listaSanitari = data.lista_sanitari || [];
+                    var listaRequisitiJson = data.lista_requisiti || [];
+                    var map_relazioni = data.map_relazioni || {};
 
-    	var risorse_intervento = ${risorse_intervento_json}
-    
-    	
-    	if((risorse_all!=null && risorse_all == 1) || forzato==1){
-    		
-    		 table_data = []
-    		
-    		 for(var i = 0; i<lista_risorse_json.length;i++){
-				  var dati = {};
-			/* 	  dati.check ="<td></td>"; */
-			  dati.check = null; 
-				  dati.id = lista_risorse_json[i].id;
-				  if(lista_requisiti_doc_risorse[lista_risorse_json[i].id]!=null && lista_requisiti_doc_risorse[lista_risorse_json[i].id].find(item => item.corso_cat.id === 31)){
-					  dati.nominativo = lista_risorse_json[i].utente.nominativo +" [P]";
-				  }else{
-					  dati.nominativo = lista_risorse_json[i].utente.nominativo;  
-				  }
-				  
-		
-				  var risorsa_intervento = risorse_intervento.find(function(r) {
-					    return r.risorsa.id === lista_risorse_json[i].id;
-					});
-				  if(risorsa_intervento){
-					  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse_json[i].id+'" autocomplete="off" style="width:100%"   value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
-				  }else{
-					  dati.data = '<input type="text"style="width:100%"  class="form-control daterange" id="daterange_'+lista_risorse_json[i].id+'" autocomplete="off" style="width:100%"  />';
-				  }
-				  
+                    var t_doc =
+                        $("#tabRequisitiDocumentaliModal").DataTable();
+
+                    var t_san =
+                        $("#tabRequisitiSanitariModal").DataTable();
 
 
-				  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_risorse_json[i].id+")'>Requisiti</a>";
-				  
-				  
-				  dati.DT_RowId = "riga_risorse_"+dati.id;
-				  table_data.push(dati);
-				  
-				  
-    		 }
-					   
-					t.rows.add(table_data).draw();
-						
-					t.columns.adjust().draw();
+                    /*
+                     * Pulizia tabelle
+                     */
+                    t_doc.clear();
+                    t_san.clear();
 
-			
-					
-					$('.daterange').daterangepicker({
-					    locale: {
-					        format: 'DD/MM/YYYY',
-					        applyLabel: 'Applica',
-					        cancelLabel: 'Annulla',
-					        daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
-					        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-					            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
-					        firstDay: 1
-					    },
-					    autoUpdateInput: false
-					});
 
-					$('.daterange').on('apply.daterangepicker', function(ev, picker) {
-					    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-					});
+                    /*
+                     * REQUISITI DOCUMENTALI
+                     */
+                    for(var i = 0; i < listaDocumentale.length; i++) {
 
-					$('.daterange').on('cancel.daterangepicker', function(ev, picker) {
-					    $(this).val('');
-					});
-	    			
-	    	
-	    			if(risorse_intervento !=null){
-	    				for (var i = 0; i < risorse_intervento.length; i++) {
-	    					
-	    					t.row( "#riga_risorse_"+risorse_intervento[i].risorsa.id ).select();
-	    				
-	    				}
-	    		
-	    			}
-	    			
-	    			t.on('select', function (e, dt, type, indexes) {
-	    				
-	    				var rowNode = t.row(indexes[0]).node();
-	    				$(rowNode).find('td').eq(3).find('input').attr("required", true);
-	    			});
-	    			
-				t.on('deselect', function (e, dt, type, indexes) {
-	    				
-	    				var rowNode = t.row(indexes[0]).node();
-	    				$(rowNode).find('td').eq(3).find('input').attr("required", false);
-	    			});
-	    			
-	    			$("#modalRisorse").modal();
-	    		
-		
-    		 pleaseWaitDiv.modal('hide');
-    		 
-    		 $('#risorse_requisiti_btn').attr("disabled", false);
-    		 $('#risorse_tutte_btn').attr("disabled", true);
-    		
-    	}else{
-    		callAjax(dataObj, "gestioneRisorse.do?action=get_risorse_disponibili", function(data){
-        		
-        		if(data.success){
-        			
-        			var lista_risorse = data.lista_risorse_disponibili;
-        			var lista_risorse_all = data.lista_risorse_all;
-        			//lista_risorse_json = data.lista_risorse_all;
-        			//lista_requisiti_doc_risorse = data.lista_req_doc_json;
-        			
-        			 var id_risorse_disponibili = lista_risorse.map(function(r) { return r.id; });
-        			 table_data = []
-        			 
-        			 for(var i = 0; i<lista_risorse.length;i++){
-    					  var dati = {};
-    				/* 	  dati.check ="<td></td>"; */
-    				  dati.check = null; 
-    					  dati.id = lista_risorse[i].id;
-    					  if(lista_requisiti_doc_risorse[lista_risorse_json[i].id]!=null && lista_requisiti_doc_risorse[lista_risorse[i].id].find(item => item.corso_cat.id === 31)){
-    						  dati.nominativo = lista_risorse[i].utente.nominativo +" [P]";
-    					  }else{
-    						  dati.nominativo = lista_risorse[i].utente.nominativo;  
-    					  }
-    					  
-    			
-    					  var risorsa_intervento = risorse_intervento.find(function(r) {
-    						    return r.risorsa.id === lista_risorse[i].id;
-    						});
-    					  if(risorsa_intervento){
-    						  dati.data = '<input type="text" style="width:100%" class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"   value="'+risorsa_intervento.data_inizio+' - '+risorsa_intervento.data_fine+'"/>';  
-    					  }else{
-    						  dati.data = '<input type="text"style="width:100%"  class="form-control daterange" id="daterange_'+lista_risorse[i].id+'" autocomplete="off" style="width:100%"  />';
-    					  }
-    					  
+                        var requisito = listaDocumentale[i];
 
-    	
-    					  dati.azioni = "<a class='btn btn-primary' onClick='mostraRequisiti("+lista_risorse[i].id+")'>Requisiti</a>";
-    					  
-    					  
-    					  dati.DT_RowId = "riga_risorse_"+dati.id;
-    					  table_data.push(dati);
-    					  
-    					  
-    					
-    			
-    		    }
-  		   
-        			 
-				   
-				t.rows.add(table_data).draw();
-					
-				t.columns.adjust().draw();
+                        var row = t_doc.row.add([
+                            "",
+                            requisito.id,
+                            requisito.categoria.codice,
+                            requisito.categoria.descrizione
+                        ]);
 
-		
-				
-				$('.daterange').daterangepicker({
-				    locale: {
-				        format: 'DD/MM/YYYY',
-				        applyLabel: 'Applica',
-				        cancelLabel: 'Annulla',
-				        daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
-				        monthNames: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
-				            'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
-				        firstDay: 1
-				    },
-				    autoUpdateInput: false
-				});
+                        row.node().id =
+                            "row_doc_" + requisito.id;
+                    }
 
-				$('.daterange').on('apply.daterangepicker', function(ev, picker) {
-				    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-				});
 
-				$('.daterange').on('cancel.daterangepicker', function(ev, picker) {
-				    $(this).val('');
-				});
-    			
-    	
-    			if(risorse_intervento !=null){
-    				for (var i = 0; i < risorse_intervento.length; i++) {
-    					
-    					t.row( "#riga_risorse_"+risorse_intervento[i].risorsa.id ).select();
-    				
-    				}
-    		
-    			}
-    			
-    			t.on('select', function (e, dt, type, indexes) {
-    				
-    				var rowNode = t.row(indexes[0]).node();
-    				$(rowNode).find('td').eq(3).find('input').attr("required", true);
-    			});
-    			
-			t.on('deselect', function (e, dt, type, indexes) {
-    				
-    				var rowNode = t.row(indexes[0]).node();
-    				$(rowNode).find('td').eq(3).find('input').attr("required", false);
-    			});
-    			
-    			$("#modalRisorse").modal();
-    			
-    		}
-        		
-        		
-        	;
-        		
-    		pleaseWaitDiv.modal('hide');
+                    /*
+                     * REQUISITI SANITARI
+                     */
+                    for(var i = 0; i < listaSanitari.length; i++) {
 
-   		 
-    		
-    	}, "GET")
-    	
-    	
-    		$('#risorse_requisiti_btn').attr("disabled", true);
-          		 $('#risorse_tutte_btn').attr("disabled", false)
+                        var requisito = listaSanitari[i];
+
+                        var row = t_san.row.add([
+                            "",
+                            requisito.id,
+                            requisito.descrizione
+                        ]);
+
+                        row.node().id =
+                            "row_san_" + requisito.id;
+                    }
+
+
+                    t_doc.draw();
+                    t_san.draw();
+
+
+                    /*
+                     * Preselezione requisiti già presenti
+                     */
+                    for(
+                        var i = 0;
+                        i < listaRequisitiJson.length;
+                        i++
+                    ) {
+
+                        var r = listaRequisitiJson[i];
+
+
+                        if(r.requisito_documentale != null) {
+
+                            t_doc.row(
+                                "#row_doc_" +
+                                r.requisito_documentale.id,
+                                {
+                                    page: 'all'
+                                }
+                            ).select();
+                        }
+
+
+                        if(r.requisito_sanitario != null) {
+
+                            t_san.row(
+                                "#row_san_" +
+                                r.requisito_sanitario.id,
+                                {
+                                    page: 'all'
+                                }
+                            ).select();
+                        }
+                    }
+
+
+                    /*
+                     * Sincronizzazione documentale/sanitario
+                     */
+                    let isSyncing = false;
+
+
+                    /*
+                     * Tolgo gli handler precedenti
+                     */
+                    t_doc.off('select.syncRequisiti');
+
+                    t_san.off('select.syncRequisiti');
+
+
+                    /*
+                     * DOCUMENTALE -> SANITARIO
+                     */
+                    t_doc.on(
+                        'select.syncRequisiti',
+                        function(
+                            e,
+                            dt,
+                            type,
+                            indexes
+                        ) {
+
+                            if(isSyncing)
+                                return;
+
+
+                            if(type === 'row') {
+
+                                var rowData =
+                                    t_doc
+                                        .row(indexes[0])
+                                        .data();
+
+
+                                var idDocumentale =
+                                    rowData[1];
+
+
+                                if(
+                                    map_relazioni.hasOwnProperty(
+                                        idDocumentale
+                                    )
+                                ) {
+
+                                    var idSanitario =
+                                        map_relazioni[
+                                            idDocumentale
+                                        ];
+
+
+                                    isSyncing = true;
+
+
+                                    t_san.row(
+                                        "#row_san_" +
+                                        idSanitario,
+                                        {
+                                            page: 'all'
+                                        }
+                                    ).select();
+
+
+                                    isSyncing = false;
+                                }
+                            }
+                        }
+                    );
+
+
+                    /*
+                     * SANITARIO -> DOCUMENTALE
+                     */
+                    t_san.on(
+                        'select.syncRequisiti',
+                        function(
+                            e,
+                            dt,
+                            type,
+                            indexes
+                        ) {
+
+                            if(isSyncing)
+                                return;
+
+
+                            if(type === 'row') {
+
+                                var rowData =
+                                    t_san
+                                        .row(indexes[0])
+                                        .data();
+
+
+                                var idSanitario =
+                                    Number(
+                                        rowData[1]
+                                    );
+
+
+                                var chiave =
+                                    Object.entries(
+                                        map_relazioni
+                                    ).find(
+                                        function(entry) {
+
+                                            return Number(
+                                                entry[1]
+                                            ) === idSanitario;
+                                        }
+                                    );
+
+
+                                if(chiave !== undefined) {
+
+                                    var idDocumentale =
+                                        chiave[0];
+
+
+                                    isSyncing = true;
+
+
+                                    t_doc.row(
+                                        "#row_doc_" +
+                                        idDocumentale,
+                                        {
+                                            page: 'all'
+                                        }
+                                    ).select();
+
+
+                                    isSyncing = false;
+                                }
+                            }
+                        }
+                    );
+
+
+                    /*
+                     * Apro modal
+                     */
+                    $('#modalNuovoRequisito')
+                        .modal('show');
+
+
+                } else {
+
+                    $('#myModalErrorContent').html(
+                        data.messaggio
+                            ? data.messaggio
+                            : "Errore durante il caricamento dei requisiti."
+                    );
+
+
+                    $('#myModalError')
+                        .removeClass()
+                        .addClass(
+                            "modal modal-danger"
+                        )
+                        .modal('show');
+                }
+
+            },
+
+
+            error: function(xhr, status, error) {
+
+                console.error(
+                    "ERRORE get_dati_requisiti_intervento"
+                );
+
+                console.error(
+                    "HTTP:",
+                    xhr.status
+                );
+
+                console.error(
+                    "STATUS:",
+                    status
+                );
+
+                console.error(
+                    "ERROR:",
+                    error
+                );
+
+                console.error(
+                    "RESPONSE:",
+                    xhr.responseText
+                );
+
+
+                $('#myModalErrorContent').html(
+                    "Errore durante il caricamento dei requisiti."
+                    + "<br>HTTP: "
+                    + xhr.status
+                    + "<br>"
+                    + error
+                );
+
+
+                $('#myModalError')
+                    .removeClass()
+                    .addClass(
+                        "modal modal-danger"
+                    )
+                    .modal('show');
+            },
+
+
+            complete: function() {
+
+                /*
+                 * Chiudo sempre il please wait,
+                 * sia in caso di successo
+                 * sia in caso di errore.
+                 */
+                pleaseWaitDiv.modal('hide');
+            }
+
+        });
     }
-    	
+	   var lista_risorse_json = [];
+	   var lista_requisiti_doc_risorse = {};
+	   var risorse_intervento = [];
+
+    
+    function assegnaRisorsa(id_intervento, risorse_all) {
+
+        pleaseWaitDiv = $('#pleaseWaitDialog');
+        pleaseWaitDiv.modal();
+
+        var dataObj = {};
+        dataObj.id_intervento = id_intervento;
+
+        callAjax(
+            dataObj,
+            "gestioneRisorse.do?action=get_risorse_disponibili",
+            function(data) {
+
+                if(data.success) {
+
+                    /*
+                     * Questi dati non vengono più caricati all'apertura pagina.
+                     * Li inizializziamo solo quando si apre il modal Assegna Risorsa.
+                     */
+                    lista_risorse_json = data.lista_risorse_all || [];
+                    lista_requisiti_doc_risorse = data.lista_req_doc_json || {};
+                    risorse_intervento =data.risorse_intervento_json || [];
+
+                    var forzato = ${isPresentForzato};
+                    var listaDaMostrare = [];
+
+                    /*
+                     * - risorse_all == 1: pulsante "Tutte le risorse"
+                     * - forzato == 1 alla prima apertura: manteniamo il comportamento legacy,
+                     *   mostrando tutte le risorse
+                     * - altrimenti: solo risorse disponibili/con requisiti
+                     */
+                    if((risorse_all != null && risorse_all == 1) || (risorse_all == null && forzato == 1)) {
+
+                        listaDaMostrare = lista_risorse_json;
+
+                        $('#risorse_requisiti_btn').attr("disabled", false);
+                        $('#risorse_tutte_btn').attr("disabled", true);
+
+                    } else {
+
+                        listaDaMostrare = data.lista_risorse_disponibili || [];
+
+                        $('#risorse_requisiti_btn').attr("disabled", true);
+                        $('#risorse_tutte_btn').attr("disabled", false);
+                    }
+
+                    popolaTabellaRisorse(listaDaMostrare);
+
+                    $("#modalRisorse").modal();
+
+                } else {
+
+                    $('#myModalErrorContent').html(
+                        data.messaggio
+                            ? data.messaggio
+                            : "Errore durante il caricamento delle risorse."
+                    );
+
+                    $('#myModalError')
+                        .removeClass()
+                        .addClass("modal modal-danger")
+                        .modal();
+                }
+
+                pleaseWaitDiv.modal('hide');
+            },
+            "GET"
+        );
     }
-    
-    
+
+
+    function popolaTabellaRisorse(lista_risorse) {
+
+        var t = $('#tabRisorse').DataTable();
+
+        t.clear().draw();
+
+        var table_data = [];
+
+        for(var i = 0; i < lista_risorse.length; i++) {
+
+            var risorsa = lista_risorse[i];
+            var dati = {};
+
+            dati.check = null;
+            dati.id = risorsa.id;
+
+            /*
+             * PREPOSTO
+             */
+            var requisitiDocumentaliRisorsa =
+                lista_requisiti_doc_risorse[risorsa.id];
+
+            if(
+                requisitiDocumentaliRisorsa != null
+                &&
+                requisitiDocumentaliRisorsa.find(function(item) {
+                    return item.id === 31;
+                })
+            ) {
+                dati.nominativo = risorsa.utente.nominativo + " [P]";
+            } else {
+                dati.nominativo = risorsa.utente.nominativo;
+            }
+
+
+            /*
+             * Eventuale associazione già esistente con l'intervento.
+             */
+            var associazione = risorse_intervento.find(function(r) {
+                return r.risorsa.id === risorsa.id;
+            });
+
+
+            if(associazione) {
+
+                dati.data =
+                    '<input type="text" ' +
+                    'style="width:100%" ' +
+                    'class="form-control daterange" ' +
+                    'id="daterange_' + risorsa.id + '" ' +
+                    'autocomplete="off" ' +
+                    'value="' +
+                    associazione.data_inizio +
+                    ' - ' +
+                    associazione.data_fine +
+                    '"/>';
+
+            } else {
+
+                dati.data =
+                    '<input type="text" ' +
+                    'style="width:100%" ' +
+                    'class="form-control daterange" ' +
+                    'id="daterange_' + risorsa.id + '" ' +
+                    'autocomplete="off"/>';
+            }
+
+
+            dati.azioni =
+                "<a class='btn btn-primary' " +
+                "onClick='mostraRequisiti(" +
+                risorsa.id +
+                ")'>Requisiti</a>";
+
+
+            dati.DT_RowId = "riga_risorse_" + risorsa.id;
+
+            table_data.push(dati);
+        }
+
+
+        t.rows.add(table_data).draw();
+        t.columns.adjust().draw();
+
+
+        $('.daterange').daterangepicker({
+            locale: {
+                format: 'DD/MM/YYYY',
+                applyLabel: 'Applica',
+                cancelLabel: 'Annulla',
+                daysOfWeek: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+                monthNames: [
+                    'Gennaio',
+                    'Febbraio',
+                    'Marzo',
+                    'Aprile',
+                    'Maggio',
+                    'Giugno',
+                    'Luglio',
+                    'Agosto',
+                    'Settembre',
+                    'Ottobre',
+                    'Novembre',
+                    'Dicembre'
+                ],
+                firstDay: 1
+            },
+            autoUpdateInput: false
+        });
+
+
+        $('.daterange')
+            .off('apply.daterangepicker.gestioneRisorse')
+            .on(
+                'apply.daterangepicker.gestioneRisorse',
+                function(ev, picker) {
+
+                    $(this).val(
+                        picker.startDate.format('DD/MM/YYYY')
+                        + ' - '
+                        + picker.endDate.format('DD/MM/YYYY')
+                    );
+                }
+            );
+
+
+        $('.daterange')
+            .off('cancel.daterangepicker.gestioneRisorse')
+            .on(
+                'cancel.daterangepicker.gestioneRisorse',
+                function() {
+                    $(this).val('');
+                }
+            );
+
+
+        /*
+         * Seleziono le risorse già assegnate che sono presenti
+         * nella lista attualmente visualizzata.
+         */
+        for(var i = 0; i < risorse_intervento.length; i++) {
+
+            var row = t.row(
+                "#riga_risorse_" + risorse_intervento[i].risorsa.id
+            );
+
+            if(row.node()) {
+                row.select();
+            }
+        }
+
+
+        /*
+         * Evitiamo di accumulare listener ad ogni riapertura del modal.
+         */
+        t.off('select.gestioneRisorse');
+        t.off('deselect.gestioneRisorse');
+
+
+        t.on(
+            'select.gestioneRisorse',
+            function(e, dt, type, indexes) {
+
+                if(type !== 'row')
+                    return;
+
+                var rowNode = t.row(indexes[0]).node();
+
+                $(rowNode)
+                    .find('td')
+                    .eq(3)
+                    .find('input')
+                    .attr("required", true);
+            }
+        );
+
+
+        t.on(
+            'deselect.gestioneRisorse',
+            function(e, dt, type, indexes) {
+
+                if(type !== 'row')
+                    return;
+
+                var rowNode = t.row(indexes[0]).node();
+
+                $(rowNode)
+                    .find('td')
+                    .eq(3)
+                    .find('input')
+                    .attr("required", false);
+            }
+        );
+    }
+
+
     $('#formAssegnaRisorsa').on('submit', function(e){
     	
    	 e.preventDefault();
@@ -4950,8 +5245,7 @@ var config4 = {
     })
     	
   
-    	var lista_risorse_json = ${lista_risorse_json};
-    var lista_requisiti_doc_risorse = ${lista_req_doc_json};
+
     
 function mostraRequisiti(id_risorsa){
 	

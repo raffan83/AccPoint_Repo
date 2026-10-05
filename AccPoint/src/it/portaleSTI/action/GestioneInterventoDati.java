@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -24,21 +23,15 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import it.portaleSTI.DAO.DirectMySqlDAO;
 import it.portaleSTI.DAO.GestioneInterventoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
-import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.ContattoDTO;
-import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoAttivitaOpDTO;
 import it.portaleSTI.DTO.LatMasterDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PRInterventoRequisitoDTO;
-import it.portaleSTI.DTO.PRRequisitoDocumentaleDTO;
-import it.portaleSTI.DTO.PRRequisitoSanitarioDTO;
-import it.portaleSTI.DTO.PRRisorsaDTO;
 import it.portaleSTI.DTO.SessioneDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.UtenteDTO;
@@ -46,10 +39,8 @@ import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneCommesseBO;
-import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneInterventoBO;
 import it.portaleSTI.bo.GestioneMisuraBO;
-import it.portaleSTI.bo.GestioneRisorseBO;
 import it.portaleSTI.bo.GestioneSessioneBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
@@ -240,48 +231,7 @@ public class GestioneInterventoDati extends HttpServlet {
 		
 		request.getSession().setAttribute("sessione", sessione);
 		request.getSession().setAttribute("intervento", intervento);
-		request.getSession().setAttribute("listaRequisitiJson", gson.toJsonTree(intervento.getListaRequisiti()));
-		
-		
-		Map<Integer,Integer> map_relazioni = DirectMySqlDAO.getListaRelazioni();
-		
-		//ArrayList<PRInterventoRisorsaDTO> risorse_intervento = GestioneRisorseBO.getRisorsaIntervento(intervento.getId(), intervento.getDataCreazione(), session);
-		
-		request.getSession().setAttribute("map_relazioni", gson.toJsonTree(map_relazioni));
-		 Map<Integer, ArrayList<ForCorsoDTO>> map_doc = new HashMap();
-		 
-			ArrayList<PRRisorsaDTO> lista_risorse_all = GestioneRisorseBO.getListaRisorse(session);
-		 
-		 for (PRRisorsaDTO risorsa : lista_risorse_all) {
-			 
-				//for (PRInterventoRisorsaDTO r : intervento.getListaRisorse()) {
-					ArrayList<ForCorsoDTO>lista_corsi = GestioneFormazioneBO.getListaCorsiInCorsoPartecipante(risorsa.getPartecipante().getId(), session);
-					 for (ForCorsoDTO c : lista_corsi) {
-		
-				        	if(c.getCorso_cat().getId() == 31) {
-				        		risorsa.setPreposto(true);
-				        	}
-				        	Integer id_risorsa = risorsa.getId();
-				        	if (!map_doc.containsKey(id_risorsa)) {
-				        	    map_doc.put(id_risorsa, new ArrayList<ForCorsoDTO>());
-				        	}
-				           map_doc.get(risorsa.getId()).add(c);
-				        
-				        }
-				//}
-		 }
-		
-		 Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
-		 
-	     for (PRInterventoRequisitoDTO requisito : intervento.getListaRequisiti()) {
-	          if (requisito.getRequisito_sanitario() != null) {
-	              idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
-	            }	        
-	        }
-		 
-		request.getSession().setAttribute("risorse_intervento_json",gson.toJsonTree(intervento.getListaRisorse()));
-		
-		Properties prop = new Properties();
+Properties prop = new Properties();
 		String propFileName = "config.properties";
 
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
@@ -291,14 +241,14 @@ public class GestioneInterventoDati extends HttpServlet {
 		request.getSession().setAttribute("defaultNotaConsegna", prop.getProperty("DEFAULT_NOTE_CONSEGNA"));
 
 		
-		ArrayList<PRRequisitoDocumentaleDTO> lista_documentale = GestioneRisorseBO.getListaRequisitiDocumentali(session);
-		ArrayList<PRRequisitoSanitarioDTO> lista_sanitari = GestioneRisorseBO.getListaRequisitiSanitari(session);
-	
-		
-		request.getSession().setAttribute("lista_documentale", lista_documentale);		
-		request.getSession().setAttribute("lista_sanitari", lista_sanitari);
-		request.getSession().setAttribute("lista_risorse_json", gson.toJsonTree(lista_risorse_all));
-		request.getSession().setAttribute("lista_req_doc_json", gson.toJsonTree(map_doc));
+
+		 Set<Integer> idRequisitiSanitariIntervento = new HashSet<>();
+		 
+	     for (PRInterventoRequisitoDTO requisito : intervento.getListaRequisiti()) {
+	          if (requisito.getRequisito_sanitario() != null) {
+	              idRequisitiSanitariIntervento.add(requisito.getRequisito_sanitario().getId());
+	            }	        
+	        }
 		request.getSession().setAttribute("idRequisitiSanitariIntervento", idRequisitiSanitariIntervento);
 		
 		UtenteDTO user =(UtenteDTO)request.getSession().getAttribute("userObj");

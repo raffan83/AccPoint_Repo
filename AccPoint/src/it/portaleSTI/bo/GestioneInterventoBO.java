@@ -78,6 +78,16 @@ public class GestioneInterventoBO {
 
 
 	}
+	
+	public static boolean updateIntervento(InterventoDTO intervento, Session session) {
+	    try {
+	        GestioneInterventoDAO.update(intervento, session);
+	        return true;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 
 	public static InterventoDTO getIntervento(String idIntervento, Session session) {
 

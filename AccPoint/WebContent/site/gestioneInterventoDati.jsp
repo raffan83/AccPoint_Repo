@@ -207,14 +207,29 @@
                 <li class="list-group-item">
                   <b>Responsabile</b> <a class="pull-right">${intervento.user.nominativo}</a>
                 </li>
-              <li class="list-group-item">
+              
+          <li class="list-group-item" style="display: flex; align-items: center;">
+    
     <b>Codice Pacco Origine</b>
-    <a href="#"
-       class="btn customTooltip customlink pull-right"
-       title="Click per aprire il dettaglio del pacco"
-       onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')">
-        ${intervento.codice_pacco_origine}
-    </a>
+
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 5px;">
+
+        <c:if test="${intervento.codice_pacco_origine != '0'}">
+            <a href="#"
+               class="customTooltip customlink"
+               title="Click per aprire il dettaglio del pacco"
+               onclick="dettaglioPacco('${utl:encryptData(intervento.codice_pacco_origine.split('_')[1])}')">
+                ${intervento.codice_pacco_origine}
+            </a>
+        </c:if>
+
+        <a class="btn btn-warning btn-xs"
+           title="Click per modificare codice pacco origine"
+           onclick="nuovoIntervento('${intervento.idCommessa}', '${intervento.codice_pacco_origine}')">
+            <i class="fa fa-edit"></i>
+        </a>
+
+    </div>
 </li>
         </ul>
         
@@ -1263,6 +1278,40 @@ Log Attivit&agrave; Operatore
         <div class="form-inline" align="center"> 
       <input style="width:80%"   type="text" class="form-control"   id="nome_sede_new" name="nome_sede_new" value="${intervento.nome_sede}"/>
       <button id="nome_sede_button" class="btn btn-default" style="padding-left:17px" >Salva</button>
+	 
+ </div> 
+
+  </div>
+  		<div id="empty" class="testo12"></div>
+  		 </div>
+      <div class="modal-footer">
+
+       
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ <div id="myModalCambiaPaccoOrigine" class="modal fade " role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Selezionare Codice Pacco Origine</h4>
+      </div>
+       <div class="modal-body">
+       <div class="row">
+       
+        <div class="form-inline" align="center"> 
+      <div class="form-group">
+    <select id="origine" class="form-control select2" style="width:100%"></select>
+</div>        
+       <button class="btn btn-default"
+        onclick="modificapaccoOrigine($('#origine').val(), '${intervento.id}')">
+    Salva
+</button>
 	 
  </div> 
 
@@ -5193,6 +5242,111 @@ function modalConcludiAttivita(){
 function chiudiModalConcludiAttivita(){
 	$('#myModalConcludiAttivita').modal('hide');
 }
+
+
+function nuovoIntervento(commessa,codicePaccoOrigine){
+	 
+	   $.ajax({
+        type: "POST",
+        url: "gestioneIntervento.do?action=ricerca_intervento_pacco",
+     data: {commessa: commessa},
+        dataType: "json",
+
+        success: function (data, textStatus) {
+            if (data.success) {
+             popolaSelectOrigine(data.lista_origine || []);
+             
+             $('#origine').val(codicePaccoOrigine).trigger('change');
+             
+             $('#myModalCambiaPaccoOrigine').modal('show');
+           
+            } else {
+            	
+                pleaseWaitDiv.modal('hide');
+
+                $('#myModalErrorContent').html(
+                        "Attenzione! Errore Generico."
+                    );
+                $('#myModalError').removeClass();
+                $('#myModalError').addClass("modal modal-danger");
+                $('#report_button').hide();
+                $('#visualizza_report').hide();
+                $('#myModalError').modal('show');
+            }
+        },
+
+     error: function (jqXHR, textStatus, errorThrown) {
+      pleaseWaitDiv.modal('hide');
+      $('#myModalYesOrNo').modal('hide');
+
+      var msg = "Si è verificato un errore imprevisto.";
+      try {
+          var resp = JSON.parse(jqXHR.responseText);
+          if (resp && resp.messaggio) msg = resp.messaggio;
+      } catch (e) { /* risposta non JSON, tengo il default */ }
+
+      $('#myModalErrorContent').html(msg);
+      $('#myModalError').removeClass();
+      $('#myModalError').addClass("modal modal-danger");
+      $('#report_button').show();
+      $('#visualizza_report').show();
+      $('#myModalError').modal('show');
+  }
+    });
+}
+
+function popolaSelectOrigine(lista){
+	   listaPacchi = lista;   
+	    var $sel = $('#origine');
+	    $sel.empty();
+
+	    // Prima opzione
+	    $sel.append($('<option>', {
+	        value: '0',
+	        text: 'Nessun Pacco'
+	    }));
+
+	    // Poi le altre
+	    $.each(lista, function(i, val){
+	        $sel.append($('<option>', {
+	            value: val,
+	            text: val
+	        }));
+	    });
+
+	    $sel.trigger('change');
+	}
+
+
+function modificapaccoOrigine(origine,idIntervento) {
+	
+	  var origine = $('#origine').val();
+	  console.log("origine "  + origine);
+	    $.ajax({
+	        url: "gestioneIntervento.do?action=modificaPaccoOrigine",
+	        type: "POST",
+	        data: { origine: origine,
+	        	idIntervento: idIntervento},
+	        dataType: "json",
+	        success: function(datab) {
+	            
+	            if (datab.success) {
+	            	console.log("risposta:", datab.success);
+	            	$('#myModalCambiaPaccoOrigine').modal('hide');
+	                $('#myModalInvalidaSessione').modal('show');
+	                
+	            } else {
+	                $('#myModalErrorContent').html("Errore durante l'operazione!");
+	                $('#myModalError').removeClass();
+	                $('#myModalError').addClass("modal modal-danger");
+	                $('#myModalError').modal('show');
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.log("Errore AJAX:", xhr.responseText, status, error);
+	        }
+	    });
+	}
 
   </script>
 </jsp:attribute> 

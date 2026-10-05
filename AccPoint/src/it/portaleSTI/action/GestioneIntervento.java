@@ -980,6 +980,23 @@ public class GestioneIntervento extends HttpServlet {
 			
 			myObj.addProperty("success", true);
 			out.print(myObj);
+			
+		} else if(action!= null && action.equals("modificaPaccoOrigine")) {
+			ajax =true;
+			 response.setContentType("application/json");
+			 response.setCharacterEncoding("UTF-8");
+			
+			String id_intervento= request.getParameter("idIntervento");
+			String origine = request.getParameter("origine");
+			
+			InterventoDTO intervento = GestioneInterventoBO.getIntervento(id_intervento, session);
+			intervento.setCodice_pacco_origine(origine);
+			
+			boolean risp = GestioneInterventoBO.updateIntervento(intervento, session);
+			
+			
+			myObj.addProperty("success", risp);
+			out.print(myObj);
 		}
 	
 			session.getTransaction().commit();

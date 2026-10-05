@@ -43,7 +43,6 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
-     <c:if test="${userObj.checkPermesso('GRAFICI_TREND') || userObj.checkRuolo('AM')}"> 
      
      <section class="content-header">
        <h1 class="pull-left">
@@ -307,7 +306,7 @@
 		
      
      
-     </c:if>
+
   </div>
   <!-- /.content-wrapper -->
 

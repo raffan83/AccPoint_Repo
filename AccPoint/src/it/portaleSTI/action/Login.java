@@ -213,7 +213,7 @@ public class Login extends HttpServlet {
 			        
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboardCliente.jsp");
 					
-				}else {
+				}else if(utente.checkPermesso("GRAFICI_TREND")) {
 					ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrendAttivi(hsession);
 					String tipoTrendJson = new Gson().toJson(tipoTrend);
 	
@@ -270,6 +270,12 @@ public class Login extends HttpServlet {
 	      
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+				} else {
+					
+					
+					
+					
+					dispatcher = getServletContext().getRequestDispatcher("/site/dashboardSenzaGrafici.jsp");
 				}
 				
 				
@@ -489,7 +495,7 @@ public class Login extends HttpServlet {
 		
 						dispatcher = getServletContext().getRequestDispatcher("/site/dashboardCliente.jsp");
 						
-					}else {
+					}else if(utente.checkPermesso("GRAFICI_TREND")) {
  
 			        		ArrayList<TipoTrendDTO> tipoTrend = (ArrayList<TipoTrendDTO>)GestioneTrendBO.getListaTipoTrendAttivi(session);
 			        		String tipoTrendJson = new Gson().toJson(tipoTrend);
@@ -554,6 +560,8 @@ public class Login extends HttpServlet {
 			        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 			        		
 			        		
+					} else {
+						dispatcher = getServletContext().getRequestDispatcher("/site/dashboardSenzaGrafici.jsp");
 					}
 	        	}
 	        	dispatcher.forward(request,response);

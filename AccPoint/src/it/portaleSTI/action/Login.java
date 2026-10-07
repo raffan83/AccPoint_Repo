@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,6 +30,7 @@ import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.BachecaDTO;
+import it.portaleSTI.DTO.ForPartecipanteDTO;
 import it.portaleSTI.DTO.GraficoDashboardDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
 import it.portaleSTI.DTO.TipoTrendDTO;
@@ -37,6 +39,7 @@ import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneBachecaBO;
+import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneGraficiDashboardBO;
 import it.portaleSTI.bo.GestioneStrumentoBO;
 import it.portaleSTI.bo.GestioneTrendBO;
@@ -270,6 +273,71 @@ public class Login extends HttpServlet {
 	      
 					
 					dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
+				}  else if(utente.checkRuolo("F3")  || utente.checkRuolo("F2")){
+					
+					Connection con = DirectMySqlDAO.getConnection();
+					
+					
+					Map<String,Integer> lista_count = new HashMap<>();
+					Gson gson = new Gson();
+					
+					boolean F2 = false;
+					if(utente.checkRuolo("F3")) {
+						F2 = false;
+					} else if(utente.checkRuolo("F2")) {
+						F2 = true;
+					}
+					
+					
+					try {
+						
+				
+					lista_count = GestioneFormazioneBO.getCountPartecipantiPerSede(utente.getIdCliente(),con); //grafico parteciapanti per sede
+				
+					request.setAttribute("lista_count", lista_count);
+					request.setAttribute("sedeLabelsJson", gson.toJson(lista_count.keySet()));
+					request.setAttribute("sedeValuesJson", gson.toJson(lista_count.values()));
+					
+					Map<String, Integer> listaCorsiCat = new HashMap<String, Integer>();
+					listaCorsiCat = GestioneFormazioneBO.getListaCorsiClienteCatSupervisore(utente, F2, con);
+					
+			
+					request.setAttribute("listaCorsiCat",listaCorsiCat);
+					request.setAttribute("CatJson", gson.toJson(listaCorsiCat.keySet()));
+					request.setAttribute("CountCorsoJson", gson.toJson(listaCorsiCat.values()));
+					
+					
+					Map<String, Integer> listaParteCat = new HashMap<String, Integer>();
+					listaParteCat = GestioneFormazioneBO.getListaPartecipantiClienteCatSupervisore(utente, F2, con);
+					
+			
+					request.setAttribute("listaParteCat",listaParteCat);
+					request.setAttribute("PartecipantiCatJson", gson.toJson(listaParteCat.keySet()));
+					request.setAttribute("CountPartecipantiCatJson", gson.toJson(listaParteCat.values()));
+					
+					
+
+					Map<String, Integer> listaParteEta = new HashMap<String, Integer>();
+					listaParteEta = GestioneFormazioneBO.getListaPartecipantiClienteEtaSupervisore(utente, F2, con);
+					
+			
+					request.setAttribute("listaParteEta",listaParteEta);
+					request.setAttribute("PartecipantiEtaJson", gson.toJson(listaParteEta.keySet()));
+					request.setAttribute("CountPartecipantiEtaJson", gson.toJson(listaParteEta.values()));
+					
+					
+					} catch (Exception e) {
+						 e.printStackTrace();
+					        throw e;
+					}
+						finally {
+
+					        if (con != null)
+					            con.close();
+						}
+						
+									
+					dispatcher = getServletContext().getRequestDispatcher("/site/dashboardFormazioneF3.jsp");
 				} else {
 					
 					
@@ -560,7 +628,67 @@ public class Login extends HttpServlet {
 			        		dispatcher = getServletContext().getRequestDispatcher("/site/dashboard.jsp");
 			        		
 			        		
-					} else {
+					}  else if(utente.checkRuolo("F3") || utente.checkRuolo("F2")){
+						
+						Connection con = DirectMySqlDAO.getConnection();
+			
+						Gson gson = new Gson();
+						boolean F2 = false;
+						if(utente.checkRuolo("F3")) {
+							F2 = false;
+						} else if(utente.checkRuolo("F2")) {
+							F2 = true;
+						}
+						
+						try {
+							
+						Map<String,Integer> lista_count = new HashMap<>();
+						lista_count = GestioneFormazioneBO.getCountPartecipantiPerSede(utente.getIdCliente(),con); //grafico parteciapanti per sede
+					
+						request.setAttribute("lista_count", lista_count);
+						request.setAttribute("sedeLabelsJson", gson.toJson(lista_count.keySet()));
+						request.setAttribute("sedeValuesJson", gson.toJson(lista_count.values()));
+						
+						Map<String, Integer> listaCorsiCat = new HashMap<String, Integer>();
+						listaCorsiCat = GestioneFormazioneBO.getListaCorsiClienteCatSupervisore(utente, F2, con);
+						
+				
+						request.setAttribute("listaCorsiCat",listaCorsiCat);
+						request.setAttribute("CatJson", gson.toJson(listaCorsiCat.keySet()));
+						request.setAttribute("CountCorsoJson", gson.toJson(listaCorsiCat.values()));
+						
+						
+						Map<String, Integer> listaParteCat = new HashMap<String, Integer>();
+						listaParteCat = GestioneFormazioneBO.getListaPartecipantiClienteCatSupervisore(utente, F2, con);
+						
+				
+						request.setAttribute("listaParteCat",listaParteCat);
+						request.setAttribute("PartecipantiCatJson", gson.toJson(listaParteCat.keySet()));
+						request.setAttribute("CountPartecipantiCatJson", gson.toJson(listaParteCat.values()));
+						
+
+						Map<String, Integer> listaParteEta = new HashMap<String, Integer>();
+						listaParteEta = GestioneFormazioneBO.getListaPartecipantiClienteEtaSupervisore(utente, F2, con);
+						
+				
+						request.setAttribute("listaParteEta",listaParteEta);
+						request.setAttribute("PartecipantiEtaJson", gson.toJson(listaParteEta.keySet()));
+						request.setAttribute("CountPartecipantiEtaJson", gson.toJson(listaParteEta.values()));
+						
+						
+						} catch (Exception e) {
+							 e.printStackTrace();
+						        throw e;
+						}
+							finally {
+
+						        if (con != null)
+						            con.close();
+							}
+							
+										
+						dispatcher = getServletContext().getRequestDispatcher("/site/dashboardFormazioneF3.jsp");
+					}else {
 						dispatcher = getServletContext().getRequestDispatcher("/site/dashboardSenzaGrafici.jsp");
 					}
 	        	}

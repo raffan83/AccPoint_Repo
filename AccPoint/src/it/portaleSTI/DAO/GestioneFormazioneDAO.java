@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -1638,5 +1639,369 @@ ArrayList<ForCorsoDTO> lista = null;
 		return res;
 		
 	}
+	
+	public static Map<String, Integer> getListaCorsiClienteCatSupervisore(int idCliente, Connection con) throws Exception {
 
+		Map<String, Integer> lista = new HashMap<String, Integer>();
+		
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    
+	    try {
+		
+	    	String query = "SELECT cat.descrizione, COUNT(DISTINCT c.Id) AS numero_corsi "
+	    			+ "FROM for_partecipante_ruolo_corso p "
+	    			+ "JOIN for_corso c ON c.Id = p.id_corso "
+	    			+ "JOIN for_corso_cat cat ON c.id_corso = cat.Id "
+	    			+ "JOIN for_partecipante parte ON parte.id = p.id_partecipante "
+	    			+ "WHERE parte.id_azienda = ? "
+	    			+ "AND c.visibile = 1 "
+	    			+ "AND c.disabilitato = 0 "
+	    			+ "GROUP BY cat.Id";
+		
+		   pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String categoria = rs.getString("descrizione");
+	        
+	            int numero_corsi_cat = rs.getInt("numero_corsi");
+
+	            lista.put(categoria, numero_corsi_cat);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return lista;
+	}
+	
+	public static Map<String, Integer> getListaCorsiClienteCatSupervisoreSede(int idCliente, int idSede,Connection con) throws Exception {
+
+		Map<String, Integer> lista = new HashMap<String, Integer>();
+		
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    
+	    try {
+		
+	    	String query = "SELECT cat.descrizione, COUNT(DISTINCT c.Id) AS numero_corsi "
+	    			+ "FROM for_partecipante_ruolo_corso p "
+	    			+ "JOIN for_corso c ON c.Id = p.id_corso "
+	    			+ "JOIN for_corso_cat cat ON c.id_corso = cat.Id "
+	    			+ "JOIN for_partecipante parte ON parte.id = p.id_partecipante "
+	    			+ "WHERE parte.id_azienda = ?  AND parte.id_sede=? "
+	    			+ "AND c.visibile = 1 "
+	    			+ "AND c.disabilitato = 0 "
+	    			+ "GROUP BY cat.Id";
+		
+		   pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+	        pst.setInt(2, idSede);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String categoria = rs.getString("descrizione");
+	        
+	            int numero_corsi_cat = rs.getInt("numero_corsi");
+
+	            lista.put(categoria, numero_corsi_cat);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return lista;
+	}
+	
+	
+	public static Map<String, Integer> getListaPartecipantiClienteCatSupervisore(int idCliente, Connection con) throws Exception {
+
+		Map<String, Integer> lista = new HashMap<String, Integer>();
+		
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    
+	    try {
+		
+	    	String query = "SELECT cat.descrizione, COUNT(parte.id) AS numero_partecipanti "
+	    			+ "FROM for_partecipante_ruolo_corso p "
+	    			+ "JOIN for_corso c ON c.Id = p.id_corso "
+	    			+ "JOIN for_corso_cat cat ON c.id_corso = cat.Id "
+	    			+ "JOIN for_partecipante parte ON parte.id = p.id_partecipante "
+	    			+ "WHERE parte.id_azienda = ? "
+	    			+ "AND c.visibile = 1 "
+	    			+ "AND c.disabilitato = 0 "
+	    			+ "AND parte.disabilitato = 0 "
+	    			+ "GROUP BY cat.Id";
+		
+		   pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String categoria = rs.getString("descrizione");
+	        
+	            int numero_parte_cat = rs.getInt("numero_partecipanti");
+
+	            lista.put(categoria, numero_parte_cat);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return lista;
+	}
+	
+	public static Map<String, Integer> getListaPartecipantiClienteCatSupervisoreSede(int idCliente, int idSede, Connection con) throws Exception {
+
+		Map<String, Integer> lista = new HashMap<String, Integer>();
+		
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    
+	    try {
+		
+	    	String query = "SELECT cat.descrizione, COUNT(parte.id) AS numero_partecipanti "
+	    			+ "FROM for_partecipante_ruolo_corso p "
+	    			+ "JOIN for_corso c ON c.Id = p.id_corso "
+	    			+ "JOIN for_corso_cat cat ON c.id_corso = cat.Id "
+	    			+ "JOIN for_partecipante parte ON parte.id = p.id_partecipante "
+	    			+ "WHERE parte.id_azienda = ? ANd parte.id_sede = ? "
+	    			+ "AND c.visibile = 1 "
+	    			+ "AND c.disabilitato = 0 "
+	    			+ "AND parte.disabilitato = 0 "
+	    			+ "GROUP BY cat.Id";
+		
+		   pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+	        pst.setInt(2, idSede);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String categoria = rs.getString("descrizione");
+	        
+	            int numero_parte_cat = rs.getInt("numero_partecipanti");
+
+	            lista.put(categoria, numero_parte_cat);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return lista;
+	}
+	
+	public static Map<String, Integer> getListaPartecipantiClienteEtaSupervisore(int idCliente, Connection con) throws Exception {
+		Map<String, Integer> lista = new HashMap<String, Integer>();
+		
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    
+	    try {
+		
+	    	String query = "SELECT "
+	    			+ "CASE "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) < 25 THEN '< 25' "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) BETWEEN 25 AND 34 THEN '25-34' "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) BETWEEN 35 AND 44 THEN '35-44' "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) BETWEEN 45 AND 54 THEN '45-54' "
+	    			+ "ELSE '55+' "
+	    			+ "END AS fascia_eta, "
+	    			+ "COUNT(*) AS numero_partecipanti "
+	    			+ "FROM for_partecipante "
+	    			+ "WHERE for_partecipante.id_azienda = ? "
+	    			+ "AND for_partecipante.disabilitato = 0 "
+	    			+ "GROUP BY fascia_eta "
+	    			+ "ORDER BY MIN(TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()))";
+		
+		   pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String fasciaEta = rs.getString("fascia_eta");
+	        	int numeroPartecipanti = rs.getInt("numero_partecipanti");
+	        	
+	            lista.put(fasciaEta, numeroPartecipanti);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return lista;
+	}
+	public static Map<String, Integer> getListaPartecipantiClienteEtaSupervisoreSede(int idCliente,int idSede, Connection con) throws Exception {
+		Map<String, Integer> lista = new HashMap<String, Integer>();
+		
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+	    
+	    try {
+		
+	    	String query = "SELECT "
+	    			+ "CASE "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) < 25 THEN '< 25' "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) BETWEEN 25 AND 34 THEN '25-34' "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) BETWEEN 35 AND 44 THEN '35-44' "
+	    			+ "WHEN TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()) BETWEEN 45 AND 54 THEN '45-54' "
+	    			+ "ELSE '55+' "
+	    			+ "END AS fascia_eta, "
+	    			+ "COUNT(*) AS numero_partecipanti "
+	    			+ "FROM for_partecipante "
+	    			+ "WHERE for_partecipante.id_azienda = ? AND for_partecipante.id_sede = ? "
+	    			+ "AND for_partecipante.disabilitato = 0 "
+	    			+ "GROUP BY fascia_eta "
+	    			+ "ORDER BY MIN(TIMESTAMPDIFF(YEAR, data_nascita, CURDATE()))";
+		
+		   pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+	        pst.setInt(2, idSede);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String fasciaEta = rs.getString("fascia_eta");
+	        	int numeroPartecipanti = rs.getInt("numero_partecipanti");
+	        	
+	            lista.put(fasciaEta, numeroPartecipanti);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return lista;
+	}
+	
+	public static Map<String, Integer> getCountPartecipantiPerSede(int idCliente, Connection con) throws Exception {
+
+	    PreparedStatement pst = null;
+	    ResultSet rs = null;
+
+	    Map<String, Integer> mapPartecipantiPerSede = new HashMap<String, Integer>();
+
+	    try {
+
+	        String query = "SELECT nome_sede, id_sede, COUNT(*) AS numero_partecipanti "
+	                + "FROM for_partecipante "
+	                + "WHERE id_azienda = ? AND disabilitato = 0 "
+	                + "GROUP BY id_sede";
+
+	        pst = con.prepareStatement(query);
+
+	        pst.setInt(1, idCliente);
+
+	        rs = pst.executeQuery();
+
+	        while (rs.next()) {
+
+	        	String nome_sede = rs.getString("nome_sede");
+	        	 if (nome_sede == null) nome_sede = "Sede non indicata";
+	            int idSede = rs.getInt("id_sede");
+	            int numeroPartecipanti = rs.getInt("numero_partecipanti");
+
+	            mapPartecipantiPerSede.put(nome_sede, numeroPartecipanti);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+
+	        if (rs != null)
+	            rs.close();
+
+	        if (pst != null)
+	            pst.close();
+	    }
+
+	    return mapPartecipantiPerSede;
+	}
+
+	
 }

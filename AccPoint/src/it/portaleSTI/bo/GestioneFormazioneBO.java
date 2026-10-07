@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,6 +90,7 @@ import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.SondaggioRLDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.action.ContextListener;
@@ -2800,6 +2802,64 @@ public class GestioneFormazioneBO {
 		throw e;
 		
 	}
+	}
+	
+	public static Map<String,Integer> getCountPartecipantiPerSede(int idCliente,Connection con) throws Exception{
+
+		Map<String,Integer> lista_count = new HashMap<>();
+		
+				lista_count = GestioneFormazioneDAO.getCountPartecipantiPerSede(idCliente, con);
+				Map<String, Integer> nuovaListaCount = new HashMap<>();
+
+				for (String s : lista_count.keySet()) {
+				    String sede = s.substring(s.indexOf(" - ") + 3);
+
+				    nuovaListaCount.put(sede, lista_count.get(s));
+				}
+
+				lista_count = nuovaListaCount;
+				
+	
+		return lista_count;
+		
+	}
+	public static Map<String, Integer> getListaCorsiClienteCatSupervisore(UtenteDTO utente,boolean F2, Connection con) throws Exception {
+		Map<String, Integer> listaCorsiCat = new HashMap<>();
+		if(!F2) {
+		 listaCorsiCat = GestioneFormazioneDAO.getListaCorsiClienteCatSupervisore(utente.getIdCliente(),con);
+		} else {
+		   listaCorsiCat = GestioneFormazioneDAO.getListaCorsiClienteCatSupervisoreSede(utente.getIdCliente(),utente.getIdSede(),con);
+		}
+		
+		return listaCorsiCat;
+		
+		
+	}
+	
+	public static Map<String, Integer> getListaPartecipantiClienteCatSupervisore(UtenteDTO utente,boolean F2,Connection con) throws Exception {
+		Map<String, Integer> listaParteCat = new HashMap<>();
+		if(!F2) {
+		listaParteCat = GestioneFormazioneDAO.getListaPartecipantiClienteCatSupervisore(utente.getIdCliente(),con);
+		} else {
+			listaParteCat = GestioneFormazioneDAO.getListaPartecipantiClienteCatSupervisoreSede(utente.getIdCliente(),utente.getIdSede(),con);
+		}
+		
+		return listaParteCat;
+		
+		
+	}
+	
+	public static Map<String, Integer> getListaPartecipantiClienteEtaSupervisore(UtenteDTO utente,boolean F2,Connection con) throws Exception {
+		Map<String, Integer> listaParteEta = new HashMap<>();
+		if(!F2) {
+		listaParteEta = GestioneFormazioneDAO.getListaPartecipantiClienteEtaSupervisore(utente.getIdCliente(),con);
+		} else {
+			listaParteEta = GestioneFormazioneDAO.getListaPartecipantiClienteEtaSupervisoreSede(utente.getIdCliente(),utente.getIdSede(),con);
+		}
+		
+		return listaParteEta;
+		
+		
 	}
 	
 		public static void main(String[] args) throws Exception{

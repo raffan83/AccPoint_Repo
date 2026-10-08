@@ -195,7 +195,7 @@
     <div class="box box-primary dashboard-box">
 
         <div class="box-header with-border">
-            <h3 class="box-title">PARTECIPANTI PER FASCIA D'ETÀ</h3>
+            <h3 class="box-title">DIPENDENTI PER FASCIA D'ETÀ</h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -221,7 +221,7 @@
                 </div>
 
                 <p id="noDatiEta" class="text-center text-muted" style="display:none;">
-                    Nessun partecipante presente
+                    Nessun dipendente presente
                 </p>
             </div>
 
@@ -559,7 +559,7 @@ var myChartPartCat = new Chart(ctxPartCat, {
     data: {
         labels: partCatLabels,   // nomi completi: servono al tooltip
         datasets: [{
-            label: "# Partecipanti",
+            label: "# Iscrizioni",
             data: partCatValues,
             backgroundColor: backgroundPartCat,
             borderColor: borderPartCat,
@@ -591,7 +591,7 @@ var myChartPartCat = new Chart(ctxPartCat, {
             yAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Numero partecipanti'
+                    labelString: 'Numero iscrizioni'
                 },
                 ticks: {
                     beginAtZero: true,
@@ -652,7 +652,7 @@ var myChartEta = new Chart(ctxEta, {
  data: {
      labels: etaLabels,
      datasets: [{
-    	    label: "# Partecipanti",
+    	    label: "# Dipendenti",
     	    data: etaValues,
     	    backgroundColor: backgroundEta,   // prima: 'rgba(99, 102, 241, 0.82)'
     	    borderColor: borderEta,           // prima: 'rgba(79, 70, 229, 1)'
@@ -675,7 +675,7 @@ var myChartEta = new Chart(ctxEta, {
          yAxes: [{
              scaleLabel: {
                  display: true,
-                 labelString: 'Numero partecipanti'
+                 labelString: 'Numero dipendenti'
              },
              ticks: {
                  beginAtZero: true,

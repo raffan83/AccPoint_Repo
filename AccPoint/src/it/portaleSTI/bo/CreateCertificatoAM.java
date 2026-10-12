@@ -142,7 +142,9 @@ public class CreateCertificatoAM {
 		report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 		String ubicazione="";
 		
-		if(prova.getIntervento().getNomeCliente()!=null ) {
+		
+		/* inserire nel controllo if la variabile isVisibile*/
+		if(prova.getIntervento().getNomeCliente()!=null /*&& intervento.isVisibile()*/ ) {
 			
 			ubicazione+=prova.getIntervento().getNomeCliente();
 			
@@ -155,10 +157,13 @@ public class CreateCertificatoAM {
 		
 		if(prova.getIntervento().getId_cliente()!=prova.getIntervento().getId_cliente_utilizzatore()) {
 			
+			/*se isVisibile==true presso=""*/
+			String presso="\nPresso ";
+			
 			if(!prova.getIntervento().getNomeSedeUtilizzatore().equalsIgnoreCase("Non Associate")) {
-				ubicazione+= "\nPresso "+prova.getIntervento().getNomeClienteUtilizzatore()+ " - " +prova.getIntervento().getNomeSedeUtilizzatore();
+				ubicazione+= presso+prova.getIntervento().getNomeClienteUtilizzatore()+ " - " +prova.getIntervento().getNomeSedeUtilizzatore();
 			}else {
-				ubicazione+= "\nPresso "+ prova.getIntervento().getNomeClienteUtilizzatore();
+				ubicazione+= presso+ prova.getIntervento().getNomeClienteUtilizzatore();
 			}
 			
 		}

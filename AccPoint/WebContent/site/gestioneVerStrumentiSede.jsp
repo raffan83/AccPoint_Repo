@@ -453,7 +453,7 @@
        
         <div class="row">
        <div class="col-sm-5">
-       <a class="btn btn-primary customTooltip customLink" title="Associa a provvedimento di legalizzazione bilance" onClick="modalAssociaProvvedimento()"><i class="fa fa-plus"></i> Associa provv. legalizzazione</a>
+       <a id="btnAssociaProvvedimento" class="btn btn-primary customTooltip customLink" title="Associa a provvedimento di legalizzazione bilance" onClick="modalAssociaProvvedimento()"><i class="fa fa-plus"></i> Associa provv. legalizzazione</a>
         </div>
         <div class="col-sm-7">
         <label id="label_provvedimenti"></label>
@@ -1836,16 +1836,19 @@ $("#table_legalizzazione").on( 'init.dt', function ( e, settings ) {
 $('#matricola').change(function(){
 	$('#matricola').css('border', '1px solid #d2d6de');
 	$('#label_matricola').hide();
+	$('#btnAssociaProvvedimento').attr('disabled', false);	
 if($('#provv_legalizzazione_selezionati').val()!=null && $('#provv_legalizzazione_selezionati').val()!=''){
 	$('#save_btn').attr('disabled', false);
 }
 	
 	 $('#tabStrumenti tbody tr').each(function(){		 
 			 var td = $(this).find('td').eq(4);
-			if(td!=null && td[0].innerText== $('#matricola').val()){
+			 var id_row = $(this)[0].id;
+			if(td!=null && td[0].innerText== $('#matricola').val() && id_row != 'row_'+$('#id_strumento').val()){
 				$('#matricola').css('border', '1px solid #f00');
 				$('#label_matricola').show();
 				$('#save_btn').attr('disabled', true);
+				$('#btnAssociaProvvedimento').attr('disabled', true);	
 			}
 	 });
 });

@@ -142,7 +142,7 @@ public class CreateCertificatoAM {
 		report.setPageFormat(PageType.A4, PageOrientation.PORTRAIT);
 		String ubicazione="";
 		
-		if(prova.getIntervento().getNomeCliente()!=null) {
+		if(prova.getIntervento().getNomeCliente()!=null ) {
 			
 			ubicazione+=prova.getIntervento().getNomeCliente();
 			
@@ -155,8 +155,8 @@ public class CreateCertificatoAM {
 		
 		if(prova.getIntervento().getId_cliente()!=prova.getIntervento().getId_cliente_utilizzatore()) {
 			
-			if(!prova.getIntervento().getNomeSedeUtilizzatore().equals("Non Associate")) {
-				ubicazione+= "\nPresso "+ prova.getIntervento().getNomeSedeUtilizzatore();
+			if(!prova.getIntervento().getNomeSedeUtilizzatore().equalsIgnoreCase("Non Associate")) {
+				ubicazione+= "\nPresso "+prova.getIntervento().getNomeClienteUtilizzatore()+ " - " +prova.getIntervento().getNomeSedeUtilizzatore();
 			}else {
 				ubicazione+= "\nPresso "+ prova.getIntervento().getNomeClienteUtilizzatore();
 			}

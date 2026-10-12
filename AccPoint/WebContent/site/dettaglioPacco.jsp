@@ -189,7 +189,7 @@ String permesso = "0";
 <table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
- <th>ID Item</th>
+ <th>ID Strumento</th>
  <th>Denominazione</th>
  <th>Matricola</th>
  <th>Cod. Interno</th>

@@ -200,6 +200,9 @@
                 </button>
 
             </div>
+             <div class="box-subtitle text-muted">
+        Click sul grafico per mettere in pausa o riprendere
+    </div>
 
         </div>
 

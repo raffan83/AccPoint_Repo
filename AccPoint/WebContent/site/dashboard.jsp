@@ -177,9 +177,12 @@
 
         <div class="box-header with-border">
 
-          <h3 class="box-title">
+         <h3 class="box-title">
     CERTIFICATI EMESSI NEL MESE
     <span id="meseCertificati"></span>
+    <small id="statoRotazioneCertificati" class="text-muted" style="display:none;">
+        <i class="fa fa-pause"></i> in pausa
+    </small>
 </h3>
 
             <div class="box-tools pull-right">
@@ -329,6 +332,9 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 
  <style>
+ 
+#noDatiCertificati { cursor: pointer; }
+ 
 .dashboard-row { display: flex; flex-wrap: wrap; }
 .dashboard-row:before, .dashboard-row:after { display: none; }
 
@@ -1080,7 +1086,12 @@ var myChartCertificati = new Chart(ctxCertificati, {
          display: true,
          position: 'bottom'
      },
-
+     
+     onHover: function(e, elementi) {
+    	    e.target.style.cursor = elementi.length ? 'pointer' : 'default';
+    	},
+     
+     
      tooltips: {
 
          callbacks: {
@@ -1200,18 +1211,72 @@ aggiornaGraficoItem();
 // Inizializzazione del grafico dei certificati
 aggiornaGraficoCertificati();
 
-// Rotazione dei soli certificati ogni 5 secondi
-if (numeroMesi > 1) {
+//Rotazione dei soli certificati ogni 5 secondi (con pausa al click)
+var intervalloCertificati = null;
+var rotazionePausa = false;
 
-    var intervalloCertificati = setInterval(function() {
-
+function avviaRotazioneCertificati() {
+    if (numeroMesi <= 1 || intervalloCertificati !== null) {
+        return;
+    }
+    intervalloCertificati = setInterval(function() {
         indiceMese = (indiceMese + 1) % numeroMesi;
-
         aggiornaGraficoCertificati();
-
     }, 5000);
 }
- 
+
+function fermaRotazioneCertificati() {
+    if (intervalloCertificati !== null) {
+        clearInterval(intervalloCertificati);
+        intervalloCertificati = null;
+    }
+}
+
+function aggiornaIndicatorePausa() {
+    if (rotazionePausa) {
+        $("#statoRotazioneCertificati").show();
+    } else {
+        $("#statoRotazioneCertificati").hide();
+    }
+}
+
+// Click sul grafico: pausa / riprendi
+// Click SOLO sulla torta (non sulla legenda): pausa / riprendi
+function togglePausaCertificati() {
+
+    if (numeroMesi <= 1) {
+        return;
+    }
+
+    rotazionePausa = !rotazionePausa;
+
+    if (rotazionePausa) {
+        fermaRotazioneCertificati();
+    } else {
+        avviaRotazioneCertificati();
+    }
+
+    aggiornaIndicatorePausa();
+}
+
+$("#graficoCertificati").on("click", function(e) {
+
+    // Elementi del grafico (fette) sotto il cursore
+    var fette = myChartCertificati.getElementAtEvent(e);
+
+    // Se non c'è nessuna fetta (es. click sulla legenda), non fare nulla
+    if (fette.length === 0) {
+        return;
+    }
+
+    togglePausaCertificati();
+});
+
+// Mese senza dati: la torta è nascosta, quindi si clicca sul messaggio
+$("#noDatiCertificati").on("click", togglePausaCertificati);
+
+// Avvio iniziale
+avviaRotazioneCertificati();
 
 });
 

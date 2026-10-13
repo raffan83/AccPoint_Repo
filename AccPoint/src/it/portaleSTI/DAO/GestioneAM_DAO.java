@@ -472,4 +472,9 @@ public static AMImmagineCampioneDTO getImmagineFromId(int id_immagine, Session s
 	return result;
 }
 
+public static void update(AMInterventoDTO intervento,Session session) {
+	session.update(intervento);
+	
+}
+
 }

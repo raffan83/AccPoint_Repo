@@ -37,6 +37,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import it.portaleSTI.DAO.GestioneAM_DAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AMCampioneDTO;
 import it.portaleSTI.DTO.AMImmagineCampioneDTO;
@@ -940,6 +941,30 @@ public class Am_gestioneInterventi extends HttpServlet {
 					out.print(myObj);
 				}
 				
+			} else if(action.equals("saveIsVisibile")) {
+				ajax = true;
+				response.setContentType("application/json");
+				 response.setCharacterEncoding("UTF-8");
+				 
+				 myObj = new JsonObject();
+				    PrintWriter out = response.getWriter();
+
+				    try {
+				        int idIntervento = Integer.parseInt(request.getParameter("idIntervento"));
+				        int valore = Integer.parseInt(request.getParameter("valore"));
+
+				        AMInterventoDTO intervento = GestioneAM_BO.getInterventoFromID(idIntervento, session);
+				        intervento.setIsVisibile(valore);
+				        GestioneAM_BO.update(intervento, session);
+
+				        myObj.addProperty("success", true);
+				    } catch (Exception e) {
+				        e.printStackTrace();
+				        myObj.addProperty("success", false);
+				        myObj.addProperty("messaggio", "Errore nel salvataggio della visibilità");
+				    }
+
+				    out.print(myObj);
 			}
 			
 			

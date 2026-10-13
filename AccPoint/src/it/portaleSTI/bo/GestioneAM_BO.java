@@ -424,4 +424,8 @@ public class GestioneAM_BO {
 		return GestioneAM_DAO.getImmagineFromId(id_immagine, session);
 	}
 
+	
+	public static void update(AMInterventoDTO intervento,Session session) {
+		GestioneAM_DAO.update(intervento,session);
+	}
 }

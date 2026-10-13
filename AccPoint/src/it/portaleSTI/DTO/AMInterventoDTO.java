@@ -18,6 +18,7 @@ public class AMInterventoDTO {
 	private Integer id_cliente_utilizzatore;
 	private Integer id_sede_utilizzatore;
 	private String note;
+	private int isVisibile;
 	
 	
 	public int getId() {
@@ -107,6 +108,12 @@ public class AMInterventoDTO {
 	}
 	public void setNote(String note) {
 		this.note = note;
+	}
+	public int getIsVisibile() {
+		return isVisibile;
+	}
+	public void setIsVisibile(int isVisibile) {
+		this.isVisibile = isVisibile;
 	}
 	
 }

@@ -62,10 +62,22 @@
                   <b>ID Commessa</b> <a class="pull-right">${intervento.idCommessa}</a>
                 </li>
                 
-                 <li class="list-group-item">
-                  <b>Cliente</b> 
-                  <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nomeCliente } </a>
-                </li>
+           <li class="list-group-item"
+    style="display:flex; justify-content:space-between; align-items:center;">
+
+    <b>Cliente</b>
+
+    <div style="display:flex; align-items:center; gap:10px;">
+        <a id="nome_sede">${intervento.nomeCliente}</a>
+
+        <input type="checkbox"
+               id="check_cliente"
+               name="check_cliente"
+               style="margin:0;"
+               <c:if test="${intervento.isVisibile == 0}">checked</c:if>>
+    </div>
+
+</li>
                 <li class="list-group-item">
                   <b>Sede</b> <a class="btn btn-warning pull-right btn-xs" title="Click per modificare la sede cliente" onClick="inserisciSede('${intervento.id}')"><i class="fa fa-edit"></i></a>
                   <a id="nome_sede" class="pull-right" style="padding-right:7px">${intervento.nomeSede } </a>
@@ -1070,8 +1082,50 @@ function generaCertificatoAM(id_prova, isAnteprima){
 	
 	
 }
+
+	
+
 	
     $(document).ready(function() { 
+    	$('#check_cliente').on('ifToggled', function (){
+    		  var $chk = $(this);
+    		  var valore = $chk.is(':checked') ? 0 : 1;
+
+    		 console.log("check"); 
+    		 
+    		  $.ajax({
+    		    url: 'amGestioneInterventi.do?action=saveIsVisibile',
+    		    type: 'POST',
+    		    dataType: 'json',
+    		    data: {
+    		      idIntervento: '${intervento.id}',
+    		      valore: valore
+    		    },
+    		    success: function (data) {
+    		    	 if(data.success){	  			
+   	   				  
+    				  }else{
+    					
+    					$('#myModalErrorContent').html(data.messaggio);
+    				  	$('#myModalError').removeClass();
+    					$('#myModalError').addClass("modal modal-danger");	  
+    					$('#report_button').hide();
+    					$('#visualizza_report').hide();
+    					$('#myModalError').modal('show');	
+    					  // ripristina lo stato precedente
+    	                $chk.prop('checked', valore === 1).iCheck('update');
+    				
+    				  }
+    		     
+    		    },
+    		    error: function (xhr, status, error) {
+    		      console.error('Errore AJAX:', error);
+    		      // ripristina lo stato precedente
+    		      $chk.prop('checked', valore === 1).iCheck('update');
+    		    }
+    		  });
+    		});
+
     	
     	
     	$('.select2').select2();

@@ -59,6 +59,10 @@
          <property name="note" type="java.lang.String">
             <column name="note" />
         </property>
+        
+          <property name="isVisibile" type="int">
+            <column name="isVisibile" />
+        </property>
       
     </class>
 </hibernate-mapping>

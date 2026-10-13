@@ -144,8 +144,8 @@ public class CreateCertificatoAM {
 		
 		
 		/* inserire nel controllo if la variabile isVisibile*/
-		//se 0 è checkato
-		if(prova.getIntervento().getNomeCliente()!=null && prova.getIntervento().getIsVisibile() == 0 ) {
+		//se 1 è checkato
+		if(prova.getIntervento().getNomeCliente()!=null && prova.getIntervento().getIsVisibile() == 1 ) {
 			
 			ubicazione+=prova.getIntervento().getNomeCliente();
 			
@@ -160,7 +160,7 @@ public class CreateCertificatoAM {
 			
 			/*se isVisibile==true presso=""*/
 			String presso="\nPresso ";
-			if(prova.getIntervento().getIsVisibile()==1) { //non checkato
+			if(prova.getIntervento().getIsVisibile()==0) { //non checkato
 				presso = "";
 			}
 			

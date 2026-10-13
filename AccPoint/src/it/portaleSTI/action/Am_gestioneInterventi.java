@@ -284,6 +284,7 @@ public class Am_gestioneInterventi extends HttpServlet {
 				intervento.setOperatore(new AMOperatoreDTO(Integer.parseInt(operatore), "", ""));
 				intervento.setDataIntervento(df.parse(data_intervento));
 				intervento.setIdCommessa(commessa.split("@")[0]);
+				intervento.setIsVisibile(1);
 				
 				
 				

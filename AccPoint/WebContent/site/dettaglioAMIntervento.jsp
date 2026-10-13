@@ -74,7 +74,7 @@
                id="check_cliente"
                name="check_cliente"
                style="margin:0;"
-               <c:if test="${intervento.isVisibile == 0}">checked</c:if>>
+               <c:if test="${intervento.isVisibile == 1}">checked</c:if>>
     </div>
 
 </li>
@@ -1089,7 +1089,7 @@ function generaCertificatoAM(id_prova, isAnteprima){
     $(document).ready(function() { 
     	$('#check_cliente').on('ifToggled', function (){
     		  var $chk = $(this);
-    		  var valore = $chk.is(':checked') ? 0 : 1;
+    		  var valore = $chk.is(':checked') ? 1 : 0;
 
     		 console.log("check"); 
     		 
@@ -1113,7 +1113,7 @@ function generaCertificatoAM(id_prova, isAnteprima){
     					$('#visualizza_report').hide();
     					$('#myModalError').modal('show');	
     					  // ripristina lo stato precedente
-    	                $chk.prop('checked', valore === 1).iCheck('update');
+    	                $chk.prop('checked', valore === 0).iCheck('update');
     				
     				  }
     		     
@@ -1121,7 +1121,7 @@ function generaCertificatoAM(id_prova, isAnteprima){
     		    error: function (xhr, status, error) {
     		      console.error('Errore AJAX:', error);
     		      // ripristina lo stato precedente
-    		      $chk.prop('checked', valore === 1).iCheck('update');
+    		      $chk.prop('checked', valore === 0).iCheck('update');
     		    }
     		  });
     		});

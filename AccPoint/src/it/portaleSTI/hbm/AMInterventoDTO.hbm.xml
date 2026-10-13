@@ -61,7 +61,7 @@
         </property>
         
           <property name="isVisibile" type="int">
-            <column name="isVisibile" />
+            <column name="visibile" />
         </property>
       
     </class>

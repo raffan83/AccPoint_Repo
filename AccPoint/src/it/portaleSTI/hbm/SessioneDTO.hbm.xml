@@ -47,7 +47,7 @@
         
  
                <set name="lista_misure_inviate" table="sessione_misura"
-        	inverse="false" lazy="false" fetch="select" cascade="all" >
+        	inverse="false" lazy="false" fetch="select" cascade="save-update" >
             <key>
                 <column name="id_sessione" not-null="true" />
             </key>

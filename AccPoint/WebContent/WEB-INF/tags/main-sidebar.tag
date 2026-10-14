@@ -508,7 +508,6 @@ private String voceAction(String url, String icona, String testo) {
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <li class="header">Menu</li>
         ${blocchiCommesse}
         ${blocchiInterventi}
         ${blocchiMisure}

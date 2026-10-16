@@ -2033,8 +2033,8 @@ public class GestionePacco extends HttpServlet {
 			String check = request.getParameter("check");
 			String stato_lav = request.getParameter("stato_lav");
 			
-			MagItemDTO magItem = GestioneMagazzinoBO.getItemByIdTipoProprio(Integer.parseInt(id_item), session);
-			GestioneMagazzinoBO.saveCheckUscita(magItem.getId(),Integer.parseInt(id_pacco),utente,session,Integer.parseInt(check), Integer.parseInt(stato_lav));
+		
+			GestioneMagazzinoBO.saveCheckUscita(Integer.parseInt(id_item),Integer.parseInt(id_pacco),utente,session,Integer.parseInt(check), Integer.parseInt(stato_lav));
 			
 			
 		 	session.getTransaction().commit();

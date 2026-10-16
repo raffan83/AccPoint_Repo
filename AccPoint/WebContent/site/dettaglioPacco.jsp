@@ -184,7 +184,7 @@ String permesso = "0";
 </div>
 
 
-  <div class="box box-danger box-solid " id="boxUscita">
+  <div class="box box-danger box-solid " id="tabItemGeneral">
 <div class="box-header with-border" >
 
  <label>Item Nel Pacco</label>
@@ -194,6 +194,8 @@ String permesso = "0";
 
 	</div>
 </div>
+<br>
+<br>
 <div class="box-body">
  
  <div class="row row-search-flex" style="margin-top: 10px;" id="boxCheckUscita">
@@ -225,8 +227,6 @@ String permesso = "0";
 	</div>-->
 </div>
 
-<br>
-<br>
 <table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
@@ -301,14 +301,8 @@ String permesso = "0";
  <c:if test="${item_pacco.item.tipo_item.id==1 }">
  <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${utl:escapeJS(item_pacco.item.matricola) }','${utl:escapeJS(item_pacco.item.codice_interno) }','${utl:escapeJS(item_pacco.item.descrizione) }')"><i class="glyphicon glyphicon-pencil"></i></a>
  </c:if>
-<c:if test="${pacco.stato_lavorazione.id == 3 && item_pacco.user_check_uscita != null}">
- <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_check_uscita.nominativo}',
-       '${item_pacco.data_check_uscita}')"> <i class="fa fa-info-circle"></i></a>
- </c:if>
- <c:if test="${pacco.stato_lavorazione.id == 5 && item_pacco.user_fornitore !=null}">
- <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_fornitore.nominativo}',
-       '${item_pacco.data_fornitore}')"> <i class="fa fa-info-circle"></i></a>
- </c:if>
+
+ 
  
  </td>
 </c:when>
@@ -323,8 +317,12 @@ String permesso = "0";
         <td>
             <input class="check_strumenti"
                    type="checkbox"
-                   id="checkbox_${item_pacco.item.id_tipo_proprio}"
+                   id="checkbox_${item_pacco.item.id}"
                    ${item_pacco.check_controllo_uscita == 1 ? 'checked' : ''}>
+                   <c:if test="${item_pacco.user_check_uscita != null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_check_uscita.nominativo}',
+       '${item_pacco.data_check_uscita}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
         </td>
     </c:when>
 
@@ -332,8 +330,12 @@ String permesso = "0";
         <td>
             <input class="check_fornitore"
                    type="checkbox"
-                   id="checkbox_fornitore_${item_pacco.item.id_tipo_proprio}"
+                   id="checkbox_fornitore_${item_pacco.item.id}"
                    ${item_pacco.check_fornitore == 1 ? 'checked' : ''}>
+                   <c:if test="${item_pacco.user_fornitore !=null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_fornitore.nominativo}',
+       '${item_pacco.data_fornitore}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
         </td>
     </c:when>
 
@@ -351,12 +353,49 @@ String permesso = "0";
  
  </div>
 </div>
- </div>
+
  
  
- 
- <div class="form-group" id="tabItemRilievi" style="display:none">
+  <div class="box box-danger box-solid " id="tabItemRilievi">
+<div class="box-header with-border" >
+
  <label>Item Nel Pacco</label>
+ 	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<br>
+<br>
+<div class="box-body">
+
+<div class="row row-search-flex" style="margin-top: 10px;" id="boxCheckUscitaRil">
+    <div class="col-md-6">
+        <label>Cerca rilievo</label>
+        <div class="input-group">
+            <input type="text"
+                   id="searchStrumentoRil"
+                   class="form-control"
+                   placeholder="ID rilievo o QR">
+
+            <span class="input-group-btn">
+                <button class="btn btn-primary" id="btnSearchStrumentoRil">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div id="semaforoBoxRil" class="semaforo-box">
+            <div id="semaforoLedRil" class="semaforo-led semaforo-off">
+                <span id="semaforoTxtRil" class="semaforo-txt"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <table id="tabItemsRil" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
@@ -366,6 +405,14 @@ String permesso = "0";
  <th>Pezzi in ingresso</th>
  <th>Note</th>
  <th>Azioni</th>
+ <c:choose>
+    <c:when test="${pacco.stato_lavorazione.id == 3}">
+        <th class="colonna-checkbox">Controllato</th>
+    </c:when>
+    <c:when test="${pacco.stato_lavorazione.id == 5}">
+        <th class="colonna-checkbox">Controllo Fornitore</th>
+    </c:when>
+</c:choose>
 
 
 <%-- <th hidden="hidden"></th> --%>
@@ -375,7 +422,7 @@ String permesso = "0";
  <tbody id="tbodyitem">
  
   <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
-  <tr>
+  <tr class="${(pacco.stato_lavorazione.id == 3 && item_pacco.check_controllo_uscita == 1) || (pacco.stato_lavorazione.id == 5 && item_pacco.check_fornitore == 1) ? 'row-selezionata' : ''}">
 
   <td>
   
@@ -392,6 +439,35 @@ String permesso = "0";
  <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${item_pacco.item.matricola }','${item_pacco.item.codice_interno }','${item_pacco.item.descrizione }')"><i class="glyphicon glyphicon-pencil"></i></a> 
  </c:if> --%>
  </td>
+ <c:choose>
+
+    <c:when test="${pacco.stato_lavorazione.id == 3}">
+        <td>
+            <input class="check_strumenti"
+                   type="checkbox"
+                   id="checkbox_${item_pacco.item.id}"
+                   ${item_pacco.check_controllo_uscita == 1 ? 'checked' : ''}>
+                   <c:if test="${item_pacco.user_check_uscita != null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_check_uscita.nominativo}',
+       '${item_pacco.data_check_uscita}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
+        </td>
+    </c:when>
+
+    <c:when test="${pacco.stato_lavorazione.id == 5}">
+        <td>
+            <input class="check_fornitore"
+                   type="checkbox"
+                   id="checkbox_fornitore_${item_pacco.item.id}"
+                   ${item_pacco.check_fornitore == 1 ? 'checked' : ''}>
+                   <c:if test="${item_pacco.user_fornitore !=null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_fornitore.nominativo}',
+       '${item_pacco.data_fornitore}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
+        </td>
+    </c:when>
+
+</c:choose>
 
   <td hidden="hidden">${item_pacco.item.id }</td>
   </tr>
@@ -402,8 +478,10 @@ String permesso = "0";
 </tbody>
  </table>
  
- 
+
  </div>
+</div>
+
  
  
  
@@ -432,7 +510,6 @@ String permesso = "0";
  <th>Quantità</th>
  
  <th>Note</th>
- <th>Azioni</th>
 <td><input type="checkbox" id="checkbox_all" name="checkbox_all"/><b>  Accettato</b></td>
  </tr></thead>
  
@@ -446,14 +523,8 @@ String permesso = "0";
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.quantita}</td>
   <td><input type="text" id="note_accettazione_${item_pacco.item.id_tipo_proprio}" name="note_accettazione_${item_pacco.item.id_tipo_proprio}" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
-   <td><c:if test="${pacco.stato_lavorazione.id == 1 && item_pacco.user_accettato !=null}">
- <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_accettato.nominativo}',
-       '${item_pacco.data_accettato}')"> <i class="fa fa-info-circle"></i></a>
- </c:if>
- </td>
-  
-  <td>
-  <c:choose>
+   <td>
+   <c:choose>
   <c:when test="${item_pacco.accettato==1 }">
   <input type="checkbox"  id="checkbox_accettazione_${item_pacco.item.id_tipo_proprio}" name="checkbox_accettazione_${item_pacco.item.id_tipo_proprio }" checked/>
   </c:when>
@@ -461,6 +532,12 @@ String permesso = "0";
     <input type="checkbox"  id="checkbox_accettazione_${item_pacco.item.id_tipo_proprio }" name="checkbox_accettazione_${item_pacco.item.id_tipo_proprio }"/>
   </c:otherwise>  
   </c:choose>
+   <c:if test="${pacco.stato_lavorazione.id == 1 && item_pacco.user_accettato !=null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_accettato.nominativo}',
+       '${item_pacco.data_accettato}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
+
+  
   </td>
  
   
@@ -493,17 +570,11 @@ String permesso = "0";
 
 
 
-
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
-        
-
-        
- </div>
-</div>
+        </div>  <!-- form-group Note -->
+    </div>      <!-- box-body principale -->
+</div>          <!-- box principale -->
+</div>          <!-- col-xs-12 -->
+</div>          <!-- row -->
        
      </section>   
   		<div id="empty" class="testo12"></div>
@@ -1769,15 +1840,18 @@ String permesso = "0";
 }
 		  
 #tabItems tbody tr.row-selezionata,
-#tabItems tbody tr.row-selezionata > td {
+#tabItems tbody tr.row-selezionata > td,
+#tabItemsRil tbody tr.row-selezionata,
+#tabItemsRil tbody tr.row-selezionata > td {
     background-color: #fff3cd !important;
 }
+
 		  .semaforo-box {
-	height: 10px;
+	height: 50px;
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
-	margin-top:80px;
+	margin-top:50px;
 	background: #fff;
 }
 
@@ -2489,7 +2563,7 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 	    if(state != null && state.columns!=null){
 	    		console.log(state.columns);
 	    
-	    		columsDatatables1 = state.columns;
+	    		columsDatatables4 = state.columns;
 	    }
 	    
 	    $('#tabItemsRil thead th').each( function () {
@@ -3162,8 +3236,29 @@ table_items.columns.adjust().draw();
  
 
 
+var colonneTabItemsRil = [
+    { responsivePriority: 1, targets: 0 },
+    { responsivePriority: 2, targets: 5 },
+    { targets: -1, visible: false, searchable: false }
+];
 
+if (stato_lav == 3 || stato_lav == 5) {
+    colonneTabItemsRil.push({
+        responsivePriority: 3,
+        targets: 6,
+        searchable: false,
+        orderable: false
+    });
+}
+	
 
+	if(stato_lav==3 || stato_lav==5){
+		
+		$('#boxCheckUscitaRil').show();
+} else {
+		$('#boxCheckUscitaRil').hide();
+	}
+		
 
 table_items_ril = $('#tabItemsRil').DataTable({
 	language: {
@@ -3198,15 +3293,13 @@ table_items_ril = $('#tabItemsRil').DataTable({
       responsive: true,
       scrollX: false,
       stateSave: true,
-      columnDefs: [
-/*   				   { responsivePriority: 1, targets: 0 },
-                   { responsivePriority: 2, targets: 1 },
-                      */
-	              	    { responsivePriority: 1, targets: 0 },
-                
-
-
-               ], 
+      columnDefs: colonneTabItemsRil,
+      stateLoadParams: function(settings, data) {
+          if (data.columns &&
+              data.columns.length !== $('#tabItemsRil thead th').length) {
+              return false;
+          }
+      },
                buttons: [   
         	          {
         	            extend: 'colvis',
@@ -3215,6 +3308,7 @@ table_items_ril = $('#tabItemsRil').DataTable({
 
     	
     });
+coloraRigheUscita(table_items_ril);
 
 table_items_ril.buttons().container().appendTo( '#tabItemsRil_wrapper .col-sm-6:eq(1)');
 
@@ -3697,8 +3791,8 @@ table = $('#tabAllegati').DataTable({
     	
     });
 
-
-
+$('#tabItemRilievi').hide();
+console.log("item_pacco_json[0].item.tipo_item.id " + item_pacco_json[0].item.tipo_item.id);
 if(item_pacco_json.length>0 && item_pacco_json[0].item!=null && item_pacco_json[0].item.tipo_item.id==4){
 	   $('#tabItemGeneral').hide();
 	   $('#tabItemRilievi').show();
@@ -4206,18 +4300,35 @@ else{
 		}
 
 	     
-	 	$(document).off('click', '#btnSearchStrumento').on('click', '#btnSearchStrumento', function () {
-			 var inputRaw = $('#searchStrumento').val().trim();
-			 var idCercato = valutaInput(inputRaw);
+	 	$(document).off('click', '#btnSearchStrumento, #btnSearchStrumentoRil')
+        .on('click', '#btnSearchStrumento, #btnSearchStrumentoRil', function () {
+        	
+	 		var isRilievo = $(this).attr('id') === 'btnSearchStrumentoRil';
+
+	 		var inputRaw = isRilievo
+	 		    ? $('#searchStrumentoRil').val().trim()
+	 		    : $('#searchStrumento').val().trim();
+
+	 		var idCercato = valutaInput(inputRaw);
+
+	 		var t = isRilievo
+	 		    ? $('#tabItemsRil').DataTable()
+	 		    : $('#tabItems').DataTable();
 		   	 var $msg = $('#msgSearchStrumento');
-		   	 
+			
 	
 		   	 
-		   	 setSemaforo('off', '');
+		   	 setSemaforo('off', '',isRilievo);
+		   	 console.log("rilievi " + rilievi );
 		   	 
-		   	 var t = $('#tabItems').DataTable();
+		   	 if(rilievi ===true){
+		   	   	 var t = $('#tabItemsRil').DataTable();
+		   	 } else {
+		   	   	 var t = $('#tabItems').DataTable();
+		   	 }
+		
 		   	 var trovato = false;
-		   	 
+		   	console.log("id Cercato" + idCercato);
 		   	 
 		     t.rows().every(function () {
 
@@ -4231,8 +4342,9 @@ else{
 		         var note = data[10];
 		     
 
+		         console.log("id " + id);
 		         if (id == idCercato) {
-		        	 console.log("stato_lav " + stato_lav);
+		        	 console.log("stato_lav id==idCercarto" + stato_lav);
 		        	 //save_check_controllo_uscita(id,1,stato_lav);
 		       
 		             trovato = true;
@@ -4279,7 +4391,7 @@ else{
 		            
 		             setTimeout(function () {
 		                     // ok -> verde
-		                     setSemaforo('green', 'Trovato : ' + id + ' - ' + denominazione);
+		                     setSemaforo('green', 'Trovato : ' + id + ' - ' + denominazione,isRilievo);
 		                     // se vuoi ancora id+descrizione nel testo del cerchio:
 		                     // setSemaforo('green', id);
 		               
@@ -4299,7 +4411,7 @@ else{
 		     if (!trovato) {
 		    
 		     	$('#listaItemTop').text('');
-		     	setSemaforo('red', 'Strumento non trovato');
+		     	setSemaforo('red', 'Strumento non trovato',isRilievo);
 		      //   $msg.text('Strumento non trovato').show();
 		         setTimeout(focusRicercaQR, 0);
 		     }
@@ -4321,11 +4433,15 @@ else{
 		    }
 		});
 	 	
-	 	function setSemaforo(stato, testo) {
-			
-		    var $led = $('#semaforoLed');
-		    var $txt = $('#semaforoTxt');
-		  
+		function setSemaforo(stato, testo, isRilievo = false) {
+
+		    var $led = isRilievo
+		        ? $('#semaforoLedRil')
+		        : $('#semaforoLed');
+
+		    var $txt = isRilievo
+		        ? $('#semaforoTxtRil')
+		        : $('#semaforoTxt');
 
 		    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
 
@@ -4333,8 +4449,6 @@ else{
 		    else if (stato === 'red') $led.addClass('semaforo-red');
 		    else if (stato === 'amber') $led.addClass('semaforo-amber');
 		    else $led.addClass('semaforo-off');
-		    
-	
 
 		    $txt.text(testo || '');
 		}
@@ -4375,7 +4489,7 @@ else{
 	 	 function save_check_controllo_uscita(id_item, check,stato_lav){
 	 		var id_pacco= ${pacco.id};
 	 		    var nota = $('#testoNota').val();
-	 		  
+	 	
 	 		    $.ajax({
 	 		        url: 'gestionePacco.do',
 	 		        method: 'POST',
@@ -4421,7 +4535,7 @@ else{
 	 	 
 	
 	 	
-	 	$('#tabItems').on('ifChecked ifUnchecked',  '.check_strumenti, .check_fornitore', function(event) {
+	 	$('#tabItems, #tabItemsRil').on('ifChecked ifUnchecked',  '.check_strumenti, .check_fornitore', function(event) {
 	 	
 	 		if(stato_lav==3){
 	 	    var id_item = $(this).attr('id').replace('checkbox_', '');

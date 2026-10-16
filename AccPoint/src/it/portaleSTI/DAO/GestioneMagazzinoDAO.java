@@ -642,7 +642,7 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
-	public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
+	public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session,UtenteDTO utente) {
 		
 		
 		for(int i=0; i<acc.size();i++) {
@@ -653,10 +653,13 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 			int id_item=(int) query.list().get(0);
 		
-			query = session.createQuery("update MagItemPaccoDTO set accettato=1, note_accettazione= :note where item.id= :_item and pacco.id= :_id_pacco");
+			
+			query = session.createQuery("update MagItemPaccoDTO set accettato=1, note_accettazione= :note, user_accettato= :_user, data_accettato= :_data  where item.id= :_item and pacco.id= :_id_pacco");
 			query.setParameter("_item", id_item);
 			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
 			query.setParameter("note", note_acc.get(i).getAsString());
+			query.setParameter("_user", utente);
+			query.setParameter("_data", new Date());
 			query.executeUpdate();
 		}
 		
@@ -667,10 +670,12 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 		
 			int id_item=(int) query.list().get(0);
 		
-			query = session.createQuery("update MagItemPaccoDTO set accettato=0, note_accettazione= :note where item.id= :_item and pacco.id= :_id_pacco");
+			query = session.createQuery("update MagItemPaccoDTO set accettato=0, note_accettazione= :note, user_accettato= :_user, data_accettato= :_data where item.id= :_item and pacco.id= :_id_pacco");
 			query.setParameter("_item", id_item);
 			query.setParameter("_id_pacco", Integer.parseInt(id_pacco));
 			query.setParameter("note", note_non_acc.get(i).getAsString());
+			query.setParameter("_user", null);
+			query.setParameter("_data", null);
 			query.executeUpdate();
 			
 		}
@@ -1434,5 +1439,29 @@ public static ArrayList<MagPaccoDTO> getListaPacchiByOrigineAndItem(String origi
 	}
 
 
+
+	public static MagItemPaccoDTO getMagItemPaccoById(int id_item, int id_pacco, Session session) {
+
+	    Query query = session.createQuery(
+	        "FROM MagItemPaccoDTO WHERE id_item = :id_item AND id_pacco = :id_pacco"
+	    );
+
+	    query.setParameter("id_item", id_item);
+	    query.setParameter("id_pacco", id_pacco);
+	    query.setMaxResults(1);
+
+	    return (MagItemPaccoDTO) query.uniqueResult();
+	}	
+	
+	public static MagItemDTO getItemByIdTipoProprio(int id_tipo_proprio,Session session) {
+		 Query query = session.createQuery(
+			        "FROM MagItemDTO WHERE id_tipo_proprio = :id_tipo_proprio "
+			    );
+
+			    query.setParameter("id_tipo_proprio", id_tipo_proprio);
+			    
+
+			    return (MagItemDTO) query.uniqueResult();
+	}
 
 }

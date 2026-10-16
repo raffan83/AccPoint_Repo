@@ -41,6 +41,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import it.portaleSTI.DAO.DirectMySqlDAO;
+import it.portaleSTI.DAO.GestioneMagazzinoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.AttivitaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
@@ -1324,7 +1325,7 @@ public class GestionePacco extends HttpServlet {
 			JsonArray json_array_non_acc = jelement_non_acc.getAsJsonArray();
 			JsonArray json_array_note_acc = jelement_note_acc.getAsJsonArray();
 			JsonArray json_array_note_non_acc = jelement_note_non_acc.getAsJsonArray();
-			GestioneMagazzinoBO.accettaItem(json_array_acc,json_array_non_acc, json_array_note_acc,json_array_note_non_acc, id_pacco, session);
+			GestioneMagazzinoBO.accettaItem(json_array_acc,json_array_non_acc, json_array_note_acc,json_array_note_non_acc, id_pacco, session,utente);
 			
 			session.getTransaction().commit();
 			session.close();
@@ -2021,6 +2022,28 @@ public class GestionePacco extends HttpServlet {
 			myObj.addProperty("success", true);
 			myObj.addProperty("messaggio", "Utente assegnato con successo!");
         	out.print(myObj);
+		} else if(action.equals("saveCheckUscita")) {
+			JsonObject myObj = new JsonObject();
+			
+			ajax = true;
+		
+			response.setContentType("application/json");
+			String id_item = request.getParameter("id_item");
+			String id_pacco = request.getParameter("id_pacco");
+			String check = request.getParameter("check");
+			String stato_lav = request.getParameter("stato_lav");
+			
+			MagItemDTO magItem = GestioneMagazzinoBO.getItemByIdTipoProprio(Integer.parseInt(id_item), session);
+			GestioneMagazzinoBO.saveCheckUscita(magItem.getId(),Integer.parseInt(id_pacco),utente,session,Integer.parseInt(check), Integer.parseInt(stato_lav));
+			
+			
+		 	session.getTransaction().commit();
+			session.close();
+			
+			PrintWriter out = response.getWriter();
+			myObj.addProperty("success", true);
+        	out.print(myObj);
+			
 		}
 		
 		}catch(Exception e) {

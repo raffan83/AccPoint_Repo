@@ -184,8 +184,49 @@ String permesso = "0";
 </div>
 
 
- <div class="form-group" id="tabItemGeneral">
+  <div class="box box-danger box-solid " id="boxUscita">
+<div class="box-header with-border" >
+
  <label>Item Nel Pacco</label>
+ 	<div class="box-tools pull-right">
+		
+		<button data-widget="collapse" class="btn btn-box-tool"><i class="fa fa-minus"></i></button>
+
+	</div>
+</div>
+<div class="box-body">
+ 
+ <div class="row row-search-flex" style="margin-top: 10px;" id="boxCheckUscita">
+	<!--  <div class="row" style="margin-top: 10px;">-->
+	<div class="col-md-6">
+		<label>Cerca strumento</label>
+		<div class="input-group">
+			<input type="text" id="searchStrumento" class="form-control"
+				placeholder="ID strumento o QR"> <span
+				class="input-group-btn">
+				<button class="btn btn-primary" id="btnSearchStrumento">
+					<i class="fa fa-search"></i>
+				</button>
+			</span>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div id="semaforoBox" class="semaforo-box">
+			<div id="semaforoLed" class="semaforo-led semaforo-off">
+				<span id="semaforoTxt" class="semaforo-txt"></span>
+			</div>
+		</div>
+	</div>
+	<!--  <div class="col-md-6">
+		<span id="msgSearchStrumento" class="text-danger"
+			style="display: none; margin-top: 28px; display: inline-block;">
+
+		</span>
+	</div>-->
+</div>
+
+<br>
+<br>
 <table id="tabItems" class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
  <thead><tr class="active">
 
@@ -201,15 +242,23 @@ String permesso = "0";
  <th>Priorit&agrave;</th>
  <th>Note</th>
  <th>Action</th>
+<c:choose>
+    <c:when test="${pacco.stato_lavorazione.id == 3}">
+        <th class="colonna-checkbox">Controllato</th>
+    </c:when>
+    <c:when test="${pacco.stato_lavorazione.id == 5}">
+        <th class="colonna-checkbox">Controllo Fornitore</th>
+    </c:when>
+</c:choose>
 
 <%-- <th hidden="hidden"></th> --%>
- <th hidden="hidden"></th>
+<th class="colonna-id-hidden" hidden="hidden"></th>
  </tr></thead>
  
  <tbody id="tbodyitem">
  
   <c:forEach items="${lista_item_pacco}" var="item_pacco" varStatus="loop">
-  <tr>
+<tr class="${(pacco.stato_lavorazione.id == 3 && item_pacco.check_controllo_uscita == 1) || (pacco.stato_lavorazione.id == 5 && item_pacco.check_fornitore == 1) ? 'row-selezionata' : ''}">
 
   <c:choose>
   <c:when test="${item_pacco.item.tipo_item.descrizione =='Strumento'}">
@@ -252,12 +301,42 @@ String permesso = "0";
  <c:if test="${item_pacco.item.tipo_item.id==1 }">
  <a class="btn btn-warning pull-center customTooltip"  title="Click per modificare l'Item"   onClick="modificaCampiItemModal('${item_pacco.item.id}','${utl:escapeJS(item_pacco.item.matricola) }','${utl:escapeJS(item_pacco.item.codice_interno) }','${utl:escapeJS(item_pacco.item.descrizione) }')"><i class="glyphicon glyphicon-pencil"></i></a>
  </c:if>
+<c:if test="${pacco.stato_lavorazione.id == 3 && item_pacco.user_check_uscita != null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_check_uscita.nominativo}',
+       '${item_pacco.data_check_uscita}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
+ <c:if test="${pacco.stato_lavorazione.id == 5 && item_pacco.user_fornitore !=null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_fornitore.nominativo}',
+       '${item_pacco.data_fornitore}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
+ 
  </td>
 </c:when>
  <c:otherwise><td></td></c:otherwise>
  </c:choose> 
 </c:when>
 <c:otherwise><td></td></c:otherwise>
+</c:choose>
+<c:choose>
+
+    <c:when test="${pacco.stato_lavorazione.id == 3}">
+        <td>
+            <input class="check_strumenti"
+                   type="checkbox"
+                   id="checkbox_${item_pacco.item.id_tipo_proprio}"
+                   ${item_pacco.check_controllo_uscita == 1 ? 'checked' : ''}>
+        </td>
+    </c:when>
+
+    <c:when test="${pacco.stato_lavorazione.id == 5}">
+        <td>
+            <input class="check_fornitore"
+                   type="checkbox"
+                   id="checkbox_fornitore_${item_pacco.item.id_tipo_proprio}"
+                   ${item_pacco.check_fornitore == 1 ? 'checked' : ''}>
+        </td>
+    </c:when>
+
 </c:choose>
     
 <%--   <td hidden="hidden">${item_pacco.item.codice_interno }</td> --%>
@@ -270,7 +349,8 @@ String permesso = "0";
 </tbody>
  </table>
  
- 
+ </div>
+</div>
  </div>
  
  
@@ -352,6 +432,7 @@ String permesso = "0";
  <th>Quantità</th>
  
  <th>Note</th>
+ <th>Azioni</th>
 <td><input type="checkbox" id="checkbox_all" name="checkbox_all"/><b>  Accettato</b></td>
  </tr></thead>
  
@@ -365,6 +446,12 @@ String permesso = "0";
   <td>${item_pacco.item.descrizione }</td>
   <td>${item_pacco.quantita}</td>
   <td><input type="text" id="note_accettazione_${item_pacco.item.id_tipo_proprio}" name="note_accettazione_${item_pacco.item.id_tipo_proprio}" style="width:100%" value="${item_pacco.note_accettazione }"/></td>
+   <td><c:if test="${pacco.stato_lavorazione.id == 1 && item_pacco.user_accettato !=null}">
+ <a class="btn btn-primary pull-center customTooltip"  title="Click per visualizzare fino check"   onClick="infoCheckUserData('${item_pacco.user_accettato.nominativo}',
+       '${item_pacco.data_accettato}')"> <i class="fa fa-info-circle"></i></a>
+ </c:if>
+ </td>
+  
   <td>
   <c:choose>
   <c:when test="${item_pacco.accettato==1 }">
@@ -375,6 +462,7 @@ String permesso = "0";
   </c:otherwise>  
   </c:choose>
   </td>
+ 
   
   
  
@@ -425,13 +513,67 @@ String permesso = "0";
 
       </div>
       
+      <div id="modalInfoCheck"
+     class="modal fade"
+     tabindex="-1"
+     role="dialog">
+
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                    <i class="fa fa-info-circle text-info"></i>
+                    Informazioni Controllo
+                </h4>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa fa-user"></i>
+                        Operatore
+                    </label>
+                    <p id="infoCheckNome"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa fa-calendar"></i>
+                        Data Controllo
+                    </label>
+                    <p id="infoCheckData"></p>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    Chiudi
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+      
+      
       
       <form name="ModificaPaccoForm" method="post" id="ModificaPaccoForm" action="gestionePacco.do?action=new" enctype="multipart/form-data" accept-charset="UTF-8">
          <div id="myModalModificaPacco" class="modal fade" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel">
           
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-    
+   
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modifica Pacco</h4>
@@ -1613,6 +1755,74 @@ String permesso = "0";
   
         <link rel="stylesheet" type="text/css" href="plugins/datetimepicker/bootstrap-datetimepicker.css" /> 
 		<link rel="stylesheet" type="text/css" href="plugins/datetimepicker/datetimepicker.css" /> 
+		
+		  <style>
+		  
+		  .row-search-flex {
+	display: flex;
+	align-items: flex-end;
+	flex-wrap: wrap;
+}
+
+.row-search-flex>[class*="col-"] {
+	float: none !important;
+}
+		  
+#tabItems tbody tr.row-selezionata,
+#tabItems tbody tr.row-selezionata > td {
+    background-color: #fff3cd !important;
+}
+		  .semaforo-box {
+	height: 10px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	margin-top:80px;
+	background: #fff;
+}
+
+.semaforo-led{
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,0,0,.12);
+  box-shadow: inset 0 0 10px rgba(0,0,0,.15);
+
+  display: flex;                 
+  align-items: center;          
+  justify-content: center;      
+  text-align: center;
+}
+
+.semaforo-txt{
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #fff;                   
+  padding: 0 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* stati */
+.semaforo-off {
+	background: #e9ecef;
+}
+
+.semaforo-red {
+	background: #dd4b39;
+}
+
+.semaforo-green {
+	background: #00a65a;
+}
+
+.semaforo-amber {
+	background: #f39c12;
+}
+		  
+		  
+		  </style>
+		
 </jsp:attribute>
 
 <jsp:attribute name="extra_js_footer">
@@ -1723,7 +1933,7 @@ String permesso = "0";
 		var nota_pacco = '${pacco.tipo_nota_pacco.id}'
 		var origine = '${pacco.origine}';
 		
-		console.log("fornitore  dentro modif" + fornitore);
+	
 		$('#select_nota_pacco').val(nota_pacco);
 		
 		$('#id_pacco').val(id_pacco);
@@ -1902,7 +2112,7 @@ String permesso = "0";
 $('#stato_lavorazione').change(function(){
  		
  		var selection = $('#stato_lavorazione').val()
- 		console.log("selection  " + selection);
+ 		
  		var fornitore = "${pacco.fornitore}";
  		if(selection==4){
  			
@@ -1997,7 +2207,7 @@ $('#stato_lavorazione').change(function(){
 			 $('#tipo_ddt').change();
 			// destinazioneOptions(selection);
  		}  else if(selection==6){
- 			console.log("fornitore 6");
+ 		
  			$('#data_arrivo').attr("disabled",true);
  			$('#data_spedizione').attr("disabled", false);
  			$('#data_arrivo').val('');
@@ -2245,12 +2455,26 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 	    		columsDatatables1 = state.columns;
 	    }
 	    
-	    $('#tabItems thead th').each( function () {
-	    	if(columsDatatables1.length==0 || columsDatatables1[$(this).index()]==null ){columsDatatables1.push({search:{search:""}});}
-	    	var title = $('#tabItems thead th').eq( $(this).index() ).text();
-	    
-	    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables1[$(this).index()].search.search+'" type="text" /></div>');
-	    	} );
+	    $('#tabItems thead th').each(function () {
+
+	        if ($(this).hasClass('colonna-checkbox') ||
+	            $(this).hasClass('colonna-id-hidden')) {
+	            return;
+	        }
+
+	        var indice = $(this).index();
+
+	        var filtro = (columsDatatables1[indice] &&
+	                      columsDatatables1[indice].search)
+	            ? columsDatatables1[indice].search.search
+	            : "";
+
+	        $(this).append(
+	            '<div><input class="inputsearchtable" style="width:100%" value="' +
+	            filtro +
+	            '" type="text" /></div>'
+	        );
+	    });
 
 	} );
 	
@@ -2765,11 +2989,12 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
  	
    $(document).ready(function() {
 	   
-	  console.log("test")
+	
 	   
 	   commessa_options = $('#commessa option').clone();
 	   
     stato_lav = ${pacco.stato_lavorazione.id};
+    console.log("stato_lav " + stato_lav);
 
 
     checkStatoLavorazione(stato_lav);
@@ -2820,8 +3045,38 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 				
 		}); 
 	 
+ 	var colonneTabItems = [
+ 	    { responsivePriority: 1, targets: 10 },
+ 	    { responsivePriority: 2, targets: 11 },
+ 	    { responsivePriority: 4, targets: 3 },
+ 	    { responsivePriority: 5, targets: 0 },
+ 	    { responsivePriority: 6, targets: 1 },
+ 	    { responsivePriority: 7, targets: 2 },
+ 	    { responsivePriority: 8, targets: 7 },
+ 	    { responsivePriority: 9, targets: 5 },
+ 	    { responsivePriority: 10, targets: 6 },
+ 	    { targets: -1, visible: false, searchable: false }
+ 	];
 
+ 	if (stato_lav == 3 || stato_lav == 5) {
+ 	    colonneTabItems.push({
+ 	        responsivePriority: 3,
+ 	        targets: 12,
+ 	        searchable: false,
+ 	        orderable: false
+ 	    });
+ 	}
+ 	
+ 	
+ 	if(stato_lav==3 || stato_lav==5){
+ 		
+ 		$('#boxCheckUscita').show();
+	} else {
+ 		$('#boxCheckUscita').hide();
+ 	}
+ 		
  table_items = $('#tabItems').DataTable({
+	 
 		language: {
 	        	emptyTable : 	"Nessun dato presente nella tabella",
 	        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -2829,7 +3084,7 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 	        	infoFiltered:	"(filtrati da _MAX_ elementi totali)",
 	        	infoPostFix:	"",
 	        infoThousands:	".",
-	        lengthMenu:	"Visualizza _MENU_ elementi",
+	        lengthMenu: "Visualizza _MENU_ elementi",
 	        loadingRecords:	"Caricamento...",
 	        	processing:	"Elaborazione...",
 	        	search:	"Cerca:",
@@ -2846,6 +3101,7 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 	        }
      },
      pageLength: 10,
+     lengthChange: false,
 	      paging: true,                            
 	      ordering: true,
 	      info: true,         
@@ -2854,23 +3110,13 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 	      responsive: true,
 	      scrollX: false,
 	      stateSave: true,
-	      columnDefs: [
-/*   				   { responsivePriority: 1, targets: 0 },
-	                   { responsivePriority: 2, targets: 1 },
-	                      */
-  	              	    { responsivePriority: 1, targets: 10 },
-	                   { responsivePriority: 2, targets: 11 },
-	                   { responsivePriority: 3, targets: 12 },
-	                   { responsivePriority: 4, targets: 3 },
-	                   { responsivePriority: 5, targets: 0 },
-	                   { responsivePriority: 6, targets: 1 },
-	                   { responsivePriority: 7, targets: 2 },
-	                   { responsivePriority: 8, targets: 7 },
-	                   { responsivePriority: 9, targets: 5 },
-	                   { responsivePriority: 10, targets: 6 } 
-
-
-	               ], 
+	      columnDefs: colonneTabItems, 
+	      stateLoadParams: function(settings, data) {
+	    	    if (data.columns &&
+	    	        data.columns.length !== $('#tabItems thead th').length) {
+	    	        return false;
+	    	    }
+	    	},
 	               buttons: [   
 	        	          {
 	        	            extend: 'colvis',
@@ -2879,6 +3125,7 @@ function modalSpostaStrumenti(id_util, id_sede_util, id_util_old, id_sede_util_o
 
 	    	
 	    });
+ coloraRigheUscita(table_items);
 	
  table_items.buttons().container().appendTo( '#tabItems_wrapper .col-sm-6:eq(1)');
 
@@ -2912,7 +3159,7 @@ $( 'input', table_items.column( colIdx ).header() ).on( 'keyup', function () {
 } ); 
 table_items.columns.adjust().draw();  
 
-
+ 
 
 
 
@@ -3260,6 +3507,7 @@ table_accettazione.columns.adjust().draw();
    
 
 }else{
+
 	$('#boxAccettazione').hide();
 }
 
@@ -3916,13 +4164,298 @@ else{
 	   	      
 	   	   items_rilievo[row.index()].pezzi_ingresso = e.target.textContent;
 	   	      	//salvaModificaQuestionario();
-	   	      console.log('Row changed: ', row.data())
+	   	 
 	   	    }
 	   	  })
 	   	  
 	   	
 	   }
+	 	function valutaInput(valore) {
 
+		    if (!valore) return "0";
+
+		    valore = valore.trim();
+
+		   
+		    if (/^\d+$/.test(valore)) {
+		        return valore;
+		    }
+
+		    
+		    try {
+		        var match = valore.match(/id_str=([^&]+)/);
+		        if (match && match[1]) {
+
+		            var base64 = match[1];
+
+		            
+		            var decoded = atob(base64);
+
+		           
+		            if (/^\d+$/.test(decoded)) {
+		                return decoded;
+		            }
+		        }
+		    } catch (e) {
+		        
+		        console.warn('Errore decodifica base64:', e);
+		    }
+
+		   
+		    return "0";
+		}
+
+	     
+	 	$(document).off('click', '#btnSearchStrumento').on('click', '#btnSearchStrumento', function () {
+			 var inputRaw = $('#searchStrumento').val().trim();
+			 var idCercato = valutaInput(inputRaw);
+		   	 var $msg = $('#msgSearchStrumento');
+		   	 
+	
+		   	 
+		   	 setSemaforo('off', '');
+		   	 
+		   	 var t = $('#tabItems').DataTable();
+		   	 var trovato = false;
+		   	 
+		   	 
+		     t.rows().every(function () {
+
+		         var data = this.data();
+
+		         var id = $(this.node()).find('td').eq(0).text().trim();
+		         var denominazione   = data[1];
+		         var matricola   = data[2];
+		         var stato = data[4];
+		         var quantita =data[6];
+		         var note = data[10];
+		     
+
+		         if (id == idCercato) {
+		        	 console.log("stato_lav " + stato_lav);
+		        	 //save_check_controllo_uscita(id,1,stato_lav);
+		       
+		             trovato = true;
+
+		          // Recupera la posizione reale della riga
+		             var indici = t.rows({ order: 'applied', search: 'applied' })
+		                           .indexes().toArray();
+
+		             var posizione = indici.indexOf(this.index());
+
+		             // Vai alla pagina corretta
+		             if (posizione >= 0) {
+		                 var pagina = Math.floor(posizione / t.page.len());
+		                 t.page(pagina).draw('page');
+		             }
+
+		             // Evidenzia la riga
+		             var riga = $(this.node());
+		             riga.addClass('row-selezionata');
+
+		             // Recupera la checkbox
+		             if(stato_lav==3){
+		             var checkbox = riga.find('input.check_strumenti');
+		             } else if(stato_lav==5){
+		            	 var checkbox = riga.find('input.check_fornitore');
+		             }
+
+		      
+
+		             // Se non è già selezionata, metti il check
+		             if (checkbox.length > 0 && !checkbox.prop('checked')) {
+
+		                 if (checkbox.data('iCheck')) {
+		                     checkbox.iCheck('check');
+		                 } else {
+		                     checkbox.prop('checked', true).trigger('change');
+		                 }
+
+		                
+		             }
+
+		             // chiamata come se avessi cliccato "+"
+		            // insertItem(id, descrizione, codiceInt, matricola);
+		            
+		             setTimeout(function () {
+		                     // ok -> verde
+		                     setSemaforo('green', 'Trovato : ' + id + ' - ' + denominazione);
+		                     // se vuoi ancora id+descrizione nel testo del cerchio:
+		                     // setSemaforo('green', id);
+		               
+
+		                 setTimeout(focusRicercaQR, 0);
+
+		             }, 50); // 50ms: basta quasi sempre (aumenta a 150 se serve)
+		             
+		            // setSemaforo('green', 'Trovato e aggiunto: ' + id + ' - ' + descrizione);
+		           
+		             setTimeout(focusRicercaQR, 0);
+
+		             return false; 
+		    
+		     }
+		});
+		     if (!trovato) {
+		    
+		     	$('#listaItemTop').text('');
+		     	setSemaforo('red', 'Strumento non trovato');
+		      //   $msg.text('Strumento non trovato').show();
+		         setTimeout(focusRicercaQR, 0);
+		     }
+		 });
+	 	
+	 	function focusRicercaQR() {
+		    var $in = $('#searchStrumento');
+		    $in.focus();
+		    $in.select(); // seleziona tutto: il prossimo scan sovrascrive
+		}
+
+		$('#searchStrumento').on('input', function () {
+		    $('#msgSearchStrumento').hide().text('');
+		});
+
+		$(document).on('keyup', '#searchStrumento', function (e) {
+		    if (e.key === 'Enter') {
+		        $('#btnSearchStrumento').click();
+		    }
+		});
+	 	
+	 	function setSemaforo(stato, testo) {
+			
+		    var $led = $('#semaforoLed');
+		    var $txt = $('#semaforoTxt');
+		  
+
+		    $led.removeClass('semaforo-off semaforo-red semaforo-green semaforo-amber');
+
+		    if (stato === 'green') $led.addClass('semaforo-green');
+		    else if (stato === 'red') $led.addClass('semaforo-red');
+		    else if (stato === 'amber') $led.addClass('semaforo-amber');
+		    else $led.addClass('semaforo-off');
+		    
+	
+
+		    $txt.text(testo || '');
+		}
+	 	
+	 	 function coloraRigheUscita(tabella){
+	 		var x = '${item_spediti_json}';
+	 		var item_spediti = [];
+
+	 		if (x && x.trim() !== '' && x !== 'null') {
+	 		    try {
+	 		        item_spediti = JSON.parse(x);
+
+	 		        if (!Array.isArray(item_spediti)) {
+	 		            item_spediti = [];
+	 		        }
+	 		    } catch (e) {
+	 		        console.error("Errore parsing item_spediti_json:", e, x);
+	 		    }
+	 		}
+	 		   var data = tabella
+	 		     .rows()
+	 		     .data();
+	 	   		
+	 	 		for(var i=0;i<data.length;i++){	
+	 	 	 	    var node = $(tabella.row(i).node());  	    
+	 	 	 	 
+	 	 	 	    for(var j = 0;j<item_spediti.length;j++){
+	 	 	 	    	if(data[i][0] == item_spediti[j].id_tipo_proprio){
+	 	 	 	    		node.css('backgroundColor',"#FFE118");
+	 	 	 	    		$('#label_spediti').css("color","#FFBF18");
+	 	 	 	    		$('#label_spediti').show();
+	 	 	 	    	}
+	 	 	 	    }
+
+	 	 	 	 }	
+	 		}   
+	 	 
+	 	 function save_check_controllo_uscita(id_item, check,stato_lav){
+	 		var id_pacco= ${pacco.id};
+	 		    var nota = $('#testoNota').val();
+	 		  
+	 		    $.ajax({
+	 		        url: 'gestionePacco.do',
+	 		        method: 'POST',
+	 		        data: {
+	 		          action: 'saveCheckUscita',
+	 		          id_item: id_item,
+	 		         id_pacco: id_pacco,
+	 		         check: check,
+	 		         stato_lav: stato_lav,
+	 		       
+	 		        },
+	 		        dataType: 'json',
+	 		        success: function (data) {
+	 		            $('#modalNota').modal('hide');
+	 		            if (data.success) {
+	 		              
+	 		            } else {
+	 		                $('#myModalErrorContent').html("Attenzione! Errore generico.");
+	 		                $('#myModalError').removeClass().addClass("modal modal-danger");
+	 		                $('#myModalError').modal('show');
+	 		            }
+	 		        },
+
+	 		     error: function (jqXHR, textStatus, errorThrown) {
+	 		      pleaseWaitDiv.modal('hide');
+	 		      $('#myModalYesOrNo').modal('hide');
+
+	 		      var msg = "Si è verificato un errore imprevisto.";
+	 		      try {
+	 		          var resp = JSON.parse(jqXHR.responseText);
+	 		          if (resp && resp.messaggio) msg = resp.messaggio;
+	 		      } catch (e) { /* risposta non JSON, tengo il default */ }
+
+	 		      $('#myModalErrorContent').html(msg);
+	 		      $('#myModalError').removeClass();
+	 		      $('#myModalError').addClass("modal modal-danger");
+	 		      $('#report_button').show();
+	 		      $('#visualizza_report').show();
+	 		      $('#myModalError').modal('show');
+	 		  }
+	 		      });
+	 	 }
+	 	 
+	
+	 	
+	 	$('#tabItems').on('ifChecked ifUnchecked',  '.check_strumenti, .check_fornitore', function(event) {
+	 	
+	 		if(stato_lav==3){
+	 	    var id_item = $(this).attr('id').replace('checkbox_', '');
+	 		} else if(stato_lav==5){
+	 			  var id_item = $(this).attr('id').replace('checkbox_fornitore_', '');
+	 		}
+	 	    var check = event.type === 'ifChecked' ? 1 : 0;
+
+	 	    // Aggiorna il colore della riga
+	 	    $(this).closest('tr').toggleClass('row-selezionata', check === 1);
+
+	 	    // Salva il controllo
+	 	    save_check_controllo_uscita(id_item, check,stato_lav);
+	 	});
+
+	 	function infoCheckUserData(nome, data) {
+
+	 	    var dataFormattata = 'Non disponibile';
+
+	 	    if (data) {
+
+	 	        var match = data.trim().match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})/);
+
+	 	        if (match) {
+	 	            dataFormattata = match[3] + '/' + match[2] + '/' + match[1]
+	 	                           + ' — ore ' + match[4] + ':' + match[5];
+	 	        }
+	 	    }
+
+	 	    $('#infoCheckNome').text(nome || 'Non disponibile');
+	 	    $('#infoCheckData').text(dataFormattata);
+
+	 	    $('#modalInfoCheck').modal('show');
+	 	}
 	     
 </script>
   

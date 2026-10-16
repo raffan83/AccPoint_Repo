@@ -26,9 +26,44 @@
         <property name="note_accettazione" type="java.lang.String">
             <column name="note_accettazione" />
         </property>
+        
+        <many-to-one name="user_accettato" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+    <column name="USER_ACCETTATO" />
+</many-to-one>
 
+<property name="data_accettato" type="java.util.Date" access="field">
+            <column name="DATA_ACCETTATO" />
+        </property>
+        
+        
+        
 
+<property name="check_controllo_uscita" type="java.lang.Integer">
+        <column name="CHECK_CONTROLLO_USCITA" />
+    </property>
+    
+<many-to-one name="user_check_uscita" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+    <column name="USER_CHECK_USCITA" />
+</many-to-one>
 
+<property name="data_check_uscita" type="java.util.Date" access="field">
+            <column name="DATA_CHECK_USCITA" />
+        </property>
+        
+        
+        
+        <property name="check_fornitore" type="java.lang.Integer">
+        <column name="CHECK_FORNITORE" />
+    </property>
+    
+<many-to-one name="user_fornitore" class="it.portaleSTI.DTO.UtenteDTO" lazy="false" fetch="join">
+    <column name="USER_FORNITORE" />
+</many-to-one>
+
+<property name="data_fornitore" type="java.util.Date" access="field">
+            <column name="DATA_FORNITORE" />
+        </property>
+        
 
 
 

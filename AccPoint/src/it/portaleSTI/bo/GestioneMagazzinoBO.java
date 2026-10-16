@@ -41,6 +41,7 @@ import it.portaleSTI.DTO.MagTipoNotaPaccoDTO;
 import it.portaleSTI.DTO.MagTipoPortoDTO;
 import it.portaleSTI.DTO.MagTipoTrasportoDTO;
 import it.portaleSTI.DTO.StrumentoDTO;
+import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 
@@ -297,8 +298,8 @@ public static void chiudiPacchiCommessa(String origine, Session session) {
 	
 }
 
-public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session) {
-	GestioneMagazzinoDAO.accettaItem(acc,non_acc,note_acc, note_non_acc,id_pacco, session);
+public static void accettaItem(JsonArray acc, JsonArray non_acc, JsonArray note_acc,JsonArray note_non_acc, String id_pacco, Session session,UtenteDTO utente) {
+	GestioneMagazzinoDAO.accettaItem(acc,non_acc,note_acc, note_non_acc,id_pacco, session,utente);
 }
 
 public static ArrayList<MagPaccoDTO> getListaPacchiPerData(String dateFrom, String dateTo, String tipo_data, int stato, Session session) throws Exception, ParseException {
@@ -509,7 +510,39 @@ public static void updateOrigineDashboard(String origine, int stato, String uten
 }
 
 
+public static void saveCheckUscita(int id_item, int id_pacco,UtenteDTO user,Session session, int check, int stato_lav) {
+	MagItemPaccoDTO mag = GestioneMagazzinoDAO.getMagItemPaccoById(id_item, id_pacco,session);
+	
+	if(mag!=null) {
+		
+		if(stato_lav==3) {
+		
+		mag.setCheck_controllo_uscita(check);
+		if(check==1) {
+		mag.setUser_check_uscita(user);
+		mag.setData_check_uscita(new Date());
+		} else {
+			mag.setUser_check_uscita(null);
+			mag.setData_check_uscita(null);
+		}
+		} else if (stato_lav==5) {
+			mag.setCheck_fornitore(check);
+			if(check==1) {
+				mag.setUser_fornitore(user);
+				mag.setData_fornitore(new Date());
+			} else {
+				mag.setUser_fornitore(null);
+				mag.setData_fornitore(null);
+			}
+		}
+	}
+	
+}
 
+public static MagItemDTO getItemByIdTipoProprio(int id_tipo_proprio,Session session) {
+	return GestioneMagazzinoDAO.getItemByIdTipoProprio(id_tipo_proprio, session);
+	
+}
 
 
 }

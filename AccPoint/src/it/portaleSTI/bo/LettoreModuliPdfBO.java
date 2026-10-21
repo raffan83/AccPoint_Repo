@@ -19,10 +19,17 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationWidget;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceDictionary;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.apache.pdfbox.pdmodel.interactive.form.PDNonTerminalField;
 import org.apache.pdfbox.pdmodel.interactive.form.PDTerminalField;
+
+import org.apache.pdfbox.pdfparser.PDFStreamParser;
+import org.apache.pdfbox.cos.COSArray;
+import org.apache.pdfbox.cos.COSString;
+import org.apache.pdfbox.contentstream.operator.Operator;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceEntry;
 
 import it.portaleSTI.DTO.SondaggioRLDTO;
 
@@ -200,12 +207,37 @@ public class LettoreModuliPdfBO {
             int i=0;
             int j=0;
             Map<String, String>map = new LinkedHashMap<String, String>();
+            
+            /* 
+             Importante: questo metodo legge i comandi di testo dell'apparenza PDF ed è adatto al file che mi hai fornito,
+              perché utilizza normali stringhe Tj. Non è un estrattore universale: altri PDF potrebbero utilizzare codifiche dei font particolari o
+               posizionare le parole senza spazi espliciti. Se dovrai elaborare questionari prodotti da software differenti, 
+               sarà preferibile una soluzione basata sul motore di estrazione testo di PDFBox.
+             */
+            
             for (PDField f : allFields) {
-              
-              map.put(f.getFullyQualifiedName(), safeValue(f));   	
-              i++;
-          
-               
+
+                String nomeCampo = f.getFullyQualifiedName();
+                String valore = safeValue(f);
+
+                if ("titolo".equals(nomeCampo)) {
+
+                    String valoreVisibile = leggiValoreVisibile(f);
+
+                    if (valoreVisibile != null && !valoreVisibile.isEmpty()) {
+
+                        if (!valoreVisibile.equals(valore)) {
+                            System.out.println("ATTENZIONE: titolo PDF discordante!");
+                            System.out.println("Valore interno: " + valore);
+                            System.out.println("Valore visibile: " + valoreVisibile);
+                        }
+
+                        valore = valoreVisibile;
+                    }
+                }
+
+                map.put(nomeCampo, valore);
+                i++;
             }
            
             
@@ -438,7 +470,63 @@ public class LettoreModuliPdfBO {
     }
     
     
-    
+    private static String leggiValoreVisibile(PDField campo) throws IOException {
+
+        for (PDAnnotationWidget widget : campo.getWidgets()) {
+
+            PDAppearanceDictionary appearance = widget.getAppearance();
+
+            if (appearance == null) {
+                continue;
+            }
+
+            PDAppearanceEntry normal = appearance.getNormalAppearance();
+
+            if (normal == null || !normal.isStream()) {
+                continue;
+            }
+
+            PDFStreamParser parser =
+                    new PDFStreamParser(normal.getAppearanceStream());
+
+            parser.parse();
+
+            List<Object> tokens = parser.getTokens();
+
+            StringBuilder testo = new StringBuilder();
+
+            for (int i = 1; i < tokens.size(); i++) {
+
+                if (!(tokens.get(i) instanceof Operator)) {
+                    continue;
+                }
+
+                String operatore = ((Operator) tokens.get(i)).getName();
+                Object precedente = tokens.get(i - 1);
+
+                if ("Tj".equals(operatore) && precedente instanceof COSString) {
+
+                    testo.append(((COSString) precedente).getString());
+
+                } else if ("TJ".equals(operatore) && precedente instanceof COSArray) {
+
+                    COSArray array = (COSArray) precedente;
+
+                    for (COSBase elemento : array) {
+                        if (elemento instanceof COSString) {
+                            testo.append(((COSString) elemento).getString());
+                        }
+                    }
+                }
+            }
+
+            if (testo.length() > 0) {
+                return testo.toString().trim();
+            }
+        }
+
+        return null;
+    }
     
     
 }

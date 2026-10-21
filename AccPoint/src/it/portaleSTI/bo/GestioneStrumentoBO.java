@@ -390,7 +390,7 @@ public class GestioneStrumentoBO {
 		
 			for (StrumentoDTO strumento : lista) 
 			{
-				if(strumento!=null && strumento.getDataProssimaVerifica()!=null)
+				if(strumento!=null && strumento.getDataProssimaVerifica()!=null && strumento.getStato_strumento().getId()!=7225)
 				{
 					Date prossimaVerifica=strumento.getDataProssimaVerifica();
 					if(tipo_rapporto == 0) {
@@ -413,7 +413,7 @@ public class GestioneStrumentoBO {
 		
 			for (StrumentoDTO strumento : lista) 
 			{
-				if(strumento!=null && strumento.getDataProssimaVerifica()!=null)
+				if(strumento!=null && strumento.getDataProssimaVerifica()!=null  && strumento.getStato_strumento().getId()!=7225)
 				{
 					Date prossimaVerifica=strumento.getDataProssimaVerifica();
 					

@@ -753,7 +753,7 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		ArrayList<ForPartecipanteDTO> lista = null;
 		boolean result = false;
 		
-		Query query = session.createQuery("from ForPartecipanteDTO where (nome =:_nome and cognome =:_cognome) or (cognome =:_nome and nome =:_cognome)"); 
+		Query query = session.createQuery("from ForPartecipanteDTO where disabilitato = 0 AND ( (nome =:_nome and cognome =:_cognome) or (cognome =:_nome and nome =:_cognome) )"); 
 				
 		query.setParameter("_nome", nome);			
 		query.setParameter("_cognome", cognome);	

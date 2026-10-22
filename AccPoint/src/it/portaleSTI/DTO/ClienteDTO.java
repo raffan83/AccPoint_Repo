@@ -25,13 +25,14 @@ public class ClienteDTO implements Serializable{
 	 private String pec;
 	 private String idEncrypted;
 	 private String regione;
+	 private String cod_dest_fatt;
 
 	  public ClienteDTO(){}
 
 	public ClienteDTO(int __id, String codice, String nome,
 			Integer committente_attivo, Integer destinatario_attivo,
 			String telefono, String fax, String partita_iva, String sito,
-			String email, String cellulare,String cf,String numeroREA,String pec) {
+			String email, String cellulare,String cf,String numeroREA,String pec,String cod_dest_fatt) {
 		super();
 		this.__id = __id;
 		this.codice = codice;
@@ -47,6 +48,7 @@ public class ClienteDTO implements Serializable{
 		this.cf=cf;
 		this.numeroREA=numeroREA;
 		this.pec = pec;
+		this.cod_dest_fatt=cod_dest_fatt;
 	}
 
 	public String getCf() {
@@ -215,6 +217,14 @@ public class ClienteDTO implements Serializable{
 
 	public void setEncryptId(String encryptId) {
 		this.encryptId = encryptId;
+	}
+
+	public String getCod_dest_fatt() {
+		return cod_dest_fatt;
+	}
+
+	public void setCod_dest_fatt(String cod_dest_fatt) {
+		this.cod_dest_fatt = cod_dest_fatt;
 	}
 	
 

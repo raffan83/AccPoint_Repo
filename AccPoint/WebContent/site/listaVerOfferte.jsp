@@ -234,7 +234,7 @@
 
   <div id="modalListaClienti" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
    
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -248,6 +248,13 @@
 
 <th>Cliente</th>
 <th>Indirizzo</th>
+<th>Telefono</th>
+<th>Email</th>
+<th>PEC</th>
+<th>Partita IVA</th>
+<th>Cod. Fisc.</th>
+<th>Codice Fattura</th>
+
  </tr></thead>
  
  <tbody>
@@ -973,6 +980,16 @@ input:checked + .slider:before {
   transform: none !important;
 }
 
+#modalListaClienti .modal-dialog {
+    width: 95%;
+    max-width: 1500px;
+    margin: 30px auto;
+}
+
+#modalListaClienti .modal-body {
+    overflow-x: auto;
+}
+
 </style>
 </jsp:attribute>
 
@@ -1520,12 +1537,19 @@ $(document).ready(function() {
 	        info: true,
 	        searchable: false,
 	        targets: 0,
-	        responsive: true,
-	        scrollX: false,
+	        responsive: false,
+	        scrollX: true,
+	        autoWidth: false,
 	        stateSave: true,
 	        columns : [
 		    	{"data" : "cliente"},  
-		    	{"data" : "indirizzo"}
+		    	{"data" : "indirizzo"},
+		    	{"data": "telefono", "defaultContent": ""},
+		    	{"data": "email", "defaultContent": ""},
+		    	{"data": "pec", "defaultContent": ""},
+		    	{"data": "pIva", "defaultContent": ""},
+		    	{"data": "cf", "defaultContent": ""},
+		    	{"data": "codice", "defaultContent": ""}
 		      
 		       ],	
 	        columnDefs: [
@@ -2065,6 +2089,14 @@ var righe =[];
 		 			
 		 			  dati.cliente = lista_clienti[i].nome;
 		 			  dati.indirizzo = lista_clienti[i].indirizzo +", "+lista_clienti[i].cap+", "+lista_clienti[i].citta+" ("+lista_clienti[i].provincia+")";	
+		 			  dati.telefono=lista_clienti[i].telefono
+		 			  
+		 			 dati.email=lista_clienti[i].email
+		 			 dati.pec=lista_clienti[i].pec
+		 			 dati.pIva=lista_clienti[i].partita_iva
+		 			 dati.cf=lista_clienti[i].cf
+		 			 dati.codice=lista_clienti[i].cod_dest_fatt
+		 			 
 		 			  table_data.push(dati);
 		 			
 		 		  }
@@ -2075,12 +2107,12 @@ var righe =[];
 		 		   
 		 		tabClienti.rows.add(table_data).draw();
 		 			
-		 		tabClienti.columns.adjust().draw();
+		 	//	tabClienti.columns.adjust().draw();
 		
 		
 		    	
 		    	 pleaseWaitDiv.hide();
-		    	$('#modalListaClienti').modal();
+		    	 $('#modalListaClienti').modal('show');
 		    	
 		   
 		  	 
@@ -2092,6 +2124,9 @@ var righe =[];
 	
 }
  
+ $('#modalListaClienti').on('shown.bs.modal', function () {
+	    $('#tabClienti').DataTable().columns.adjust().draw(false);
+	});
  
  $('#myModalDettaglioOfferta').on('hidden.bs.modal', function(){
 

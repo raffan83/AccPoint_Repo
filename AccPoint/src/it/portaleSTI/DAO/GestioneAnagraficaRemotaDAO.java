@@ -488,10 +488,10 @@ public class GestioneAnagraficaRemotaDAO {
 					codage = " WHERE a.CODAGE = ? ";
 				}
 				
-				String q = "SELECT distinct b.ID_ANAGEN, b.NOME FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
+				String q = "SELECT distinct b.ID_ANAGEN, b.NOME,b.TELEF01,b.EMAIL,b.EMAIL_PEC,b.PIVA,b.CODFIS,b.COD_DEST_FATTELE FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
 				
 				if(indirizzo!=null && indirizzo.equals("1")) {
-					 q = "SELECT distinct b.ID_ANAGEN, b.NOME, b.INDIR, b.CAP, b.CITTA, b.CODPROV FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
+					 q = "SELECT distinct b.ID_ANAGEN, b.NOME, b.INDIR, b.CAP, b.CITTA, b.CODPROV,b.TELEF01,b.EMAIL,b.EMAIL_PEC,b.PIVA,b.CODFIS,b.COD_DEST_FATTELE FROM BWT_ANAGEN_AGENTI AS a JOIN BWT_ANAGEN AS b ON a.ID_ANAGEN = b.ID_ANAGEN" +codage;
 				}
 				
 				if(test) {
@@ -512,6 +512,12 @@ public class GestioneAnagraficaRemotaDAO {
 					cliente= new ClienteDTO();
 					cliente.set__id(rs.getInt("ID_ANAGEN"));
 					cliente.setNome(rs.getString("NOME"));
+					cliente.setTelefono(rs.getString("TELEF01"));
+					cliente.setEmail(rs.getString("EMAIL"));
+					cliente.setPec(rs.getString("EMAIL_PEC"));
+					cliente.setPartita_iva(rs.getString("PIVA"));
+					cliente.setCf(rs.getString("CODFIS"));
+					cliente.setCod_dest_fatt(rs.getString("COD_DEST_FATTELE"));
 					if(indirizzo!=null && indirizzo.equals("1")) {
 						cliente.setIndirizzo(rs.getString("INDIR"));
 						cliente.setCap(rs.getString("CAP"));

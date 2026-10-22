@@ -1,17 +1,21 @@
 package it.portaleSTI.bo;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Session;
 
+import it.portaleSTI.DAO.GestioneAccessoDAO;
 import it.portaleSTI.DAO.GestioneParcoAutoDAO;
 import it.portaleSTI.DTO.PaaPrenotazioneDTO;
 import it.portaleSTI.DTO.PaaRichiestaDTO;
 import it.portaleSTI.DTO.PaaSegnalazioneDTO;
 import it.portaleSTI.DTO.PaaTipoSegnalazioneDTO;
 import it.portaleSTI.DTO.PaaVeicoloDTO;
+import it.portaleSTI.DTO.RuoloDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 
 public class GestioneParcoAutoBO {
@@ -84,5 +88,76 @@ public class GestioneParcoAutoBO {
 	public static PaaSegnalazioneDTO getSegnalazioneById(int id_segnalazione) {
 		
 		return GestioneParcoAutoDAO.getSegnalazioneById(id_segnalazione);
+	}
+	
+	public static String getListaUtenteWithRuolo(String siglaRuolo,Session session){
+		ArrayList<UtenteDTO> listaUtenti = null;
+	    String email ="";
+        try {
+        	 listaUtenti =  (ArrayList<UtenteDTO>) GestioneAccessoDAO.getListUser();
+			
+			for(UtenteDTO utente :listaUtenti) {
+				if(utente.checkRuolo(siglaRuolo)) {
+					email += utente.getEMail() + ";";
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return email;
+	}
+	
+	public static PaaPrenotazioneDTO getPrenotazioneByIdRichiesta(int idRichiesta,Session session) {
+		return GestioneParcoAutoDAO.getPrenotazioneByIdRichiesta(idRichiesta, session);
+	}
+	
+	public static void sendEmailRichiestaAnnullamento(String emailInvio,PaaPrenotazioneDTO prenotazione, PaaRichiestaDTO richiesta) {
+		String object = "Richiesta di annullamento prenotazione veicolo";
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+	    String dataInizio = sdf.format(
+	        prenotazione.getData_inizio_prenotazione());
+
+	    String dataFine = sdf.format(
+	        prenotazione.getData_fine_prenotazione());
+
+	    String msgHtml =	
+	        "<p>Con la presente si comunica che &egrave; stato richiesto " +
+	        "l'annullamento della seguente prenotazione del Parco Auto.</p>" +
+
+	        "<p><strong>Dettagli della prenotazione:</strong></p>" +
+
+"<ul>" +
+"<li><strong>ID richiesta:</strong> " + richiesta.getId() + "</li>" +
+"<li><strong>Data inizio:</strong> " + dataInizio + "</li>" +
+"<li><strong>Data fine:</strong> " + dataFine + "</li>" +
+"<li><strong>Utente:</strong> " + richiesta.getUtente().getNominativo() + "</li>" +
+"<li><strong>Veicolo:</strong> " +
+    "ID " + prenotazione.getVeicolo().getId() +
+    " - Modello: " + prenotazione.getVeicolo().getModello() +
+    " - Targa: " + prenotazione.getVeicolo().getTarga() +
+"</li>" +
+"</ul>" +
+
+	        "<p>Si invita a prendere visione della richiesta e a procedere " +
+	        "con le eventuali verifiche necessarie.</p>" +
+
+	        "<p>Cordiali saluti,<br>" +
+	        "<strong>Sistema di Gestione Parco Auto</strong></p>" +
+
+	        "<hr>" +
+	        "<small>Questa email &egrave; stata generata automaticamente. " +
+	        "Si prega di non rispondere.</small>";
+	    
+	    
+	//	emailInvio = "edoardo.boccitto@ncsnetwork.it";
+		try {
+			SendEmailBO.sendEmail(emailInvio, object, msgHtml);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

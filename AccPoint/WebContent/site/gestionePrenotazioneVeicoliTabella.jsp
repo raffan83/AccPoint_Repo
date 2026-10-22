@@ -1396,6 +1396,23 @@ $(document).ready(function() {
 	                            background_color = "#f7b8b8";
 	                        }
 	                    }
+	                    
+	                    /*
+	                     * Annullamento.
+	                     */
+	                     var icona_annullamento = '';
+
+		                    if(prenotazione.statoRichiesta==4 )
+		                     {
+
+		                    	  icona_annullamento =
+		                    	        '<i class="fa fa-times-circle" ' +
+		                    	        'style="color: #dc3545;" ' +
+		                    	        'title="Richiesta annullamento"></i>';
+		                    }
+
+
+	                  
 
 
 	                    /*
@@ -1469,6 +1486,7 @@ $(document).ready(function() {
 	                                .split(" ")[1] +
 	                            ")" +
 	                            icona_segnalazione +
+	                            icona_annullamento +
 
 	                            "</div>"
 	                        )
@@ -1668,6 +1686,7 @@ $(document).ready(function() {
 	                                .split(" ")[1] +
 	                            ")" +
 	                            icona_segnalazione +
+	                            icona_annullamento +
 
 	                            "</div>"
 	                        )
@@ -1763,10 +1782,19 @@ $(document).ready(function() {
 	                        '</div>' +
 	                    '</div>' +
 
+	                    '<div class="legend-item">' +
+                        '<div>' +
+                            '<i class="fa fa-times-circle" ></i>' +
+                        '</div>' +
+                        '<div class="legend-label">' +
+                            'RICHIESTA ANNULLAMENTO' +
+                        '</div>' +
+                    '</div>' +
+
 	                '</div>'
 	            );
 
-
+	          
 	            /*
 	             * ==========================================================
 	             * SCROLL ALLA SETTIMANA CORRENTE

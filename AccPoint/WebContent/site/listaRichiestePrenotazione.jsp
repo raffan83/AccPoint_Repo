@@ -94,6 +94,9 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
   <c:when test="${richiesta.stato == '2'}">
     <tr id="row_${loop.index}"  style="background-color:#90EE90">
   </c:when>
+  <c:when test="${richiesta.stato == '4'}">
+    <tr id="row_${loop.index}"  style="background-color:#BEBEBE">
+  </c:when>
 </c:choose>
 	<td>${richiesta.id }</td>	
 	<td>${richiesta.utente.nominativo }</td>
@@ -116,18 +119,29 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
     <c:when test="${richiesta.stato == '3'}">
     <span class="label label-danger">ANNULLATA</span>
   </c:when>
+  <c:when test="${richiesta.stato == '4'}">
+    <span class="label label-default">RICHIESTA ANNULLAMENTO</span>
+  </c:when>
 </c:choose> 
 </td>
 	<td>
-	<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN') && richiesta.stato == '1' }">
+	<c:if test="${userObj.checkPermesso('GESTIONE_PARCO_AUTO_ADMIN')}">
+	<c:if test="${richiesta.stato == '1' }">
 	<a class="btn btn-info customTooltip" onClicK="modificaRichiesta('${richiesta.id}', '${richiesta.data_inizio }', '${richiesta.data_fine }','${utl:escapeJS(richiesta.note) }','1','${utl:escapeJS(richiesta.luogo) }')" title="Gestisci richiesta"><i class="fa fa-edit"></i></a>
 	</c:if>
-
+</c:if>
 	<c:if test="${richiesta.stato == 1 && richiesta.utente.id == userObj.id }">
  	<a class="btn btn-warning customTooltip" onClicK="modificaRichiesta('${richiesta.id}', '${richiesta.data_inizio }', '${richiesta.data_fine }','${utl:escapeJS(richiesta.note) }','0', '${utl:escapeJS(richiesta.luogo) }')" title="Click per modificare la richiesta"><i class="fa fa-edit"></i></a>
  	<a class="btn btn-danger customTooltip" onClicK="modalEliminaRichiesta('${richiesta.id }')" title="Click per eliminare la richiesta"><i class="fa fa-trash"></i></a>
  	</c:if>
-	  
+	  <c:if test="${richiesta.stato == 2 && richiesta.utente.id == userObj.id}">
+    <a class="btn btn-default customTooltip"
+       onclick="modalAnnullamentoRichiesta('${richiesta.id}')"
+       title="Richiedi annullamento"
+       aria-label="Richiedi annullamento">
+        <i class="fa fa-ban"></i>
+    </a>
+</c:if>
  	</td>
 	</tr>
 <%-- 	</c:if> --%>
@@ -164,6 +178,27 @@ UtenteDTO utente = (UtenteDTO)request.getSession().getAttribute("userObj");
       <input type="hidden" id="id_richiesta_elimina">
       <a class="btn btn-primary" onclick="eliminaRichiesta($('#id_richiesta_elimina').val())" >SI</a>
 		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="myModalYesOrNoAnnullamento" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler richiedere l'annullamento della prenotazione?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="id_richiesta_annullamento">
+      <a class="btn btn-primary" onclick="AnnullamentoRichiesta($('#id_richiesta_annullamento').val())" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNoAnnullamento').modal('hide')" >NO</a>
       </div>
     </div>
   </div>
@@ -506,8 +541,6 @@ function modalEliminaRichiesta(id_richiesta){
 	
 }
 
-
-
 function eliminaRichiesta(){
 	
 	dataObj = {};
@@ -515,6 +548,64 @@ function eliminaRichiesta(){
 	dataObj.id_richiesta_elimina = $('#id_richiesta_elimina').val();
 	
 	callAjax(dataObj, "gestioneParcoAuto.do?action=elimina_richiesta");
+}
+
+
+function modalAnnullamentoRichiesta(id_richiesta){
+	
+	
+	$('#id_richiesta_annullamento').val(id_richiesta);
+	$('#myModalYesOrNoAnnullamento').modal()
+	
+}
+
+function AnnullamentoRichiesta() {
+
+    var dataObj = {
+        id_richiesta_annullamento: $('#id_richiesta_annullamento').val()
+    };
+
+    $.ajax({
+        url: "gestioneParcoAuto.do?action=annulla_richiesta",
+        type: "POST",
+        data: dataObj,
+        dataType: "json",
+        success: function(response) {
+            if (response.success) {
+            	$('#myModalYesOrNoAnnullamento').modal('hide')
+            	$('#report_button').hide();
+				$('#visualizza_report').hide();
+				$("#modalModificaDocente").modal("hide");
+			  $('#myModalErrorContent').html("Richiesta di annullamento inviata con successo.");
+			  	$('#myModalError').removeClass();
+				$('#myModalError').addClass("modal modal-success");
+				
+			    // Ricarica la pagina quando la modale viene chiusa
+		        $('#myModalError').one('hidden.bs.modal', function() {
+		            location.reload();
+		        });
+				
+				$('#myModalError').modal('show');
+      
+            } else {
+            	 pleaseWaitDiv.modal('hide');
+
+	                $('#myModalErrorContent').html(
+	                		"Errore durante l'annullamento della richiesta."
+	                    );
+	                $('#myModalError').removeClass();
+	                $('#myModalError').addClass("modal modal-danger");
+	                $('#report_button').hide();
+	                $('#visualizza_report').hide();
+	                $('#myModalError').modal('show');
+               
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Errore AJAX:", error);
+            alert("Si è verificato un errore durante l'operazione.");
+        }
+    });
 }
 
 

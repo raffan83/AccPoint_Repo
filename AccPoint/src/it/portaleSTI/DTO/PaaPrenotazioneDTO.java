@@ -17,6 +17,7 @@ public class PaaPrenotazioneDTO {
 	private int manutenzione;
 	private int rifornimento;
 	private String luogo;
+	private Integer statoRichiesta;
 	
 	public int getId_richiesta() {
 		return id_richiesta;
@@ -104,6 +105,13 @@ public class PaaPrenotazioneDTO {
 	public void setLuogo(String luogo) {
 		this.luogo = luogo;
 	}
+	public Integer getStatoRichiesta() {
+		return statoRichiesta;
+	}
+	public void setStatoRichiesta(Integer statoRichiesta) {
+		this.statoRichiesta = statoRichiesta;
+	}
 	
 
+	
 }

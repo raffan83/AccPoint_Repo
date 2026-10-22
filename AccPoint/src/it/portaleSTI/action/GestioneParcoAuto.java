@@ -58,6 +58,7 @@ import it.portaleSTI.bo.GestioneDocumentaleBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneParcoAutoBO;
 import it.portaleSTI.bo.GestioneUtenteBO;
+import it.portaleSTI.bo.SendEmailBO;
 
 
 /**
@@ -1223,6 +1224,7 @@ public class GestioneParcoAuto extends HttpServlet {
 				String id = request.getParameter("id_richiesta_elimina");
 
 				PaaRichiestaDTO richiesta = GestioneParcoAutoBO.getRichiestaFromID(Integer.parseInt(id), session);
+				//richiesta.setStato(3);
 				richiesta.setDisabilitato(1);
 				session.update(richiesta);
 								
@@ -1230,6 +1232,34 @@ public class GestioneParcoAuto extends HttpServlet {
 				PrintWriter  out = response.getWriter();
 				myObj.addProperty("success", true);
 				myObj.addProperty("messaggio", "Richiesta eliminata con successo!");
+				out.print(myObj);
+				
+			} else if(action.equals("annulla_richiesta")) {
+				
+				ajax = true;
+				
+				response.setContentType("application/json");
+				
+				String id = request.getParameter("id_richiesta_annullamento");
+
+				PaaRichiestaDTO richiesta = GestioneParcoAutoBO.getRichiestaFromID(Integer.parseInt(id), session);
+				
+				
+				PaaPrenotazioneDTO prenotazione = GestioneParcoAutoBO.getPrenotazioneByIdRichiesta(richiesta.getId(),session);
+				
+				//invio email a chi ha ruolo 30 Parco auto ADmin
+				String emailInvio = GestioneParcoAutoBO.getListaUtenteWithRuolo("PD", session);
+				
+				//invio notifica
+				GestioneParcoAutoBO.sendEmailRichiestaAnnullamento(emailInvio,prenotazione, richiesta);
+				
+				richiesta.setStato(4);
+				session.update(richiesta);
+								
+				myObj = new JsonObject();
+				PrintWriter  out = response.getWriter();
+				myObj.addProperty("success", true);
+				myObj.addProperty("messaggio", "Richiesta di annullamento inviata con successo!");
 				out.print(myObj);
 				
 			}

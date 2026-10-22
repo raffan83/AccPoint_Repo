@@ -143,21 +143,46 @@ public class GestioneParcoAutoDAO {
 
 
 	public static ArrayList<PaaPrenotazioneDTO> getListaPrenotazioniDate(LocalDate startDate, LocalDate endDate, Session session) {
-	    
-	    ArrayList<PaaPrenotazioneDTO> lista = null;
+
 	    
 	    Query query = session.createQuery(
-	        "FROM PaaPrenotazioneDTO p " +
-	        "WHERE p.data_inizio_prenotazione < :endDate " +
-	        "AND p.data_fine_prenotazione >= :startDate"
+	    		"SELECT p, " +
+	    				"(SELECT r.stato FROM PaaRichiestaDTO r " +
+	    				" WHERE r.id = p.id_richiesta) " +
+	    				"FROM PaaPrenotazioneDTO p " +
+	    				"WHERE p.data_inizio_prenotazione < :endDate " +
+	    				"AND p.data_fine_prenotazione >= :startDate "
 	    );
 	    
 	    query.setParameter("startDate", java.sql.Timestamp.valueOf(startDate.atStartOfDay()));
 	    query.setParameter("endDate", java.sql.Timestamp.valueOf(endDate.plusDays(1).atStartOfDay()));
 	    
-	    lista = (ArrayList<PaaPrenotazioneDTO>) query.list();
-	    
+	    List<Object[]> risultati = query.list();
+
+	    ArrayList<PaaPrenotazioneDTO> lista = new ArrayList<>();
+
+	    for (Object[] row : risultati) {
+
+	        PaaPrenotazioneDTO prenotazione =
+	            (PaaPrenotazioneDTO) row[0];
+
+	        Integer statoRichiesta = (Integer) row[1];
+
+	        prenotazione.setStatoRichiesta(statoRichiesta);
+
+	        lista.add(prenotazione);
+	    }
+
 	    return lista;
+	}
+	
+	public static PaaPrenotazioneDTO getPrenotazioneByIdRichiesta(int id,Session session) {
+     ArrayList<PaaTipoSegnalazioneDTO> lista = null;
+		
+		Query query = session.createQuery("FROM PaaPrenotazioneDTO p WHERE p.id_richiesta = :_id");
+		query.setParameter("_id", id);
+	
+	   return (PaaPrenotazioneDTO) query.uniqueResult();
 	}
 
 

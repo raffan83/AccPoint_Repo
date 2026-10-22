@@ -3792,7 +3792,7 @@ table = $('#tabAllegati').DataTable({
     });
 
 $('#tabItemRilievi').hide();
-console.log("item_pacco_json[0].item.tipo_item.id " + item_pacco_json[0].item.tipo_item.id);
+
 if(item_pacco_json.length>0 && item_pacco_json[0].item!=null && item_pacco_json[0].item.tipo_item.id==4){
 	   $('#tabItemGeneral').hide();
 	   $('#tabItemRilievi').show();

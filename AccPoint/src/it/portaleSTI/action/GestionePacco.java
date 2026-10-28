@@ -926,6 +926,14 @@ public class GestionePacco extends HttpServlet {
 					if(item_pacco.getItem().getId_tipo_proprio()==listaItemPacco.get(i).getItem().getId_tipo_proprio() && item_pacco.getPacco().getId() == listaItemPacco.get(i).getPacco().getId()) {
 						item_pacco.setAccettato(listaItemPacco.get(i).getAccettato());
 						item_pacco.setNote_accettazione(listaItemPacco.get(i).getNote_accettazione());
+						item_pacco.setUser_accettato(listaItemPacco.get(i).getUser_accettato());
+						item_pacco.setData_accettato(listaItemPacco.get(i).getData_accettato());
+						item_pacco.setCheck_controllo_uscita(listaItemPacco.get(i).getCheck_controllo_uscita());
+						item_pacco.setUser_check_uscita(listaItemPacco.get(i).getUser_check_uscita());
+						item_pacco.setData_check_uscita(listaItemPacco.get(i).getData_check_uscita());
+						item_pacco.setCheck_fornitore(listaItemPacco.get(i).getCheck_fornitore());
+						item_pacco.setUser_fornitore(listaItemPacco.get(i).getUser_fornitore());
+						item_pacco.setData_fornitore(listaItemPacco.get(i).getData_fornitore());
 					}
 				}
 				

@@ -6195,7 +6195,7 @@ function eliminaCompany(){
 					    	item.note= '<textarea id="note_item_'+item.id_proprio+'" name="note_item_'+item.id_proprio+'" style="width:100%;heigth:100%">'+data[i][10]+'</textarea>';
 					    	//<textarea id="note_commessa" name="note_commessa" rows="6" style="width:100%" disabled></textarea>
 					    	item.action ='<button class="btn btn-danger" onClick="eliminaEntryItem(\''+item.id_proprio+'\', \''+item.tipo+'\')"><i class="fa fa-trash"></i></button>';
-					    	item.id = data[i][12];
+					    	item.id = data[i][data[i].length - 1];
 					    	items_json.push(item);		    
 					 }
 				  }
@@ -6228,7 +6228,7 @@ function eliminaCompany(){
 					    
 					    item.variante = data[i][2];
 					    item.pezzi_ingresso = data[i][3];
-					    item.id = data[i][6];
+					    item.id = data[i][data[i].length - 1];
 					    item.action = '<button class="btn btn-warning" onClick="modificaRilievoTable(\''+ item.id+'\', this)"><i class="fa fa-edit"></i></button> <button class="btn btn-danger" onClick="eliminaRilievoTable(null,\''+ item.id_proprio+'\')"><i class="fa fa-trash"></i></button>';
 					    
 					    item.note_rilievo = data[i][4];

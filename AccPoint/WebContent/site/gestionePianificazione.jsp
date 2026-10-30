@@ -739,7 +739,21 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css">
 <style>
+#id_corso_esistente {
+    width: 100%;
+}
 
+#id_corso_esistente + .select2-container {
+    width: 100% !important;
+}
+
+#id_corso_esistente + .select2-container .select2-selection {
+    width: 100%;
+}
+
+#modalPianificazione .mpv-field {
+    position: relative;
+}
 
 .table th {
     background-color: #3c8dbc !important;
@@ -1410,7 +1424,15 @@ $(document).ready(function($) {
 	$('#pleaseWaitDialog').css("z-index","9999");
 	  pleaseWaitDiv.modal();
 	
-	$('.select2').select2()
+	  $('.select2').not('#id_corso_esistente').select2();
+
+	  $('#id_corso_esistente').select2({
+		    dropdownParent: $('#id_corso_esistente').parent(),
+		    width: '100%',
+		    minimumResultsForSearch: 0,
+		    placeholder: 'Seleziona corso esistente...'
+		});
+	  
 	 $.page_zoom();
 	$.page_zoom({
 		  selectors: {

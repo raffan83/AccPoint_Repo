@@ -333,7 +333,7 @@
             <div class="col-xs-12">
               <div class="mpv-field">
                 <label for="note"><i class="fa fa-file-text-o"></i> Testo Note</label>
-                <textarea rows="5" style="width:100%" id="note" name="note" class="form-control" placeholder="Inserisci eventuali note..."></textarea>
+                <textarea rows="5" style="width:100%" id="note_segnalazione" name="note_segnalazione" class="form-control" placeholder="Inserisci eventuali note..."></textarea>
               </div>
             </div>
           </div>

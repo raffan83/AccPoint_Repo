@@ -5365,9 +5365,11 @@ function avviaEInvia(idIntervento) {
 	} else {
 		check_allegato =0;
 	}
+	var idIntervento = idIntervento;
 
 	console.log("check allegato "+check_allegato);
 	  var params = 'action=inviaPacchettoCliente'
+		          + '&idIntervento=' + idIntervento
 	             + '&email=' + encodeURIComponent($('#emailCliente').val())
 	             + '&notaConsegnaCliente=' + encodeURIComponent($('#notaConsegnaCliente').val())
 	             + '&corteseAttenzione=' + encodeURIComponent($('#corteseAttenzione').val())

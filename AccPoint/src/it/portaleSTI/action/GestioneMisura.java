@@ -467,7 +467,7 @@ public class GestioneMisura extends HttpServlet {
 			} else if(action.equals("checkInvioPacchettoCliente")){
 				 ajax = true;
 				
-				logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
+				//logger.error(Utility.getMemorySpace()+" Action: "+action +" - Utente: "+((UtenteDTO)request.getSession().getAttribute("userObj")).getNominativo());
 				
 				String idIntervento= request.getParameter("idIntervento");
 				String email = request.getParameter("emailCliente");
@@ -500,8 +500,11 @@ public class GestioneMisura extends HttpServlet {
 				}
 				myObj.addProperty("success", true);
 			
-	
-				request.getSession().setAttribute("listaStrumentiInt", listaStrumenti);
+			
+				request.getSession().setAttribute(
+					    "listaStrumentiInt_" + intervento.getId(),
+					    listaStrumenti
+					);
 				request.getSession().setAttribute("userObj", utente);
 				session.getTransaction().commit();
 				session.close();
@@ -528,7 +531,9 @@ public class GestioneMisura extends HttpServlet {
 			    
 
 			    try {
-			        InterventoDTO intervento = (InterventoDTO) request.getSession().getAttribute("intervento");
+			     
+			        String idIntervento = request.getParameter("idIntervento");
+			        InterventoDTO intervento = GestioneInterventoBO.getIntervento(idIntervento, session);
 			        String email = request.getParameter("email");
 
 			        if (intervento == null) {
@@ -541,10 +546,17 @@ public class GestioneMisura extends HttpServlet {
 			        String corteseAttenzione = request.getParameter("corteseAttenzione");
 			        String stato = request.getParameter("gridRadios");
 			        int check_allegato = Integer.parseInt(request.getParameter("check_allegato"));
+			        
+			        
+			        @SuppressWarnings("unchecked")
+			        ArrayList<StrumentoDTO> listaStrumenti =
+			            (ArrayList<StrumentoDTO>) request.getSession()
+			                .getAttribute("listaStrumentiInt_" + intervento.getId());
 
-			        ArrayList<StrumentoDTO> listaStrumenti = (ArrayList<StrumentoDTO>) request.getSession().getAttribute("listaStrumentiInt");
 			        if (listaStrumenti == null) {
-			            listaStrumenti = new ArrayList<>();
+			            out.write("data: {\"progress\":100, \"fase\":\"Errore\", \"testo\":\"Controllo certificati non eseguito per questo intervento\", \"success\":false}\n\n");
+			            out.flush();
+			            return;
 			        }
 
 			        out.write("data: {\"progress\":15, \"fase\":1, \"testo\":\"Generazione scheda consegna...\"}\n\n");
@@ -704,7 +716,9 @@ public class GestioneMisura extends HttpServlet {
 			            System.out.println("Email inviata");
 
 			            session.getTransaction().commit();
-
+			            request.getSession().removeAttribute(
+			            	    "listaStrumentiInt_" + intervento.getId()
+			            	);
 			            //  Unica risposta finale di successo
 			            out.write("data: {\"progress\":100, \"fase\":\"Finita\", \"testo\":\"Completato!\", \"success\":true}\n\n");
 			            out.flush();
@@ -889,7 +903,7 @@ public class GestioneMisura extends HttpServlet {
 	
 	    int responseCode = conn.getResponseCode();
 
-	    System.out.println("Response Code: " + responseCode);
+	  //  System.out.println("Response Code: " + responseCode);
 
 	    InputStream stream = (responseCode >= 200 && responseCode < 300)
 	            ? conn.getInputStream()
@@ -905,7 +919,7 @@ public class GestioneMisura extends HttpServlet {
 	            response.append(line);
 	        }
 
-	        System.out.println("Risposta App B: " + response);
+	    //    System.out.println("Risposta App B: " + response);
 	    }
 
 	    return responseCode == 200;
@@ -963,7 +977,7 @@ public class GestioneMisura extends HttpServlet {
 	
 	    int responseCode = conn.getResponseCode();
 
-	    System.out.println("Response Code: " + responseCode);
+	  //  System.out.println("Response Code: " + responseCode);
 
 	    InputStream stream = (responseCode >= 200 && responseCode < 300)
 	            ? conn.getInputStream()
@@ -979,7 +993,7 @@ public class GestioneMisura extends HttpServlet {
 	            response.append(line);
 	        }
 
-	        System.out.println("Risposta App B: " + response);
+	     //   System.out.println("Risposta App B: " + response);
 	    }
 
 	    return responseCode == 200;
@@ -1043,7 +1057,7 @@ public class GestioneMisura extends HttpServlet {
 
 	    int responseCode = conn.getResponseCode();
 
-	    System.out.println("Response Code: " + responseCode);
+	//    System.out.println("Response Code: " + responseCode);
 
 	    InputStream stream = (responseCode >= 200 && responseCode < 300)
 	            ? conn.getInputStream()
@@ -1059,7 +1073,7 @@ public class GestioneMisura extends HttpServlet {
 	            response.append(line);
 	        }
 
-	        System.out.println("Risposta App B: " + response);
+	       // System.out.println("Risposta App B: " + response);
 	    }
 
 	    return responseCode == 200;
@@ -1116,7 +1130,7 @@ public class GestioneMisura extends HttpServlet {
 	            .setDateFormat("dd/MM/yyyy HH:mm")
 	            .create();
 
-	    System.out.println("id cliente (inviaFile): " + sessione.getId_cliente());
+	  //  System.out.println("id cliente (inviaFile): " + sessione.getId_cliente());
 	    String misureJson = gson.toJson(listaMisure);
 	    String sessioneJson = gson.toJson(sessioneWeb);
 	  
@@ -1148,7 +1162,7 @@ public class GestioneMisura extends HttpServlet {
 
 	    //  Lettura risposta in try-with-resources separato, DOPO aver chiuso l'output
 	    int responseCode = conn.getResponseCode();
-	    System.out.println("Response Code: " + responseCode);
+	  //  System.out.println("Response Code: " + responseCode);
 
 	    try (BufferedReader reader = new BufferedReader(
 	            new InputStreamReader(conn.getInputStream(), "UTF-8"))) {
@@ -1158,7 +1172,7 @@ public class GestioneMisura extends HttpServlet {
 	        while ((line = reader.readLine()) != null) {
 	            response.append(line);
 	        }
-	        System.out.println("Risposta App B: " + response.toString());
+	     //   System.out.println("Risposta App B: " + response.toString());
 	    }
 
 	    return responseCode == 200;

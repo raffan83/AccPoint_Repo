@@ -992,13 +992,24 @@ $('#docente').on('change', function() {
 	}
 	
 	previousValues = [...selected];   // selected è già garantito array
-	
-	if ($('#remind_docenti').prop('checked')) {
-		var mod = "1";
-		console.log("mod docente change " + mod);
-	    riempimentoEmailPreavviso(selected,mod, azione);
-	}
-	
+
+});
+
+$('#docente').on('select2:select select2:unselect', function(e) {
+
+    if (!$('#remind_docenti').prop('checked')) {
+        return;
+    }
+
+    var selected = $(this).val() || [];
+    var azione = e.type === 'select2:unselect' ? "1" : "0";
+    var idDeselezionato = (e.type === 'select2:unselect') ? e.params.data.id : "";
+    var mod = "1";
+    var id_pianificazione = $('#id_pianificazione').val();
+
+    console.log("docente deselezionato " + idDeselezionato);
+
+    riempimentoEmailPreavviso(selected, mod, azione, id_pianificazione, idDeselezionato);
 });
 
 function nuovaPianificazione(){
@@ -1186,38 +1197,63 @@ $('input:checkbox').on('ifToggled', function() {
 		$('#giorni_preavviso_mod').val("");
 	});
 	
+})
 	
-	$('#remind_docenti').off('ifChecked').on('ifChecked', function(event){
-		var mod = $('#mod').val();
-		var azione = $('#azione').val();
-	console.log("azione " + azione);
-		
+	
+	$('#remind_docenti')
+    .off('.preavviso')
+
+    .on('ifChecked.preavviso', function() {
+
         $('#check_remind_docenti').val("1");
+
+        $('#giorni_preavviso_mod').prop('disabled', false);
+        $('#email_preavviso_mod').prop('disabled', false);
+
+    })
+
+    .on('ifUnchecked.preavviso', function() {
+
+        $('#check_remind_docenti').val("0");
+
+        $('#giorni_preavviso_mod').prop('disabled', true).val("");
+        $('#email_preavviso_mod').prop('disabled', true).val("");
+
+    })
+
+    .on('ifClicked.preavviso', function() {
+
+        // Esegue la ricerca soltanto quando l'utente
+        // seleziona manualmente il checkbox.
+
+        if (this.checked) {
+            return;
+        }
+
+        var mod = $('#mod').val();
         var id_docente = $('#docente').val();
-    if(mod==="0"){
-        riempimentoEmailPreavviso(id_docente,mod);
-    } else{
-    	 if ($(this).prop('checked')) {
-    	        riempimentoEmailPreavviso(id_docente,mod);
-    	    }
-    }
-        $('#giorni_preavviso_mod').attr("disabled", false);
-        $('#email_preavviso_mod').attr("disabled", false);
-    });
+ 
+        var azione = "0";
+        var id_pianificazione = $('#id_pianificazione').val();
+
+        riempimentoEmailPreavviso(id_docente, mod, azione, id_pianificazione);
 	
 })
 
-function riempimentoEmailPreavviso(id_docente,mod,azione) {
+function riempimentoEmailPreavviso(id_docente,mod,azione,id_pianificazione,id_docente_cambiato) {
 
    console.log("mod function riempimento" + mod);
+   console.log("id docente "  + id_docente);
 
     $.ajax({
         type: "POST",
         url: "gestioneFormazione.do?action=ricerca_docente",
         data: {
             id_docente: id_docente,
+            id_docente_cambiato: id_docente_cambiato || "",
             mod: mod,
-            azione: azione
+            azione: azione,
+            id_pianificazione: id_pianificazione
         },
         traditional: true,
         dataType: "json",

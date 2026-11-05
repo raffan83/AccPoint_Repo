@@ -3561,14 +3561,41 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					   String[] id_docenti = request.getParameterValues("id_docente");
 					   String mod = request.getParameter("mod");
 					   String azione = request.getParameter("azione");
+					   String id_pianificazione = request.getParameter("id_pianificazione");
+					   String id_docente_cambiato = request.getParameter("id_docente_cambiato");
+					   
+					   
+					   
+					   if(id_pianificazione !=null && !id_pianificazione.equals("")) {
+					   ForPiaPianificazioneDTO pianif = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
+					 
+					  if(pianif.getEmail_preavviso() !=null) {
+						  String[] email_pianif =pianif.getEmail_preavviso().split(";");
+						  for(String s: email_pianif) {
+							  email_docenti.add(s);
+						  }
+					  }
+					   }
 					   
 					   if (id_docenti == null || id_docenti.length == 0) {
 					        // nessun docente selezionato
 					        risp = 0;
 					    } else {
+					   if(azione.equals("1")) {
+					   if(id_docente_cambiato!=null  && !id_docente_cambiato.equals("")) {
+					   ForDocenteDTO docenteCambiato = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id_docente_cambiato), session);
+					   email_docenti.remove(docenteCambiato.getEmail());
+					   risp =2;
+					   }
+					   } else if(azione.equals("0")) {
+						   
+				
+					
 					   for(String id : id_docenti) {
 					if(id!=null && !id.equals("")) {
-					ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session);
+						ForDocenteDTO docente = GestioneFormazioneBO.getDocenteFromId(Integer.parseInt(id), session);
+				
+				if(!email_docenti.contains(docente.getEmail())) {
 				
 					if(docente != null && docente.getEmail()!=null &&  !docente.getEmail().equals("")) {
 						email = docente.getEmail();		
@@ -3580,11 +3607,16 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						
 					} 
 					email_docenti.add(email);
+				} else {
+					count++;
+				}
 					} 
 					   }
+					
+					   
 					//mod =1 form di modifica, mod =0 nuova pianificazione
 					   // azione = 0 seleziono docente, azione = 1 deseleziono docente
-					   if(count == id_docenti.length) {
+					   if(count >= id_docenti.length && count_senza_email==0) {
 						   risp=2;
 					   } else if(count_senza_email>0 && (mod.equals("0") || mod.equals("1")) &&  (azione == null || azione.equals("0"))){
 						   risp=1; //restituisce messaggio: docente senza email
@@ -3594,7 +3626,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 						   risp=0; // docente non selezionato
 					   }
 					    }
-					
+					    }
+						 
 					session.getTransaction().commit();
 					session.close();
 					PrintWriter out = response.getWriter();
@@ -3606,6 +3639,7 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					myObj.addProperty("email_docenti", email_docenti_str);
 					
 		        	out.print(myObj);
+			
 				}
 				else if(action.equals("elimina_pianificazione")) {
 				

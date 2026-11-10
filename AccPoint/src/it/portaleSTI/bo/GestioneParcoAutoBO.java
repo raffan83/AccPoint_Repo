@@ -122,6 +122,11 @@ public class GestioneParcoAutoBO {
 
 	    String dataFine = sdf.format(
 	        prenotazione.getData_fine_prenotazione());
+	    
+	    String nomePrenotazione ="";
+	    if(prenotazione.getUtente()!=null) {
+	    	nomePrenotazione = prenotazione.getUtente().getNominativo();
+	    }
 
 	    String msgHtml =	
 	        "<p>Con la presente si comunica che &egrave; stato richiesto " +
@@ -131,9 +136,10 @@ public class GestioneParcoAutoBO {
 
 "<ul>" +
 "<li><strong>ID richiesta:</strong> " + richiesta.getId() + "</li>" +
-"<li><strong>Data inizio:</strong> " + dataInizio + "</li>" +
-"<li><strong>Data fine:</strong> " + dataFine + "</li>" +
-"<li><strong>Utente:</strong> " + richiesta.getUtente().getNominativo() + "</li>" +
+"<li><strong>Utente Richiesta:</strong> " + richiesta.getUtente().getNominativo() + "</li>" +
+"<li><strong>Data inizio Prenotazione:</strong> " + dataInizio + "</li>" +
+"<li><strong>Data fine Prenotazione:</strong> " + dataFine + "</li>" +
+"<li><strong>Nome Prenotazione:</strong> " + nomePrenotazione + "</li>" +
 "<li><strong>Veicolo:</strong> " +
     "ID " + prenotazione.getVeicolo().getId() +
     " - Modello: " + prenotazione.getVeicolo().getModello() +

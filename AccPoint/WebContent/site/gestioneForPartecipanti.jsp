@@ -762,7 +762,12 @@
 
       <div class="modal-footer">
       
-      <button class="btn btn-primary" onClick="confermaImportazione()" >Salva</button>
+      <button type="button"
+        id="btnConfermaImportazione"
+        class="btn btn-primary"
+        onclick="confermaImportazione()">
+    Salva
+</button>
 		<!-- <a class="btn btn-primary" onclick="$('#myModalReportPartecipanti').modal('hide')" >Chiudi</a> -->
       </div>
     </div>
@@ -1694,6 +1699,14 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 
  
  function confermaImportazionePdf(dataTable,tipoImport, id_){
+	 
+	 var $btnConferma = $('#btnConfermaImportazione');
+
+	 if ($btnConferma.prop('disabled')) {
+	     return;
+	 }
+
+	 $btnConferma.prop('disabled', true);
 		
 
 	  $('#modalProgress').modal(); 
@@ -1733,6 +1746,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 					location.reload();
 		 				})
 		 	  }else{
+		 		 $btnConferma.prop('disabled', false);
 		 		 pleaseWaitDiv.modal('hide');
 		 		 var elem = document.getElementById("myBar");
 		 		  elem.style.width = 0 + "%";
@@ -1749,6 +1763,7 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 },
 		
 		 error: function( data, textStatus) {
+			 $btnConferma.prop('disabled', false);
 			 pleaseWaitDiv.modal('hide');
 			 
 			 var elem = document.getElementById("myBar");

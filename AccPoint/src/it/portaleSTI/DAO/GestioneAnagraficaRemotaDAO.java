@@ -81,6 +81,7 @@ public class GestioneAnagraficaRemotaDAO {
 			
 			SedeDTO sede=null;
 			
+			String indirizzoCompleto="";
 			while(rs.next())
 			{
 				sede= new SedeDTO();
@@ -88,13 +89,34 @@ public class GestioneAnagraficaRemotaDAO {
 				sede.setId__cliente_(rs.getInt("ID_ANAGEN"));
 				sede.setComune(rs.getString("CITTA"));
 				sede.setIndirizzo(rs.getString("INDIR"));
-				//sede.setSiglaProvincia(rs.getString("CODPROV"));
+				sede.setCod_provincia(rs.getString("CODPROV"));
 				sede.setSiglaProvincia(rs.getString("provincia"));
 				sede.setDescrizione(rs.getString("DESCR"));
 				sede.setCap(rs.getString("CAP")); 
 				sede.setN_REA(rs.getString("NREA"));
 				sede.setId_encrypted(Utility.encryptData(""+sede.get__id()));
 				sede.setId_cliente_encrypted(Utility.encryptData(""+sede.getId__cliente_()));
+				
+				
+				if(sede.getIndirizzo()!=null) 
+				{
+					indirizzoCompleto=sede.getIndirizzo();
+				}
+				if(sede.getCap()!=null) 
+				{
+					indirizzoCompleto=indirizzoCompleto+" - "+sede.getCap();
+				}
+				if(sede.getComune()!=null) 
+				{
+					indirizzoCompleto=indirizzoCompleto+" - "+sede.getComune();
+				}
+				if(sede.getCod_provincia()!=null) 
+				{
+					indirizzoCompleto=indirizzoCompleto+" ("+sede.getCod_provincia()+")";
+				}
+				
+				sede.setIndirizzoCompleto(indirizzoCompleto);
+				
 				
 				lista.add(sede);
 			}

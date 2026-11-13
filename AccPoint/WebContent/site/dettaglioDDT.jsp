@@ -94,10 +94,10 @@
                      <div class="col-xs-12"> 
                 <c:choose>
                 <c:when test="${ddt.tipo_ddt.id==1 }">
-                <b>Sede Mittente</b>
+                <b>Indirizzo Mittente</b>
                 </c:when>
                 <c:otherwise>
-                <b>Sede Destinatario</b>
+                <b>Indirizzo Destinatario</b>
                 </c:otherwise>                
                 </c:choose>
                   <a class="pull-right">${sede_destinatario}</a>
@@ -115,7 +115,7 @@
                 <li class="list-group-item">
                 <div class="row">
                      <div class="col-xs-12"> 
-                  <b>Sede Destinazione</b> <a class="pull-right">${sede_destinazione}</a>
+                  <b>Indirizzo Destinazione</b> <a class="pull-right">${sede_destinazione}</a>
                   </div>
                   </div>
                 </li> 

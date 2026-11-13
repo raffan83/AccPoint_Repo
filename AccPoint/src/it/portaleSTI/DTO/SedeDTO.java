@@ -14,7 +14,9 @@ public class SedeDTO {
 	private String id_encrypted;
 	private String id_cliente_encrypted;
 	private String regione;
-
+	private String cod_provincia;
+	private String indirizzoCompleto;
+	
 	public String getSiglaProvincia() {
 		return siglaProvincia;
 	}
@@ -128,5 +130,21 @@ public class SedeDTO {
 		this.regione = regione;
 	}
 
+	public String getCod_provincia() {
+		return cod_provincia;
+	}
 
+	public void setCod_provincia(String cod_provincia) {
+		this.cod_provincia = cod_provincia;
+	}
+
+	public String getIndirizzoCompleto() {
+		return indirizzoCompleto;
+	}
+
+	public void setIndirizzoCompleto(String indirizzoCompleto) {
+		this.indirizzoCompleto = indirizzoCompleto;
+	}
+	
+	
 }

@@ -118,30 +118,57 @@ public class GestioneDDT extends HttpServlet {
 				request.getSession().setAttribute("lista_sedi",listaSedi); 
 			}
 			
+	
+		/*INIZIO GESTIONE DESTINATARIO*/
+			
+			ClienteDTO cl_destinatario=null;
 			
 			if(ddt.getId_destinatario()!=null && ddt.getId_destinatario()!=0) {
-				ClienteDTO cl_destinatario = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+				 cl_destinatario = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
 			destinatario = cl_destinatario.getNome();
 			}else {
 				destinatario = "Non Associato";
 			}
+			
+			
 			if(ddt.getId_sede_destinatario()!=null && ddt.getId_sede_destinatario()!=0) {
 				SedeDTO sd_destinatario = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinatario(), ddt.getId_destinatario());
-				sede_destinatario = sd_destinatario.getDescrizione();
+				sede_destinatario = sd_destinatario.getIndirizzoCompleto();
 			}else {
-				sede_destinatario = "Non Associate";
+				if(cl_destinatario!=null) 
+				{
+					sede_destinatario =componiIndirizzoDaClientoDTO(cl_destinatario);
+				}else 
+				{
+					 cl_destinatario = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinatario()));
+					 sede_destinatario =componiIndirizzoDaClientoDTO(cl_destinatario);
+				}
+				
 			}
+			
+			/*INIZIO GESTIONE DESTINAZIONE*/
+			ClienteDTO cl_destinazione=null;
+			
 			if(ddt.getId_destinazione()!=null && ddt.getId_destinazione()!=0) {
-				ClienteDTO cl_destinazione = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
+				cl_destinazione = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
 				destinazione = cl_destinazione.getNome();
 			}else {
 				destinazione = "Non Associato";
 			}
+			
+			
 			if(ddt.getId_sede_destinazione()!=null && ddt.getId_sede_destinazione()!=0) {
 				SedeDTO sd_destinazione = GestioneAnagraficaRemotaBO.getSedeFromId(listaSedi, ddt.getId_sede_destinazione(), ddt.getId_destinazione());
-				sede_destinazione = sd_destinazione.getDescrizione();
+				sede_destinazione = sd_destinazione.getIndirizzoCompleto();
 			}else {
-				sede_destinazione = "Non Associate";
+				if(cl_destinazione!=null) 
+				{
+					sede_destinazione=componiIndirizzoDaClientoDTO(cl_destinazione);
+				}else 
+				{
+					cl_destinazione = GestioneAnagraficaRemotaBO.getClienteById(String.valueOf(ddt.getId_destinazione()));
+					sede_destinazione=componiIndirizzoDaClientoDTO(cl_destinazione);
+				}				
 			}
 	
 		ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
@@ -612,6 +639,23 @@ public class GestioneDDT extends HttpServlet {
 			}
 		}
 		
+	}
+
+	private String componiIndirizzoDaClientoDTO(ClienteDTO cliente) {
+		String indirizzo="";
+		
+		if(cliente==null) 
+		{
+			return "errore - indirizzo cliente";
+		}
+		
+		if(cliente.getIndirizzo()!=null) 
+		{
+			indirizzo=cliente.getIndirizzo();
+		}
+	
+		
+		return indirizzo;
 	}
 
 }

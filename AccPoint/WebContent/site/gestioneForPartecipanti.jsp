@@ -779,30 +779,20 @@
 </div>
 
 
-
-  <div id="modalProgress" class="modal fade" role="dialog" aria-labelledby="myLargeModalsaveStato">
-   
-    <div class="modal-dialog modal-md" role="document">
+<div id="modalProgress" class="modal fade" role="dialog"
+     data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Importazione dei partecipanti in corso...</h4>
+      <div class="modal-header">
+        <h4 class="modal-title">Importazione dei partecipanti in corso...</h4>
       </div>
-       <div class="modal-body">       
-      <div id="myProgress">
-  <div class="progress" id="myBar"></div>
-</div>
-      	</div>
-<!--       <div class="modal-footer">
-      <input type="hidden" id="elimina_partecipante_id">
-      <a class="btn btn-primary" onclick="eliminaPartecipante($('#elimina_partecipante_id').val())" >SI</a>
-		<a class="btn btn-primary" onclick="$('#myModalYesOrNo').modal('hide')" >NO</a>
-      </div> -->
+      <div class="modal-body">
+        <div id="myProgress"><div class="progress" id="myBar"></div></div>
+        <p style="margin-top:10px">Non chiudere né ricaricare la pagina fino al termine.</p>
+      </div>
     </div>
   </div>
-
 </div>
-
 
 
 
@@ -1671,31 +1661,30 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 	 
  }
  
+ var progressInterval = null;
+
  function startProgressBar(data_size){
-	 
-	 
-	 var i = 0;
-	 
-	   if (i == 0) {
-	     i = 1;
-	     var elem = document.getElementById("myBar");
-	     var width = 1;
-	     var id = setInterval(frame, (data_size * 4.6));
-	     function frame() {
-	       if (width >= 100) {
-	         clearInterval(id);
-	         i = 0;
-	       } else {
-	         width++;
-	         elem.style.width = width + "%";
-	       }
-	     }
-	   }
-	 
-	 
-	 
+     stopProgressBar();                       // evita intervalli doppi
+     var elem = document.getElementById("myBar");
+     var width = 1;
+     elem.style.width = "1%";
+
+     progressInterval = setInterval(function(){
+         if (width >= 95) {                   // si ferma qui finché non arriva la risposta
+             stopProgressBar();
+         } else {
+             width++;
+             elem.style.width = width + "%";
+         }
+     }, data_size * 4.6);
  }
- 
+
+ function stopProgressBar(){
+     if (progressInterval !== null) {
+         clearInterval(progressInterval);
+         progressInterval = null;
+     }
+ }
 
  
  function confermaImportazionePdf(dataTable,tipoImport, id_){
@@ -1727,57 +1716,59 @@ $('#modificaPartecipanteForm').on('submit', function(e){
 		 data: dataObj,
 		 dataType: "json",
 		 //if received a response from the server
-		 success: function( data, textStatus) {
-		 	pleaseWaitDiv.modal('hide');
-		 	  if(data.success){	  
-		 		  
-		 		 var elem = document.getElementById("myBar");
-		 		  elem.style.width = 100 + "%";
-		 		  $('#modalProgress').modal('hide');
-		 	  
-		 			$('#report_button').hide();
-		 			$('#visualizza_report').hide();
-		 			$('#myModalErrorContent').html(data.messaggio);
-		 			  	$('#myModalError').removeClass();
-		 				$('#myModalError').addClass("modal modal-success");
-		 				$('#myModalError').modal('show');      				
-		    				  
-		 				$('#myModalError').on("hidden.bs.modal", function(){
-		 					location.reload();
-		 				})
-		 	  }else{
-		 		 $btnConferma.prop('disabled', false);
-		 		 pleaseWaitDiv.modal('hide');
-		 		 var elem = document.getElementById("myBar");
-		 		  elem.style.width = 0 + "%";
-		 		  $('#modalProgress').modal('hide');
-		 		  
-		 		$('#myModalErrorContent').html("Errore nell'importazione dei partecipanti!");
-		 	  	$('#myModalError').removeClass();
-		 		$('#myModalError').addClass("modal modal-danger");	  
-		 		$('#report_button').hide();
-		 		$('#visualizza_report').hide();
-		 		$('#myModalError').modal('show');			
-		 	
-		 	  }
-		 },
-		
-		 error: function( data, textStatus) {
-			 $btnConferma.prop('disabled', false);
-			 pleaseWaitDiv.modal('hide');
-			 
-			 var elem = document.getElementById("myBar");
-	 		  elem.style.width = 0 + "%";
-	 		  $('#modalProgress').modal('hide');
-		 	  $('#myModalYesOrNo').modal('hide');
-		 	  $('#myModalErrorContent').html(data.messaggio);
-		 	  	$('#myModalError').removeClass();
-		 		$('#myModalError').addClass("modal modal-danger");	  
-		 		$('#report_button').show();
-		 		$('#visualizza_report').show();
-		 			$('#myModalError').modal('show');
+		 success: function(data, textStatus) {
+    stopProgressBar();
+    $('#pleaseWaitDialog').modal('hide');
 
-		 }
+    if (data.success) {
+        document.getElementById("myBar").style.width = "100%";
+        $('#modalProgress').modal('hide');
+
+        $('#report_button').hide();
+        $('#visualizza_report').hide();
+        $('#myModalErrorContent').html(data.messaggio);
+        $('#myModalError').removeClass();
+        $('#myModalError').addClass("modal modal-success");
+        $('#myModalError').modal('show');
+
+        // il pulsante Salva resta disabilitato fino al reload
+        $('#myModalError').one("hidden.bs.modal", function(){
+            location.reload();
+        });
+
+    } else {
+        stopProgressBar();
+        $btnConferma.prop('disabled', false);
+        document.getElementById("myBar").style.width = "0%";
+        $('#modalProgress').modal('hide');
+
+        $('#myModalErrorContent').html(data.messaggio || "Errore nell'importazione dei partecipanti!");
+        $('#myModalError').removeClass();
+        $('#myModalError').addClass("modal modal-danger");
+        $('#report_button').hide();
+        $('#visualizza_report').hide();
+        $('#myModalError').modal('show');
+    }
+},
+
+error: function(jqXHR, textStatus, errorThrown) {
+    stopProgressBar();
+    $btnConferma.prop('disabled', false);
+    $('#pleaseWaitDialog').modal('hide');
+    document.getElementById("myBar").style.width = "0%";
+    $('#modalProgress').modal('hide');
+    $('#myModalYesOrNo').modal('hide');
+
+    $('#myModalErrorContent').html(
+        "Errore di comunicazione. Verifica nella lista partecipanti se l'importazione " +
+        "è stata eseguita prima di riprovare."
+    );
+    $('#myModalError').removeClass();
+    $('#myModalError').addClass("modal modal-danger");
+    $('#report_button').show();
+    $('#visualizza_report').show();
+    $('#myModalError').modal('show');
+}
 		 });
 	
 }

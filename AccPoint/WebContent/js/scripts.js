@@ -157,9 +157,9 @@ function resetPassword(){
                       		  $('#myModalError').addClass("modal modal-success");
                       		  
                       		  $('#myModalError').modal('show');
-                      		 $('#myModalError').on('hidden.bs.modal', function (e) {
-                    			  callAction('login.do?action=reset');
-                    		  });
+                      		$('#myModalError').on('hidden.bs.modal', function (e) {
+                      		    window.location.href = 'index.jsp';
+                      		});
                       	 
                        	 
                        

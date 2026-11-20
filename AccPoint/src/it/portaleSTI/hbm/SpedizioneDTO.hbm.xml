@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.SpedizioneDTO" table="spedizione">
+        <id name="id" column="id" type="integer">
+            <generator class="identity"/>
+        </id>
+
+        <property name="id_pacco" column="id_pacco" type="string" length="255"/>
+        <property name="destinatario" column="destinatario" type="string" length="255"/>
+        <property name="presso" column="presso" type="string" length="255"/>
+        <property name="corriere" column="corriere" type="string" length="255"/>
+        <property name="referente" column="referente" type="string" length="255"/>
+        <property name="telefono" column="telefono" type="string" length="255"/>
+        <property name="indirizzo" column="indirizzo" type="string" length="255"/>
+        <property name="cap" column="cap" type="string" length="255"/>
+        <property name="citta" column="citta" type="string" length="255"/>
+        <property name="provincia" column="provincia" type="string" length="255"/>
+        <property name="nazione" column="nazione" type="string" length="255"/>
+        <property name="note" column="note" type="string" length="255"/>
+        <property name="data_spedizione" column="data_spedizione" type="date"/>
+        <property name="codice_tracking" column="codice_tracking" type="string" length="255"/>
+            <many-to-one name="stato" class="it.portaleSTI.DTO.StatoSpedizioneDTO" fetch="join" lazy="false">
+            <column name="id_stato_spedizione" />
+        </many-to-one>
+        
+        <many-to-one name="ddt"
+                     class="it.portaleSTI.DTO.MagDdtDTO"
+                     column="id_ddt"
+                     not-null="false"
+                     foreign-key="segnalazione_ibfk_1"/>
+    </class>
+</hibernate-mapping>

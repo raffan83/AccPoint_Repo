@@ -11,8 +11,12 @@
 	
   <t:main-header  />
   <t:main-sidebar />
- 
 
+<style>
+    #dati_spedizione .text-right {
+        color: #3c8dbc;
+    }
+</style>
   <!-- Content Wrapper. Contains page content -->
   <div id="corpoframe" class="content-wrapper">
    <!-- Content Header (Page header) -->
@@ -38,7 +42,27 @@
               
             
             <div class="row">
+   <c:if test="${ddt.tipo_ddt.id != 1 and not empty sessionScope.spedizioneDdt}">
+    <button type="button" class="btn btn-primary pull-right"
+            style="margin-right: 20px; margin-left: 6px;"
+            onclick="modalModificaSpedizione()">
+        Modifica Spedizione <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    </button>
+
+    <button type="button" class="btn btn-primary pull-right"
+            onclick="aggiornaStatoSpedizione('${sessionScope.spedizioneDdt.id}')">
+        Aggiorna Stato Spedizione <i class="fa fa-refresh" aria-hidden="true"></i>
+    </button>
+</c:if>
+      
 	   <div class="col-xs-6">
+	  <c:if test="${ddt.tipo_ddt.id != 1 and  empty sessionScope.spedizioneDdt}">
+	   <button class="btn btn-primary pull-right" style="margin-left: 6px;"
+        onclick="modalSpedizione('${pacco.id}', '${ddt.id}')">
+    Invio Spedizione <i class="fa fa-tag" aria-hidden="true"></i>
+</button>
+	   </c:if>
+	   
 	   <c:if test="${ddt.tipo_ddt.id!=1 }">
 <button class="btn btn-danger pull-right" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
 
@@ -108,14 +132,20 @@
                    <li class="list-group-item">
                    <div class="row">
                      <div class="col-xs-12"> 
-                  <b>Destinazione</b> <a class="pull-right">${destinazione}</a>
+                  <b>Destinazione</b> 
+                  <a class="pull-right" id="ddt_destinazione_testo">
+    <c:out value="${destinazione}"/>
+    </a>
                   </div>
                   </div>
                 </li>
                 <li class="list-group-item">
                 <div class="row">
                      <div class="col-xs-12"> 
-                  <b>Indirizzo Destinazione</b> <a class="pull-right">${sede_destinazione}</a>
+                  <b>Indirizzo Destinazione</b>
+<a class="pull-right" id="ddt_indirizzo_destinazione_testo">
+    <c:out value="${sede_destinazione}"/>
+</a>
                   </div>
                   </div>
                 </li> 
@@ -193,9 +223,415 @@
 
 </div>
 </div>
+
+
+
+
+
+
 </div>
+
+<c:if test="${not empty sessionScope.spedizioneDdt && ddt.tipo_ddt.id==2}">
+  <div class="col-xs-6">
+    <div class="box box-danger box-solid">
+      <div class="box-header with-border">
+        Dati spedizione
+        <div class="box-tools pull-right">
+          <button type="button" data-widget="collapse" class="btn btn-box-tool" aria-label="Espandi o comprimi i dati spedizione">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="box-body" id="dati_spedizione">
+        <ul class="list-group list-group-unbordered">
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>ID pacco</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.id_pacco}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Destinatario</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.destinatario}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Presso</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.presso}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Indirizzo</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.indirizzo}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>CAP</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.cap}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Città</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.citta}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Provincia</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.provincia}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Nazione</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.nazione}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Corriere</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.corriere}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Referente</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.referente}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Telefono</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.telefono}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Data spedizione</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><fmt:formatDate value="${sessionScope.spedizioneDdt.data_spedizione}" pattern="dd/MM/yyyy"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Codice tracking</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.codice_tracking}"/></div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Note</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.note}"/></div>
+            </div>
+          </li>
+          
+               <li class="list-group-item">
+    <div class="row">
+        <div class="col-xs-5"><b>Stato</b></div>
+        <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+        <c:choose>
+  <c:when test="${sessionScope.spedizioneDdt.stato.id == 4}">
+		<span class="label label-success">${sessionScope.spedizioneDdt.stato.descrizione}</span>
+  </c:when>
+   <c:when test="${sessionScope.spedizioneDdt.stato.id == 1}">
+		<span class="label label-warning">${sessionScope.spedizioneDdt.stato.descrizione}</span>
+  </c:when>
+  </c:choose>
+     
+        </div>
+    </div>
+</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</c:if>
 </div>
              
+             
+             <div id="myModalInvioSpedizione" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="titoloModalInvioSpedizione">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="titoloModalInvioSpedizione">Dati Spedizione</h4>
+      </div>
+
+      <form id="formInvioSpedizione">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="spedizione_id_pacco">ID pacco</label>
+                <input type="text" class="form-control" id="Spedizione_id_pacco" name="id_pacco" readonly>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <div class="form-group">
+                <label for="spedizione_destinatario">Destinatario</label>
+                <input type="text" class="form-control" id="spedizione_destinatario" name="destinatario" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="spedizione_presso">Presso</label>
+                <input type="text" class="form-control" id="spedizione_presso" name="presso">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="spedizione_referente">Referente</label>
+                <input type="text" class="form-control" id="spedizione_referente" name="referente">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="form-group">
+                <label for="spedizione_inidirizzo">Indirizzo</label>
+                <input type="text" class="form-control" id="spedizione_indirizzo" name="indirizzo" required>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="spedizione_cap">CAP</label>
+                <input type="text" class="form-control" id="spedizione_cap" name="cap" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="spedizione_citta">Città</label>
+                <input type="text" class="form-control" id="spedizione_citta" name="citta" required>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="spedizione_provincia">Provincia</label>
+                <input type="text" class="form-control" id="spedizione_provincia" name="provincia">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="spedizione_nazione">Nazione</label>
+                <input type="text" class="form-control" id="spedizione_nazione" name="nazione" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+           <div class="col-sm-6">
+   <div class="form-group">
+    <label for="spedizione_corriere">Corriere</label>
+    <input type="text" class="form-control" id="spedizione_corriere"
+           name="corriere" list="lista_corrieri_spedizione"
+           placeholder="Scegli o scrivi un corriere" required>
+
+    <datalist id="lista_corrieri_spedizione">
+        <c:forEach var="corriere" items="${lista_corrieri}">
+            <option value="<c:out value='${corriere.nominativo}'/>"></option>
+        </c:forEach>
+    </datalist>
+</div>
+</div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="spedizione_telefono">Telefono</label>
+                <input type="tel" class="form-control" id="spedizione_telefono" name="telefono">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="spedizione_data_spedizione">Data spedizione</label>
+                <input type="text" class="form-control" id="spedizione_data_spedizione" name="data_spedizione">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="spedizione_codice_tracking">Codice tracking</label>
+                <input type="text" class="form-control" id="spedizione_codice_tracking" name="codice_tracking" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label for="spedizione_note">Note</label>
+                <textarea class="form-control" id="spedizione_note" name="note" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">   
+  <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+<input type="hidden" id="spedizione_id_ddt" name="id_ddt">
+  <button type="submit" id="btnSalvaSpedizione" class="btn btn-primary">INVIA</button>
+</div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<c:if test="${ddt.tipo_ddt.id != 1 and not empty sessionScope.spedizioneDdt}">
+    <fmt:formatDate var="dataSpedizioneModifica"
+                    value="${sessionScope.spedizioneDdt.data_spedizione}"
+                    pattern="yyyy-MM-dd"/>
+
+    <div id="myModalModificaSpedizione" class="modal fade" tabindex="-1"
+         role="dialog" aria-labelledby="titoloModalModificaSpedizione">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Chiudi">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="titoloModalModificaSpedizione" class="modal-title">
+                        Modifica Spedizione
+                    </h4>
+                   <p class="text-muted" style="margin: 4px 0 0;">
+    <strong>ATTENZIONE!! Le seguenti modifiche NON verrano salvate in Gestione STI Etichette</strong><br>
+    Per mantenere allineati i dati, applica le stesse modifiche in Gestione STI Etichette.
+    </p>
+                </div>
+                
+
+                <form id="formModificaSpedizione">
+                    <div class="modal-body">
+                        <input type="hidden" name="id"
+                               value="<c:out value='${sessionScope.spedizioneDdt.id}'/>">
+
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label for="spedizione_mod_id_pacco">ID pacco</label>
+                                <input type="text" id="spedizione_mod_id_pacco" name="id_pacco"
+                                       class="form-control" readonly
+                                       value="<c:out value='${sessionScope.spedizioneDdt.id_pacco}'/>">
+                            </div>
+                            <div class="col-sm-8 form-group">
+                                <label for="spedizione_mod_destinatario">Destinatario</label>
+                                <input type="text" id="spedizione_mod_destinatario" name="destinatario"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.destinatario}'/>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label for="spedizione_mod_presso">Presso</label>
+                                <input type="text" id="spedizione_mod_presso" name="presso"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.presso}'/>">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label for="spedizione_mod_referente">Referente</label>
+                                <input type="text" id="spedizione_mod_referente" name="referente"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.referente}'/>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-8 form-group">
+                                <label for="spedizione_mod_indirizzo">Indirizzo</label>
+                                <input type="text" id="spedizione_mod_indirizzo" name="indirizzo"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.indirizzo}'/>">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label for="spedizione_mod_cap">CAP</label>
+                                <input type="text" id="spedizione_mod_cap" name="cap"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.cap}'/>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4 form-group">
+                                <label for="spedizione_mod_citta">Città</label>
+                                <input type="text" id="spedizione_mod_citta" name="citta"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.citta}'/>">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label for="spedizione_mod_provincia">Provincia</label>
+                                <input type="text" id="spedizione_mod_provincia" name="provincia"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.provincia}'/>">
+                            </div>
+                            <div class="col-sm-4 form-group">
+                                <label for="spedizione_mod_nazione">Nazione</label>
+                                <input type="text" id="spedizione_mod_nazione" name="nazione"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.nazione}'/>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label for="spedizione_mod_corriere">Corriere</label>
+                                <input type="text" id="spedizione_mod_corriere" name="corriere"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.corriere}'/>">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label for="spedizione_mod_telefono">Telefono</label>
+                                <input type="tel" id="spedizione_mod_telefono" name="telefono"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.telefono}'/>">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label for="spedizione_mod_data_spedizione">Data spedizione</label>
+                                <input type="date" id="spedizione_mod_data_spedizione" name="data_spedizione"
+                                       class="form-control"
+                                       value="<c:out value='${dataSpedizioneModifica}'/>">
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                <label for="spedizione_mod_codice_tracking">Codice tracking</label>
+                                <input type="text" id="spedizione_mod_codice_tracking" name="codice_tracking"
+                                       class="form-control"
+                                       value="<c:out value='${sessionScope.spedizioneDdt.codice_tracking}'/>">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="spedizione_mod_note">Note</label>
+                            <textarea id="spedizione_mod_note" name="note" class="form-control"
+                                      rows="3"><c:out value="${sessionScope.spedizioneDdt.note}"/></textarea>
+                        </div>
+                    </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+    <button type="submit" id="btnSalvaModificaSpedizione" class="btn btn-primary">
+        Salva
+    </button>
+</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</c:if>
+
 
             <!-- /.box-body -->
           </div>
@@ -1103,8 +1539,281 @@ $("#destinazione").change(function() {
 			        }
 			    });
 			}
-				
-		
+		  
+		  
+		  function modalSpedizione(id_pacco, id_ddt) {
+
+			    var pleaseWaitDiv = $('#pleaseWaitDialog');
+			    pleaseWaitDiv.modal();
+
+			    var destinazione = $('#dati_ddt #ddt_destinazione_testo').text().trim();
+			    var indirizzo = $('#dati_ddt #ddt_indirizzo_destinazione_testo').text().trim();
+			    
+			    var dataObj = {};
+			    dataObj.id_pacco = id_pacco;
+			    dataObj.id_ddt = id_ddt;
+			    dataObj.destinazione = destinazione;
+			    dataObj.indirizzo = indirizzo;
+			    dataObj.destinazione = destinazione;
+			    dataObj.indirizzo = indirizzo;
+
+			    $.ajax({
+			        type: "POST",
+			        url: "gestioneSpedizione.do?action=recupero_dati_spedizione",
+			        data: dataObj,
+			        dataType: "json",
+
+			        success: function (data, textStatus) {
+			            pleaseWaitDiv.modal('hide');
+
+			            if (data && data.success) {
+			                var spedizione = data.spedizione || {};
+			                var form = $('#formInvioSpedizione');
+
+			                form[0].reset();
+
+			                form.find(':input[name]').each(function () {
+			                    var valore = spedizione[this.name];
+			                    $(this).val(valore == null ? '' : valore);
+			                });
+
+
+			                form.find('#spedizione_id_ddt').val(id_ddt);
+			                $('#myModalInvioSpedizione').modal('show');
+			            } else {
+			                $('#myModalErrorContent').text(
+			                    (data && data.messaggio) || "Errore nel recupero dei dati della spedizione."
+			                );
+
+			                $('#myModalError').removeClass();
+			                $('#myModalError').addClass("modal modal-danger");
+			                $('#report_button').hide();
+			                $('#visualizza_report').hide();
+			                $('#myModalError').modal('show');
+			            }
+			        },
+
+			        error: function (jqXHR, textStatus, errorThrown) {
+			            pleaseWaitDiv.modal('hide');
+
+			            var data = jqXHR.responseJSON;
+
+			            $('#myModalErrorContent').text(
+			                (data && data.messaggio) || "Errore nel recupero dei dati della spedizione."
+			            );
+
+			            $('#myModalError').removeClass();
+			            $('#myModalError').addClass("modal modal-danger");
+			            $('#report_button').hide();
+			            $('#visualizza_report').hide();
+			            $('#myModalError').modal('show');
+			        }
+			    });
+			}
+		  
+		  $(function(){
+			  $('#formInvioSpedizione').on('submit', function(e){
+			    e.preventDefault();
+			    invioSpedizione();
+			  });
+			});
+		  
+		  
+		  function invioSpedizione() {
+
+			    var pleaseWaitDiv = $('#pleaseWaitDialog');
+			    pleaseWaitDiv.modal();
+
+			    var dataObj = $('#formInvioSpedizione').serializeArray();
+			  
+
+			    console.log("prima di ajax");
+			    $.ajax({
+			        type: "POST",
+			        url: "gestioneSpedizione.do?action=invio_spedizione",
+			        data: dataObj,
+			        dataType: "json",
+
+			        success: function (data, textStatus) {
+			            pleaseWaitDiv.modal('hide');
+
+			            if (data && data.success) {
+			                $('#myModalInvioSpedizione')
+			                    .one('hidden.bs.modal', function () {
+			                        $('#report_button, #visualizza_report').hide();
+			                        $('#myModalErrorContent').text(
+			                            data.messaggio || "Spedizione inviata e salvata con successo."
+			                        );
+
+			                        $('#myModalError')
+			                            .removeClass('modal-danger')
+			                            .addClass('modal-success')
+			                            .modal('show');
+			                    })
+			                    .modal('hide');
+			            }  else {
+			                $('#myModalErrorContent').text(
+			                    (data && data.messaggio) || "Errore durante l'invio della spedizione."
+			                );
+
+			                $('#myModalError').removeClass();
+			                $('#myModalError').addClass("modal modal-danger");
+			            	$('#report_button').show();
+			  				$('#visualizza_report').show();
+			                $('#myModalError').modal('show');
+			            }
+			        },
+
+			        error: function (jqXHR, textStatus, errorThrown) {
+			            pleaseWaitDiv.modal('hide');
+
+			            var data = jqXHR.responseJSON;
+
+			            $('#myModalErrorContent').text(
+			                (data && data.messaggio) || "Errore durante l'invio della spedizione."
+			            );
+
+			            $('#myModalError').removeClass();
+			            $('#myModalError').addClass("modal modal-danger");
+			        	$('#report_button').show();
+		  				$('#visualizza_report').show();
+			            $('#myModalError').modal('show');
+			        }
+			    });
+			}
+		  
+		  
+		  function modalModificaSpedizione() {
+			    $('#formModificaSpedizione')[0].reset();
+			    $('#myModalModificaSpedizione').modal('show');
+			}
+
+		  $(function () {
+			    $('#formModificaSpedizione').on('submit', function (event) {
+			        event.preventDefault();
+			        salvaModificaSpedizione();
+			    });
+			});
+
+		  function salvaModificaSpedizione() {
+			    var pleaseWaitDiv = $('#pleaseWaitDialog');
+			    var form = $('#formModificaSpedizione');
+			    var btnSalva = $('#btnSalvaModificaSpedizione');
+
+			    if (btnSalva.prop('disabled')) {
+			        return;
+			    }
+
+			    var dataObj = form.serializeArray();
+			    btnSalva.prop('disabled', true);
+			    pleaseWaitDiv.modal('show');
+
+			    function mostraErrore(data) {
+			        $('#myModalErrorContent').text(
+			            (data && data.messaggio) || "Errore durante la modifica della spedizione."
+			        );
+
+			        $('#report_button, #visualizza_report').show();
+			        $('#myModalError')
+			            .removeClass('modal-success')
+			            .addClass('modal-danger')
+			            .modal('show');
+			    }
+
+			    $.ajax({
+			        type: "POST",
+			        url: "gestioneSpedizione.do?action=salva_modifica",
+			        data: dataObj,
+			        dataType: "json",
+
+			        success: function (data) {
+			            pleaseWaitDiv.modal('hide');
+
+			            if (data && data.success === true) {
+			                // Alla prossima apertura, reset() riparte dai valori salvati.
+			                $.each(dataObj, function (i, campo) {
+			                    form[0].elements.namedItem(campo.name).defaultValue = campo.value;
+			                });
+
+			                $('#myModalModificaSpedizione')
+			                    .one('hidden.bs.modal', function () {
+			                        $('#report_button, #visualizza_report').hide();
+
+			                        $('#myModalErrorContent').text(
+			                            data.messaggio || "Spedizione modificata con successo."
+			                        );
+
+			                        $('#myModalError')
+			                            .removeClass('modal-danger')
+			                            .addClass('modal-success')
+			                            .modal('show');
+			                    })
+			                    .modal('hide');
+			            } else {
+			                mostraErrore(data);
+			            }
+			        },
+
+			        error: function (jqXHR) {
+			            pleaseWaitDiv.modal('hide');
+			            mostraErrore(jqXHR.responseJSON);
+			        },
+
+			        complete: function () {
+			            btnSalva.prop('disabled', false);
+			        }
+			    });
+			}
+		  
+		  
+		  function aggiornaStatoSpedizione(id_spedizione){
+			   var pleaseWaitDiv = $('#pleaseWaitDialog');
+			    pleaseWaitDiv.modal();
+
+			    var dataObj = {};
+			    dataObj.id_spedizione = id_spedizione;
+			    
+			    $.ajax({
+			        type: "POST",
+			        url: "gestioneSpedizione.do?action=aggiorna_stato_spedizione",
+			        data: dataObj,
+			        dataType: "json",
+
+			        success: function (data, textStatus) {
+			            pleaseWaitDiv.modal('hide');
+
+			            if (data && data.success) {
+			            	  location.reload();
+			            }  else {
+			                $('#myModalErrorContent').text(
+			                    (data && data.messaggio) || "Errore durante l'invio della spedizione."
+			                );
+
+			                $('#myModalError').removeClass();
+			                $('#myModalError').addClass("modal modal-danger");
+			            	$('#report_button').show();
+			  				$('#visualizza_report').show();
+			                $('#myModalError').modal('show');
+			            }
+			        },
+
+			        error: function (jqXHR, textStatus, errorThrown) {
+			            pleaseWaitDiv.modal('hide');
+
+			            var data = jqXHR.responseJSON;
+
+			            $('#myModalErrorContent').text(
+			                (data && data.messaggio) || "Errore durante l'invio della spedizione."
+			            );
+
+			            $('#myModalError').removeClass();
+			            $('#myModalError').addClass("modal modal-danger");
+			        	$('#report_button').show();
+		  				$('#visualizza_report').show();
+			            $('#myModalError').modal('show');
+			        }
+			    });
+		  }
   </script>
   
 </jsp:attribute> 

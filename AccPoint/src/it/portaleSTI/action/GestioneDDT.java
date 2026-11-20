@@ -32,6 +32,8 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.CorriereDTO;
+import it.portaleSTI.DTO.SpedizioneDTO;
 import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
@@ -49,6 +51,7 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.CreateDDT;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
+import it.portaleSTI.bo.GestioneSpedizioneBO;
 import it.portaleSTI.bo.GestioneMagazzinoBO;
 
 
@@ -172,14 +175,24 @@ public class GestioneDDT extends HttpServlet {
 			}
 	
 		ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
+		
+		
+		SpedizioneDTO spedizioneDdt =
+		        GestioneSpedizioneBO.getSpedizioneByIdDdt(ddt.getId(), session);
+		ArrayList<CorriereDTO> lista_corrieri = (ArrayList<CorriereDTO>) GestioneSpedizioneBO.getListaCorrieri(session);
+	    
 			
 		session.close();
+		
+		request.getSession().setAttribute("spedizioneDdt", spedizioneDdt);
+		request.setAttribute("lista_corrieri", lista_corrieri);
 		
 		request.setAttribute("destinatario", destinatario);
 		request.setAttribute("sede_destinatario", sede_destinatario);
 		request.setAttribute("destinazione", destinazione);
 		request.setAttribute("sede_destinazione", sede_destinazione);
 		request.setAttribute("ddt", ddt);
+
 		request.setAttribute("pacco", pacco);
 		String lista_save_stato_json = new Gson().toJson(lista_save_stato);
 		request.getSession().setAttribute("lista_save_stato_json", lista_save_stato_json);

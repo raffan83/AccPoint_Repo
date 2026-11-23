@@ -61,6 +61,8 @@ public class GestioneFormazioneDAO {
 	}
 	
 
+	
+
 	public static ArrayList<ForDocenteDTO> getListaDocenti(Session session) {
 		
 		ArrayList<ForDocenteDTO> lista = null;
@@ -967,6 +969,26 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 					
 		query.setParameter("_dateFrom", sdf.parse(dateFrom));
 		query.setParameter("_dateTo", sdf.parse(dateTo));
+			
+			
+		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();
+		
+				
+		return lista;
+	}
+	
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniDataEsatta(String dateFrom, Session session) throws HibernateException, ParseException {
+		
+	ArrayList<ForPiaPianificazioneDTO> lista = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = null;
+		
+		query = session.createQuery("from ForPiaPianificazioneDTO where data=:_dateFrom"); 
+				
+					
+		query.setParameter("_dateFrom", sdf.parse(dateFrom));
 			
 			
 		lista = (ArrayList<ForPiaPianificazioneDTO>) query.list();

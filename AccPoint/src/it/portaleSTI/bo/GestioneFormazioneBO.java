@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -105,6 +106,39 @@ public class GestioneFormazioneBO {
 	public static ArrayList<ForDocenteDTO> getListaDocenti(Session session) {
 	
 		return GestioneFormazioneDAO.getListaDocenti(session);
+	}
+	
+	public static Set<ForDocenteDTO> getListaDocentiOccupati(ForPiaPianificazioneDTO pianificazione, Date today, Session session) throws HibernateException, ParseException {
+		
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		    Calendar cal = Calendar.getInstance();
+		    cal.setTime(today);
+
+		    String dataInizio = sdf.format(cal.getTime());
+
+
+		    List<ForPiaPianificazioneDTO> listaPianificazione =
+		            getListaPianificazioniDataEsatta(dataInizio, session);
+
+		    Set<ForDocenteDTO> docentiOccupati = new HashSet<>();
+
+		    if(pianificazione!=null) {
+		    for (ForPiaPianificazioneDTO piani : listaPianificazione) {
+		    	if(piani.getId()==pianificazione.getId()) {
+		    		continue;
+		    	}
+		        docentiOccupati.addAll(piani.getListaDocenti());
+		    }
+		    } else {
+		    	  for (ForPiaPianificazioneDTO piani : listaPianificazione) {
+				        docentiOccupati.addAll(piani.getListaDocenti());
+				    }
+		    }
+		
+		
+		
+		return docentiOccupati;
 	}
 
 	public static ForDocenteDTO getDocenteFromId(int id_docente, Session session) {
@@ -2524,12 +2558,13 @@ public class GestioneFormazioneBO {
 				 parseInt,  session);
 	}
 
-	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniData(String dateFrom, String dateTo,	Session session) throws HibernateException, ParseException {
-	
-		return GestioneFormazioneDAO.getListaPianificazioniData(dateFrom, dateTo, session);
-		
-		
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniData(String dateFrom, String dateTo,	Session session) throws HibernateException, ParseException {	
+	   return GestioneFormazioneDAO.getListaPianificazioniData(dateFrom, dateTo, session);
 	}
+	
+	public static ArrayList<ForPiaPianificazioneDTO> getListaPianificazioniDataEsatta(String dateFrom, Session session) throws HibernateException, ParseException {	
+		   return GestioneFormazioneDAO.getListaPianificazioniDataEsatta(dateFrom,session);
+		}
 
 	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmail(Session session) {
 		

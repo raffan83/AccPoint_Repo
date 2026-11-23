@@ -59,6 +59,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.common.BitMatrix;
@@ -3239,6 +3240,8 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					 today = ChronoUnit.DAYS.between(inizioBimestre, dataCorrente);
 				 }
 				 
+				//HashSet <ForDocenteDTO> lista_docenti_occupata = GestioneFormazioneBO.getListaDocentiOccupati(session);
+				 
 				 
 					request.getSession().setAttribute("lista_commesse", lista_commesse);			
 					request.getSession().setAttribute("lista_docenti", lista_docenti);
@@ -3263,6 +3266,47 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 			     	dispatcher.forward(request,response);
 			     	
 						
+				} else if(action.equals("check_docenti_occupati")) {
+
+				    ajax = true;
+				    response.setContentType("application/json");
+				    response.setCharacterEncoding("UTF-8");
+		
+				    String id_pianificazione = request.getParameter("id_pianificazione");
+				    ForPiaPianificazioneDTO pianificazione = null;
+				    if(id_pianificazione!= null && !id_pianificazione.equals("")) {
+				    	pianificazione = GestioneFormazioneBO.getPianificazioneFromId(Integer.parseInt(id_pianificazione), session);
+				    }
+
+				    String day = request.getParameter("day");
+
+				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				    Date date = sdf.parse(day);
+
+				    HashSet<ForDocenteDTO> lista_docenti_occupati =
+				            new HashSet<>(GestioneFormazioneBO.getListaDocentiOccupati(pianificazione, date, session));
+
+				    ArrayList<ForDocenteDTO> lista_docenti =
+				            GestioneFormazioneBO.getListaDocenti(session);
+
+				    request.getSession().setAttribute("lista_docenti", lista_docenti);
+				    request.getSession().setAttribute("lista_docenti_occupati", lista_docenti_occupati);
+
+				    // ID docenti occupati
+				    JsonArray occupatiJson = new JsonArray();
+
+				    for (ForDocenteDTO docente : lista_docenti_occupati) {
+				    	occupatiJson.add(new JsonPrimitive(docente.getId()));
+				    }
+
+				    Gson gson = new Gson();
+
+		
+				    myObj.addProperty("success", true);
+				    myObj.add("docenti", gson.toJsonTree(lista_docenti));
+				    myObj.add("occupati", occupatiJson);
+
+				    response.getWriter().print(myObj);
 				}
 			
 				else if(action.equals("nuova_pianificazione")) {

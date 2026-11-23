@@ -273,6 +273,7 @@
 
               </div>
             </div>
+         
           </div>
 <br>
   <br>
@@ -767,7 +768,10 @@
   background-color: #FA8989 !important;
 }
 
-
+.docente-occupato {
+    color: #b02a37;
+    font-weight: 600;
+}
 
 .custom-menu {
     display: none;
@@ -1460,7 +1464,23 @@ $(document).ready(function($) {
 	$('#pleaseWaitDialog').css("z-index","9999");
 	  pleaseWaitDiv.modal();
 	
-	  $('.select2').not('#id_corso_esistente').select2();
+	//  $('.select2').not('#id_corso_esistente').select2();
+	$('.select2').not('#id_corso_esistente, #docente').select2();
+	
+	function formattaDocente(docente) {
+	    if (docente.element && docente.element.getAttribute('data-occupato') === '1') {
+	        return $('<span>')
+	            .addClass('docente-occupato')
+	            .text(docente.text + ' (Occupato)');
+	    }
+
+	    return docente.text;
+	}
+
+	$('#docente').select2({
+	    templateResult: formattaDocente,
+	    templateSelection: formattaDocente
+	});
 
 	  $('#id_corso_esistente').select2({
 		    dropdownParent: $('#id_corso_esistente').parent(),
@@ -1581,8 +1601,6 @@ $('#myModalYesOrNo').on("show.bs.modal", function(){
 	 
 		
 });
-
-
 
 $(document.body).css('padding-right', '0px');
 </script>

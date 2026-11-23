@@ -463,6 +463,72 @@ function initTable(anno, filtro, nuova_pianificazione){
     table = $('#tabForPianificazione').DataTable(settings);
 }
 
+function check_docenti_occupati(id_pianificazione, day){ 
+	
+
+	$.ajax({
+    type: "POST",
+    url: "gestioneFormazione.do?action=check_docenti_occupati",
+    data: {
+        day: day,
+        id_pianificazione: id_pianificazione
+    },
+    dataType: "json",
+
+    success: function (datab) {
+
+        $(document.body).css('padding-right', '0px');
+
+        if (datab && datab.success) {
+
+        	var idOccupati = new Set((datab.occupati || []).map(String));
+        	var $sel = $('#docente');
+
+        	$sel.find('option').each(function () {
+        	    if (this.value && idOccupati.has(this.value)) {
+        	        this.setAttribute('data-occupato', '1');
+        	    } else {
+        	        this.removeAttribute('data-occupato');
+        	    }
+        	});
+
+        	$sel.trigger('change.select2');
+
+
+        } else {
+
+            var msg = (datab && datab.messaggio)
+                ? datab.messaggio
+                : "Errore nel controllo disponibilità docenti.";
+
+            $('#myModalErrorContent').html(msg);
+
+            $('#myModalError')
+                .removeClass()
+                .addClass("modal modal-danger");
+
+            $('#report_button').show();
+            $('#visualizza_report').show();
+
+            $('#myModalError').modal('show');
+        }
+    },
+
+    error: function () {
+
+        $("#myModalErrorContent").html(
+            "Errore durante il recupero dei docenti disponibili."
+        );
+
+        $("#myModalError")
+            .removeClass()
+            .addClass("modal modal-danger")
+            .modal('show');
+    }
+});
+}
+
+
 
 function modalPianificazione(day, commessa, id){
 	
@@ -486,11 +552,17 @@ function modalPianificazione(day, commessa, id){
 	var formattedDate = ('0' + d).slice(-2) + '/' + ('0' + month).slice(-2) + '/' + year;
 
 
-	var nota = cell.text()
+	var nota = cell.text();
+	console.log("nota " + nota);
 	
 		$('#title_pianificazione').html("Pianificazione "+formattedDate+" Commessa: "+commessa)
+		
+var dataPianificazione = year + '-' + ('0' + month).slice(-2) + '-' + ('0' + d).slice(-2);
+check_docenti_occupati(id,dataPianificazione);
+		
 	
 	if(nota!=null && nota!='' && id!=null){
+		console.log("dentro nota ");
 		
 		//var id = cell.attr("name");
 		
@@ -1078,4 +1150,6 @@ function recalcolaAltezzeRighe() {
         row.children('td').height(newHeight);
     });
 }
+
+
 </script>

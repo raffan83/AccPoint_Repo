@@ -482,18 +482,25 @@ function check_docenti_occupati(id_pianificazione, day){
         if (datab && datab.success) {
 
         	var idOccupati = new Set((datab.occupati || []).map(String));
+        	var pianificazioniPerDocente = datab.pianificazioniPerDocente || {};
         	var $sel = $('#docente');
 
         	$sel.find('option').each(function () {
+        	    this.removeAttribute('data-orario-occupato');
+
         	    if (this.value && idOccupati.has(this.value)) {
         	        this.setAttribute('data-occupato', '1');
+
+        	        var piano = pianificazioniPerDocente[this.value];
+        	        if (piano && piano.orario) {
+        	            this.setAttribute('data-orario-occupato', piano.orario);
+        	        }
         	    } else {
         	        this.removeAttribute('data-occupato');
         	    }
         	});
 
         	$sel.trigger('change.select2');
-
 
         } else {
 

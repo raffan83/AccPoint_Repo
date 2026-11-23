@@ -3283,29 +3283,49 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 				    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				    Date date = sdf.parse(day);
 
-				    HashSet<ForDocenteDTO> lista_docenti_occupati =
-				            new HashSet<>(GestioneFormazioneBO.getListaDocentiOccupati(pianificazione, date, session));
+			//	    HashSet<ForDocenteDTO> lista_docenti_occupati = new HashSet<>(GestioneFormazioneBO.getListaDocentiOccupati(pianificazione, date, session));
 
-				    ArrayList<ForDocenteDTO> lista_docenti =
-				            GestioneFormazioneBO.getListaDocenti(session);
+				    ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);
+				    
+				    HashMap<ForDocenteDTO, String> lista_docente_pianifi =
+				    		(HashMap<ForDocenteDTO, String>) GestioneFormazioneBO.getListaDocentiOrariOccupati(pianificazione, date, session);
 
-				    request.getSession().setAttribute("lista_docenti", lista_docenti);
-				    request.getSession().setAttribute("lista_docenti_occupati", lista_docenti_occupati);
+				  
+			//	    request.getSession().setAttribute("lista_docenti_occupati", lista_docenti_occupati);
 
 				    // ID docenti occupati
 				    JsonArray occupatiJson = new JsonArray();
+				    JsonObject pianificazioniPerDocente = new JsonObject();
+		
 
-				    for (ForDocenteDTO docente : lista_docenti_occupati) {
-				    	occupatiJson.add(new JsonPrimitive(docente.getId()));
+				    for (Map.Entry<ForDocenteDTO, String> entry
+				            : lista_docente_pianifi.entrySet()) {
+
+				        ForDocenteDTO docente = entry.getKey();
+				        String orario = entry.getValue();
+
+				        occupatiJson.add(new JsonPrimitive(docente.getId()));
+
+				        JsonObject pianoJson = new JsonObject();
+				        pianoJson.addProperty("orario", orario);
+				        
+				     
+
+				        pianificazioniPerDocente.add(String.valueOf(docente.getId()), pianoJson);
 				    }
+
+				    myObj.add("occupati", occupatiJson);
+				    myObj.add("pianificazioniPerDocente", pianificazioniPerDocente);
+			
 
 				    Gson gson = new Gson();
 
 		
 				    myObj.addProperty("success", true);
 				    myObj.add("docenti", gson.toJsonTree(lista_docenti));
-				    myObj.add("occupati", occupatiJson);
-
+			//	    myObj.add("occupati", occupatiJson);
+				    
+				  
 				    response.getWriter().print(myObj);
 				}
 			

@@ -1469,14 +1469,16 @@ $(document).ready(function($) {
 	
 	function formattaDocente(docente) {
 	    if (docente.element && docente.element.getAttribute('data-occupato') === '1') {
+	        var orario = docente.element.getAttribute('data-orario-occupato');
+	        var dettaglio = orario ? ' (Occupato ' + orario + ')' : ' (Occupato)';
+
 	        return $('<span>')
 	            .addClass('docente-occupato')
-	            .text(docente.text + ' (Occupato)');
+	            .text(docente.text + dettaglio);
 	    }
 
 	    return docente.text;
 	}
-
 	$('#docente').select2({
 	    templateResult: formattaDocente,
 	    templateSelection: formattaDocente

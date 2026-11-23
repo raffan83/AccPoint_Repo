@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
@@ -140,6 +141,35 @@ public class GestioneFormazioneBO {
 		
 		return docentiOccupati;
 	}
+	
+	public static Map<ForDocenteDTO, String> getListaDocentiOrariOccupati(
+	        ForPiaPianificazioneDTO pianificazione, Date today, Session session)
+	        throws HibernateException, ParseException {
+
+	    String dataInizio = new SimpleDateFormat("yyyy-MM-dd").format(today);
+
+	    List<ForPiaPianificazioneDTO> listaPianificazione =
+	            getListaPianificazioniDataEsatta(dataInizio, session);
+
+	    Map<ForDocenteDTO, String> docentiOccupati =
+	            new LinkedHashMap<>();
+
+	    for (ForPiaPianificazioneDTO piano : listaPianificazione) {
+	        if (pianificazione != null && Objects.equals(piano.getId(), pianificazione.getId())) {
+	            continue;
+	        }
+
+	        String orario = piano.getOra_inizio() + "-" +piano.getOra_fine();
+	        for (ForDocenteDTO docente : piano.getListaDocenti()) {
+	        	
+	        	
+	        	docentiOccupati.merge(docente, orario, (precedente, nuovo) -> precedente + ", " + nuovo);
+	        }
+	    }
+
+	    return docentiOccupati;
+	}
+
 
 	public static ForDocenteDTO getDocenteFromId(int id_docente, Session session) {
 		

@@ -41,10 +41,7 @@ public class AggiornaStatoSpedizioni implements Job {
 				session.beginTransaction();
 		ArrayList<SpedizioneDTO> lista_spedizioni = (ArrayList<SpedizioneDTO>) GestioneSpedizioneBO.getListaSpedizioni(session);
 		
-		  Path caPem = Paths.get(
-		            System.getProperty("user.home"),
-		            "Desktop", "demo", "certs", "sti-erp-api-ca.crt"
-		    );
+		 Path caPem = Paths.get(Costanti.PATH_FOLDER_CERT, "sti-erp-api-ca.crt");
 		  
 		List<Integer> spedizione_errate = new ArrayList<>();
 		
@@ -101,7 +98,7 @@ public class AggiornaStatoSpedizioni implements Job {
 		
 			
 			session.getTransaction().commit();
-			 logger.info("Aggiornamento stato spedizioni completato.");
+			 logger.error("Aggiornamento stato spedizioni completato.");
 			
 		
 		  } catch (Exception e) {

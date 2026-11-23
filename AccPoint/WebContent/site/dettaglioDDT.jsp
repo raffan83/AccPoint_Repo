@@ -42,6 +42,7 @@
               
             
             <div class="row">
+               <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
    <c:if test="${ddt.tipo_ddt.id != 1 and not empty sessionScope.spedizioneDdt}">
     <button type="button" class="btn btn-primary pull-right"
             style="margin-right: 20px; margin-left: 6px;"
@@ -54,15 +55,17 @@
         Aggiorna Stato Spedizione <i class="fa fa-refresh" aria-hidden="true"></i>
     </button>
 </c:if>
+</c:if>
       
 	   <div class="col-xs-6">
+	      <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
 	  <c:if test="${ddt.tipo_ddt.id != 1 and  empty sessionScope.spedizioneDdt}">
 	   <button class="btn btn-primary pull-right" style="margin-left: 6px;"
         onclick="modalSpedizione('${pacco.id}', '${ddt.id}')">
     Invio Spedizione <i class="fa fa-tag" aria-hidden="true"></i>
 </button>
 	   </c:if>
-	   
+	   </c:if>
 	   <c:if test="${ddt.tipo_ddt.id!=1 }">
 <button class="btn btn-danger pull-right" onClick="creaFileDDT('${ddt.numero_ddt}', '${pacco.id}', '${pacco.id_cliente}', '${pacco.id_sede}', '${ddt.id}')">Genera DDT <i class="fa fa-file-pdf-o"></i></button>
 

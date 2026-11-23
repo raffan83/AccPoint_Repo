@@ -123,12 +123,19 @@ public class GestioneSpedizione extends HttpServlet {
 
 				String indirizzo = arrayIndirizzo[0].trim();   // "VIA FERMI ENRICO, 40"
 				String cap = "";
+				String cittaProv ="";
 				String citta = "";
 				String provincia ="";
-				//String cap = arrayIndirizzo[1].trim();         // "03100"
-				//String cittaProv = arrayIndirizzo[2].trim();   // "FROSINONE (FR)"
-				//String citta = cittaProv.substring(0, cittaProv.indexOf('(')).trim();    
-				//String provincia = cittaProv.substring(cittaProv.indexOf('(') + 1, cittaProv.indexOf(')')); // "FR"
+				if(arrayIndirizzo.length==2) {
+				cap = arrayIndirizzo[1].trim();         // "03100"
+				}
+				if(arrayIndirizzo.length==3) {
+					cap = arrayIndirizzo[1].trim(); 
+				 cittaProv = arrayIndirizzo[2].trim();   // "FROSINONE (FR)"
+					citta = cittaProv.substring(0, cittaProv.indexOf('(')).trim();    
+					provincia = cittaProv.substring(cittaProv.indexOf('(') + 1, cittaProv.indexOf(')')); // "FR"
+					}
+				
 				
 				
 				MagDdtDTO ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
@@ -162,9 +169,13 @@ public class GestioneSpedizione extends HttpServlet {
 					} if(indirizzo==null) {
 						indirizzo =cliente.getIndirizzo();
 					}
+					if(cap.equals("")) {
 					cap = cliente.getCap();
+					}
+					if(cittaProv.equals("")) {
 					citta = cliente.getCitta();
 					provincia = cliente.getProvincia();
+					}
 					
 					spedizione.addProperty("telefono", cliente.getTelefono());
 				   
@@ -213,10 +224,9 @@ public class GestioneSpedizione extends HttpServlet {
 			    spedizione.setCodice_tracking(request.getParameter("codice_tracking"));
 		
 	
-			    Path caPem = Paths.get(
-			            System.getProperty("user.home"),
-			            "Desktop", "demo", "certs", "sti-erp-api-ca.crt"
-			    );
+	
+			    Path caPem = Paths.get(Costanti.PATH_FOLDER_CERT, "sti-erp-api-ca.crt");
+		
 			   String risp = GestioneSpedizioneBO.send(spedizione, Costanti.URL_STI_ETICHETTA, Costanti.TOKEN_API_ETICHETTA, caPem, "invio");
 			   
 			   JsonObject risposta = new JsonParser().parse(risp).getAsJsonObject();
@@ -316,10 +326,7 @@ public class GestioneSpedizione extends HttpServlet {
 			  response.setCharacterEncoding("UTF-8");
 			  int idSpedizione = Integer.parseInt(request.getParameter("id_spedizione"));
 			  
-			  Path caPem = Paths.get(
-			            System.getProperty("user.home"),
-			            "Desktop", "demo", "certs", "sti-erp-api-ca.crt"
-			    );
+			  Path caPem = Paths.get(Costanti.PATH_FOLDER_CERT, "sti-erp-api-ca.crt");
 			  
 			  SpedizioneDTO spedizione = GestioneSpedizioneBO.getSpedizioneById(idSpedizione, session);
 			  

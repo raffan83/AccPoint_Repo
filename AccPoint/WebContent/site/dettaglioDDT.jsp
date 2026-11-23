@@ -434,17 +434,17 @@
 
           <div class="row">
            <div class="col-sm-6">
-   <div class="form-group">
+ <div class="form-group">
     <label for="spedizione_corriere">Corriere</label>
-    <input type="text" class="form-control" id="spedizione_corriere"
-           name="corriere" list="lista_corrieri_spedizione"
-           placeholder="Scegli o scrivi un corriere" required>
-
-    <datalist id="lista_corrieri_spedizione">
+    <select class="form-control" id="spedizione_corriere"
+            name="corriere" required style="width: 100%;">
+        <option value=""></option>
         <c:forEach var="corriere" items="${lista_corrieri}">
-            <option value="<c:out value='${corriere.nominativo}'/>"></option>
+            <option value="<c:out value='${corriere.nominativo}'/>">
+                <c:out value="${corriere.nominativo}"/>
+            </option>
         </c:forEach>
-    </datalist>
+    </select>
 </div>
 </div>
             <div class="col-sm-6">
@@ -1100,7 +1100,25 @@
 
 }
 	
- 	
+    $(function () {
+        var modal = $('#myModalInvioSpedizione');
+        var select = modal.find('#spedizione_corriere');
+
+        if (!select.length) {
+            return;
+        }
+
+        modal.one('shown.bs.modal', function () {
+            select.select2({
+                tags: true,
+                placeholder: 'Scegli o scrivi un corriere',
+                dropdownParent: modal,
+                width: '100%'
+            });
+        });
+    });
+
+
 	function importaConfigurazioneDDT(){
 		
 		 var lista_save_stato = '${lista_save_stato_json}';
@@ -1554,8 +1572,6 @@ $("#destinazione").change(function() {
 			    dataObj.id_ddt = id_ddt;
 			    dataObj.destinazione = destinazione;
 			    dataObj.indirizzo = indirizzo;
-			    dataObj.destinazione = destinazione;
-			    dataObj.indirizzo = indirizzo;
 
 			    $.ajax({
 			        type: "POST",
@@ -1564,7 +1580,7 @@ $("#destinazione").change(function() {
 			        dataType: "json",
 
 			        success: function (data, textStatus) {
-			            pleaseWaitDiv.modal('hide');
+			            
 
 			            if (data && data.success) {
 			                var spedizione = data.spedizione || {};
@@ -1572,15 +1588,48 @@ $("#destinazione").change(function() {
 
 			                form[0].reset();
 
-			                form.find(':input[name]').each(function () {
-			                    var valore = spedizione[this.name];
-			                    $(this).val(valore == null ? '' : valore);
-			                });
+			                form.find(':input[name]').not('#spedizione_corriere').each(function () {
+                                var valore = spedizione[this.name];
+                                $(this).val(valore == null ? '' : valore);
+                            });
 
+                            var selectCorriere = form.find('#spedizione_corriere');
+                            var corriere = $.trim(spedizione.corriere || '');
 
-			                form.find('#spedizione_id_ddt').val(id_ddt);
-			                $('#myModalInvioSpedizione').modal('show');
-			            } else {
+                            selectCorriere.find('option[data-corriere-precompilato]').remove();
+                            var presente = selectCorriere.find('option').filter(function () {
+                                return this.value === corriere;
+                            }).length > 0;
+
+                            if (corriere && !presente) {
+                                selectCorriere.append($('<option>', {
+                                    value: corriere,
+                                    text: corriere,
+                                    'data-corriere-precompilato': 'true'
+                                }));
+                            }
+                            selectCorriere.val(corriere).trigger('change');
+                            form.find('#spedizione_id_ddt').val(id_ddt);
+
+                            function apriModaleSpedizione() {
+                                $('#myModalInvioSpedizione').modal('show');
+                            }
+
+                            var modaleAttesa = pleaseWaitDiv.data('bs.modal');
+                            if (modaleAttesa && modaleAttesa.isShown) {
+                                pleaseWaitDiv.one('hidden.bs.modal', apriModaleSpedizione);
+                                if (pleaseWaitDiv.hasClass('in')) {
+                                    pleaseWaitDiv.modal('hide');
+                                } else {
+                                    pleaseWaitDiv.one('shown.bs.modal', function () {
+                                        pleaseWaitDiv.modal('hide');
+                                    });
+                                }
+                            } else {
+                                apriModaleSpedizione();
+                            }
+                        } else {
+                            pleaseWaitDiv.modal('hide');
 			                $('#myModalErrorContent').text(
 			                    (data && data.messaggio) || "Errore nel recupero dei dati della spedizione."
 			                );

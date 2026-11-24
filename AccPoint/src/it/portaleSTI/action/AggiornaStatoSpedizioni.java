@@ -62,9 +62,15 @@ public class AggiornaStatoSpedizioni implements Job {
 			               idNuovoStato = 4;
 			           } else if ("in_corso".equals(stato)) {
 			               idNuovoStato = 1;
+			           } else if ("annullato".equals(stato)) {
+			               idNuovoStato = 6;
+			           }  else if ("annullato".equals(stato)) {
+			               idNuovoStato = 6;
+			           } else {
+			        	   idNuovoStato = 7;
 			           }
 			           
-			           if (idNuovoStato == null) {
+			           if (idNuovoStato == null || idNuovoStato ==7) {
 			        	    logger.warn("Stato non riconosciuto per la spedizione "
 			        	            + spedizione.getId() + ": " + stato);
 			        	    spedizione_errate.add(spedizione.getId());

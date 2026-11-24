@@ -345,17 +345,28 @@ public class GestioneSpedizione extends HttpServlet {
 			               idNuovoStato = 4;
 			           } else if ("in_corso".equals(stato)) {
 			               idNuovoStato = 1;
+			           } else if ("annullato".equals(stato)) {
+			               idNuovoStato = 6;
+			           }  else if ("annullato".equals(stato)) {
+			               idNuovoStato = 6;
+			           } else {
+			        	   idNuovoStato = 7;
 			           }
 
 			           JsonObject risultato = new JsonObject();
 			          
-			           if (idNuovoStato == null) {
+			           if (idNuovoStato == null  || idNuovoStato ==7) {
 			               risultato.addProperty("success", false);
 			               risultato.addProperty("messaggio", "Stato spedizione non riconosciuto: " + stato);
 			           } else {
 			               StatoSpedizioneDTO statoAttuale = spedizione.getStato();
-			               boolean cambiato = statoAttuale == null
-			                       || !idNuovoStato.equals(statoAttuale.getId());
+			               boolean cambiato = false;
+
+			               if (statoAttuale == null) {
+			                   cambiato = true;
+			               } else if (!idNuovoStato.equals(statoAttuale.getId())) {
+			                   cambiato = true;
+			               }
 
 			               if (cambiato) {
 			                   StatoSpedizioneDTO nuovoStato = (StatoSpedizioneDTO)

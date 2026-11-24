@@ -343,6 +343,12 @@
    <c:when test="${sessionScope.spedizioneDdt.stato.id == 1}">
 		<span class="label label-warning">${sessionScope.spedizioneDdt.stato.descrizione}</span>
   </c:when>
+  <c:when test="${sessionScope.spedizioneDdt.stato.id == 6}">
+		<span class="label label-danger">${sessionScope.spedizioneDdt.stato.descrizione}</span>
+  </c:when>
+  <c:when test="${sessionScope.spedizioneDdt.stato.id == 7}">
+		<span class="label label-default">${sessionScope.spedizioneDdt.stato.descrizione}</span>
+  </c:when>
   </c:choose>
      
         </div>

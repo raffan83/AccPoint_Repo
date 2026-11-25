@@ -3965,7 +3965,7 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 						    toAdd += ";" + ddt.getSpedizione().getStato().getDescrizione()
 						           + ";" + ddt.getSpedizione().getStato().getId();
 						} else {
-						    toAdd += ";Non spedita";
+						    toAdd += ";Spedizione non inviata";
 						}
 
 						lista.add(toAdd);

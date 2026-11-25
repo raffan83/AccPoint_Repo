@@ -1212,7 +1212,9 @@ $('input:checkbox').on('ifToggled', function() {
         $('#check_remind_docenti').val("1");
 
         $('#giorni_preavviso_mod').prop('disabled', false);
-        $('#email_preavviso_mod').prop('disabled', false);
+        $('#email_preavviso_mod')
+        .prop('disabled', false)
+        .prop('required', true);
 
     })
 
@@ -1221,7 +1223,10 @@ $('input:checkbox').on('ifToggled', function() {
         $('#check_remind_docenti').val("0");
 
         $('#giorni_preavviso_mod').prop('disabled', true).val("");
-        $('#email_preavviso_mod').prop('disabled', true).val("");
+        $('#email_preavviso_mod')
+        .prop('disabled', true)
+        .prop('required', false)
+        .val("");
 
     })
 

@@ -103,7 +103,7 @@
                                <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
                                <td  id="${splitted[0]}_8" style="position:relative">${splitted[7]}</td>                          
                                <td  id="${splitted[0]}_12" style="position:relative"><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(splitted[12]) }')">${ splitted[12]}</a></td>
-                               <td style="position: relative; vertical-align: middle;">
+                               <td style="position: relative; vertical-align: middle; text-align: center;">
     <c:if test="${not empty splitted[13]}">
         <c:choose>
             <c:when test="${splitted[14] == '4'}">

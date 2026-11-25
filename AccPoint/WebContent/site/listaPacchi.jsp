@@ -273,7 +273,7 @@ ${pacco.ddt.numero_ddt}
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
 
-<td style="vertical-align: middle;">
+<td style="vertical-align: middle;  text-align: center;">
     <c:if test="${not empty pacco.ddt.numero_ddt and pacco.ddt.tipo_ddt.id == 2}">
         <c:set var="statoSpedizione" value="${pacco.ddt.spedizione.stato}"/>
 

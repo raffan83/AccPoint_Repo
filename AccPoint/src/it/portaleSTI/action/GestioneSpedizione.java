@@ -242,9 +242,12 @@ public class GestioneSpedizione extends HttpServlet {
 
 						String id_ddt = request.getParameter("id_ddt");
 						MagDdtDTO ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
-						spedizione.setDdt(ddt);
+						spedizione.setId_ddt(ddt.getId());
 					 spedizione.setStato(new StatoSpedizioneDTO(1));
 					   GestioneSpedizioneBO.saveSpedizione(spedizione, session);
+					   ddt.setSpedizione(spedizione);
+					   GestioneMagazzinoBO.saveDdt(ddt, session);
+					   
 					   session.getTransaction().commit();
 	   
 					   risultato.addProperty("success", true);

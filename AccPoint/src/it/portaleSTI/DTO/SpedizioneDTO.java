@@ -22,7 +22,8 @@ public class SpedizioneDTO implements Serializable {
     private String note;
     private Date data_spedizione;
     private String codice_tracking;
-    private MagDdtDTO ddt;
+    private int id_ddt;
+
     private StatoSpedizioneDTO stato;
 
     public SpedizioneDTO() {
@@ -148,12 +149,7 @@ public class SpedizioneDTO implements Serializable {
         this.codice_tracking = codice_tracking;
     }
 
-   public MagDdtDTO getDdt() {
-    return ddt;
-}
-   public void setDdt(MagDdtDTO ddt) {
-    this.ddt = ddt;
-}
+
 
 public StatoSpedizioneDTO getStato() {
 	return stato;
@@ -162,6 +158,15 @@ public StatoSpedizioneDTO getStato() {
 public void setStato(StatoSpedizioneDTO stato) {
 	this.stato= stato;
 }
+
+public int getId_ddt() {
+	return id_ddt;
+}
+
+public void setId_ddt(int id_ddt) {
+	this.id_ddt = id_ddt;
+}
    
+
    
 }

@@ -57,6 +57,7 @@ import it.portaleSTI.DTO.ForPartecipanteRuoloCorsoDTO;
 import it.portaleSTI.DTO.IngIngressoDTO;
 import it.portaleSTI.DTO.InterventoDTO;
 import it.portaleSTI.DTO.InterventoDatiDTO;
+import it.portaleSTI.DTO.MagDdtDTO;
 import it.portaleSTI.DTO.MagPaccoDTO;
 import it.portaleSTI.DTO.MisuraDTO;
 import it.portaleSTI.DTO.PRInterventoRisorsaDTO;
@@ -3881,6 +3882,8 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 		        MagPaccoDTO pacco = (MagPaccoDTO) result[0];
 		        Integer stato = (Integer) result[1];
 		        String utente = (String) result[2];
+		        Integer id_ddt = (Integer)result[3];
+		        MagDdtDTO ddt = GestioneMagazzinoDAO.getDDT(""+id_ddt, session);
 
 				java.util.Date dataCommessa = null;
 				if(pacco.getCommessa()!=null && !pacco.getCommessa().equals("")) {
@@ -3957,7 +3960,14 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 							toAdd = toAdd+";";
 						}
 						toAdd=toAdd+";"+result[3];
-					
+						if (ddt != null && ddt.getSpedizione() != null
+						        && ddt.getSpedizione().getStato() != null) {
+						    toAdd += ";" + ddt.getSpedizione().getStato().getDescrizione()
+						           + ";" + ddt.getSpedizione().getStato().getId();
+						} else {
+						    toAdd += ";Non spedita";
+						}
+
 						lista.add(toAdd);
 
 			//		}

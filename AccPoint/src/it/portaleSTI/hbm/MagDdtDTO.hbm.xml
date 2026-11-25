@@ -86,5 +86,8 @@
         <property name="n_prenotazione" type="java.lang.String">
             <column name="n_prenotazione" />
         </property>
+     <many-to-one name="spedizione" class="it.portaleSTI.DTO.SpedizioneDTO" fetch="join" lazy="false">
+            <column name="id_spedizione" />
+        </many-to-one>	
 	</class>
 </hibernate-mapping>

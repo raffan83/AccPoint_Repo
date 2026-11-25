@@ -141,6 +141,7 @@
   <th >Note Pacco</th>
    <th >Strumenti Lavorati</th>
    <th >DDT</th>
+   <th >Stato Spedizione</th>
     <th >Fornitore</th>
     <th>Data Trasporto</th>
      <th >Data Spedizione</th>
@@ -271,6 +272,36 @@ ${pacco.ddt.numero_ddt}
 </a></td></c:when>
 <c:otherwise><td></td></c:otherwise>
 </c:choose>
+
+<td style="vertical-align: middle;">
+    <c:if test="${not empty pacco.ddt.numero_ddt and pacco.ddt.tipo_ddt.id == 2}">
+        <c:set var="statoSpedizione" value="${pacco.ddt.spedizione.stato}"/>
+
+        <c:choose>
+            <c:when test="${empty pacco.ddt.spedizione}">
+                <span class="label" style="background-color: #fff; color: #555; border: 1px solid #aaa;">
+                    Spedizione non inviata
+                </span>
+            </c:when>
+            <c:when test="${statoSpedizione.id == 4}">
+                <span class="label label-success"><c:out value="${statoSpedizione.descrizione}"/></span>
+            </c:when>
+            <c:when test="${statoSpedizione.id == 1}">
+                <span class="label label-warning"><c:out value="${statoSpedizione.descrizione}"/></span>
+            </c:when>
+            <c:when test="${statoSpedizione.id == 6}">
+                <span class="label label-danger"><c:out value="${statoSpedizione.descrizione}"/></span>
+            </c:when>
+            <c:when test="${statoSpedizione.id == 7}">
+                <span class="label label-default"><c:out value="${statoSpedizione.descrizione}"/></span>
+            </c:when>
+            <c:otherwise>
+                <c:out value="${statoSpedizione.descrizione}"/>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+</td>
+
 <td>${pacco.fornitore }</td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.ddt.data_trasporto }" /></td>
 <td><fmt:formatDate pattern = "dd/MM/yyyy" value = "${pacco.data_spedizione}" /></td>

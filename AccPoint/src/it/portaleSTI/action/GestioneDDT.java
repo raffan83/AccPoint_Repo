@@ -176,15 +176,16 @@ public class GestioneDDT extends HttpServlet {
 	
 		ArrayList<MagSaveStatoDTO> lista_save_stato = GestioneMagazzinoBO.getListaMagSaveStato(session);
 		
-		
+		/*
 		SpedizioneDTO spedizioneDdt =
 		        GestioneSpedizioneBO.getSpedizioneByIdDdt(ddt.getId(), session);
+		*/
 		ArrayList<CorriereDTO> lista_corrieri = (ArrayList<CorriereDTO>) GestioneSpedizioneBO.getListaCorrieri(session);
 	    
 			
 		session.close();
 		
-		request.getSession().setAttribute("spedizioneDdt", spedizioneDdt);
+	//	request.getSession().setAttribute("spedizioneDdt", spedizioneDdt);
 		request.setAttribute("lista_corrieri", lista_corrieri);
 		
 		request.setAttribute("destinatario", destinatario);

@@ -26,11 +26,9 @@
             <many-to-one name="stato" class="it.portaleSTI.DTO.StatoSpedizioneDTO" fetch="join" lazy="false">
             <column name="id_stato_spedizione" />
         </many-to-one>
-        
-        <many-to-one name="ddt"
-                     class="it.portaleSTI.DTO.MagDdtDTO"
-                     column="id_ddt"
-                     not-null="false"
-                     foreign-key="segnalazione_ibfk_1"/>
+        <property name="id_ddt" type="int">
+            <column name="id_ddt" />
+        </property>
+      
     </class>
 </hibernate-mapping>

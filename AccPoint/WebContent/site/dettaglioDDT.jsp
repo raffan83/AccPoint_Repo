@@ -43,7 +43,7 @@
             
             <div class="row">
                <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
-   <c:if test="${ddt.tipo_ddt.id != 1 and not empty sessionScope.spedizioneDdt}">
+<c:if test="${ddt.tipo_ddt.id != 1 and not empty ddt.spedizione}">
     <button type="button" class="btn btn-primary pull-right"
             style="margin-right: 20px; margin-left: 6px;"
             onclick="modalModificaSpedizione()">
@@ -51,7 +51,7 @@
     </button>
 
     <button type="button" class="btn btn-primary pull-right"
-            onclick="aggiornaStatoSpedizione('${sessionScope.spedizioneDdt.id}')">
+            onclick="aggiornaStatoSpedizione('${ddt.spedizione.id}')">
         Aggiorna Stato Spedizione <i class="fa fa-refresh" aria-hidden="true"></i>
     </button>
 </c:if>
@@ -59,7 +59,7 @@
       
 	   <div class="col-xs-6">
 	      <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
-	  <c:if test="${ddt.tipo_ddt.id != 1 and  empty sessionScope.spedizioneDdt}">
+<c:if test="${ddt.tipo_ddt.id != 1 and empty ddt.spedizione}">
 	   <button class="btn btn-primary pull-right" style="margin-left: 6px;"
         onclick="modalSpedizione('${pacco.id}', '${ddt.id}')">
     Invio Spedizione <i class="fa fa-tag" aria-hidden="true"></i>
@@ -234,126 +234,162 @@
 
 </div>
 
-<c:if test="${not empty sessionScope.spedizioneDdt && ddt.tipo_ddt.id==2}">
+<c:if test="${ddt.tipo_ddt.id == 2 and not empty ddt.spedizione}">
   <div class="col-xs-6">
     <div class="box box-danger box-solid">
       <div class="box-header with-border">
         Dati spedizione
         <div class="box-tools pull-right">
-          <button type="button" data-widget="collapse" class="btn btn-box-tool" aria-label="Espandi o comprimi i dati spedizione">
+          <button type="button" data-widget="collapse" class="btn btn-box-tool"
+                  aria-label="Espandi o comprimi i dati spedizione">
             <i class="fa fa-minus" aria-hidden="true"></i>
           </button>
         </div>
       </div>
+
       <div class="box-body" id="dati_spedizione">
         <ul class="list-group list-group-unbordered">
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>ID pacco</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.id_pacco}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.id_pacco}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Destinatario</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.destinatario}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.destinatario}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Presso</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.presso}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.presso}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Indirizzo</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.indirizzo}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.indirizzo}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>CAP</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.cap}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.cap}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Città</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.citta}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.citta}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Provincia</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.provincia}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.provincia}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Nazione</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.nazione}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.nazione}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Corriere</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.corriere}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.corriere}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Referente</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.referente}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.referente}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Telefono</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.telefono}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.telefono}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Data spedizione</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><fmt:formatDate value="${sessionScope.spedizioneDdt.data_spedizione}" pattern="dd/MM/yyyy"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <fmt:formatDate value="${ddt.spedizione.data_spedizione}" pattern="dd/MM/yyyy"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Codice tracking</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.codice_tracking}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.codice_tracking}"/>
+              </div>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <div class="col-xs-5"><b>Note</b></div>
-              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;"><c:out value="${sessionScope.spedizioneDdt.note}"/></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:out value="${ddt.spedizione.note}"/>
+              </div>
             </div>
           </li>
-          
-               <li class="list-group-item">
-    <div class="row">
-        <div class="col-xs-5"><b>Stato</b></div>
-        <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-        <c:choose>
-  <c:when test="${sessionScope.spedizioneDdt.stato.id == 4}">
-		<span class="label label-success">${sessionScope.spedizioneDdt.stato.descrizione}</span>
-  </c:when>
-   <c:when test="${sessionScope.spedizioneDdt.stato.id == 1}">
-		<span class="label label-warning">${sessionScope.spedizioneDdt.stato.descrizione}</span>
-  </c:when>
-  <c:when test="${sessionScope.spedizioneDdt.stato.id == 6}">
-		<span class="label label-danger">${sessionScope.spedizioneDdt.stato.descrizione}</span>
-  </c:when>
-  <c:when test="${sessionScope.spedizioneDdt.stato.id == 7}">
-		<span class="label label-default">${sessionScope.spedizioneDdt.stato.descrizione}</span>
-  </c:when>
-  </c:choose>
-     
-        </div>
-    </div>
-</li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5"><b>Stato</b></div>
+              <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
+                <c:choose>
+                  <c:when test="${ddt.spedizione.stato.id == 4}">
+                    <span class="label label-success">
+                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                    </span>
+                  </c:when>
+                  <c:when test="${ddt.spedizione.stato.id == 1}">
+                    <span class="label label-warning">
+                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                    </span>
+                  </c:when>
+                  <c:when test="${ddt.spedizione.stato.id == 6}">
+                    <span class="label label-danger">
+                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                    </span>
+                  </c:when>
+                  <c:when test="${ddt.spedizione.stato.id == 7}">
+                    <span class="label label-default">
+                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                    </span>
+                  </c:when>
+                </c:choose>
+              </div>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -499,9 +535,9 @@
 </div>
 
 
-<c:if test="${ddt.tipo_ddt.id != 1 and not empty sessionScope.spedizioneDdt}">
+<c:if test="${ddt.tipo_ddt.id != 1 and not empty ddt.spedizione}">
     <fmt:formatDate var="dataSpedizioneModifica"
-                    value="${sessionScope.spedizioneDdt.data_spedizione}"
+                    value="${ddt.spedizione.data_spedizione}"
                     pattern="yyyy-MM-dd"/>
 
     <div id="myModalModificaSpedizione" class="modal fade" tabindex="-1"
@@ -513,32 +549,31 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 id="titoloModalModificaSpedizione" class="modal-title">
-                        Modifica Spedizione
+                        Modifica spedizione
                     </h4>
-                   <p class="text-muted" style="margin: 4px 0 0;">
-    <strong>ATTENZIONE!! Le seguenti modifiche NON verrano salvate in Gestione STI Etichette</strong><br>
-    Per mantenere allineati i dati, applica le stesse modifiche in Gestione STI Etichette.
-    </p>
+                    <p class="text-muted" style="margin: 4px 0 0;">
+                        <strong>Attenzione! Le modifiche non verranno salvate in Gestione STI Etichette.</strong><br>
+                        Per mantenere allineati i dati, applica le stesse modifiche in Gestione STI Etichette.
+                    </p>
                 </div>
-                
 
                 <form id="formModificaSpedizione">
                     <div class="modal-body">
                         <input type="hidden" name="id"
-                               value="<c:out value='${sessionScope.spedizioneDdt.id}'/>">
+                               value="<c:out value='${ddt.spedizione.id}'/>">
 
                         <div class="row">
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_id_pacco">ID pacco</label>
                                 <input type="text" id="spedizione_mod_id_pacco" name="id_pacco"
                                        class="form-control" readonly
-                                       value="<c:out value='${sessionScope.spedizioneDdt.id_pacco}'/>">
+                                       value="<c:out value='${ddt.spedizione.id_pacco}'/>">
                             </div>
                             <div class="col-sm-8 form-group">
                                 <label for="spedizione_mod_destinatario">Destinatario</label>
                                 <input type="text" id="spedizione_mod_destinatario" name="destinatario"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.destinatario}'/>">
+                                       value="<c:out value='${ddt.spedizione.destinatario}'/>">
                             </div>
                         </div>
 
@@ -547,13 +582,13 @@
                                 <label for="spedizione_mod_presso">Presso</label>
                                 <input type="text" id="spedizione_mod_presso" name="presso"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.presso}'/>">
+                                       value="<c:out value='${ddt.spedizione.presso}'/>">
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label for="spedizione_mod_referente">Referente</label>
                                 <input type="text" id="spedizione_mod_referente" name="referente"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.referente}'/>">
+                                       value="<c:out value='${ddt.spedizione.referente}'/>">
                             </div>
                         </div>
 
@@ -562,13 +597,13 @@
                                 <label for="spedizione_mod_indirizzo">Indirizzo</label>
                                 <input type="text" id="spedizione_mod_indirizzo" name="indirizzo"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.indirizzo}'/>">
+                                       value="<c:out value='${ddt.spedizione.indirizzo}'/>">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_cap">CAP</label>
                                 <input type="text" id="spedizione_mod_cap" name="cap"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.cap}'/>">
+                                       value="<c:out value='${ddt.spedizione.cap}'/>">
                             </div>
                         </div>
 
@@ -577,19 +612,19 @@
                                 <label for="spedizione_mod_citta">Città</label>
                                 <input type="text" id="spedizione_mod_citta" name="citta"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.citta}'/>">
+                                       value="<c:out value='${ddt.spedizione.citta}'/>">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_provincia">Provincia</label>
                                 <input type="text" id="spedizione_mod_provincia" name="provincia"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.provincia}'/>">
+                                       value="<c:out value='${ddt.spedizione.provincia}'/>">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_nazione">Nazione</label>
                                 <input type="text" id="spedizione_mod_nazione" name="nazione"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.nazione}'/>">
+                                       value="<c:out value='${ddt.spedizione.nazione}'/>">
                             </div>
                         </div>
 
@@ -598,13 +633,13 @@
                                 <label for="spedizione_mod_corriere">Corriere</label>
                                 <input type="text" id="spedizione_mod_corriere" name="corriere"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.corriere}'/>">
+                                       value="<c:out value='${ddt.spedizione.corriere}'/>">
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label for="spedizione_mod_telefono">Telefono</label>
                                 <input type="tel" id="spedizione_mod_telefono" name="telefono"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.telefono}'/>">
+                                       value="<c:out value='${ddt.spedizione.telefono}'/>">
                             </div>
                         </div>
 
@@ -619,22 +654,23 @@
                                 <label for="spedizione_mod_codice_tracking">Codice tracking</label>
                                 <input type="text" id="spedizione_mod_codice_tracking" name="codice_tracking"
                                        class="form-control"
-                                       value="<c:out value='${sessionScope.spedizioneDdt.codice_tracking}'/>">
+                                       value="<c:out value='${ddt.spedizione.codice_tracking}'/>">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="spedizione_mod_note">Note</label>
                             <textarea id="spedizione_mod_note" name="note" class="form-control"
-                                      rows="3"><c:out value="${sessionScope.spedizioneDdt.note}"/></textarea>
+                                      rows="3"><c:out value="${ddt.spedizione.note}"/></textarea>
                         </div>
                     </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
-    <button type="submit" id="btnSalvaModificaSpedizione" class="btn btn-primary">
-        Salva
-    </button>
-</div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Chiudi</button>
+                        <button type="submit" id="btnSalvaModificaSpedizione" class="btn btn-primary">
+                            Salva
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

@@ -246,6 +246,8 @@ public class ListaPacchi extends HttpServlet {
 			}
 			
 			
+			
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/listaPacchi.jsp");
 	     	dispatcher.forward(request,response);
 	     	

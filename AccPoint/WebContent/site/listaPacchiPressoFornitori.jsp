@@ -66,6 +66,7 @@
 						  <th>Data Spedizione</th>
 						  <th>DIFF.</th>
 						  <th>DDT</th>
+						  <th>Stato Spedizione</th>
 						  <th>Utente</th>
 						  <th>Stato</th>
 						  <th>Note</th>
@@ -100,8 +101,31 @@
                                <td  id="${splitted[0]}_11" style="position:relative">${splitted[11]}</td>
                                <td  id="${splitted[0]}_6" style="position:relative">${splitted[5]}</td>
                                <td  id="${splitted[0]}_7" style="position:relative">${splitted[6]}</td>
-                               <td  id="${splitted[0]}_8" style="position:relative">${splitted[7]}</td>
+                               <td  id="${splitted[0]}_8" style="position:relative">${splitted[7]}</td>                          
                                <td  id="${splitted[0]}_12" style="position:relative"><a href="#" class="btn customTooltip customlink" title="Click per aprire il dettaglio del DDT" onclick="callAction('gestioneDDT.do?action=dettaglio&id=${utl:encryptData(splitted[12]) }')">${ splitted[12]}</a></td>
+                               <td style="position: relative; vertical-align: middle;">
+    <c:if test="${not empty splitted[13]}">
+        <c:choose>
+            <c:when test="${splitted[14] == '4'}">
+                <span class="label label-success"><c:out value="${splitted[13]}"/></span>
+            </c:when>
+            <c:when test="${splitted[14] == '1'}">
+                <span class="label label-warning"><c:out value="${splitted[13]}"/></span>
+            </c:when>
+            <c:when test="${splitted[14] == '6'}">
+                <span class="label label-danger"><c:out value="${splitted[13]}"/></span>
+            </c:when>
+            <c:when test="${splitted[14] == '7'}">
+                <span class="label label-default"><c:out value="${splitted[13]}"/></span>
+            </c:when>
+            <c:otherwise>
+    <span class="label" style="background-color:#fff; color:#555; border:1px solid #aaa;">
+        <c:out value="${splitted[13]}"/>
+    </span>
+</c:otherwise>
+        </c:choose>
+    </c:if>
+</td>
                                <td  id="${splitted[0]}_9" style="position:relative">${splitted[8]}</td>
                                <td  id="${splitted[0]}_10" style="position:relative">
                                <c:if test="${splitted[9]=='0' }">

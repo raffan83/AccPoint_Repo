@@ -1106,18 +1106,26 @@ public class SendEmailBO {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 
-		for (DpiDTO dpi : lista_dpi) {
+		  for (DpiDTO dpi : lista_dpi) {
 
+		        messaggio += "<b>DPI " + dpi.getId() + " - "
+		                + dpi.getTipo_dpi().getDescrizione() + "</b>";
 
-			messaggio += "ID: "+dpi.getId()+" - ";
-			messaggio += "TIPO DPI: " + dpi.getTipo_dpi().getDescrizione()+" - ";
-			messaggio += "Company: " + dpi.getCompany().getRagione_sociale()+" - ";
-			messaggio += "Lavoratore: " + dpi.getNome_lavoratore()+" - ";
-			messaggio += "Data scadenza: " + df.format(dpi.getData_scadenza())+"<br>";
-		}
+		        messaggio += "<ul>";
+		        messaggio += "<li><b>Azienda:</b> "
+		                + dpi.getCompany().getRagione_sociale() + "</li>";
+		        messaggio += "<li><b>Lavoratore:</b> "
+		                + dpi.getNome_lavoratore() + "</li>";
+		        messaggio += "<li><b>Data scadenza:</b> "
+		                + "<span style='color:#dc3545;font-weight:bold;'>"
+		                + df.format(dpi.getData_scadenza())
+		                + "</span></li>";
+		        messaggio += "</ul>";
+		    }
 
+		//  email.addTo("edoardo.boccitto@ncsnetwork.it");
+			email.addTo("giuseppe.gabriele@stisrl.com");
 
-		email.addTo("giuseppe.gabriele@stisrl.com");
 
 
 		email.setFrom("calver@accpoint.it", "Calver - Gestione DPI");
@@ -1125,8 +1133,64 @@ public class SendEmailBO {
 
 		email.setSubject("AVVISO DPI IN SCADENZA");
 
-		email.setHtmlMsg("<html>Si riporta di seguito l&lsquo;elencazione dei dpi in scadenza:<br><br>"
-				+messaggio+"</html>");
+	    email.setHtmlMsg("<html>"
+	            + "Si riportano di seguito i dispositivi di protezione "
+	            + "individuale (DPI) la cui scadenza &egrave; prevista tra 10 giorni."
+	            + "<br><br>"
+	            + messaggio
+	            + "Si invita a programmare per tempo la sostituzione dei DPI "
+	            + "indicati, al fine di garantirne la disponibilit&agrave; "
+	            + "prima della scadenza.<br><br>"
+	            + "<i>Comunicazione generata automaticamente dal sistema "
+	            + "AccPoint - Gestione DPI.</i>"
+	            + "</html>");
+
+		email.send();
+	}
+	
+	public static void sendEmailDPIInScadenzaControllo(ArrayList<DpiDTO> lista_dpi) throws EmailException {
+
+		HtmlEmail email =getHtmlEmailAruba();
+
+		String messaggio = "";
+
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+
+		for (DpiDTO dpi : lista_dpi) {
+
+		    messaggio += "<b>DPI " + dpi.getId() + " - "
+		            + dpi.getTipo_dpi().getDescrizione() + "</b>";
+
+		    messaggio += "<ul>";
+		    messaggio += "<li><b>Azienda:</b> " 
+		            + dpi.getCompany().getRagione_sociale() + "</li>";
+		    messaggio += "<li><b>Lavoratore:</b> " 
+		            + dpi.getNome_lavoratore() + "</li>";
+		    messaggio += "<li><b>Data scadenza controllo:</b> "
+		            + "<span style='color:#dc3545;font-weight:bold;'>"
+		            + df.format(dpi.getData_scadenza_controllo())
+		            + "</span></li>";
+		    messaggio += "</ul>";
+		}
+		//email.addTo("edoardo.boccitto@ncsnetwork.it");
+	    email.addTo("giuseppe.gabriele@stisrl.com");
+
+
+		email.setFrom("calver@accpoint.it", "Calver - Gestione DPI");
+
+
+		email.setSubject("AVVISO CONTROLLO PERIODICO DPI TRA 10 GIORNI");
+
+		email.setHtmlMsg("<html>"
+		        + "Si riportano di seguito i dispositivi di protezione "
+		        + "individuale (DPI) il cui controllo periodico "
+		        + "risulta in scadenza tra 10 giorni.<br><br>"
+		        + messaggio
+		        + "Si invita a programmare per tempo i controlli previsti.<br><br>"
+		        + "<i>Comunicazione generata automaticamente dal sistema "
+		        + "AccPoint - Gestione DPI.</i>"
+		        + "</html>");
 
 		email.send();
 	}

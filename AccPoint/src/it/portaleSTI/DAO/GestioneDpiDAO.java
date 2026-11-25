@@ -179,6 +179,48 @@ public class GestioneDpiDAO {
 		
 		return lista;
 	}
+	
+	public static ArrayList<DpiDTO> getListaDpiScadenzarioControllo(String date, Session session) throws Exception, ParseException {
+
+		ArrayList<Object[]> res = null;
+		ArrayList<DpiDTO> lista = new ArrayList<DpiDTO>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Query query = session.createQuery("from DpiDTO where assegnato=0 and data_scadenza_controllo=:_data_start and disabilitato = 0");
+		query.setParameter("_data_start", sdf.parse(date));
+		
+		
+		lista = (ArrayList<DpiDTO>) query.list();
+
+		query = session.createQuery("select  a.dpi, a.lavoratore from ConsegnaDpiDTO a where a.dpi.data_scadenza_controllo=:_data_start and a.dpi.disabilitato = 0");
+		query.setParameter("_data_start", sdf.parse(date));
+	
+		
+		
+		res = (ArrayList<Object[]>) query.list();
+		
+		for (Object[] objects : res) {
+			DpiDTO dpi = null;
+			
+			if(objects[0]!=null) {
+				 dpi = (DpiDTO) objects[0];	
+			}
+			
+			
+			if(objects[0]!=null && !lista.contains(dpi)) {
+				
+				if(objects[1]!=null) {
+					DocumDipendenteFornDTO lav = (DocumDipendenteFornDTO) objects[1];
+					dpi.setNome_lavoratore(lav.getNome() +" "+lav.getCognome());	
+				}
+				
+				lista.add(dpi);
+			}
+		}
+		
+		return lista;
+	}
 
 	public static DpiManualeDTO getManualeFromId(int id_manuale, Session session) {
 

@@ -21,6 +21,7 @@ import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.DpiManualeDTO;
 import it.portaleSTI.DTO.TipoAccessorioDispositivoDTO;
 import it.portaleSTI.DTO.TipoDpiDTO;
+import it.portaleSTI.action.ContextListener;
 
 public class GestioneDpiBO {
 
@@ -109,6 +110,32 @@ public class GestioneDpiBO {
 		session.close();
 		
 	}
+	
+	public static void sendEmailDpiDataScadenzaControllo() throws ParseException, Exception {
+
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		
+		Date today = new Date();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(today);
+		cal.add(Calendar.DATE, 10);
+		Date nextDate = cal.getTime();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		
+		ArrayList<DpiDTO> lista_scadenze = GestioneDpiDAO.getListaDpiScadenzarioControllo(df.format(nextDate), session);
+		
+		if(lista_scadenze.size()>0) {
+			
+			SendEmailBO.sendEmailDPIInScadenzaControllo(lista_scadenze);
+			
+		}
+		session.getTransaction().commit();
+		session.close();
+		
+	}
 
 	public static ArrayList<ConsegnaDpiDTO> getListaConsegneDpiNonRest(Session session) {
 		
@@ -118,6 +145,14 @@ public class GestioneDpiBO {
 	public static ArrayList<TipoAccessorioDispositivoDTO> getListaAccessoriDispositivo(Session session) {
 		// TODO Auto-generated method stub
 		return  GestioneDpiDAO.getListaAccessoriDispositivo(session);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		new ContextListener().configCostantApplication();
+		
+	//	sendEmailDpiDataScadenzaControllo();
+	//	sendEmailDpiScadenza();
+		
 	}
 
 }

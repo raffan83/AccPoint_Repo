@@ -21,6 +21,7 @@ public class SendEmailScadenzaDPI implements Job{
 		try {
 
 			GestioneDpiBO.sendEmailDpiScadenza();
+			GestioneDpiBO.sendEmailDpiDataScadenzaControllo();
 			
 			logger.debug("Invio email dpi in scadenza eseguito con successo dallo scheduler di Quartz!");
 			logger.error("Invio email dpi in scadenza eseguito con successo dallo scheduler di Quartz!");

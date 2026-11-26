@@ -37,9 +37,9 @@ import com.google.gson.JsonParser;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.CorriereDTO;
-import it.portaleSTI.DTO.SpedizioneDTO;
-import it.portaleSTI.DTO.StatoSpedizioneDTO;
+import it.portaleSTI.DTO.MagCorriereDTO;
+import it.portaleSTI.DTO.MagSpedizioneDTO;
+import it.portaleSTI.DTO.MagStatoSpedizioneDTO;
 import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
@@ -145,7 +145,7 @@ public class GestioneSpedizione extends HttpServlet {
 				 cliente = GestioneAnagraficaRemotaBO.getClienteById(""+ddt.getId_destinazione());
 								
 				}
-				ArrayList<CorriereDTO> lista_corrieri = (ArrayList<CorriereDTO>) GestioneSpedizioneBO.getListaCorrieri(session);
+				ArrayList<MagCorriereDTO> lista_corrieri = (ArrayList<MagCorriereDTO>) GestioneSpedizioneBO.getListaCorrieri(session);
 				request.setAttribute("lista_corrieri", lista_corrieri);
 				
 				
@@ -201,7 +201,7 @@ public class GestioneSpedizione extends HttpServlet {
 		  response.setContentType("application/json");
 		  response.setCharacterEncoding("UTF-8");
 
-			SpedizioneDTO spedizione = new SpedizioneDTO();
+			MagSpedizioneDTO spedizione = new MagSpedizioneDTO();
 
 			spedizione.setId_pacco(request.getParameter("id_pacco"));
 			spedizione.setDestinatario(request.getParameter("destinatario"));
@@ -243,9 +243,9 @@ public class GestioneSpedizione extends HttpServlet {
 						String id_ddt = request.getParameter("id_ddt");
 						MagDdtDTO ddt = GestioneMagazzinoBO.getDDT(id_ddt, session);
 						spedizione.setId_ddt(ddt.getId());
-					 spedizione.setStato(new StatoSpedizioneDTO(1));
+					 spedizione.setStato(new MagStatoSpedizioneDTO(1));
 					   GestioneSpedizioneBO.saveSpedizione(spedizione, session);
-					   ddt.setSpedizione(spedizione);
+					   ddt.setMag_spedizione(spedizione);
 					   GestioneMagazzinoBO.saveDdt(ddt, session);
 					   
 					   session.getTransaction().commit();
@@ -291,7 +291,7 @@ public class GestioneSpedizione extends HttpServlet {
 			            dataSpedizioneParam == null || dataSpedizioneParam.trim().isEmpty()
 			                    ? null
 			                    : java.sql.Date.valueOf(dataSpedizioneParam.trim());
-			    SpedizioneDTO spedizione =
+			    MagSpedizioneDTO spedizione =
 			            GestioneSpedizioneBO.getSpedizioneById(idSpedizione, session);
 
 			    JsonObject risultato = new JsonObject();
@@ -331,7 +331,7 @@ public class GestioneSpedizione extends HttpServlet {
 			  
 			  Path caPem = Paths.get(Costanti.PATH_FOLDER_CERT, "sti-erp-api-ca.crt");
 			  
-			  SpedizioneDTO spedizione = GestioneSpedizioneBO.getSpedizioneById(idSpedizione, session);
+			  MagSpedizioneDTO spedizione = GestioneSpedizioneBO.getSpedizioneById(idSpedizione, session);
 			  
 			   String risp = GestioneSpedizioneBO.send(spedizione, Costanti.URL_STI_ETICHETTA, Costanti.TOKEN_API_ETICHETTA, caPem, "stato_spedizione");
 			   
@@ -362,7 +362,7 @@ public class GestioneSpedizione extends HttpServlet {
 			               risultato.addProperty("success", false);
 			               risultato.addProperty("messaggio", "Stato spedizione non riconosciuto: " + stato);
 			           } else {
-			               StatoSpedizioneDTO statoAttuale = spedizione.getStato();
+			               MagStatoSpedizioneDTO statoAttuale = spedizione.getStato();
 			               boolean cambiato = false;
 
 			               if (statoAttuale == null) {
@@ -372,8 +372,8 @@ public class GestioneSpedizione extends HttpServlet {
 			               }
 
 			               if (cambiato) {
-			                   StatoSpedizioneDTO nuovoStato = (StatoSpedizioneDTO)
-			                           session.get(StatoSpedizioneDTO.class, idNuovoStato);
+			                   MagStatoSpedizioneDTO nuovoStato = (MagStatoSpedizioneDTO)
+			                           session.get(MagStatoSpedizioneDTO.class, idNuovoStato);
 
 			                   if (nuovoStato == null) {
 			                       throw new IllegalStateException("Stato spedizione non trovato: " + idNuovoStato);

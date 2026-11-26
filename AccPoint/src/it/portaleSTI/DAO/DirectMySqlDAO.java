@@ -3960,10 +3960,10 @@ public static ArrayList<String> getItemPresso_Fornitori(Session session) throws 
 							toAdd = toAdd+";";
 						}
 						toAdd=toAdd+";"+result[3];
-						if (ddt != null && ddt.getSpedizione() != null
-						        && ddt.getSpedizione().getStato() != null) {
-						    toAdd += ";" + ddt.getSpedizione().getStato().getDescrizione()
-						           + ";" + ddt.getSpedizione().getStato().getId();
+						if (ddt != null && ddt.getMag_spedizione() != null
+						        && ddt.getMag_spedizione().getStato() != null) {
+						    toAdd += ";" + ddt.getMag_spedizione().getStato().getDescrizione()
+						           + ";" + ddt.getMag_spedizione().getStato().getId();
 						} else {
 						    toAdd += ";Spedizione non inviata";
 						}

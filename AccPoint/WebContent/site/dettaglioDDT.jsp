@@ -43,7 +43,7 @@
             
             <div class="row">
                <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
-<c:if test="${ddt.tipo_ddt.id != 1 and not empty ddt.spedizione}">
+<c:if test="${ddt.tipo_ddt.id != 1 and not empty ddt.mag_spedizione}">
     <button type="button" class="btn btn-primary pull-right"
             style="margin-right: 20px; margin-left: 6px;"
             onclick="modalModificaSpedizione()">
@@ -51,7 +51,7 @@
     </button>
 
     <button type="button" class="btn btn-primary pull-right"
-            onclick="aggiornaStatoSpedizione('${ddt.spedizione.id}')">
+            onclick="aggiornaStatoSpedizione('${ddt.mag_spedizione.id}')">
         Aggiorna Stato Spedizione <i class="fa fa-refresh" aria-hidden="true"></i>
     </button>
 </c:if>
@@ -59,7 +59,7 @@
       
 	   <div class="col-xs-6">
 	      <c:if test="${userObj.checkRuolo('AM') || userObj.checkRuolo('SR')}">
-<c:if test="${ddt.tipo_ddt.id != 1 and empty ddt.spedizione}">
+<c:if test="${ddt.tipo_ddt.id != 1 and empty ddt.mag_spedizione}">
 	   <button class="btn btn-primary pull-right" style="margin-left: 6px;"
         onclick="modalSpedizione('${pacco.id}', '${ddt.id}')">
     Invio Spedizione <i class="fa fa-tag" aria-hidden="true"></i>
@@ -234,7 +234,7 @@
 
 </div>
 
-<c:if test="${ddt.tipo_ddt.id == 2 and not empty ddt.spedizione}">
+<c:if test="${ddt.tipo_ddt.id == 2 and not empty ddt.mag_spedizione}">
   <div class="col-xs-6">
     <div class="box box-danger box-solid">
       <div class="box-header with-border">
@@ -253,7 +253,7 @@
             <div class="row">
               <div class="col-xs-5"><b>ID pacco</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.id_pacco}"/>
+                <c:out value="${ddt.mag_spedizione.id_pacco}"/>
               </div>
             </div>
           </li>
@@ -261,7 +261,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Destinatario</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.destinatario}"/>
+                <c:out value="${ddt.mag_spedizione.destinatario}"/>
               </div>
             </div>
           </li>
@@ -269,7 +269,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Presso</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.presso}"/>
+                <c:out value="${ddt.mag_spedizione.presso}"/>
               </div>
             </div>
           </li>
@@ -277,7 +277,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Indirizzo</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.indirizzo}"/>
+                <c:out value="${ddt.mag_spedizione.indirizzo}"/>
               </div>
             </div>
           </li>
@@ -285,7 +285,7 @@
             <div class="row">
               <div class="col-xs-5"><b>CAP</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.cap}"/>
+                <c:out value="${ddt.mag_spedizione.cap}"/>
               </div>
             </div>
           </li>
@@ -293,7 +293,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Città</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.citta}"/>
+                <c:out value="${ddt.mag_spedizione.citta}"/>
               </div>
             </div>
           </li>
@@ -301,7 +301,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Provincia</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.provincia}"/>
+                <c:out value="${ddt.mag_spedizione.provincia}"/>
               </div>
             </div>
           </li>
@@ -309,7 +309,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Nazione</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.nazione}"/>
+                <c:out value="${ddt.mag_spedizione.nazione}"/>
               </div>
             </div>
           </li>
@@ -317,7 +317,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Corriere</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.corriere}"/>
+                <c:out value="${ddt.mag_spedizione.corriere}"/>
               </div>
             </div>
           </li>
@@ -325,7 +325,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Referente</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.referente}"/>
+                <c:out value="${ddt.mag_spedizione.referente}"/>
               </div>
             </div>
           </li>
@@ -333,7 +333,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Telefono</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.telefono}"/>
+                <c:out value="${ddt.mag_spedizione.telefono}"/>
               </div>
             </div>
           </li>
@@ -341,7 +341,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Data spedizione</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <fmt:formatDate value="${ddt.spedizione.data_spedizione}" pattern="dd/MM/yyyy"/>
+                <fmt:formatDate value="${ddt.mag_spedizione.data_spedizione}" pattern="dd/MM/yyyy"/>
               </div>
             </div>
           </li>
@@ -349,7 +349,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Codice tracking</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.codice_tracking}"/>
+                <c:out value="${ddt.mag_spedizione.codice_tracking}"/>
               </div>
             </div>
           </li>
@@ -357,7 +357,7 @@
             <div class="row">
               <div class="col-xs-5"><b>Note</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
-                <c:out value="${ddt.spedizione.note}"/>
+                <c:out value="${ddt.mag_spedizione.note}"/>
               </div>
             </div>
           </li>
@@ -366,24 +366,24 @@
               <div class="col-xs-5"><b>Stato</b></div>
               <div class="col-xs-7 text-right" style="overflow-wrap: break-word;">
                 <c:choose>
-                  <c:when test="${ddt.spedizione.stato.id == 4}">
+                  <c:when test="${ddt.mag_spedizione.stato.id == 4}">
                     <span class="label label-success">
-                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                      <c:out value="${ddt.mag_spedizione.stato.descrizione}"/>
                     </span>
                   </c:when>
-                  <c:when test="${ddt.spedizione.stato.id == 1}">
+                  <c:when test="${ddt.mag_spedizione.stato.id == 1}">
                     <span class="label label-warning">
-                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                      <c:out value="${ddt.mag_spedizione.stato.descrizione}"/>
                     </span>
                   </c:when>
-                  <c:when test="${ddt.spedizione.stato.id == 6}">
+                  <c:when test="${ddt.mag_spedizione.stato.id == 6}">
                     <span class="label label-danger">
-                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                      <c:out value="${ddt.mag_spedizione.stato.descrizione}"/>
                     </span>
                   </c:when>
-                  <c:when test="${ddt.spedizione.stato.id == 7}">
+                  <c:when test="${ddt.mag_spedizione.stato.id == 7}">
                     <span class="label label-default">
-                      <c:out value="${ddt.spedizione.stato.descrizione}"/>
+                      <c:out value="${ddt.mag_spedizione.stato.descrizione}"/>
                     </span>
                   </c:when>
                 </c:choose>
@@ -535,9 +535,9 @@
 </div>
 
 
-<c:if test="${ddt.tipo_ddt.id != 1 and not empty ddt.spedizione}">
+<c:if test="${ddt.tipo_ddt.id != 1 and not empty ddt.mag_spedizione}">
     <fmt:formatDate var="dataSpedizioneModifica"
-                    value="${ddt.spedizione.data_spedizione}"
+                    value="${ddt.mag_spedizione.data_spedizione}"
                     pattern="yyyy-MM-dd"/>
 
     <div id="myModalModificaSpedizione" class="modal fade" tabindex="-1"
@@ -560,20 +560,20 @@
                 <form id="formModificaSpedizione">
                     <div class="modal-body">
                         <input type="hidden" name="id"
-                               value="<c:out value='${ddt.spedizione.id}'/>">
+                               value="<c:out value='${ddt.mag_spedizione.id}'/>">
 
                         <div class="row">
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_id_pacco">ID pacco</label>
                                 <input type="text" id="spedizione_mod_id_pacco" name="id_pacco"
                                        class="form-control" readonly
-                                       value="<c:out value='${ddt.spedizione.id_pacco}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.id_pacco}'/>">
                             </div>
                             <div class="col-sm-8 form-group">
                                 <label for="spedizione_mod_destinatario">Destinatario</label>
                                 <input type="text" id="spedizione_mod_destinatario" name="destinatario"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.destinatario}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.destinatario}'/>">
                             </div>
                         </div>
 
@@ -582,13 +582,13 @@
                                 <label for="spedizione_mod_presso">Presso</label>
                                 <input type="text" id="spedizione_mod_presso" name="presso"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.presso}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.presso}'/>">
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label for="spedizione_mod_referente">Referente</label>
                                 <input type="text" id="spedizione_mod_referente" name="referente"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.referente}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.referente}'/>">
                             </div>
                         </div>
 
@@ -597,13 +597,13 @@
                                 <label for="spedizione_mod_indirizzo">Indirizzo</label>
                                 <input type="text" id="spedizione_mod_indirizzo" name="indirizzo"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.indirizzo}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.indirizzo}'/>">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_cap">CAP</label>
                                 <input type="text" id="spedizione_mod_cap" name="cap"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.cap}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.cap}'/>">
                             </div>
                         </div>
 
@@ -612,19 +612,19 @@
                                 <label for="spedizione_mod_citta">Città</label>
                                 <input type="text" id="spedizione_mod_citta" name="citta"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.citta}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.citta}'/>">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_provincia">Provincia</label>
                                 <input type="text" id="spedizione_mod_provincia" name="provincia"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.provincia}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.provincia}'/>">
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label for="spedizione_mod_nazione">Nazione</label>
                                 <input type="text" id="spedizione_mod_nazione" name="nazione"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.nazione}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.nazione}'/>">
                             </div>
                         </div>
 
@@ -633,13 +633,13 @@
                                 <label for="spedizione_mod_corriere">Corriere</label>
                                 <input type="text" id="spedizione_mod_corriere" name="corriere"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.corriere}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.corriere}'/>">
                             </div>
                             <div class="col-sm-6 form-group">
                                 <label for="spedizione_mod_telefono">Telefono</label>
                                 <input type="tel" id="spedizione_mod_telefono" name="telefono"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.telefono}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.telefono}'/>">
                             </div>
                         </div>
 
@@ -654,14 +654,14 @@
                                 <label for="spedizione_mod_codice_tracking">Codice tracking</label>
                                 <input type="text" id="spedizione_mod_codice_tracking" name="codice_tracking"
                                        class="form-control"
-                                       value="<c:out value='${ddt.spedizione.codice_tracking}'/>">
+                                       value="<c:out value='${ddt.mag_spedizione.codice_tracking}'/>">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="spedizione_mod_note">Note</label>
                             <textarea id="spedizione_mod_note" name="note" class="form-control"
-                                      rows="3"><c:out value="${ddt.spedizione.note}"/></textarea>
+                                      rows="3"><c:out value="${ddt.mag_spedizione.note}"/></textarea>
                         </div>
                     </div>
 

@@ -4,7 +4,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="it.portaleSTI.DTO.SpedizioneDTO" table="spedizione">
+    <class name="it.portaleSTI.DTO.MagSpedizioneDTO" table="mag_spedizione">
         <id name="id" column="id" type="integer">
             <generator class="identity"/>
         </id>
@@ -23,7 +23,7 @@
         <property name="note" column="note" type="string" length="255"/>
         <property name="data_spedizione" column="data_spedizione" type="date"/>
         <property name="codice_tracking" column="codice_tracking" type="string" length="255"/>
-            <many-to-one name="stato" class="it.portaleSTI.DTO.StatoSpedizioneDTO" fetch="join" lazy="false">
+            <many-to-one name="stato" class="it.portaleSTI.DTO.MagStatoSpedizioneDTO" fetch="join" lazy="false">
             <column name="id_stato_spedizione" />
         </many-to-one>
         <property name="id_ddt" type="int">

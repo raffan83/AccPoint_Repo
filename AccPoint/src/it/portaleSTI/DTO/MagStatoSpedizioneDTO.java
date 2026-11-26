@@ -2,18 +2,18 @@ package it.portaleSTI.DTO;
 
 import java.io.Serializable;
 
-public class StatoSpedizioneDTO {
+public class MagStatoSpedizioneDTO {
 
 
 	    private Integer id;
 	    private String descrizione;
 	    
 	    
-		public StatoSpedizioneDTO() {
+		public MagStatoSpedizioneDTO() {
 			super();
 		}
 		
-		public StatoSpedizioneDTO(int i) {
+		public MagStatoSpedizioneDTO(int i) {
 			id=i;
 		}
 		

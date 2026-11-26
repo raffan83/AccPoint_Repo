@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 14-apr-2017 9.20.48 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="it.portaleSTI.DTO.StatoSpedizioneDTO" table="STATO_SPEDIZIONE">
+    <class name="it.portaleSTI.DTO.MagStatoSpedizioneDTO" table="MAG_STATO_SPEDIZIONE">
         <id name="id" type="int">
             <column name="ID" />
             <generator class="assigned" />

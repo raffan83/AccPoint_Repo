@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 11-apr-2017 16.36.30 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="it.portaleSTI.DTO.CorriereDTO" table="CORRIERE">
+    <class name="it.portaleSTI.DTO.MagCorriereDTO" table="MAG_CORRIERE">
         <id name="id" type="int">
             <column name="ID" />
             <generator class="assigned" />

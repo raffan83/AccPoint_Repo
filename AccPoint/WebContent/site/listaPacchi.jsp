@@ -275,10 +275,10 @@ ${pacco.ddt.numero_ddt}
 
 <td style="vertical-align: middle;  text-align: center;">
     <c:if test="${not empty pacco.ddt.numero_ddt and pacco.ddt.tipo_ddt.id == 2}">
-        <c:set var="statoSpedizione" value="${pacco.ddt.spedizione.stato}"/>
+        <c:set var="statoSpedizione" value="${pacco.ddt.mag_spedizione.stato}"/>
 
         <c:choose>
-            <c:when test="${empty pacco.ddt.spedizione}">
+            <c:when test="${empty pacco.ddt.mag_spedizione}">
                 <span class="label" style="background-color: #fff; color: #555; border: 1px solid #aaa;">
                     Spedizione non inviata
                 </span>

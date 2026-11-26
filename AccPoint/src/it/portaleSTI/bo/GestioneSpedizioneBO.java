@@ -35,36 +35,36 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import it.portaleSTI.DAO.GestioneSpedizioneDAO;
-import it.portaleSTI.DTO.CorriereDTO;
-import it.portaleSTI.DTO.SpedizioneDTO;
+import it.portaleSTI.DTO.MagCorriereDTO;
+import it.portaleSTI.DTO.MagSpedizioneDTO;
 
 public class GestioneSpedizioneBO {
 	
-	public static List<SpedizioneDTO> getListaSpedizioni(Session session){		
+	public static List<MagSpedizioneDTO> getListaSpedizioni(Session session){		
 		return GestioneSpedizioneDAO.getListaSpedizioniPacchiAperti(session);
 	}
 	
-	public static List<CorriereDTO> getListaCorrieri(Session session){
+	public static List<MagCorriereDTO> getListaCorrieri(Session session){
 		return GestioneSpedizioneDAO.getListaCorrieri(session);
 	}
 
-    public static void saveSpedizione(SpedizioneDTO spedizione, Session session) {
+    public static void saveSpedizione(MagSpedizioneDTO spedizione, Session session) {
         session.save(spedizione);
     }
     
-    public static void updateSpedizone(SpedizioneDTO spedizione, Session session) {
+    public static void updateSpedizone(MagSpedizioneDTO spedizione, Session session) {
     	session.update(spedizione);
     }
     
-    public static SpedizioneDTO getSpedizioneByIdDdt(int id_ddt,Session session) {
+    public static MagSpedizioneDTO getSpedizioneByIdDdt(int id_ddt,Session session) {
     	return GestioneSpedizioneDAO.getSpedizioneByIdDdt(id_ddt, session);
     }
     
-    public static SpedizioneDTO getSpedizioneById(int id_spedizione,Session session) {
+    public static MagSpedizioneDTO getSpedizioneById(int id_spedizione,Session session) {
     	return GestioneSpedizioneDAO.getSpedizioneById(id_spedizione, session);
     }
 
-    public static String send(SpedizioneDTO spedizione,
+    public static String send(MagSpedizioneDTO spedizione,
             String baseUrl, String apiToken, Path caPem, String tipoOperazione)
             throws IOException {
 

@@ -1,17 +1,17 @@
 package it.portaleSTI.DTO;
 
-public class CorriereDTO {
+public class MagCorriereDTO {
 	
 	private int id;
 	private String nominativo;
 	
 	
-	public CorriereDTO() {
+	public MagCorriereDTO() {
 		super();
 	}
 
 
-	public CorriereDTO(int id) {
+	public MagCorriereDTO(int id) {
 		super();
 		this.id = id;
 	}

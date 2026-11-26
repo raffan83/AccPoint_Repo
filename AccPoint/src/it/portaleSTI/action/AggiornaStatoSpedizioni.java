@@ -21,8 +21,8 @@ import it.portaleSTI.DAO.GestioneCampioneDAO;
 import it.portaleSTI.DAO.GestioneStrumentoDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.InterventoDTO;
-import it.portaleSTI.DTO.SpedizioneDTO;
-import it.portaleSTI.DTO.StatoSpedizioneDTO;
+import it.portaleSTI.DTO.MagSpedizioneDTO;
+import it.portaleSTI.DTO.MagStatoSpedizioneDTO;
 import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.bo.GestioneFormazioneBO;
 import it.portaleSTI.bo.GestioneSpedizioneBO;
@@ -39,13 +39,13 @@ public class AggiornaStatoSpedizioni implements Job {
 		try {
 			  session = SessionFacotryDAO.get().openSession(); 
 				session.beginTransaction();
-		ArrayList<SpedizioneDTO> lista_spedizioni = (ArrayList<SpedizioneDTO>) GestioneSpedizioneBO.getListaSpedizioni(session);
+		ArrayList<MagSpedizioneDTO> lista_spedizioni = (ArrayList<MagSpedizioneDTO>) GestioneSpedizioneBO.getListaSpedizioni(session);
 		
 		 Path caPem = Paths.get(Costanti.PATH_FOLDER_CERT, "sti-erp-api-ca.crt");
 		  
 		List<Integer> spedizione_errate = new ArrayList<>();
 		
-		for(SpedizioneDTO spedizione : lista_spedizioni) {
+		for(MagSpedizioneDTO spedizione : lista_spedizioni) {
 			 String risp = GestioneSpedizioneBO.send(spedizione, Costanti.URL_STI_ETICHETTA, Costanti.TOKEN_API_ETICHETTA, caPem, "stato_spedizione");
 			   
 			   JsonObject risposta = new JsonParser().parse(risp).getAsJsonObject();
@@ -77,13 +77,13 @@ public class AggiornaStatoSpedizioni implements Job {
 			        	    continue;
 			        	}
 	
-			               StatoSpedizioneDTO statoAttuale = spedizione.getStato();
+			               MagStatoSpedizioneDTO statoAttuale = spedizione.getStato();
 			               boolean cambiato = statoAttuale == null
 			                       || !idNuovoStato.equals(statoAttuale.getId());
 
 			               if (cambiato) {
-			                   StatoSpedizioneDTO nuovoStato = (StatoSpedizioneDTO)
-			                           session.get(StatoSpedizioneDTO.class, idNuovoStato);
+			                   MagStatoSpedizioneDTO nuovoStato = (MagStatoSpedizioneDTO)
+			                           session.get(MagStatoSpedizioneDTO.class, idNuovoStato);
 
 			                   if (nuovoStato == null) {
 			                	    logger.error("Stato spedizione non trovato: " + idNuovoStato);

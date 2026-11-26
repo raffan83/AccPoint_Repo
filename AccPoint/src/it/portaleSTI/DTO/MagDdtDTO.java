@@ -44,7 +44,7 @@ public class MagDdtDTO implements Serializable{
 	private String ldv;
 	private String n_prenotazione;
 	
-	private SpedizioneDTO spedizione;
+	private MagSpedizioneDTO mag_spedizione;
 	
 	
 	public String getDestinatario() {
@@ -242,13 +242,13 @@ public class MagDdtDTO implements Serializable{
 	public void setN_prenotazione(String n_prenotazione) {
 		this.n_prenotazione = n_prenotazione;
 	}
-	public SpedizioneDTO getSpedizione() {
-		return spedizione;
-	}
-	public void setSpedizione(SpedizioneDTO spedizione) {
-		this.spedizione = spedizione;
+	public MagSpedizioneDTO getMag_spedizione() {
+	    return mag_spedizione;
 	}
 
+	public void setMag_spedizione(MagSpedizioneDTO mag_spedizione) {
+	    this.mag_spedizione = mag_spedizione;
+	}
 
 
 

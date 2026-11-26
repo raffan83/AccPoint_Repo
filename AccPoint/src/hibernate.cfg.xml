@@ -97,9 +97,9 @@
  	<mapping class="RilStatoRilievoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilStatoRilievoDTO.hbm.xml"/>
  	<mapping class="RilAllegatiDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilAllegatiDTO.hbm.xml"/>
  	<mapping class="RilInterventoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/RilInterventoDTO.hbm.xml"/>
- 	<mapping class="SpedizioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/SpedizioneDTO.hbm.xml"/>
-     <mapping class="StatoSpedizioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/StatoSpedizioneDTO.hbm.xml"/>
-     <mapping class="CorriereDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/CorriereDTO.hbm.xml"/>
+ 	<mapping class="MagSpedizioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagSpedizioneDTO.hbm.xml"/>
+     <mapping class="MagStatoSpedizioneDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagStatoSpedizioneDTO.hbm.xml"/>
+     <mapping class="MagCorriereDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/MagCorriereDTO.hbm.xml"/>
  	
  	
  	<!-- parte relativa alle misure LAT -->

@@ -2,9 +2,9 @@ package it.portaleSTI.DAO;
 
 
 import it.portaleSTI.DTO.CampioneDTO;
-import it.portaleSTI.DTO.CorriereDTO;
+import it.portaleSTI.DTO.MagCorriereDTO;
 import it.portaleSTI.DTO.SessioneDTO;
-import it.portaleSTI.DTO.SpedizioneDTO;
+import it.portaleSTI.DTO.MagSpedizioneDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +15,12 @@ import org.hibernate.Session;
 
 public class GestioneSpedizioneDAO {
 	
-	public static List<CorriereDTO> getListaCorrieri(Session session){
+	public static List<MagCorriereDTO> getListaCorrieri(Session session){
 		Query query = session.createQuery(
-                 "from CorriereDTO c "
+                 "from MagCorriereDTO c "
 	    );
 	    
-	    List<CorriereDTO> result =query.list();
+	    List<MagCorriereDTO> result =query.list();
 		if(result.size()>0)
 		{			
 			return (ArrayList) result;
@@ -31,9 +31,9 @@ public class GestioneSpedizioneDAO {
 	
 
 
-	public static SpedizioneDTO getSpedizioneByIdDdt(int idDdt, Session session) {
+	public static MagSpedizioneDTO getSpedizioneByIdDdt(int idDdt, Session session) {
         Query query = session.createQuery(
-                "from SpedizioneDTO s "
+                "from MagSpedizioneDTO s "
                 + "where s.ddt.id = :idDdt "
                 + "order by s.id desc"
         );
@@ -41,34 +41,34 @@ public class GestioneSpedizioneDAO {
         query.setInteger("idDdt", idDdt);
         query.setMaxResults(1);
 
-        return (SpedizioneDTO) query.uniqueResult();
+        return (MagSpedizioneDTO) query.uniqueResult();
     }
 	
 	
-	public static SpedizioneDTO getSpedizioneById(int id_spedizione, Session session) {
+	public static MagSpedizioneDTO getSpedizioneById(int id_spedizione, Session session) {
         Query query = session.createQuery(
-                "from SpedizioneDTO s "
+                "from MagSpedizioneDTO s "
                 + "where s.id = :id_spedizione "
         );
 
         query.setInteger("id_spedizione", id_spedizione);
         query.setMaxResults(1);
 
-        return (SpedizioneDTO) query.uniqueResult();
+        return (MagSpedizioneDTO) query.uniqueResult();
     }
 	
 
 
-	public static List<SpedizioneDTO> getListaSpedizioniPacchiAperti(Session session) {
+	public static List<MagSpedizioneDTO> getListaSpedizioniPacchiAperti(Session session) {
 		Query query = session.createQuery(
 	            "select s "
-	            + "from SpedizioneDTO s, MagPaccoDTO m "
+	            + "from MagSpedizioneDTO s, MagPaccoDTO m "
 	            + "where s.id_pacco = m.codice_pacco "
 	            + "and m.chiuso = 0 "
 	            + "order by s.id desc"
 	    );
 	    
-	    List<SpedizioneDTO> result =query.list();
+	    List<MagSpedizioneDTO> result =query.list();
 		if(result.size()>0)
 		{			
 			return (ArrayList) result;

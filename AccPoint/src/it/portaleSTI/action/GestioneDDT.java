@@ -32,8 +32,8 @@ import com.google.gson.JsonObject;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CompanyDTO;
-import it.portaleSTI.DTO.CorriereDTO;
-import it.portaleSTI.DTO.SpedizioneDTO;
+import it.portaleSTI.DTO.MagCorriereDTO;
+import it.portaleSTI.DTO.MagSpedizioneDTO;
 import it.portaleSTI.DTO.MagAllegatoItemDTO;
 import it.portaleSTI.DTO.MagAspettoDTO;
 import it.portaleSTI.DTO.MagCausaleDTO;
@@ -180,7 +180,7 @@ public class GestioneDDT extends HttpServlet {
 		SpedizioneDTO spedizioneDdt =
 		        GestioneSpedizioneBO.getSpedizioneByIdDdt(ddt.getId(), session);
 		*/
-		ArrayList<CorriereDTO> lista_corrieri = (ArrayList<CorriereDTO>) GestioneSpedizioneBO.getListaCorrieri(session);
+		ArrayList<MagCorriereDTO> lista_corrieri = (ArrayList<MagCorriereDTO>) GestioneSpedizioneBO.getListaCorrieri(session);
 	    
 			
 		session.close();

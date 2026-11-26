@@ -3,7 +3,7 @@ package it.portaleSTI.DTO;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SpedizioneDTO implements Serializable {
+public class MagSpedizioneDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,9 +24,9 @@ public class SpedizioneDTO implements Serializable {
     private String codice_tracking;
     private int id_ddt;
 
-    private StatoSpedizioneDTO stato;
+    private MagStatoSpedizioneDTO stato;
 
-    public SpedizioneDTO() {
+    public MagSpedizioneDTO() {
     }
 
     public Integer getId() {
@@ -151,11 +151,11 @@ public class SpedizioneDTO implements Serializable {
 
 
 
-public StatoSpedizioneDTO getStato() {
+public MagStatoSpedizioneDTO getStato() {
 	return stato;
 }
 
-public void setStato(StatoSpedizioneDTO stato) {
+public void setStato(MagStatoSpedizioneDTO stato) {
 	this.stato= stato;
 }
 

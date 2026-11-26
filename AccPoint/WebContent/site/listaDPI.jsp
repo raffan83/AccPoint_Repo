@@ -155,10 +155,7 @@
 	<td>${dpi.conformita }</td>
 
 	<td>
-	<c:if test="">
-	
 	<fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate>
-	</c:if>
 	</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_controllo }"></fmt:formatDate></td>
 

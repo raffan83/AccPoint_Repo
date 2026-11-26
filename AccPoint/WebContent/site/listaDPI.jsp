@@ -57,6 +57,12 @@
 </div>
 </div><br>
 
+<div class="legenda">
+	<span class="legenda-item"><span class="legenda-box rosso-acceso"></span>Dispositivo scaduto</span>
+	<span class="legenda-item"><span class="legenda-box rosso-tenue"></span>Controllo scaduto</span>
+	<span class="legenda-item"><span class="legenda-box giallo"></span>Controllo in scadenza (entro 15 giorni)</span>
+</div>
+
 <div class="row">
 <div class="col-sm-12">
 
@@ -89,10 +95,31 @@
  </tr></thead>
  
  <tbody>
- 
+ <jsp:useBean id="today" class="java.util.Date"/>
+<jsp:useBean id="todayPlus15" class="java.util.Date"/>
+<jsp:setProperty name="todayPlus15" property="time" value="${today.time + 1296000000}"/>
+
+<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="oggi"/>
+<fmt:formatDate value="${todayPlus15}" pattern="yyyyMMdd" var="oggi15"/>
+
  	<c:forEach items="${lista_dpi}" var="dpi" varStatus="loop">
- 	
- 	
+
+  <fmt:formatDate value="${dpi.data_scadenza}" pattern="yyyyMMdd" var="scad"/>
+  <fmt:formatDate value="${dpi.data_scadenza_controllo}" pattern="yyyyMMdd" var="scad_ctrl"/>
+
+  <c:set var="rowClass" value=""/>
+<c:choose>
+  <c:when test="${not empty scad and scad le oggi}">
+    <c:set var="rowClass" value="riga-scaduta"/>
+  </c:when>
+  <c:when test="${not empty scad_ctrl and scad_ctrl le oggi}">
+    <c:set var="rowClass" value="riga-controllo-scaduto"/>
+  </c:when>
+  <c:when test="${not empty scad_ctrl and scad_ctrl le oggi15}">
+    <c:set var="rowClass" value="riga-controllo-in-scadenza"/>
+  </c:when>
+</c:choose>
+ 	 <tr id="row_${loop.index}" class="${rowClass}"
  	<c:if test="${dpi.collettivo == 1 }">
  	<tr id="row_${loop.index}" ondblclick="openStoricoModal('${dpi.id }')" >
  	</c:if>
@@ -127,7 +154,12 @@
 	<td>${dpi.modello }</td>
 	<td>${dpi.conformita }</td>
 
-	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate></td>
+	<td>
+	<c:if test="">
+	
+	<fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_scadenza }"></fmt:formatDate>
+	</c:if>
+	</td>
 	<td><fmt:formatDate pattern="dd/MM/yyyy" value="${dpi.data_controllo }"></fmt:formatDate></td>
 
 	<td>${utl:escapeJS(dpi.note) }</td>
@@ -824,6 +856,38 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.2/css/select.dataTables.min.css">
 	<link type="text/css" href="css/bootstrap.min.css" />
 
+	<style>
+	#tabDpi tbody tr.riga-scaduta > td {
+	background-color: #e53935 !important;
+	color: #fff;
+}
+#tabDpi tbody tr.riga-controllo-scaduto > td {
+	background-color: #f8d7da !important;
+}
+#tabDpi tbody tr.riga-controllo-in-scadenza > td {
+	background-color: #fff3b0 !important;
+}
+
+.legenda {
+	margin: 10px 0 15px 0;
+}
+.legenda-item {
+	display: inline-block;
+	margin-right: 20px;
+	font-size: 13px;
+}
+.legenda-box {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-right: 6px;
+	vertical-align: middle;
+	border: 1px solid #999;
+}
+.legenda-box.rosso-acceso { background-color: #e53935; }
+.legenda-box.rosso-tenue  { background-color: #f8d7da; }
+.legenda-box.giallo       { background-color: #fff3b0; }
+	</style>
 
 </jsp:attribute>
 

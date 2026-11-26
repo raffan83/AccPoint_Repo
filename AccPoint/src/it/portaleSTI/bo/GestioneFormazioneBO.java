@@ -2772,7 +2772,7 @@ public static ArrayList<ForConfInvioEmailEffDTO> getListaConfigurazioniInvioEmai
 				
 				if(lista_utenti_mancanti.size()>0) 
 				{
-					String messaggio ="<html>Non è stato possibile inviare il Remind del corso ID:"+conf.getId()+" ("+conf.getDescrizione_corso()+") ai seguenti utenti:<br><br>";
+					String messaggio ="<html>Non è stato possibile inviare il Remind (Configurazione Effiicacia) del corso ID:"+conf.getId()+" ("+conf.getDescrizione_corso()+") ai seguenti utenti:<br><br>";
 					
 					for (ForMembriGruppoDTO user : lista_utenti_mancanti) {
 						messaggio+= user.getNome() +" "+ user.getCognome()+" email: "+user.getEmail()+" Errore: "+user.getDescrizioneErrore()+"<br>";	
@@ -3038,6 +3038,9 @@ public static ArrayList<ForConfInvioEmailEffDTO> getListaConfigurazioniInvioEmai
 		
 		
 	}
+	
+	
+	
 	
 		public static void main(String[] args) throws Exception{
 		

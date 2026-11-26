@@ -50,11 +50,11 @@
 <ul class="nav nav-tabs" role="tablist">
     <li class="active" role="presentation">
         <a href="#listaConfPeriodiche" data-toggle="tab" role="tab"
-           id="tabConfPeriodiche" aria-controls="listaConfPeriodiche">Lista Conf Periodiche</a>
+           id="tabConfPeriodiche" aria-controls="listaConfPeriodiche">Lista Configurazioni Periodiche</a>
     </li>
     <li role="presentation">
         <a href="#listaConfEfficacia" data-toggle="tab" role="tab"
-           id="tabConfEfficacia" aria-controls="listaConfEfficacia">Lista Conf Efficacia</a>
+           id="tabConfEfficacia" aria-controls="listaConfEfficacia">Lista Configurazioni Efficacia</a>
     </li>
 </ul>
 

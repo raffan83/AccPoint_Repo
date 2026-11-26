@@ -1637,7 +1637,10 @@ public class SendEmailBO {
 		email.setSubject("Report invio remind corsi Moodle - configurazione efficacia");
 
 
-		String messaggio = "Si comunica che in data odierna &egrave; stato inviato il remind di non completamento del corso secondo la seguente configurazione:<br><br>";
+		String messaggio = "Si comunica che in data odierna &egrave; stato inviato "
+		        + "il promemoria per la verifica dell&rsquo;efficacia della formazione, "
+		        + "a 180 giorni dal completamento del test finale, "
+		        + "secondo la seguente configurazione:<br>";
 
 		messaggio += "ID: "+conf.getId()+" - CORSO: "+conf.getDescrizione_corso()+" - GRUPPO: "+conf.getDescrizione_gruppo();
 

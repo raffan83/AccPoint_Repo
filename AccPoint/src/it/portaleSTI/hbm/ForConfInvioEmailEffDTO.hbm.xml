@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 15-mag-2017 15.44.30 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="it.portaleSTI.DTO.ForConfInvioEmailEffDTO" table="for_conf_invio_email_eff">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="native" />
+        </id> 
+  
+        <property name="id_corso" type="int" >
+            <column name="id_corso" />
+        </property>
+        <property name="id_gruppo" type="int" >
+            <column name="id_gruppo" />
+        </property>     
+        <property name="data_inizio_invio" type="java.sql.Date" >
+            <column name="data_inizio_invio" />
+        </property>
+        
+         <property name="data_scadenza" type="java.sql.Date" >
+            <column name="data_scadenza" />
+        </property> 
+		    
+        <property name="descrizione_corso" type="java.lang.String" >
+            <column name="descrizione_corso" />
+        </property>  
+        <property name="descrizione_gruppo" type="java.lang.String" >
+            <column name="descrizione_gruppo" />
+        </property>  
+        <property name="disabilitato" type="int" >
+            <column name="disabilitato" />
+        </property>    
+         <property name="oggetto_email" type="java.lang.String">
+            <column name="oggetto_email" />
+        </property>
+        <property name="testo_email" type="java.lang.String">
+            <column name="testo_email" />
+        </property>
+    
+    </class>
+</hibernate-mapping>

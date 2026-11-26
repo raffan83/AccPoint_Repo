@@ -79,6 +79,7 @@ import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailEffDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -3878,10 +3879,11 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					ArrayList<ForConfInvioEmailDTO> lista_configurazioni = GestioneFormazioneBO.getListaConfigurazioniInvioEmail(session);
 					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = GestioneFormazioneBO.getListaCorsiInvioEmail();
 									
-					
+					ArrayList<ForConfInvioEmailEffDTO> lista_configurazioni_eff = GestioneFormazioneBO.getListaConfigurazioniInvioEmailEff(session);
 					
 					request.getSession().setAttribute("lista_configurazioni", lista_configurazioni);
 					request.getSession().setAttribute("lista_corsi_moodle", lista_corsi_moodle);
+					request.getSession().setAttribute("lista_configurazioni_eff", lista_configurazioni_eff);
 					
 					session.getTransaction().commit();
 					session.close();
@@ -3937,6 +3939,49 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					myObj.addProperty("success", true);
 					myObj.add("membri", g.toJsonTree(lista_membri_gruppo));
 					myObj.add("membri_nc", g.toJsonTree(lista_membri_nc));
+		        	out.print(myObj);
+		        	session.getTransaction().commit();
+					session.close();
+					
+				} else if(action.equals("membri_gruppo_eff")) {
+					
+					
+					ajax = true;
+					
+					String id_gruppo = request.getParameter("gruppo");
+					String id_corso = request.getParameter("corso");
+					
+					ArrayList<ForMembriGruppoDTO> lista_membri_gruppo_eff = GestioneFormazioneBO.getMembriGruppoEff(Integer.parseInt(id_gruppo), Integer.parseInt(id_corso));
+					ArrayList<ForMembriGruppoDTO> lista_membri_nc_eff = new ArrayList<>();
+
+					for (ForMembriGruppoDTO membro : lista_membri_gruppo_eff) {
+					    Date dataCompletamento = membro.getDataCompletamentoTest();
+
+					    if (dataCompletamento == null) {
+					        lista_membri_nc_eff.add(membro);
+					        continue;
+					    }
+
+					    Calendar calendario = Calendar.getInstance();
+					    calendario.setTime(dataCompletamento);
+					    calendario.add(Calendar.DAY_OF_MONTH, 180);
+
+					    membro.setDataProssimoInvio(calendario.getTime());
+					}
+					
+					Gson g = new GsonBuilder()
+					        .setDateFormat("dd/MM/yyyy")
+					        .create();
+					
+				
+					PrintWriter out = response.getWriter();
+					
+				
+					
+					myObj.addProperty("success", true);
+					myObj.add("membri", g.toJsonTree(lista_membri_gruppo_eff));
+					myObj.add("membri_nc", g.toJsonTree(lista_membri_nc_eff));
+			
 		        	out.print(myObj);
 		        	session.getTransaction().commit();
 					session.close();
@@ -4040,6 +4085,97 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					}
 					
 					configurazione.setCodiceCorsoVittoria(codice_corso_vittoria);
+					session.save(configurazione);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Configurazione salvata con successo!");
+					
+		        	out.print(myObj);
+		        
+					
+				} else if(action.equals("nuova_configurazione_invio_eff")) {
+					
+					ajax = true;
+					
+					response.setContentType("application/json");
+					List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+					
+					String id_corso = ret.get("corsi");
+					String id_gruppo = ret.get("gruppi");
+					String data_inizio_invio = ret.get("data_inizio_invio");
+				//	String data_prossimo_invio = ret.get("data_prossimo_invio_eff");
+					String data_scadenza = ret.get("data_scadenza");
+					String oggetto_email = ret.get("oggetto_email");
+					String testo_email = ret.get("testo_email");
+				
+					
+				
+					
+					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
+					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
+					ForConfInvioEmailEffDTO configurazione = new ForConfInvioEmailEffDTO();
+					configurazione.setId_corso(Integer.parseInt(id_corso));
+					
+					
+					for (ForCorsoMoodleDTO corso : lista_corsi_moodle) {
+					    if (corso.getId() == Integer.parseInt(id_corso)) {
+					        configurazione.setDescrizione_corso(corso.getDescrizione());
+					    }
+					}		
+					
+					if(id_gruppo!=null && !id_gruppo.equals("") && !id_gruppo.equals("0")) {
+						configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
+						for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
+						    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
+						        configurazione.setDescrizione_gruppo(gruppo.getDescrizione());
+						    }
+						}
+					}else {
+						configurazione.setId_gruppo(0);
+						configurazione.setDescrizione_gruppo("Nessun gruppo specificato");
+					}
+					
+					configurazione.setOggetto_email(oggetto_email);
+					configurazione.setTesto_email(testo_email);
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+				
+					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
+				
+					
+					if(data_scadenza!=null && !data_scadenza.equals("")) {
+						configurazione.setData_scadenza(df.parse(data_scadenza));
+					}
+					
+				
+					
+					
 					session.save(configurazione);
 					session.getTransaction().commit();
 					session.close();
@@ -4160,13 +4296,128 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 		        	out.print(myObj);
 		        
 					
-				}else if(action.equals("elimina_configurazione")) {
+				}else if(action.equals("modifica_configurazione_invio_eff")) {
+					
+					ajax = true;
+					
+					response.setContentType("application/json");
+					List<FileItem> items = null;
+			        if (request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/form-data") > -1 ) {
+
+			        		items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+			        	}
+			        
+			       
+					FileItem fileItem = null;
+					String filename= null;
+			        Hashtable<String,String> ret = new Hashtable<String,String>();
+			      
+			        for (FileItem item : items) {
+		            	 if (!item.isFormField()) {
+		            		
+		                     fileItem = item;
+		                     filename = item.getName();
+		                     
+		            	 }else
+		            	 {
+		                      ret.put(item.getFieldName(), new String (item.getString().getBytes ("iso-8859-1"), "UTF-8"));
+		            	 }
+		            	
+		            }
+					
+			        String id_configurazione = ret.get("id_configurazione");
+			        String id_corso = ret.get("corsi");
+			        String id_gruppo = ret.get("gruppi");
+			        String data_inizio_invio = ret.get("data_inizio_invio");
+			        String data_scadenza = ret.get("data_scadenza");
+			        String oggetto_email = ret.get("oggetto_email");
+			        String testo_email = ret.get("testo_email");
+			
+				
+					ArrayList<ForCorsoMoodleDTO> lista_corsi_moodle = (ArrayList<ForCorsoMoodleDTO>) request.getSession().getAttribute("lista_corsi_moodle");
+					ArrayList<ForGruppoMoodleDTO> lista_gruppi_moodle = (ArrayList<ForGruppoMoodleDTO>) request.getSession().getAttribute("lista_gruppi_moodle");
+					ForConfInvioEmailEffDTO configurazione = GestioneFormazioneBO.getConfigurazioneInvioEmailEff(Integer.parseInt(id_configurazione),session);
+					configurazione.setId_corso(Integer.parseInt(id_corso));
+					
+					for (ForCorsoMoodleDTO corso : lista_corsi_moodle) {
+					    if (corso.getId() == Integer.parseInt(id_corso)) {
+					        configurazione.setDescrizione_corso(corso.getDescrizione());
+					    }
+					}		
+					
+					
+					
+					if(id_gruppo!=null && !id_gruppo.equals("") && !id_gruppo.equals("0")) {
+						configurazione.setId_gruppo(Integer.parseInt(id_gruppo));
+						for (ForGruppoMoodleDTO gruppo : lista_gruppi_moodle) {
+						    if (gruppo.getId() == Integer.parseInt(id_gruppo)) {
+						        configurazione.setDescrizione_gruppo(gruppo.getDescrizione());
+						    }
+						}
+					}else {
+						configurazione.setId_gruppo(0);
+						configurazione.setDescrizione_gruppo("Nessun gruppo specificato");
+					}
+					
+					DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+					
+					configurazione.setOggetto_email(oggetto_email);
+					configurazione.setTesto_email(testo_email);
+					
+					configurazione.setData_inizio_invio(df.parse(data_inizio_invio));
+		
+					
+					if(data_scadenza!=null && !data_scadenza.equals("")) {
+						configurazione.setData_scadenza(df.parse(data_scadenza));
+						
+					}else {
+						configurazione.setData_scadenza(null);
+					}
+					
+					
+					session.update(configurazione);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Configurazione salvata con successo!");
+					
+		        	out.print(myObj);
+		        
+					
+				}
+				
+				else if(action.equals("elimina_configurazione")) {
 					
 					ajax = true;
 					
 					String id = request.getParameter("id_configurazione_elimina");
 					
 					ForConfInvioEmailDTO configuraizone = GestioneFormazioneBO.getConfigurazioneInvioEmail(Integer.parseInt(id), session);
+					configuraizone.setDisabilitato(1);
+					
+					session.update(configuraizone);
+					session.getTransaction().commit();
+					session.close();
+					
+					PrintWriter out = response.getWriter();
+					
+					
+					myObj.addProperty("success", true);
+					myObj.addProperty("messaggio", "Configurazione eliminata con successo!");
+					
+		        	out.print(myObj);
+					
+				} else if(action.equals("elimina_configurazione_eff")) {
+					
+					ajax = true;
+					
+					String id = request.getParameter("id_configurazione_elimina");
+					
+					ForConfInvioEmailEffDTO configuraizone = GestioneFormazioneBO.getConfigurazioneInvioEmailEff(Integer.parseInt(id), session);
 					configuraizone.setDisabilitato(1);
 					
 					session.update(configuraizone);

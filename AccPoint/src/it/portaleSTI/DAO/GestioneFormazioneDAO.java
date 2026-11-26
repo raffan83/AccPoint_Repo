@@ -19,6 +19,7 @@ import org.hibernate.Session;
 
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailEffDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -1010,6 +1011,20 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		return lista;
 	}
 
+public static ArrayList<ForConfInvioEmailEffDTO> getListaConfigurazioniInvioEmailEff(Session session) {
+		
+		ArrayList<ForConfInvioEmailEffDTO> lista = null;
+		
+
+		Query query =  session.createQuery("from ForConfInvioEmailEffDTO where disabilitato = 0"); 
+			
+		lista = (ArrayList<ForConfInvioEmailEffDTO>) query.list();
+		
+				
+		return lista;
+	}
+
+	
 	
 
 	
@@ -1190,7 +1205,75 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 
 		return lista;
 	}
+	
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppoEff(
+	        int gruppo, int corso) throws Exception {
 
+	    ArrayList<ForMembriGruppoDTO> lista = new ArrayList<>();
+	    boolean gruppoSpecifico = gruppo != 0;
+
+	    String colonnaGruppo = gruppoSpecifico ? "g.id" : "0";
+	    String joinGruppo = gruppoSpecifico
+	            ? "JOIN mdl_groups_members gm ON gm.userid = u.id "
+	              + "JOIN mdl_groups g ON g.id = gm.groupid AND g.courseid = q.course "
+	            : "";
+
+	    String filtroMembri = gruppoSpecifico
+	            ? "WHERE g.id = ? "
+	            : "WHERE EXISTS ("
+	              + "    SELECT 1 FROM mdl_user_enrolments ue "
+	              + "    JOIN mdl_enrol e ON e.id = ue.enrolid "
+	              + "    WHERE ue.userid = u.id AND e.courseid = q.course"
+	              + ") ";
+
+	    String query =
+	            "SELECT u.id AS id_utente, u.username, u.email, "
+	          + "       u.firstname AS nome, u.lastname AS cognome, "
+	          + "       q.course AS id_corso, " + colonnaGruppo + " AS id_gruppo, "
+	          + "       q.id AS id_quiz, q.name AS nome_quiz, "
+	          + "       (SELECT d.data FROM mdl_user_info_data d "
+	          + "        WHERE d.userid = u.id AND d.fieldid = 3) AS cf, "
+	          + "       CASE WHEN MAX(qa.timefinish) > 0 THEN 'TEST COMPLETATO' "
+	          + "            ELSE 'TEST NON COMPLETATO' END AS stato, "
+	          + "       FROM_UNIXTIME(NULLIF(MAX(qa.timefinish), 0)) AS data_completamento_test "
+	          + "FROM mdl_user u "
+	          + "JOIN mdl_quiz q ON q.course = ? AND q.name = 'Test finale' "
+	          + joinGruppo
+	          + "LEFT JOIN mdl_quiz_attempts qa ON qa.quiz = q.id "
+	          + "    AND qa.userid = u.id AND qa.state = 'finished' AND qa.preview = 0 "
+	          + filtroMembri
+	          + "GROUP BY u.id, u.username, u.email, u.firstname, u.lastname, "
+	          + "         q.course, q.id, q.name"
+	          + (gruppoSpecifico ? ", g.id " : " ")
+	          + "ORDER BY u.lastname, u.firstname";
+
+	    try (Connection con = getConnection();
+	         PreparedStatement pst = con.prepareStatement(query)) {
+
+	        pst.setInt(1, corso);
+	        if (gruppoSpecifico) {
+	            pst.setInt(2, gruppo);
+	        }
+
+	        try (ResultSet rs = pst.executeQuery()) {
+	            while (rs.next()) {
+	                ForMembriGruppoDTO membro = new ForMembriGruppoDTO();
+	                membro.setId(rs.getInt("id_utente"));
+	                membro.setNome(rs.getString("nome"));
+	                membro.setCognome(rs.getString("cognome"));
+	                membro.setEmail(rs.getString("email"));
+	                membro.setCf(rs.getString("cf"));
+	                membro.setUsername(rs.getString("username"));
+	                membro.setDataCompletamentoTest(
+	                        rs.getTimestamp("data_completamento_test"));
+	           
+	                lista.add(membro);
+	            }
+	        }
+	    }
+
+	    return lista;
+	}
 
 	public static ArrayList<ForMembriGruppoDTO> getMembriGruppoVittoria(int gruppo, int corso) throws Exception {
 		
@@ -1289,6 +1372,31 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 			
 
 	}
+	
+	public static ForConfInvioEmailEffDTO getConfigurazioneInvioEmailEff(int id,Session session) {
+		
+		
+		ArrayList<ForConfInvioEmailEffDTO> lista = null;
+		ForConfInvioEmailEffDTO res = null;
+		
+		Query query = session.createQuery("from ForConfInvioEmailEffDTO where id = :_id"); 
+					
+						
+		query.setParameter("_id", id);
+			
+				
+				
+		lista = (ArrayList<ForConfInvioEmailEffDTO>) query.list();
+		
+		if(lista.size()>0) {
+			res = lista.get(0);
+		}
+			
+					
+		return res;
+		
+
+}
 
 	public static ArrayList<ForMembriGruppoDTO>  getListaUtentiNonCompleti(int id_corso, int id_gruppo) throws Exception {
 		
@@ -1427,17 +1535,30 @@ ArrayList<ForPartecipanteRuoloCorsoDTO> lista = null;
 		}else {
 			query = session.createQuery("from ForConfInvioEmailDTO where disabilitato = 0 and stato_invio = 0 and report_vittoria = 1");
 		}
-		
-					
 						
-				
-				
-				
 		lista = (ArrayList<ForConfInvioEmailDTO>) query.list();
 		
 		
 		return lista;
 	}
+	
+
+	public static ArrayList<ForConfInvioEmailEffDTO> getListaConfigurazioniInvioEmailConfEff(
+	        Date date, Session session) {
+
+	    Query query = session.createQuery(
+	            "from ForConfInvioEmailEffDTO c "
+	          + "where c.disabilitato = 0 "
+	          + "and c.data_inizio_invio <= :_date "
+	          + "and (c.data_scadenza is null or c.data_scadenza >= :_date)"
+	    );
+	    query.setParameter("_date", date);
+
+	    
+	    List<ForConfInvioEmailEffDTO> risultati = query.list();
+	    return new ArrayList<>(risultati);
+	}
+	
 
 	public static ArrayList<ForCorsoDTO> getListaCorsiCommessa(String commessa, Integer id_cliente, Integer id_sede,  Session session) {
 		ArrayList<ForCorsoDTO> lista = null;

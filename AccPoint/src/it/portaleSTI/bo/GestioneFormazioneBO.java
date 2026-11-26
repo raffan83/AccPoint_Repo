@@ -73,6 +73,7 @@ import it.portaleSTI.DAO.GestioneFormazioneDAO;
 import it.portaleSTI.DAO.SessionFacotryDAO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailEffDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatAllegatiDTO;
 import it.portaleSTI.DTO.ForCorsoCatDTO;
@@ -2600,6 +2601,11 @@ public class GestioneFormazioneBO {
 		
 		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmail(session);
 	}
+	
+public static ArrayList<ForConfInvioEmailEffDTO> getListaConfigurazioniInvioEmailEff(Session session) {
+		
+		return GestioneFormazioneDAO.getListaConfigurazioniInvioEmailEff(session);
+	}
 
 	public static ArrayList<ForCorsoMoodleDTO> getListaCorsiInvioEmail() throws Exception {
 
@@ -2615,10 +2621,19 @@ public class GestioneFormazioneBO {
 		// TODO Auto-generated method stub
 		return GestioneFormazioneDAO.getMembriGruppo(gruppo, corso);
 	}
+	public static ArrayList<ForMembriGruppoDTO> getMembriGruppoEff(int gruppo, int corso) throws Exception{
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getMembriGruppoEff(gruppo, corso);
+	}
 
 	public static ForConfInvioEmailDTO getConfigurazioneInvioEmail(int id_conf,Session session) {
 		// TODO Auto-generated method stub
 		return GestioneFormazioneDAO.getConfigurazioneInvioEmail(id_conf,session);
+	}
+	
+	public static ForConfInvioEmailEffDTO getConfigurazioneInvioEmailEff(int id_conf,Session session) {
+		// TODO Auto-generated method stub
+		return GestioneFormazioneDAO.getConfigurazioneInvioEmailEff(id_conf,session);
 	}
 
 	public static void sendEmailCorsiNonCompleti(String path1) throws Exception  {
@@ -2713,6 +2728,103 @@ public class GestioneFormazioneBO {
 		
 		
 	}
+	
+	
+	public static void sendEmailConfEfficacia(String path1) throws Exception  {
+		
+		
+		Session session=SessionFacotryDAO.get().openSession();
+		session.beginTransaction();
+		Date today = new Date();
+	    Calendar oggi = Calendar.getInstance();
+	    oggi.setTime(today);
+	//	List<ForMembriGruppoDTO> lista_membri = new ArrayList<>();
+		try {
+		
+		ArrayList<ForConfInvioEmailEffDTO> lista_conf = GestioneFormazioneDAO.getListaConfigurazioniInvioEmailConfEff(new Date(),session);
+		for(ForConfInvioEmailEffDTO conf : lista_conf) {
+			List<ForMembriGruppoDTO> lista_membri = new ArrayList<>();
+			
+	lista_utenti_mancanti = new ArrayList<ForMembriGruppoDTO>();
+			
+			lista_utenti_inviati = new ArrayList<ForMembriGruppoDTO>();
+			
+			lista_membri = getMembriGruppoEff(conf.getId_gruppo(),conf.getId_corso());
+			
+			for(ForMembriGruppoDTO membro : lista_membri) {
+				
+				if(membro.getDataCompletamentoTest() != null) {
+					
+				 Calendar prossimoInvio = Calendar.getInstance();
+				    prossimoInvio.setTime(membro.getDataCompletamentoTest());
+				  //  prossimoInvio.add(Calendar.DAY_OF_MONTH, 180);
+				    
+				    if (oggi.get(Calendar.YEAR) == prossimoInvio.get(Calendar.YEAR)
+				            && oggi.get(Calendar.DAY_OF_YEAR) == prossimoInvio.get(Calendar.DAY_OF_YEAR)) {
+				    	
+				    SendEmailBO.sendEmailCorsoMoodle(membro, conf.getDescrizione_corso(),conf.getOggetto_email(), conf.getTesto_email());
+						TimeUnit.SECONDS.sleep(2);
+						
+				    }
+				}
+			}
+				
+				
+				if(lista_utenti_mancanti.size()>0) 
+				{
+					String messaggio ="<html>Non è stato possibile inviare il Remind del corso ID:"+conf.getId()+" ("+conf.getDescrizione_corso()+") ai seguenti utenti:<br><br>";
+					
+					for (ForMembriGruppoDTO user : lista_utenti_mancanti) {
+						messaggio+= user.getNome() +" "+ user.getCognome()+" email: "+user.getEmail()+" Errore: "+user.getDescrizioneErrore()+"<br>";	
+					}
+					
+					try {
+						SendEmailBO.sendEmail("edoardo.boccitto@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+						SendEmailBO.sendEmail("raffaele.fantini@ncsnetwork.it","Errore invio Remind corsi Moodle",messaggio);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+				
+				if(lista_utenti_inviati.size()>0) 
+				{
+				
+					try 
+					{
+						SendEmailBO.sendEmailReportCorsiMoodleEff(conf, lista_utenti_inviati);
+						logger.error("Report inviato correttamente");
+					}
+					catch (Exception e) 
+					{
+						logger.error(e);
+						e.printStackTrace();
+					}
+					
+				}
+
+		
+			
+			
+		}
+
+		
+		session.getTransaction().commit();
+		session.close();
+		
+	}catch(Exception e) {
+		
+		throw e;
+		
+	}
+		
+		
+		
+	}
+	
+	
+	
 
 	public static ArrayList<ForConfInvioEmailDTO> getListaConfigurazioniInvioEmailData(Date date, Session session) {
 		
@@ -2931,7 +3043,7 @@ public class GestioneFormazioneBO {
 		
 		new ContextListener().configCostantApplication();
 		
-		sendEmailCorsiNonCompleti("");
+		sendEmailConfEfficacia("");
 		
 	}
 	

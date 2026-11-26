@@ -48,6 +48,7 @@ import it.portaleSTI.DTO.DevSoftwareDTO;
 import it.portaleSTI.DTO.DocumTLDocumentoDTO;
 import it.portaleSTI.DTO.DpiDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
+import it.portaleSTI.DTO.ForConfInvioEmailEffDTO;
 import it.portaleSTI.DTO.ForCorsoDTO;
 import it.portaleSTI.DTO.ForDocenteDTO;
 import it.portaleSTI.DTO.ForMembriGruppoDTO;
@@ -1541,7 +1542,9 @@ public class SendEmailBO {
 
 			HtmlEmail email = getHtmlEmailVianovaCresco();
 
+			//String email_prova = "edoardo.boccitto@ncsnetwork.it" ;
 
+			//email.addTo(email_prova);
 			email.addTo(utente.getEmail());	
 
 			email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
@@ -1617,6 +1620,52 @@ public class SendEmailBO {
 
 		email.send();
 	}
+	
+	public static void sendEmailReportCorsiMoodleEff(ForConfInvioEmailEffDTO conf, ArrayList<ForMembriGruppoDTO> lista_utenti) throws EmailException {
+
+		HtmlEmail email = getHtmlEmailVianovaCresco();
+
+		email.addTo("lisa.lombardozzi@crescosrl.net");
+		email.addTo("raffaele.fantini@ncsnetwork.it");
+		email.addTo("edoardo.boccitto@ncsnetwork.it");
+
+
+
+		email.setFrom("segreteria@crescosrl.net", "CRESCO - Formazione e consulenza Srl");
+
+
+		email.setSubject("Report invio remind corsi Moodle - configurazione efficacia");
+
+
+		String messaggio = "Si comunica che in data odierna &egrave; stato inviato il remind di non completamento del corso secondo la seguente configurazione:<br><br>";
+
+		messaggio += "ID: "+conf.getId()+" - CORSO: "+conf.getDescrizione_corso()+" - GRUPPO: "+conf.getDescrizione_gruppo();
+
+		messaggio += "<br><br>LISTA DESTINATARI<br><br>";
+
+		for (ForMembriGruppoDTO utente : lista_utenti) {
+			messaggio += utente.getNome() +" "+utente.getCognome()+" - Email: "+utente.getEmail()+"<br>";
+		}
+
+
+
+		messaggio += "<em><b><br><br>Segreteria didattica<br>CRESCO Formazione e Consulenza Srl</b></em> <br>"+
+
+					"<em></b><br>Via Tofaro 42, E - 03039 Sora (FR)<br>" + 
+					"Tel int. +39 0776.1815115 - Fax +39 0776.814169</em> <br> "
+					+ "Web: </em>www.crescosrl.net<br>" 
+					+ "Mail: </em>segreteria@crescosrl.net<br>" + 
+
+					"<br/>" ;
+
+
+
+		email.setHtmlMsg("<html>"
+				+messaggio+"</html>");
+
+		email.send();
+	}
+
 
 	public static void sendEmailScadenzaSoftware(DevSoftwareDTO software) throws EmailException {
 

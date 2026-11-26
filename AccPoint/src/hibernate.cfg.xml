@@ -179,6 +179,7 @@
  	<mapping class="ForReferenteDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForReferenteDTO.hbm.xml"/>
  	<mapping class="ForEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForEmailDTO.hbm.xml"/>
  	<mapping class="ForConfInvioEmailDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForConfInvioEmailDTO.hbm.xml"/> 	
+ 	<mapping class="ForConfInvioEmailEffDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/ForConfInvioEmailEffDTO.hbm.xml"/> 	
  	    
  	 
  	<mapping class="DocumTLStatoDTO" package="it.portaleSTI.DTO" resource="it/portaleSTI/hbm/DocumTLStatoDTO.hbm.xml"/>

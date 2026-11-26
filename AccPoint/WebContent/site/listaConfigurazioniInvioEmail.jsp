@@ -4,6 +4,7 @@
 <%@page import="it.portaleSTI.DTO.UtenteDTO"%>
 <%@page import="it.portaleSTI.DTO.ClienteDTO"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="/WEB-INF/tld/utilities" prefix="utl" %>
 
@@ -46,12 +47,25 @@
 
 <div class="box-body">
 
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active" role="presentation">
+        <a href="#listaConfPeriodiche" data-toggle="tab" role="tab"
+           id="tabConfPeriodiche" aria-controls="listaConfPeriodiche">Lista Conf Periodiche</a>
+    </li>
+    <li role="presentation">
+        <a href="#listaConfEfficacia" data-toggle="tab" role="tab"
+           id="tabConfEfficacia" aria-controls="listaConfEfficacia">Lista Conf Efficacia</a>
+    </li>
+</ul>
+
+<div class="tab-content" style="padding-top: 15px;">
+<div id="listaConfPeriodiche" class="tab-pane active" role="tabpanel" aria-labelledby="tabConfPeriodiche">
 <div class="row">
 <div class="col-xs-12">
 
 
 
-<a class="btn btn-primary pull-right" onClick="modalnuovaConfigurazione()"><i class="fa fa-plus"></i> Nuova Configurazione</a> 
+<button type="button" class="btn btn-primary pull-right" onclick="modalnuovaConfigurazione()"><i class="fa fa-plus"></i> Nuova Configurazione</button> 
 
 
 
@@ -130,15 +144,61 @@
  </table>  
 </div>
 </div>
-
-
 </div>
 
- 
-</div>
+<div id="listaConfEfficacia" class="tab-pane" role="tabpanel" aria-labelledby="tabConfEfficacia">
+    <div class="row">
+        <div class="col-xs-12">
+            <a class="btn btn-primary pull-right" onClicK="modalnuovaConfigurazioneEff()"><i class="fa fa-plus"></i> Nuova Configurazione</a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tabForConfEff" class="table table-bordered table-hover dataTable table-striped" width="100%">
+                <thead>
+                    <tr class="active">
+                        <th>ID</th>
+                        <th>Corso</th>
+                        <th>Gruppo</th>
+                        <th>ID Corso</th>
+                        <th>ID Gruppo</th>
+                        <th>Data inizio invio</th>
+                        <th>Data scadenza</th>
+                        <th class="no-column-search" style="width: 100px;">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${lista_configurazioni_eff}" var="configurazioneEff">
+                        <fmt:formatDate value="${configurazioneEff.data_inizio_invio}" pattern="yyyy-MM-dd" var="inizioEffOrdine" />
+                        <fmt:formatDate value="${configurazioneEff.data_scadenza}" pattern="yyyy-MM-dd" var="scadenzaEffOrdine" />
+                        <tr>
+                            <td>${configurazioneEff.id}</td>
+                            <td><c:out value="${configurazioneEff.descrizione_corso}" /></td>
+                            <td><c:out value="${configurazioneEff.descrizione_gruppo}" /></td>
+                            <td>${configurazioneEff.id_corso}</td>
+                            <td>${configurazioneEff.id_gruppo}</td>
+                            <td data-order="${inizioEffOrdine}"><fmt:formatDate value="${configurazioneEff.data_inizio_invio}" pattern="dd/MM/yyyy" /></td>
+                            <td data-order="${scadenzaEffOrdine}"><fmt:formatDate value="${configurazioneEff.data_scadenza}" pattern="dd/MM/yyyy" /></td>
+                            <td>
+                                <fmt:formatDate value="${configurazioneEff.data_inizio_invio}" pattern="dd/MM/yyyy" var="inizioEff" />
+                                <fmt:formatDate value="${configurazioneEff.data_scadenza}" pattern="dd/MM/yyyy" var="scadenzaEff" />
+                                <a class="btn btn-warning" onClicK="modificaConfigurazioneModalEff('${configurazioneEff.id}','${configurazioneEff.id_corso}','${configurazioneEff.id_gruppo}','${inizioEff}','${scadenzaEff}','${utl:escapeJS(configurazioneEff.oggetto_email)}','${utl:escapeJS(configurazioneEff.testo_email)}')" title="Click per modificare la Configurazione" aria-label="Modifica configurazione efficacia"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                <a class="btn btn-danger" onClicK="eliminaConfigurazioneModalEff('${configurazioneEff.id}')" title="Click per eliminare la configurazione" aria-label="Elimina configurazione efficacia"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 
 
@@ -358,6 +418,303 @@
 
 
 
+
+
+<form id="nuovaConfigurazioneFormEff" name="nuovaConfigurazioneFormEff">
+<div id="myModalnuovaConfigurazioneEff" class="modal fade" role="dialog" aria-labelledby="myModalnuovaConfigurazioneEffLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalnuovaConfigurazioneEffLabel">Nuova Configurazione Invio Email Efficacia</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corsi</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="corsi_eff" name="corsi" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso..." required onchange="getGruppiFromCorsoEff()">
+       <option value=""></option>
+       <c:forEach items="${lista_corsi_moodle}" var="corso">
+       <option value="${corso.id}"><c:out value="${corso.descrizione}" /></option>
+       </c:forEach>
+       </select>
+       			
+       	</div>       	
+       </div><br>
+       
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Gruppi</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="gruppi_eff" name="gruppi" class="form-control select2" style="width:100%" data-placeholder="Seleziona gruppo..." required disabled onchange="getMembriGruppoEff()">
+
+       </select>
+       			
+       	</div>       	
+       </div><br>
+
+      <div class="row" style="display:none" id="content_membri_eff">
+       
+       	<div class="col-sm-12">
+       		<label>Utenti nel gruppo</label>
+       	</div>
+       	<div class="col-sm-12">      
+		<table class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    		<thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Data completamento test</th>
+            <th>Data prossimo invio</th>
+        </tr>
+    </thead>
+    <tbody id="body_membri_eff">
+    </tbody>
+</table>
+       			
+       	</div>       	
+       </div><br>
+
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data inizio invio</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+         <div class='input-group date datepicker'>
+               <input type='text' class="form-control input-small" id="data_inizio_invio_eff" name="data_inizio_invio" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+
+          <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data scadenza</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+         <div class='input-group date datepicker'>
+               <input type='text' class="form-control input-small" id="data_scadenza_eff" name="data_scadenza">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Oggetto email</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+               <input type='text' class="form-control" id="oggetto_email_eff" name="oggetto_email" required>
+
+       	</div>       	
+       </div><br>
+
+         <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Testo email</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+               <textarea class="form-control" rows="5" style="width:100%" id="testo_email_eff" name="testo_email" ></textarea>
+
+       	</div>       	
+       </div><br>
+
+       </div>
+  		 
+      <div class="modal-footer">
+		
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+<form id="modificaConfigurazioneFormEff" name="modificaConfigurazioneFormEff">
+<div id="myModalModificaConfigurazioneEff" class="modal fade" role="dialog" aria-labelledby="myModalModificaConfigurazioneEffLabel">
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalModificaConfigurazioneEffLabel">Modifica Configurazione Invio Email Efficacia</h4>
+      </div>
+       <div class="modal-body">
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Corsi</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="corsi_eff_mod" name="corsi" class="form-control select2" style="width:100%" data-placeholder="Seleziona corso..." required onchange="getGruppiFromCorsoEff('mod')">
+       <option value=""></option>
+       <c:forEach items="${lista_corsi_moodle}" var="corso">
+       <option value="${corso.id}"><c:out value="${corso.descrizione}" /></option>
+       </c:forEach>
+       </select>
+       			
+       	</div>       	
+       </div><br>
+       
+             <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Gruppi</label>
+       	</div>
+       	<div class="col-sm-9">      
+       	  	
+       <select id="gruppi_eff_mod" name="gruppi" class="form-control select2" style="width:100%" data-placeholder="Seleziona gruppo..." required disabled onchange="getMembriGruppoEff('mod')">
+
+       </select>
+       			
+       	</div>       	
+       </div><br>
+
+      <div class="row" style="display:none" id="content_membri_eff_mod">
+       
+       	<div class="col-sm-12">
+       		<label>Utenti nel gruppo</label>
+       	</div>
+       	<div class="col-sm-12">      
+		<table class="table table-bordered table-hover dataTable table-striped" role="grid" width="100%">
+    		<thead>
+        <tr>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Data completamento test</th>
+            <th>Data prossimo invio</th>
+        </tr>
+    </thead>
+    <tbody id="body_membri_eff_mod">
+    </tbody>
+</table>
+       			
+       	</div>       	
+       </div><br>
+
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data inizio invio</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+         <div class='input-group date datepicker'>
+               <input type='text' class="form-control input-small" id="data_inizio_invio_eff_mod" name="data_inizio_invio" required>
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+
+                 <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Data scadenza</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+         <div class='input-group date datepicker'>
+               <input type='text' class="form-control input-small" id="data_scadenza_eff_mod" name="data_scadenza">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar" >
+                    </span>
+                </span>
+        </div> 	
+       			
+       	</div>       	
+       </div><br>
+
+        <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Oggetto email</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+               <input type='text' class="form-control" id="oggetto_email_eff_mod" name="oggetto_email" required>
+       			
+       	</div>       	
+       </div><br>
+
+       <div class="row">
+       
+       	<div class="col-sm-3">
+       		<label>Testo email</label>
+       	</div>
+       	<div class="col-sm-9">      
+
+               <textarea class="form-control" rows="5" style="width:100%" id="testo_email_eff_mod" name="testo_email" ></textarea>
+
+       	</div>       	
+       </div><br>
+
+       </div>
+  		 
+      <div class="modal-footer">
+		
+		<input type="hidden" id="id_configurazione_eff" name="id_configurazione"> 
+		<button class="btn btn-primary" type="submit">Salva</button> 
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</form>
+
+  <div id="myModalYesOrNoEff" class="modal fade" role="dialog" aria-labelledby="titoloEliminaConfigurazioneEff">
+   
+    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="titoloEliminaConfigurazioneEff">Attenzione</h4>
+      </div>
+       <div class="modal-body">       
+      	Sei sicuro di voler eliminare la configurazione?
+      	</div>
+      <div class="modal-footer">
+      <input type="hidden" id="elimina_configurazione_eff_id">
+      <a class="btn btn-primary" onclick="eliminaConfigurazioneEff()" >SI</a>
+		<a class="btn btn-primary" onclick="$('#myModalYesOrNoEff').modal('hide')" >NO</a>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <form id="modificaConfigurazioneForm" name="modificaConfigurazioneForm">
 <div id="myModalModificaConfigurazione" class="modal fade" role="dialog" aria-labelledby="myLargeModal">
@@ -723,32 +1080,89 @@ $('#check_report_vittoria_mod').on('ifClicked',function(e){
 });
 
 
-var columsDatatables = [];
 
-$("#tabForConf").on( 'init.dt', function ( e, settings ) {
-    var api = new $.fn.dataTable.Api( settings );
-    var state = api.state.loaded();
- 
-    if(state != null && state.columns!=null){
-    		console.log(state.columns);
-    
-    columsDatatables = state.columns;
+var editorInstanceEff = null;
+var editorInstanceModEff = null;
+
+function modalnuovaConfigurazioneEff() {
+    $('#myModalnuovaConfigurazioneEff').modal();
+}
+
+function modificaConfigurazioneModalEff(id_configurazione, id_corso, id_gruppo, data_inizio,
+                                        data_scadenza, oggetto_email, testo_email) {
+    $('#id_configurazione_eff').val(id_configurazione);
+    $('#data_inizio_invio_eff_mod').val(data_inizio);
+    $('#data_scadenza_eff_mod').val(data_scadenza);
+    $('#oggetto_email_eff_mod').val(oggetto_email);
+    $('#testo_email_eff_mod').val(testo_email);
+    if (editorInstanceModEff) {
+        editorInstanceModEff.setData(testo_email);
     }
-    $('#tabForConf thead th').each( function () {
-     	if(columsDatatables.length==0 || columsDatatables[$(this).index()]==null ){columsDatatables.push({search:{search:""}});}
-    	  var title = $('#tabForConf thead th').eq( $(this).index() ).text();
-    	
-    	  //if($(this).index()!=0 && $(this).index()!=1){
-		    	$(this).append( '<div><input class="inputsearchtable" style="width:100%"  value="'+columsDatatables[$(this).index()].search.search+'" type="text" /></div>');	
-	    	//}
+    $('#myModalModificaConfigurazioneEff').modal();
+    $('#corsi_eff_mod').val(id_corso).trigger('change.select2');
+    getGruppiFromCorsoEff('mod', id_gruppo);
+}
 
-    	} );
-    
-    
+function eliminaConfigurazioneModalEff(id_conf) {
+    $('#elimina_configurazione_eff_id').val(id_conf);
+    $('#myModalYesOrNoEff').modal();
+}
 
-} );
+function eliminaConfigurazioneEff() {
+    var dataObj = {
+        id_configurazione_elimina: $('#elimina_configurazione_eff_id').val()
+    };
+    callAjax(dataObj, 'gestioneFormazione.do?action=elimina_configurazione_eff');
+}
 
+function getGruppiFromCorsoEff(mod, id_gruppo) {
+    var suffisso = mod === 'mod' ? '_eff_mod' : '_eff';
+    var corso = $('#corsi' + suffisso).val();
+    var $gruppi = $('#gruppi' + suffisso);
+    var richiesta = ($gruppi.data('richiestaGruppi') || 0) + 1;
+    $gruppi.data('richiestaGruppi', richiesta);
+    $gruppi.empty().prop('disabled', true).trigger('change');
 
+    if (!corso) {
+        return;
+    }
+
+    callAjax({ corso: corso }, 'gestioneFormazione.do?action=gruppi_corso', function (data) {
+        if (richiesta !== $gruppi.data('richiestaGruppi') || !data.success) {
+            return;
+        }
+
+        $gruppi.append(new Option('', ''), new Option('Nessun gruppo specificato', '0'));
+        $.each(data.gruppi, function (indice, gruppo) {
+            $gruppi.append(new Option(gruppo.descrizione, gruppo.id));
+        });
+        $gruppi.val(id_gruppo == null ? '' : String(id_gruppo)).prop('disabled', false).trigger('change');
+    });
+}
+
+function aggiungiFiltriConfigurazioni(api) {
+    api.columns().every(function () {
+        var colonna = this;
+        var $intestazione = $(colonna.header());
+        if ($intestazione.hasClass('no-column-search')) {
+            return;
+        }
+        var titolo = $intestazione.text().trim();
+
+        $('<input>', {
+            type: 'text',
+            'class': 'inputsearchtable',
+            'aria-label': 'Cerca per ' + titolo
+        }).css('width', '100%').val(colonna.search())
+            .on('click keydown', function (evento) {
+                evento.stopPropagation();
+            })
+            .on('input', function () {
+                colonna.search(this.value).draw();
+            })
+            .appendTo($('<div>').appendTo($intestazione));
+    });
+}
 
 function getGruppiFromCorso(mod, id_gruppo){
 	
@@ -891,6 +1305,52 @@ if(gruppo!=null && gruppo!=''){
 	
 }
 
+function getMembriGruppoEff(mod) {
+    var suffisso = mod === 'mod' ? '_eff_mod' : '_eff';
+    var corso = $('#corsi' + suffisso).val();
+    var $gruppi = $('#gruppi' + suffisso);
+    var gruppo = $gruppi.val();
+    var richiesta = ($gruppi.data('richiestaMembri') || 0) + 1;
+    $gruppi.data('richiestaMembri', richiesta);
+    var $contenuto = $('#content_membri' + suffisso).hide();
+    var $corpo = $('#body_membri' + suffisso).empty();
+
+    if (!corso || gruppo == null || gruppo === '' || $gruppi.prop('disabled')) {
+        return;
+    }
+
+    callAjax({ corso: corso, gruppo: gruppo }, 'gestioneFormazione.do?action=membri_gruppo_eff', function (data) {
+        if (richiesta !== $gruppi.data('richiestaMembri')) {
+            return;
+        }
+
+        var membri = data.membri || [];
+        if (!data.success || !membri.length) {
+            var messaggio = data.success
+                ? 'Nessun utente nel gruppo selezionato'
+                : (data.messaggio || 'Impossibile caricare gli utenti del gruppo.');
+            $('<tr>').append($('<td>', { colspan: 4, text: messaggio })).appendTo($corpo);
+            $contenuto.show();
+            return;
+        }
+
+        $.each(membri, function (indice, membro) {
+            var dataCompletamentoTest = membro.dataCompletamentoTest;
+            var dataProssimoInvio = membro.dataProssimoInvio;
+            var $riga = $('<tr>').append(
+                $('<td>').text(membro.nome || ''),
+                $('<td>').text(membro.cognome || ''),
+                $('<td>').text(dataCompletamentoTest || ''),
+                $('<td>').text(dataProssimoInvio || '')
+            );
+            if (!dataCompletamentoTest) {
+                $riga.css('background-color', '#FA8989');
+            }
+            $corpo.append($riga);
+        });
+        $contenuto.show();
+    });
+}
 
 $('#data_inizio_invio').change(function(){
 	
@@ -1016,7 +1476,36 @@ $(document).ready(function() {
 
     
      
-     table = $('#tabForConf').DataTable({
+
+     $('#data_inizio_invio_eff').val(dataOggi);
+
+     $('#corsi_eff, #gruppi_eff').select2({
+         dropdownParent: $('#myModalnuovaConfigurazioneEff')
+     });
+     $('#corsi_eff_mod, #gruppi_eff_mod').select2({
+         dropdownParent: $('#myModalModificaConfigurazioneEff')
+     });
+
+     ClassicEditor.create(document.querySelector('#testo_email_eff'))
+         .then(function (editor) {
+             editorInstanceEff = editor;
+         })
+         .catch(function (error) {
+             console.error('Errore durante l\'inizializzazione di CKEditor:', error);
+         });
+
+     $('#myModalModificaConfigurazioneEff').one('shown.bs.modal', function () {
+         ClassicEditor.create(document.querySelector('#testo_email_eff_mod'))
+             .then(function (editor) {
+                 editorInstanceModEff = editor;
+                 editor.setData($('#testo_email_eff_mod').val());
+             })
+             .catch(function (error) {
+                 console.error('Errore durante l\'inizializzazione di CKEditor:', error);
+             });
+     });
+
+     var opzioniConfigurazioni = {
 			language: {
 		        	emptyTable : 	"Nessun dato presente nella tabella",
 		        	info	:"Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -1051,38 +1540,45 @@ $(document).ready(function() {
 		      scrollX: false,
 		      stateSave: true,	
 		           
-		      columnDefs: [
-		    	  
-		    	  { responsivePriority: 1, targets: 7 },
-		    	  
-		    	  
-		               ], 	        
 	  	      buttons: [   
 	  	          {
 	  	            extend: 'colvis',
 	  	            text: 'Nascondi Colonne'  	                   
 	 			  } ]
 		               
-		    });
-		
-		table.buttons().container().appendTo( '#tabForConf_wrapper .col-sm-6:eq(1)');
-	 	    $('.inputsearchtable').on('click', function(e){
-	 	       e.stopPropagation();    
-	 	    });
+		    };
 
-	 	     table.columns().eq( 0 ).each( function ( colIdx ) {
-	  $( 'input', table.column( colIdx ).header() ).on( 'keyup', function () {
-	      table
-	          .column( colIdx )
-	          .search( this.value )
-	          .draw();
-	  } );
-	} );  
-	
-	
-	
-		table.columns.adjust().draw();
-		
+    function inizializzaTabellaConfigurazioni(selettore, prioritaColonne) {
+        var $tabella = $(selettore);
+        var configurazioni = $tabella.DataTable($.extend({}, opzioniConfigurazioni, {
+            columnDefs: prioritaColonne,
+            initComplete: function () {
+                aggiungiFiltriConfigurazioni(this.api());
+            }
+        }));
+        configurazioni.buttons().container().appendTo(selettore + '_wrapper .col-sm-6:eq(1)');
+        return configurazioni;
+    }
+
+    table = inizializzaTabellaConfigurazioni('#tabForConf', [
+        { responsivePriority: 1, targets: 7 }
+    ]);
+    table.columns.adjust().draw();
+
+    var tabellaEfficacia;
+    $('#tabConfEfficacia').on('shown.bs.tab', function () {
+        if (!tabellaEfficacia) {
+            tabellaEfficacia = inizializzaTabellaConfigurazioni('#tabForConfEff', [
+                { responsivePriority: 1, targets: [1, 7] },
+                { orderable: false, searchable: false, targets: 7 }
+            ]);
+        }
+        tabellaEfficacia.columns.adjust().responsive.recalc();
+    });
+
+    $('#tabConfPeriodiche').on('shown.bs.tab', function () {
+        table.columns.adjust().responsive.recalc();
+    });
 
 	$('#tabForConf').on( 'page.dt', function () {
 		$('.customTooltip').tooltipster({
@@ -1140,6 +1636,39 @@ $('#modificaConfigurazioneForm').on('submit', function(e){
  
 
  
+
+$('#nuovaConfigurazioneFormEff').on('submit', function (e) {
+    e.preventDefault();
+
+    if ($('#gruppi_eff').prop('disabled') || !$('#gruppi_eff').val()) {
+        return;
+    }
+    if (editorInstanceEff) {
+        $('#testo_email_eff').val(editorInstanceEff.getData());
+    }
+    if ($('#testo_email_eff').val().trim() === '') {
+        $('#myModalnuovaConfigurazioneEff .ck-rounded-corners').css('border', '2px solid red');
+    } else {
+        callAjaxForm('#nuovaConfigurazioneFormEff', 'gestioneFormazione.do?action=nuova_configurazione_invio_eff');
+    }
+});
+
+$('#modificaConfigurazioneFormEff').on('submit', function (e) {
+    e.preventDefault();
+
+    if ($('#gruppi_eff_mod').prop('disabled') || !$('#gruppi_eff_mod').val()) {
+        return;
+    }
+    if (editorInstanceModEff) {
+        $('#testo_email_eff_mod').val(editorInstanceModEff.getData());
+    }
+    if ($('#testo_email_eff_mod').val().trim() === '') {
+        $('#myModalModificaConfigurazioneEff .ck-rounded-corners').css('border', '2px solid red');
+    } else {
+        callAjaxForm('#modificaConfigurazioneFormEff', 'gestioneFormazione.do?action=modifica_configurazione_invio_eff');
+    }
+});
+
   </script>
   
 </jsp:attribute> 

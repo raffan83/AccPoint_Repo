@@ -31,6 +31,7 @@ public class SendEmailFormazione  implements Job {
 			GestioneFormazioneBO.sendEmailValutazioneEfficacia(path);
 			GestioneFormazioneBO.sendEmailPreavviso(path);
 			GestioneFormazioneBO.sendEmailPianificazionePreavviso(path);
+		//	GestioneFormazioneBO.sendEmailConfEfficacia(path);
 		
 			logger.error("Invio email corsi in scadenza eseguito con successo dallo scheduler di Quartz!");
 			

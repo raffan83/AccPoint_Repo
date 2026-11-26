@@ -1,5 +1,7 @@
 package it.portaleSTI.DTO;
 
+import java.util.Date;
+
 public class ForMembriGruppoDTO {
 	
 	int id;
@@ -11,6 +13,8 @@ public class ForMembriGruppoDTO {
 	String cf;
 	Long dataEsecuzione;
 	Long dataCreazioneUtente;
+	Date dataCompletamentoTest;
+	Date dataProssimoInvio;
 	
 	public int getId() {
 		return id;
@@ -66,6 +70,21 @@ public class ForMembriGruppoDTO {
 	public void setDataCreazioneUtente(Long dataCreazioneUtente) {
 		this.dataCreazioneUtente = dataCreazioneUtente;
 	}
+	public Date getDataCompletamentoTest() {
+		return dataCompletamentoTest;
+	}
+	public void setDataCompletamentoTest(Date dataCompletamentoTest) {
+		this.dataCompletamentoTest = dataCompletamentoTest;
+	}
+	public Date getDataProssimoInvio() {
+		return dataProssimoInvio;
+	}
+	public void setDataProssimoInvio(Date dataProssimoInvio) {
+		this.dataProssimoInvio = dataProssimoInvio;
+	}
+	
+	
+	
 
 	
 	

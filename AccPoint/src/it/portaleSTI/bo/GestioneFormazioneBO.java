@@ -2757,7 +2757,7 @@ public static ArrayList<ForConfInvioEmailEffDTO> getListaConfigurazioniInvioEmai
 					
 				 Calendar prossimoInvio = Calendar.getInstance();
 				    prossimoInvio.setTime(membro.getDataCompletamentoTest());
-				  //  prossimoInvio.add(Calendar.DAY_OF_MONTH, 180);
+				    prossimoInvio.add(Calendar.DAY_OF_MONTH, 180);
 				    
 				    if (oggi.get(Calendar.YEAR) == prossimoInvio.get(Calendar.YEAR)
 				            && oggi.get(Calendar.DAY_OF_YEAR) == prossimoInvio.get(Calendar.DAY_OF_YEAR)) {

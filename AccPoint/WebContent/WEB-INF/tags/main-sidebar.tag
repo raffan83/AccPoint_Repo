@@ -190,8 +190,9 @@ private String voceAction(String url, String icona, String testo) {
 	add(t, gFormazione, "tabFormScadenzario", voceAction("gestioneFormazione.do?action=scadenzario", "fa-calendar", "Scadenzario"));
 	add(t, gFormazione && condFormAdmin, "tabFormQuestionari", voceAction("gestioneFormazione.do?action=gestione_questionari", "fa-question-circle", "Gestione questionari"));
 	add(t, gFormazione, "tabFormConsuntivoQuestionari", voceAction("gestioneFormazione.do?action=consuntivo_questionari", "fa-bar-chart", "Gestione consuntivo questionari"));
-	add(t, gFormazione && condFormAdmin, "tabFormPianificazione", voceAction("gestioneFormazione.do?action=gestione_pianificazione&anno=" + anno, "fa-calendar", "Pianificazione"));
+	add(t, gFormazione && condFormAdmin, "tabFormPianificazione", voceAction("gestioneFormazione.do?action=gestione_pianificazione&tipo=pianificazione&anno=" + anno, "fa-calendar", "Pianificazione"));
 	add(t, gFormazione && condFormAdmin, "tabFormListaPianificazioni", voceAction("gestioneFormazione.do?action=lista_pianificazioni", "fa-list", "Lista Pianificazioni"));
+	add(t, gFormazione && condFormAdmin, "tabFormPianificazioneDocenti", voceAction("gestioneFormazione.do?action=gestione_pianificazione&tipo=docente&anno=" + anno, "fa-calendar", "Calendario Docenti"));
 	add(t, gFormazione && condFormAdmin, "tabFormConfEmail", voceAction("gestioneFormazione.do?action=gestione_conf_email", "fa-envelope", "Configurazione Invio Email"));
 
 	// ---------- DOCUMENTALE ----------
@@ -403,6 +404,7 @@ private String voceAction(String url, String icona, String testo) {
 		t.get("tabFormConsuntivoQuestionari"),
 		t.get("tabFormPianificazione"),
 		t.get("tabFormListaPianificazioni"),
+		t.get("tabFormPianificazioneDocenti"),
 		t.get("tabFormConfEmail"));
 	addBlocco(t, gruppi, gDocumentale, "Documentale",
 		t.get("tabDocCommittenti"),

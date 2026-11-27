@@ -78,6 +78,7 @@ import it.portaleSTI.DTO.AgendaMilestoneDTO;
 import it.portaleSTI.DTO.ClienteDTO;
 import it.portaleSTI.DTO.CommessaDTO;
 import it.portaleSTI.DTO.CompanyDTO;
+import it.portaleSTI.DTO.DocumCommittenteDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailDTO;
 import it.portaleSTI.DTO.ForConfInvioEmailEffDTO;
 import it.portaleSTI.DTO.ForCorsoAllegatiDTO;
@@ -97,6 +98,8 @@ import it.portaleSTI.DTO.ForPiaTipoDTO;
 import it.portaleSTI.DTO.ForQuestionarioDTO;
 import it.portaleSTI.DTO.ForReferenteDTO;
 import it.portaleSTI.DTO.ForRuoloDTO;
+import it.portaleSTI.DTO.PaaTipoSegnalazioneDTO;
+import it.portaleSTI.DTO.PaaVeicoloDTO;
 import it.portaleSTI.DTO.SedeDTO;
 import it.portaleSTI.DTO.UtenteDTO;
 import it.portaleSTI.Exception.STIException;
@@ -104,7 +107,10 @@ import it.portaleSTI.Util.Costanti;
 import it.portaleSTI.Util.Utility;
 import it.portaleSTI.bo.GestioneAnagraficaRemotaBO;
 import it.portaleSTI.bo.GestioneAssegnazioneAttivitaBO;
+import it.portaleSTI.bo.GestioneDocumentaleBO;
 import it.portaleSTI.bo.GestioneFormazioneBO;
+import it.portaleSTI.bo.GestioneParcoAutoBO;
+import it.portaleSTI.bo.GestioneUtenteBO;
 import it.portaleSTI.bo.SendEmailBO;
 
 /**
@@ -168,6 +174,42 @@ public class GestioneFormazione extends HttpServlet {
 			}
 			request.getSession().setAttribute("filtro_tipo_pianificazioni", filtro_tipo_pianificazioni);
 			
+        	out.print(myObj);
+        	session.getTransaction().commit();
+        	session.close();
+			
+		}else if(action!=null && action.equals("lista_pianificazioni_docenti")) {
+	
+			String anno = request.getParameter("anno");
+		
+			
+			if(anno == null) {
+				anno = ""+Calendar.getInstance().get(Calendar.YEAR);
+			}
+			Gson g = new GsonBuilder().setDateFormat("MM/dd/yyyy").create(); 	
+			ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni = GestioneFormazioneBO.getListaPianificazioni(anno,null,session);
+				
+			Date today = new Date();
+			if(today.after(new GregorianCalendar(Integer.parseInt(anno), Calendar.NOVEMBER, 01).getTime())){
+				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_succ = GestioneFormazioneBO.getListaPianificazioni((Calendar.getInstance().get(Calendar.YEAR)+1)+"", null,session);
+				lista_pianificazioni.addAll(lista_pianificazioni_anno_succ);
+			}
+			
+			if(today.before(new GregorianCalendar(Integer.parseInt(anno), Calendar.FEBRUARY, 01).getTime())) {
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				ArrayList<ForPiaPianificazioneDTO> lista_pianificazioni_anno_rec = GestioneFormazioneBO.getListaPianificazioniData((Calendar.getInstance().get(Calendar.YEAR)-1)+"-11-01", ""+(Calendar.getInstance().get(Calendar.YEAR)-1)+"-12-31", session);
+				lista_pianificazioni.addAll(lista_pianificazioni_anno_rec);
+			}
+			
+			
+			
+			
+			PrintWriter out = response.getWriter();
+			myObj.addProperty("success", true);
+			myObj.add("lista_pianificazioni",g.toJsonTree(lista_pianificazioni));
+			
+			
+		
         	out.print(myObj);
         	session.getTransaction().commit();
         	session.close();
@@ -3263,8 +3305,21 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 					session.getTransaction().commit();
 					session.close();
 					
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestionePianificazione.jsp");
-			     	dispatcher.forward(request,response);
+					String tipo = request.getParameter("tipo");
+
+					RequestDispatcher dispatcher;
+
+					if ("pianificazione".equals(tipo)) {
+					    dispatcher = getServletContext().getRequestDispatcher(
+					        "/site/gestionePianificazione.jsp"
+					    );
+					} else {
+					    dispatcher = getServletContext().getRequestDispatcher(
+					        "/site/gestioneCalendarioDocenti.jsp"
+					    );
+					}
+
+					dispatcher.forward(request, response);
 			     	
 						
 				} else if(action.equals("check_docenti_occupati")) {
@@ -4698,6 +4753,164 @@ if(Utility.validateSession(request,response,getServletContext()))return;
 							
 							out.print(myObj); 
 							out.flush();
+					} 	else if(action.equals("gestione_pianificazione_docenti")) {
+						
+						ArrayList<ForDocenteDTO> lista_docenti = GestioneFormazioneBO.getListaDocenti(session);
+						
+						
+						String anno = request.getParameter("anno");
+						String data_inizio = request.getParameter("data_inizio");
+						String move = request.getParameter("move");			
+						
+											
+						if(anno==null) {
+							anno = ""+Calendar.getInstance().get(Calendar.YEAR);
+						}
+
+						LocalDate dataCorrente = null;
+						 
+						if(data_inizio == null && Integer.parseInt(anno) == LocalDate.now().getYear()) {
+							dataCorrente = LocalDate.now();
+						}
+						else if(data_inizio == null && Integer.parseInt(anno) != LocalDate.now().getYear()) {
+							dataCorrente = LocalDate.ofYearDay(Integer.parseInt(anno), 1);
+						}
+						else {						
+							if(Integer.parseInt(data_inizio) == 366 && !LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()) {
+								data_inizio = 365+"";
+							}
+					         dataCorrente = LocalDate.ofYearDay(Integer.parseInt(anno), Integer.parseInt(data_inizio));				       
+						}				 							 
+								 
+						
+						int meseCorrente = 0;
+						int monthsToAdd = 3;
+						
+						if(move!=null && move.equals("back")) {
+							if(dataCorrente.getMonthValue()==12) {
+								meseCorrente = dataCorrente.getMonthValue()-1;
+							}else {
+								meseCorrente = dataCorrente.getMonthValue()-2;
+							}
+							
+						}else if(move!=null && move.equals("forward")) {
+							if(dataCorrente.getMonthValue()+1==12) {
+								meseCorrente = dataCorrente.getMonthValue()+1;
+								monthsToAdd = 2;
+							}
+							else if(dataCorrente.getMonthValue()+2==12) {
+								meseCorrente = dataCorrente.getMonthValue()+2;
+								monthsToAdd = 2;
+								
+							}
+							else if(dataCorrente.getMonthValue()==1) {
+								meseCorrente = dataCorrente.getMonthValue();
+							}
+							else {
+								meseCorrente = dataCorrente.getMonthValue()+2;	
+							}
+											
+						}else {
+							meseCorrente = dataCorrente.getMonthValue();
+						}
+						
+						
+						int mesePrecedente = 0;
+						if(meseCorrente>1) {
+							mesePrecedente =  meseCorrente - 1;
+						}else {
+							if(meseCorrente==0) {
+								meseCorrente = 12;
+								mesePrecedente = 10;
+								anno = ""+(Integer.parseInt(anno)-1);
+							}else {
+								mesePrecedente = meseCorrente;	
+							}
+							
+						}
+						
+						
+						
+						LocalDate inizioBimestre = LocalDate.of(Integer.parseInt(anno), mesePrecedente, 1);
+						LocalDate fineBimestre = inizioBimestre.plusMonths(monthsToAdd).minusDays(1);
+
+						LocalDate fineAnno = LocalDate.of(Integer.parseInt(anno), 12, 31);
+						
+						if (fineBimestre.isAfter(fineAnno)) {
+						    fineBimestre = fineAnno;
+						}
+						
+				        
+				        int start_date = 0; 
+				        int end_date = 0; 
+				        
+						if(inizioBimestre.getYear() == fineBimestre.getYear()) {
+							start_date = inizioBimestre.getDayOfYear();
+					        end_date = fineBimestre.getDayOfYear();
+						}else if(inizioBimestre.getYear() < fineBimestre.getYear()) {
+							start_date = inizioBimestre.getDayOfYear();
+							 if(LocalDate.ofYearDay(Integer.parseInt(anno), 1).isLeapYear()){
+								 end_date = fineBimestre.getDayOfYear() +366;
+							 }else {
+								 end_date = fineBimestre.getDayOfYear() +365;
+							 }
+					        
+						}
+				        
+
+						int daysNumber = end_date - start_date;
+						
+						
+						ArrayList<LocalDate> festivitaItaliane = new ArrayList<>();
+					    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 1));
+					    festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 1, 6));
+
+					 // Pasqua - data variabile (calcolata tramite algoritmo)
+					   LocalDate pasqua = Utility.calculatePasqua(Integer.parseInt(anno));
+					    festivitaItaliane.add(pasqua);
+					 // Lunedì di Pasqua
+					 festivitaItaliane.add(pasqua.plusDays(1));
+					 // Festa della Liberazione - 25 aprile
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 4, 25));
+					 // Festa dei Lavoratori - 1 maggio
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 5, 1));
+					 // Festa della Repubblica - 2 giugno
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 6, 2));
+					 // Ferragosto - 15 agosto
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 8, 15));
+					 // Tutti i Santi - 1 novembre
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 11, 1));
+					 // Immacolata Concezione - 8 dicembre
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 8));
+					 // Natale - 25 dicembre
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 25));
+					 // Santo Stefano - 26 dicembre
+					 festivitaItaliane.add(LocalDate.of(Integer.parseInt(anno), 12, 26));
+					
+					 
+					 long today = 0;
+					 
+					 if(Integer.parseInt(anno)==Integer.parseInt(LocalDate.now().getYear()+"")) {
+						 today = ChronoUnit.DAYS.between(inizioBimestre, dataCorrente);
+					 }
+					 
+				
+					 
+
+						request.getSession().setAttribute("today", today);
+						request.getSession().setAttribute("anno", Integer.parseInt(anno));
+						request.getSession().setAttribute("daysNumber", daysNumber);
+						request.getSession().setAttribute("festivitaItaliane", festivitaItaliane);
+						request.getSession().setAttribute("start_date", start_date);
+						request.getSession().setAttribute("end_date", end_date);
+						request.getSession().setAttribute("filtro_tipo_pianificazioni", 0);
+					
+						request.getSession().setAttribute("lista_docenti", lista_docenti);
+						
+						
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/site/gestionePianificazioneDocenti.jsp");
+				     	dispatcher.forward(request,response);
+						
 					}
 					
 			

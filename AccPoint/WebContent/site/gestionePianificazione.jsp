@@ -828,7 +828,7 @@ function subTrimestre(data_inizio, anno){
 	
 	
 	
-	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val()+'&cellCopy='+$('#cellCopy').val());
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&tipo=pianificazione&move=back&data_inizio='+data_inizio+'&anno='+$('#anno').val()+'&cellCopy='+$('#cellCopy').val());
 }
 
 function addTrimestre(data_fine, anno){
@@ -839,7 +839,7 @@ function addTrimestre(data_fine, anno){
 		data_fine = 1;
 	}
 	
-	callAction('gestioneFormazione.do?action=gestione_pianificazione&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val()+'&cellCopy='+$('#cellCopy').val());
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&tipo=pianificazione&move=forward&data_inizio='+data_fine+'&anno='+$('#anno').val()+'&cellCopy='+$('#cellCopy').val());
 }
 
 function vaiAOggi(anno){
@@ -849,7 +849,7 @@ function vaiAOggi(anno){
 	$('#anno').change()
 
 
-callAction('gestioneFormazione.do?action=gestione_pianificazione&anno='+$('#anno').val());
+callAction('gestioneFormazione.do?action=gestione_pianificazione&tipo=pianificazione&anno='+$('#anno').val());
 
 
 	
@@ -859,14 +859,14 @@ $('#anno').change(function(){
 	var value = $('#anno').val();
 	var commesse = $('#commesse').val();
 	
-	callAction('gestioneFormazione.do?action=gestione_pianificazione&anno='+value+"&commesse="+commesse,null,true)
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&tipo=pianificazione&anno='+value+"&commesse="+commesse,null,true)
 });
 
 
 $('#commesse').change(function(){
 	var value = $('#anno').val();
 	var commesse = $('#commesse').val();
-	callAction('gestioneFormazione.do?action=gestione_pianificazione&anno='+value+"&commesse="+commesse,null,true)
+	callAction('gestioneFormazione.do?action=gestione_pianificazione&tipo=pianificazione&anno='+value+"&commesse="+commesse,null,true)
 });
 
 $('#tipo').change(function(){

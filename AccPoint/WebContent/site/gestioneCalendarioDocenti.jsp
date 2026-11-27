@@ -46,7 +46,7 @@
     <c:param name="anno" value="${annoCorrenteCalendarioDocenti}" />
 </c:url>
 
-<t:layout title="Pianificazione docenti" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
+<t:layout title="Dashboard" bodyClass="skin-blue-light sidebar-mini wysihtml5-supported">
     <jsp:attribute name="body_area">
         <div class="wrapper">
             <t:main-header />
